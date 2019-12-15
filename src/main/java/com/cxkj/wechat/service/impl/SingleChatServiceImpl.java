@@ -32,21 +32,14 @@ public class SingleChatServiceImpl implements SingleChatService {
     定时器删除数据库存储时间超过7天的数据
     step:1 查询 7天之前人所有数据  条件 ：
     step:2 执行 删除。
-
      */
-    @Override
+    @Override //604800000
     public void deleteTask(SingleChat singleChat) {
-        Long time = System.currentTimeMillis()-604800000;
+        Long time = System.currentTimeMillis()-180000;
         Query query =Query.query(Criteria.where("createTimes").lt(time));
         mongoTemplate.remove(query,SingleChat.class);
 
 
-//            //一周的毫秒数
-//        long MS=604800000;
-//        Long createTimes = singleChat.getCreateTimes();
-//            long newMS=createTimes+MS;
-//            if(System.currentTimeMillis()==newMS){
-//
-//            }
+
     }
 }
