@@ -34,18 +34,6 @@
         delete from group
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.cxkj.wechat.entity.Group"
-            useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into group (`name`, icon, qr,
-        notice, owner_id, admin_ids,
-        members_count, `state`, is_save,
-        create_times, modified_times)
-        values (#{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{qr,jdbcType=VARCHAR},
-        #{notice,jdbcType=VARCHAR}, #{ownerId,jdbcType=INTEGER}, #{adminIds,jdbcType=VARCHAR},
-        #{membersCount,jdbcType=INTEGER}, #{state,jdbcType=BOOLEAN}, #{isSave,jdbcType=BOOLEAN},
-        #{createTimes,jdbcType=BIGINT}, #{modifiedTimes,jdbcType=BIGINT})
-    </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.cxkj.wechat.entity.Group"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
@@ -177,10 +165,17 @@
         modified_times = #{modifiedTimes,jdbcType=BIGINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.cxkj.wechat.entity.Group"
+            useGeneratedKeys="true">
+        insert into `group`
+        (`name`, icon, qr, notice, owner_id, members_count, state, is_save, create_times, modified_times)
+        values
+        (#{name},#{icon},#{qr},#{notice},#{ownerId},#{membersCount},#{state},#{isSave},#{createTimes},#{modifiedTimes})
+    </insert>
     <select id="listGroupByUid" resultType="com.cxkj.wechat.bo.UserGroup">
         select g.name groupName, g.id gid, g.icon
         from `group` g
-                 left join user_group_relation ugr on g.id = ugr.gid
+        left join user_group_relation ugr on g.id = ugr.gid
         where ugr.uid = #{uid}
     </select>
 
@@ -226,5 +221,20 @@
         <if test="modifiedTimes != null">
             and modified_times=#{modifiedTimes,jdbcType=BIGINT}
         </if>
+    </select>
+    <insert id="insertUserIds">
+        insert into user_group_relation(uid,gid,group_nickname) values
+        <foreach collection="ids" item="id" separator=",">
+            (#{id},#{groupId},(select username from user where id = #{id}))
+        </foreach>
+    </insert>
+    <update id="updateQr">
+        update `group` set qr = #{qr},modified_times = REPLACE(unix_timestamp(current_timestamp(3)),'.','') where id =
+        #{id}
+    </update>
+    <select id="getById" resultType="com.cxkj.wechat.entity.Group">
+        select id,name,icon,qr,notice,owner_id ownerId, admin_ids adminIds, members_count membersCount,
+        state,is_save isSave,create_times createTimes,modified_times modifiedTimes
+        from `group` where id = #{id}
     </select>
 </mapper>

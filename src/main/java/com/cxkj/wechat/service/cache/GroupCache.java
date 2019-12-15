@@ -1,6 +1,7 @@
 package com.cxkj.wechat.service.cache;
 
 import com.cxkj.wechat.bo.UserGroup;
+import com.cxkj.wechat.entity.Group;
 
 import java.util.List;
 
@@ -16,4 +17,20 @@ public interface GroupCache {
      * @return 用户群组
      */
     List<UserGroup> listGroupByUid(Integer uid);
+
+    /**
+     * 更新缓存
+     *
+     * @param group group
+     * @return group
+     */
+    Group update(Group group);
+
+    /**
+     * 查询群组信息
+     * @param id id
+     * @return group
+     */
+    Group getById(Integer id);
+
 }

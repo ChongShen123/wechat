@@ -21,7 +21,13 @@ public class QrUtil {
     @Value("${file.qr-path}")
     private String qrPath;
 
-    public String generate(String username) {
+    /**
+     * 创建二维码
+     *
+     * @param content 二维码内容
+     * @return 文件路径
+     */
+    public String generate(String content) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("y/M/d/");
         String folder = qrPath + simpleDateFormat.format(new Date());
         // 实际的文件夹
@@ -30,8 +36,8 @@ public class QrUtil {
             FileUtil.mkdir(realFolder);
         }
         // 需要返回的文件名
-        String fileName = folder + username + System.currentTimeMillis() + ".png";
-        QrCodeUtil.generate(username, 300, 300, FileUtil.file(rootPath + fileName));
+        String fileName = folder + content + System.currentTimeMillis() + ".png";
+        QrCodeUtil.generate(content, 300, 300, FileUtil.file(rootPath + fileName));
         return fileName;
     }
 }

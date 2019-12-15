@@ -6,6 +6,7 @@ import com.cxkj.wechat.dto.UserRegisterParam;
 import com.cxkj.wechat.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author tiankong
@@ -35,4 +36,11 @@ public interface UserService {
      * @return 登录信息
      */
     LoginInfo register(UserRegisterParam param, HttpServletRequest request);
+
+    /**
+     * 查询用户
+     * @param ids ids
+     * @return List
+     */
+    List<User> listUserByIds(List<Integer> ids);
 }

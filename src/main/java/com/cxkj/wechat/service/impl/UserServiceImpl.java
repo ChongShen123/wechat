@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -84,6 +85,11 @@ public class UserServiceImpl implements UserService {
         update.setLastLoginTimes(System.currentTimeMillis());
         update.setLastLoginIp(ipAddress);
         userMapper.updateByPrimaryKeySelective(update);
+    }
+
+    @Override
+    public List<User> listUserByIds(List<Integer> ids) {
+        return userMapper.listUserByIds(ids);
     }
 
     @Override

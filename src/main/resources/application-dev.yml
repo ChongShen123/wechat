@@ -58,10 +58,11 @@ netty:
   port: 9012
   heartbeat: 3600 # unit second
 file:
+  root-path: E:/upload/wechat/
   img-path: img/
   qr-path: qr/
   voice-path: voice/
-  root-path: E:/upload/wechat/
+  group-path: group/
 # Maximum wait time for heartbeat
 # If no customer data is received within the regular time, the connection is disconnected
 logging:

@@ -35,6 +35,10 @@ public interface SystemConstant {
      * ID
      */
     String KEY_ID = "id";
+    /**
+     * 用户ids
+     */
+    String KEY_IDS = "ids";
 
     /**
      * 状态
@@ -133,4 +137,10 @@ public interface SystemConstant {
      */
     String[] SUFFIX_ARRAY = {".png", ".jpg"};
 
+
+    // -----------------------系统通知相关----------------------------------------
+    /**
+     * 系统通知ID
+     */
+    Integer SYSTEM_USER_ID = 0;
 }

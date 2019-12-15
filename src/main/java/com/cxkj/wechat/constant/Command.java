@@ -27,22 +27,32 @@ public interface Command {
      * 退出群聊
      */
     byte QUIET_GROUP = 8;
+
     /**
      * 加入群聊
      */
     byte JOIN_GROUP = 7;
+
+    /**
+     * 加入群聊消息通知
+     */
+    byte JOIN_GROUP_NOTICE = 71;
+
     /**
      * 查看所有群成员
      */
     byte LIST_GROUP_ALL_MEMBERS = 6;
+
     /**
      * 查看群成员
      */
     byte LIST_GROUP_MEMBERS = 5;
+
     /**
      * 创建群聊
      */
     byte CREATE_GROUP = 4;
+
     /**
      * 群聊
      */

@@ -25,8 +25,7 @@ import javax.annotation.Resource;
 @ExecutorAnno(command = Command.SINGLE_CHAT)
 public class SingleChatExecutor extends ChatExecutor {
 
-    @Resource
-    private Snowflake snowflake;
+
 
     @Override
     public void execute(JSONObject param, Channel channel) {
@@ -58,14 +57,5 @@ public class SingleChatExecutor extends ChatExecutor {
         rabbitTemplateService.addSingleChat(SystemConstant.SINGLE_CHAT_QUEUE_ONE, chat);
     }
 
-    private SingleChat createNewSingleChat(Integer toUserId, Integer fromUserId, String content, Byte type) {
-        SingleChat chat = new SingleChat();
-        chat.setId(snowflake.nextIdStr());
-        chat.setContent(content);
-        chat.setFromUserId(fromUserId);
-        chat.setToUserId(toUserId);
-        chat.setType(type);
-        chat.setCreateTimes(System.currentTimeMillis());
-        return chat;
-    }
+
 }

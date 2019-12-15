@@ -29,5 +29,6 @@ public interface UserMapper {
 
     Integer countByEmail(@Param("email") String email);
 
+    List<User> listUserByIds(List<Integer> ids);
 
 }

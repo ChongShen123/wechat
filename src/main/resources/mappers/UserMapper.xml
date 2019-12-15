@@ -238,6 +238,12 @@
         from user
         where email=#{email,jdbcType=VARCHAR}
     </select>
+    <select id="listUserByIds" resultMap="BaseResultMap">
+        select * from user where id in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
 
 
 </mapper>
