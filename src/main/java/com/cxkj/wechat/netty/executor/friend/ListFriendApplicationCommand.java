@@ -1,10 +1,10 @@
 package com.cxkj.wechat.netty.executor.friend;
 
-import com.alibaba.fastjson.JSONObject;
+import com.cxkj.wechat.bo.RequestParamBo;
 import com.cxkj.wechat.constant.Command;
 import com.cxkj.wechat.entity.FriendApplication;
 import com.cxkj.wechat.netty.executor.ExecutorAnno;
-import com.cxkj.wechat.netty.executor.base.FriendExecutor;
+import com.cxkj.wechat.netty.executor.base.ChatExecutor;
 import com.cxkj.wechat.util.JsonResult;
 import com.cxkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
@@ -20,9 +20,9 @@ import java.util.List;
  */
 @Service
 @ExecutorAnno(command = Command.LIST_FRIEND_APPLICATION)
-public class ListFriendApplicationCommand extends FriendExecutor {
+public class ListFriendApplicationCommand extends ChatExecutor {
     @Override
-    public void execute(JSONObject param, Channel channel) {
+    protected void concreteAction(RequestParamBo param, Channel channel) {
         List<FriendApplication> friendApplicationList = friendApplicationService.listByUserId(SessionUtil.getSession(channel).getUserId());
         sendMessage(channel, JsonResult.success(friendApplicationList, command));
     }

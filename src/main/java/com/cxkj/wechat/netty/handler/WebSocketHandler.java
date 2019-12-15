@@ -72,7 +72,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             e.printStackTrace();
         }
         assert param != null;
-        Byte command = param.getByte("command");
+        Integer command = param.getInteger("command");
         Executor executor = commandManager.getCommand(command);
         if (executor == null) {
             sendErrorMessage(ctx, "命令不存在");

@@ -9,68 +9,79 @@ public interface Command {
     /**
      * 心跳
      */
-    byte HEARTBEAT = 0;
+    int HEARTBEAT = 1000;
     /**
      * 注册用户channel
      */
-    byte REGISTER = 1;
+    int REGISTER = 1001;
     /**
      * 单聊
      */
-    byte SINGLE_CHAT = 2;
+    int SINGLE_CHAT = 1002;
     /**
      * 撤销单聊消息
      */
-    byte SINGLE_CHAT_CANCEL = 19;
-    //  ---------------------------群聊相关--------------------------------
-    /**
-     * 退出群聊
-     */
-    byte QUIET_GROUP = 8;
-
-    /**
-     * 加入群聊
-     */
-    byte JOIN_GROUP = 7;
-
-    /**
-     * 加入群聊消息通知
-     */
-    byte JOIN_GROUP_NOTICE = 71;
-
-    /**
-     * 查看所有群成员
-     */
-    byte LIST_GROUP_ALL_MEMBERS = 6;
-
-    /**
-     * 查看群成员
-     */
-    byte LIST_GROUP_MEMBERS = 5;
-
-    /**
-     * 创建群聊
-     */
-    byte CREATE_GROUP = 4;
-
-    /**
-     * 群聊
-     */
-    byte GROUP_CHAT = 3;
-
+    int SINGLE_CHAT_CANCEL = 1003;
     // -------------------------好友相关-----------------------------------
     /**
      * 添加好友
      */
-    byte ADD_FRIEND = 15;
+    int ADD_FRIEND = 2000;
 
     /**
      * 好友回复
      */
-    byte FRIEND_AGREE = 16;
+    int FRIEND_AGREE = 2001;
     /**
      * 查询好友申请消息
      */
-    byte LIST_FRIEND_APPLICATION = 17;
+    int LIST_FRIEND_APPLICATION = 2002;
+    /**
+     * 删除好友
+     */
+    int DELETE_FRIEND = 2003;
+
+    //  ---------------------------群聊相关--------------------------------
+    /**
+     * 创建群聊
+     */
+    int CREATE_GROUP = 3000;
+    /**
+     * 查看用户所有群
+     */
+    int LIST_GROUP = 3001;
+    /**
+     * 群基本信息
+     */
+    int GROUP_BASE_INFO = 3002;
+
+    /**
+     * 群详情
+     */
+    int GROUP_INFO = 3003;
+    /**
+     * 群聊
+     */
+    int GROUP_CHAT = 3001;
+    /**
+     * 退出群聊
+     */
+    int QUIET_GROUP = 3003;
+
+    /**
+     * 加入群聊
+     */
+    int JOIN_GROUP = 3004;
+
+    /**
+     * 加入群聊消息通知
+     */
+    int JOIN_GROUP_NOTICE = 3005;
+
+    /**
+     * 查看群成员
+     */
+    int LIST_GROUP_MEMBERS = 3006;
+
 
 }

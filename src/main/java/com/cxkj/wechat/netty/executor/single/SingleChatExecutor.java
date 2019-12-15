@@ -1,8 +1,8 @@
 package com.cxkj.wechat.netty.executor.single;
 
-import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.cxkj.wechat.bo.RequestParamBo;
 import com.cxkj.wechat.bo.Session;
 import com.cxkj.wechat.constant.Command;
 import com.cxkj.wechat.constant.ResultCodeEnum;
@@ -15,8 +15,6 @@ import com.cxkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-
 /**
  * @author tiankong
  * @date 2019/12/13 11:34
@@ -25,28 +23,12 @@ import javax.annotation.Resource;
 @ExecutorAnno(command = Command.SINGLE_CHAT)
 public class SingleChatExecutor extends ChatExecutor {
 
-
-
     @Override
-    public void execute(JSONObject param, Channel channel) {
-        Integer toUserId;
-        String content;
-        Byte type;
-        try {
-            toUserId = param.getInteger(SystemConstant.KEY_TO_USER_ID);
-            content = param.getString(SystemConstant.KEY_CONTENT);
-            type = param.getByte(SystemConstant.KEY_TYPE);
-            if (ObjectUtil.isEmpty(toUserId) || ObjectUtil.isEmpty(content) || ObjectUtil.isEmpty(type)) {
-                throw new RuntimeException();
-            }
-        } catch (Exception e) {
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, command));
-            return;
-        }
+    protected void concreteAction(RequestParamBo param, Channel channel) {
         Session session = SessionUtil.getSession(channel);
-        SingleChat chat = createNewSingleChat(toUserId, session.getUserId(), content, type);
+        SingleChat chat = createNewSingleChat(param.getToUserId(), session.getUserId(), param.getContent(), param.getType());
         // 获取一条消息
-        Channel toUserChannel = SessionUtil.ONLINE_USER_MAP.get(toUserId);
+        Channel toUserChannel = SessionUtil.ONLINE_USER_MAP.get(param.getUserId());
         if (toUserChannel != null) {
             chat.setRead(true);
             sendMessage(toUserChannel, JsonResult.success(chat, command));
@@ -56,6 +38,4 @@ public class SingleChatExecutor extends ChatExecutor {
         // 放入RabbitMQ
         rabbitTemplateService.addSingleChat(SystemConstant.SINGLE_CHAT_QUEUE_ONE, chat);
     }
-
-
 }

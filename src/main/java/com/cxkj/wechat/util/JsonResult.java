@@ -9,6 +9,7 @@ import com.cxkj.wechat.vo.ChatResponse;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author tiankong
@@ -18,14 +19,14 @@ import java.util.List;
 public class JsonResult<T> {
     private Integer code;
     private String message;
-    private Byte type;
+    private Integer type;
     private T data;
 
     public JsonResult() {
         super();
     }
 
-    public JsonResult(Integer state, String message, byte type, T data) {
+    public JsonResult(Integer state, String message, Integer type, T data) {
         this.code = state;
         this.message = message;
         this.type = type;
@@ -66,7 +67,7 @@ public class JsonResult<T> {
     }
 
 
-    private JsonResult(IErrorCode success, byte type) {
+    private JsonResult(IErrorCode success, Integer type) {
         this.code = success.getCode();
         this.message = success.getMessage();
         this.type = type;
@@ -94,7 +95,7 @@ public class JsonResult<T> {
         return jsonResult;
     }
 
-    public static <T> JsonResult success(List<T> loginInfo, byte command) {
+    public static <T> JsonResult success(List<T> loginInfo, int command) {
         return new JsonResult(ResultCodeEnum.SUCCESS, loginInfo);
     }
 
@@ -107,11 +108,11 @@ public class JsonResult<T> {
         return new JsonResult(ResultCodeEnum.SUCCESS.getCode(), msg);
     }
 
-    public static JsonResult success(byte type) {
+    public static JsonResult success(Integer type) {
         return new JsonResult(ResultCodeEnum.SUCCESS.getCode(), ResultCodeEnum.SUCCESS.getMessage(), type, null);
     }
 
-    public static JsonResult success(String msg, byte type) {
+    public static JsonResult success(String msg, Integer type) {
         return new JsonResult(ResultCodeEnum.SUCCESS.getCode(), msg, type, null);
     }
 
@@ -126,11 +127,11 @@ public class JsonResult<T> {
         return new JsonResult<>(errorCode);
     }
 
-    public static JsonResult<Void> failed(IErrorCode errorCode, byte type) {
+    public static JsonResult<Void> failed(IErrorCode errorCode, Integer type) {
         return new JsonResult<>(errorCode, type);
     }
 
-    public static JsonResult failed(String msg, byte type) {
+    public static JsonResult failed(String msg, Integer type) {
         JsonResult jsonResult = new JsonResult();
         jsonResult.setCode(ResultCodeEnum.FAILED.getCode());
         jsonResult.setMessage(msg);
@@ -138,7 +139,7 @@ public class JsonResult<T> {
         return jsonResult;
     }
 
-    public static JsonResult<Void> failed(byte type) {
+    public static JsonResult<Void> failed(Integer type) {
         return new JsonResult<>(ResultCodeEnum.FAILED, type);
     }
 
@@ -158,7 +159,7 @@ public class JsonResult<T> {
         return jsonResult;
     }
 
-    public static JsonResult success(FriendApplication friendApplication, byte command) {
+    public static JsonResult success(FriendApplication friendApplication, Integer command) {
         JsonResult<FriendApplication> result = new JsonResult<>();
         result.setData(friendApplication);
         result.setMessage(ResultCodeEnum.SUCCESS.getMessage());
@@ -168,7 +169,7 @@ public class JsonResult<T> {
     }
 
 
-    public static JsonResult success(SingleChat chat, byte command) {
+    public static JsonResult success(SingleChat chat, Integer command) {
         JsonResult<SingleChat> result = new JsonResult<>();
         result.setMessage(ResultCodeEnum.SUCCESS.getMessage());
         result.setData(chat);
@@ -177,12 +178,13 @@ public class JsonResult<T> {
         return result;
     }
 
-    public static JsonResult success(ChatResponse response, byte command) {
-        JsonResult<ChatResponse> result = new JsonResult<>();
+    public static JsonResult success(Object response, Integer command) {
+        JsonResult<Object> result = new JsonResult<>();
         result.setMessage(ResultCodeEnum.SUCCESS.getMessage());
         result.setData(response);
         result.setCode(ResultCodeEnum.SUCCESS.getCode());
         result.setType(command);
         return result;
     }
+
 }

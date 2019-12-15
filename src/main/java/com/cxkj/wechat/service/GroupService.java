@@ -1,6 +1,11 @@
 package com.cxkj.wechat.service;
 
+import com.cxkj.wechat.bo.GroupInfo;
 import com.cxkj.wechat.entity.Group;
+import com.cxkj.wechat.netty.ex.DataEmptyException;
+import com.cxkj.wechat.vo.GroupBaseInfoVO;
+import com.cxkj.wechat.vo.GroupInfoVO;
+import com.cxkj.wechat.vo.ListGroupVO;
 
 import java.util.List;
 
@@ -37,8 +42,34 @@ public interface GroupService {
 
     /**
      * 更新二维码
-     * @param id id
+     *
+     * @param id       id
      * @param generate 二维码图片
      */
     void updateQr(Integer id, String generate);
+
+
+    /**
+     * 查询用户所有群组
+     *
+     * @param userId 用户id
+     * @return list
+     */
+    List<ListGroupVO> listGroupByUid(Integer userId);
+
+    /**
+     * 获取群组基本信息
+     *
+     * @param groupId 群ID
+     * @return groupBaseInfoVO
+     */
+    GroupBaseInfoVO getBaseInfo(Integer groupId);
+
+    /**
+     * 获取群详情
+     *
+     * @param groupId groupId
+     * @return GroupInfo
+     */
+    GroupInfoVO getGroupInfo(Integer groupId) throws DataEmptyException;
 }

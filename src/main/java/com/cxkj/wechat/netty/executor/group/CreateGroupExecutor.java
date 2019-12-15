@@ -2,9 +2,8 @@ package com.cxkj.wechat.netty.executor.group;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.cxkj.wechat.bo.GroupInfo;
+import com.cxkj.wechat.bo.RequestParamBo;
 import com.cxkj.wechat.bo.Session;
 import com.cxkj.wechat.constant.Command;
 import com.cxkj.wechat.constant.ResultCodeEnum;
@@ -17,8 +16,7 @@ import com.cxkj.wechat.netty.executor.base.ChatExecutor;
 import com.cxkj.wechat.util.JsonResult;
 import com.cxkj.wechat.util.QrUtil;
 import com.cxkj.wechat.util.SessionUtil;
-import com.cxkj.wechat.util.ThreadUtil;
-import com.cxkj.wechat.vo.CreateGroupVo;
+import com.cxkj.wechat.vo.CreateGroupVO;
 import io.netty.channel.Channel;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
@@ -28,9 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author tiankong
@@ -48,39 +44,32 @@ public class CreateGroupExecutor extends ChatExecutor {
     private QrUtil qrUtil;
 
     @Override
-    public void execute(JSONObject param, Channel channel) {
-        ThreadUtil.getSingleton().submit(() -> {
-            try {
-                List<Integer> ids = Arrays.stream(StrUtil.splitToInt(param.getString(SystemConstant.KEY_IDS), ",")).boxed().collect(Collectors.toList());
-                if (!checkUser(ids)) {
-                    sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, command));
-                    return;
-                }
-                // 加入当前用户ID
-                ids.add(SessionUtil.getSession(channel).getUserId());
-                // 获取一个群
-                Group group = createNewGroup(SessionUtil.getSession(channel), ids);
-                // 保存用户与群组关系
-                groupService.insertUserIds(ids, group.getId());
-                // 回复用户创建群成功
-                sendMessage(channel, JsonResult.success(new CreateGroupVo(group), command));
-                // 给用户发送一个入群消息,保存到数据库
-                sendCreateGroupMessageToUsers(ids, group);
-                // 将在线用户添加到 channelGroup
-                DefaultChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-                GroupInfo groupInfo = new GroupInfo(group, channelGroup);
-                ids.forEach(id -> {
-                    Channel userChannel = SessionUtil.ONLINE_USER_MAP.get(id);
-                    if (userChannel != null) {
-                        channelGroup.add(userChannel);
-                    }
-                });
-                SessionUtil.GROUP_MAP.put(group.getId(), groupInfo);
-            } catch (Exception e) {
-                sendMessage(channel, JsonResult.failed(command));
-                e.printStackTrace();
+    protected void concreteAction(RequestParamBo param, Channel channel) {
+        List<Integer> ids = param.getIds();
+        if (!checkUser(ids)) {
+            sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, command));
+            return;
+        }
+        // 加入当前用户ID
+        ids.add(SessionUtil.getSession(channel).getUserId());
+        // 获取一个群
+        Group group = createNewGroup(SessionUtil.getSession(channel), ids);
+        // 保存用户与群组关系
+        groupService.insertUserIds(ids, group.getId());
+        // 回复用户创建群成功
+        sendMessage(channel, JsonResult.success(new CreateGroupVO(group), command));
+        // 给用户发送一个入群消息,保存到数据库
+        sendCreateGroupMessageToUsers(ids, group);
+        // 将在线用户添加到 channelGroup
+        DefaultChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+        GroupInfo groupInfo = new GroupInfo(group, channelGroup);
+        ids.forEach(id -> {
+            Channel userChannel = SessionUtil.ONLINE_USER_MAP.get(id);
+            if (userChannel != null) {
+                channelGroup.add(userChannel);
             }
         });
+        SessionUtil.GROUP_MAP.put(group.getId(), groupInfo);
     }
 
     /**
@@ -91,7 +80,7 @@ public class CreateGroupExecutor extends ChatExecutor {
      */
     private boolean checkUser(List<Integer> ids) {
         for (Integer id : ids) {
-            User user = userCache.getByUserId(id);
+            User user = userService.getByUserId(id);
             if (user == null) {
                 return false;
             }

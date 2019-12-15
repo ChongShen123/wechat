@@ -1,17 +1,16 @@
 package com.cxkj.wechat.netty.executor.base;
 
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
+import com.cxkj.wechat.bo.RequestParamBo;
 import com.cxkj.wechat.bo.Session;
-import com.cxkj.wechat.bo.UserGroup;
 import com.cxkj.wechat.constant.Attributes;
+import com.cxkj.wechat.constant.Command;
 import com.cxkj.wechat.constant.ResultCodeEnum;
 import com.cxkj.wechat.entity.User;
 import com.cxkj.wechat.netty.executor.ExecutorAnno;
-import com.cxkj.wechat.service.cache.UserCache;
 import com.cxkj.wechat.util.JsonResult;
 import com.cxkj.wechat.util.JwtTokenUtil;
 import com.cxkj.wechat.util.SessionUtil;
+import com.cxkj.wechat.vo.ListGroupVO;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,51 +29,37 @@ import java.util.List;
  */
 @Service
 @Slf4j
-@ExecutorAnno(command = com.cxkj.wechat.constant.Command.REGISTER)
+@ExecutorAnno(command = Command.REGISTER)
 public class RegisterExecutor extends ChatExecutor {
     @Resource
     private JwtTokenUtil jwtTokenUtil;
     @Resource
     private UserDetailsService userDetailsService;
-    @Resource
-    private UserCache userCache;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
+
     @Override
-    public void execute(JSONObject param, Channel channel) {
-        String token;
-        try {
-            token = param.getString("token");
-            if (StrUtil.isBlank(token)) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED));
-                return;
-            }
-        } catch (Exception e) {
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED));
-            return;
-        }
+    protected void concreteAction(RequestParamBo param, Channel channel) {
+        String token = param.getToken();
         String username;
         try {
-            if (!token.startsWith(tokenHead)) {
-                throw new RuntimeException();
-            }
             token = token.substring(tokenHead.length() + 1);
             username = jwtTokenUtil.getUserNameFormToken(token);
             jwtTokenUtil.validateToken(token, userDetailsService.loadUserByUsername(username));
         } catch (Exception e) {
+            e.printStackTrace();
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_TOKEN));
             remove(channel);
             return;
         }
-        Integer userId = userCache.getByUsername(username).getId();
+        Integer userId = userService.getByUsername(username).getId();
         if (checkOnline(userId, channel)) {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_LOGGED_IN, command));
             channel.close();
             return;
         }
-
-        User user = userCache.getByUserId(userId);
+        User user = userService.getByUserId(userId);
         if (user == null) {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, command));
             return;
@@ -83,13 +68,13 @@ public class RegisterExecutor extends ChatExecutor {
         channel.attr(Attributes.SESSION).set(new Session(user.getId(), user.getUsername(), user.getIcon()));
         sendMessage(channel, JsonResult.success("您已连接成功!", command));
         // 加入群聊
-        List<UserGroup> userGroupList = groupCache.listGroupByUid(userId);
-        for (UserGroup group : userGroupList) {
+        List<ListGroupVO> userGroupList = groupService.listGroupByUid(userId);
+        System.out.println(userGroupList);
+        for (ListGroupVO group : userGroupList) {
             SessionUtil.getChannelGroup(group.getGid()).add(channel);
             log.info("用户{}已进入群聊,群房间名为{}", user.getUsername(), group.getGroupName());
         }
         log.info("用户{} 已登记到在线用户表,当前在线人数为:{}", user.getUsername(), SessionUtil.ONLINE_USER_MAP.size());
-
         // TODO 查看有无好友申请消息
         // TODO 查看有无离线单聊消息
     }
