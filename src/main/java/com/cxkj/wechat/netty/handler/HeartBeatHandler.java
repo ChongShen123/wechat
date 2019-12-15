@@ -23,6 +23,7 @@ public class HeartBeatHandler extends Executor {
         command = Command.HEARTBEAT;
     }
 
+
     @Override
     public void execute(JSONObject param, Channel channel) {
         log.info("客户端心跳请求次数:{}", count++);

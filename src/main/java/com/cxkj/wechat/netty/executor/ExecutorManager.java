@@ -21,9 +21,9 @@ import java.util.Map;
 @Slf4j
 public class ExecutorManager implements ApplicationListener<ContextRefreshedEvent> {
 
-    private static Map<Byte, Executor> commandTypeMap = new HashMap<>();
+    private static Map<Integer, Executor> commandTypeMap = new HashMap<>();
 
-    public Executor getCommand(Byte type) {
+    public Executor getCommand(Integer type) {
         return commandTypeMap.get(type);
     }
 
@@ -35,7 +35,7 @@ public class ExecutorManager implements ApplicationListener<ContextRefreshedEven
         beans.forEach((name, bean) -> {
             ExecutorAnno annotation = bean.getClass().getAnnotation(ExecutorAnno.class);
             try {
-                Method method = bean.getClass().getMethod("setCommand", byte.class);
+                Method method = bean.getClass().getMethod("setCommand", Integer.class);
                 if (method != null) {
                     method.invoke(bean, annotation.command());
                 }

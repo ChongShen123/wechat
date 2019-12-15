@@ -13,7 +13,8 @@ public abstract class Executor extends BaseHandler {
     /**
      * 命令类型
      */
-    protected byte command;
+    protected int command;
+
 
     /**
      * 执行命令
@@ -28,11 +29,11 @@ public abstract class Executor extends BaseHandler {
      *
      * @return executor
      */
-    public Byte getCommand() {
+    public Integer getCommand() {
         return command;
     }
 
-    public void setCommand(byte command) {
+    public void setCommand(Integer command) {
         this.command = command;
     }
 }

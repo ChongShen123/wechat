@@ -1,7 +1,9 @@
 package com.cxkj.wechat.mapper;
 
-import com.cxkj.wechat.bo.UserGroup;
 import com.cxkj.wechat.entity.Group;
+import com.cxkj.wechat.vo.GroupBaseInfoVO;
+import com.cxkj.wechat.vo.GroupInfoVO;
+import com.cxkj.wechat.vo.ListGroupVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,7 +25,6 @@ public interface GroupMapper {
 
     int updateByPrimaryKey(Group record);
 
-    List<UserGroup> listGroupByUid(Integer uid);
 
     List<Group> selectByAll(Group group);
 
@@ -32,4 +33,11 @@ public interface GroupMapper {
     void updateQr(@Param("id") Integer id, @Param("qr") String qr);
 
     Group getById(@Param("id") Integer id);
+
+    List<ListGroupVO> listGroupByUserId(Integer userId);
+
+    GroupBaseInfoVO getBaseInfo(@Param("groupId") Integer groupId);
+
+    GroupInfoVO getInfo(@Param("groupId") Integer groupId);
+
 }

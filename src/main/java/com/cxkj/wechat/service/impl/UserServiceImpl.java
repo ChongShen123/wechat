@@ -9,7 +9,6 @@ import com.cxkj.wechat.entity.User;
 import com.cxkj.wechat.entity.UserLoginLog;
 import com.cxkj.wechat.mapper.UserLoginLogMapper;
 import com.cxkj.wechat.mapper.UserMapper;
-import com.cxkj.wechat.service.cache.UserCache;
 import com.cxkj.wechat.service.UserService;
 import com.cxkj.wechat.service.ex.ServiceException;
 import com.cxkj.wechat.util.IpUtil;
@@ -37,8 +36,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
     @Resource
-    private UserCache userCache;
-    @Resource
     private PasswordEncoder encoder;
     @Resource
     private JwtTokenUtil jwtTokenUtil;
@@ -53,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByUsername(String username) {
-        return userCache.getByUsername(username);
+        return userMapper.getOneByUsername(username);
     }
 
     @Override
@@ -111,6 +108,11 @@ public class UserServiceImpl implements UserService {
         userMapper.insert(user);
         UserLoginParam userLoginParam = new UserLoginParam(param.getUsername(), param.getPassword());
         return login(userLoginParam, request, false);
+    }
+
+    @Override
+    public User getByUserId(Integer id) {
+        return userMapper.selectByPrimaryKey(id);
     }
 
     private User getNewUser(UserRegisterParam param, HttpServletRequest request) {

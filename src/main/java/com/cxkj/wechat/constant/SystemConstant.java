@@ -1,5 +1,6 @@
 package com.cxkj.wechat.constant;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cxkj.wechat.entity.FriendApplication;
 
 /**
@@ -72,6 +73,16 @@ public interface SystemConstant {
      * 用户名
      */
     String KEY_USERNAME = "username";
+
+    /**
+     * 群ID
+     */
+    String KEY_GROUP_ID = "group_id";
+
+    /**
+     * token
+     */
+    String KEY_TOKEN = "token";
 
     // ------------------消息回复相关常量----------------------------------------------------------
     /**

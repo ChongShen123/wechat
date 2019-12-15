@@ -6,6 +6,10 @@ package com.cxkj.wechat.constant;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 解析参数失败
+     */
+    PARSE_PARAM(4022, "解析参数失败"),
+    /**
      * 聊天类型异常
      */
     CHAT_TYPE_ERROR(4021, "聊天类型命令不存在"),

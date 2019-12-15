@@ -43,4 +43,11 @@ public interface UserService {
      * @return List
      */
     List<User> listUserByIds(List<Integer> ids);
+
+    /**
+     * 查询用户
+     * @param id id
+     * @return 用户
+     */
+    User getByUserId(Integer id);
 }
