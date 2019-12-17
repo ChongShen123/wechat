@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cxkj.wechat.mapper.GroupMapper">
+    <resultMap id="UserGroupRelationMap" type="com.cxkj.wechat.entity.UserGroupRelation">
+        <result column="group_nickname" property="groupNickname"/>
+    </resultMap>
+    <resultMap id="ListGroupMembersMap" type="com.cxkj.wechat.vo.ListMembersVo">
+        <result column="uid" property="uid"/>
+        <result column="group_nickname" property="groupNickname"/>
+        <result column="icon" property="icon"/>
+    </resultMap>
     <resultMap id="BaseResultMap" type="com.cxkj.wechat.entity.Group">
         <!--@mbg.generated-->
         <!--@Table group-->
@@ -17,12 +25,12 @@
         <result column="create_times" jdbcType="BIGINT" property="createTimes"/>
         <result column="modified_times" jdbcType="BIGINT" property="modifiedTimes"/>
     </resultMap>
-    <resultMap id="GroupBaseInfoVO" type="com.cxkj.wechat.vo.GroupBaseInfoVO">
+    <resultMap id="GroupBaseInfoVO" type="com.cxkj.wechat.vo.GroupBaseInfoVo">
         <result column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="members_count" property="membersCount"/>
     </resultMap>
-    <resultMap id="GroupInfoVo" type="com.cxkj.wechat.vo.GroupInfoVO" extends="BaseResultMap">
+    <resultMap id="GroupInfoVo" type="com.cxkj.wechat.vo.GroupInfoVo" extends="BaseResultMap">
         <result column="icon" property="icon"/>
         <result column="qr" property="qr"/>
         <result column="notice" property="notice"/>
@@ -37,18 +45,18 @@
         <!--@mbg.generated-->
         select
         <include refid="Base_Column_List"/>
-        from group
+        from `group`
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--@mbg.generated-->
-        delete from group
+        delete from `group`
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.cxkj.wechat.entity.Group"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into group
+        insert into `group`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">
                 `name`,
@@ -122,7 +130,7 @@
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.cxkj.wechat.entity.Group">
         <!--@mbg.generated-->
-        update group
+        update `group`
         <set>
             <if test="name != null">
                 `name` = #{name,jdbcType=VARCHAR},
@@ -162,7 +170,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.cxkj.wechat.entity.Group">
         <!--@mbg.generated-->
-        update group
+        update `group`
         set `name` = #{name,jdbcType=VARCHAR},
         icon = #{icon,jdbcType=VARCHAR},
         qr = #{qr,jdbcType=VARCHAR},
@@ -229,9 +237,9 @@
         </if>
     </select>
     <insert id="insertUserIds">
-        insert into user_group_relation(uid,gid,group_nickname) values
+        insert into user_group_relation(uid,gid,group_nickname,notice_type) values
         <foreach collection="ids" item="id" separator=",">
-            (#{id},#{groupId},(select username from user where id = #{id}))
+            (#{id},#{groupId},(select username from user where id = #{id}),1)
         </foreach>
     </insert>
     <update id="updateQr">
@@ -243,7 +251,7 @@
         state,is_save isSave,create_times createTimes,modified_times modifiedTimes
         from `group` where id = #{id}
     </select>
-    <select id="listGroupByUserId" resultType="com.cxkj.wechat.vo.ListGroupVO">
+    <select id="listGroupByUserId" resultType="com.cxkj.wechat.vo.ListGroupVo">
         select g.id gid, g.name groupName, g.icon, ugr.notice_type noticeType
         from `group` g
         left join user_group_relation ugr on g.id = ugr.gid
@@ -257,4 +265,29 @@
     <select id="getInfo" resultMap="GroupInfoVo">
         select icon,qr,notice,create_times,id,name,members_count from `group` where id = #{groupId};
     </select>
+    <update id="updateGroupCount">
+        update `group` set members_count = members_count+#{num},modified_times =
+        REPLACE(unix_timestamp(current_timestamp(3)),'.','') where id = #{gid}
+    </update>
+    <select id="listGroupMembersByGroupId" resultMap="ListGroupMembersMap">
+        select uid, icon, group_nickname
+        from user_group_relation ugr
+        left join user u on ugr.uid = u.id
+        where ugr.gid = #{groupId};
+    </select>
+    <select id="checkUserJoined" resultType="java.lang.Integer">
+        select count(1) from user_group_relation where gid = #{groupId} and uid in
+        <foreach collection="uids" open="(" close=")" separator="," item="uid">
+            #{uid}
+        </foreach>
+    </select>
+    <select id="getByGroupIdAndUid" resultMap="UserGroupRelationMap">
+        select group_nickname from user_group_relation where gid = #{groupId} and uid = #{uid};
+    </select>
+    <delete id="quitGroup">
+        delete from user_group_relation where gid = #{groupId} and uid in
+        <foreach collection="ids" separator="," open="(" close=")" item="uid">
+            #{uid}
+        </foreach>
+    </delete>
 </mapper>

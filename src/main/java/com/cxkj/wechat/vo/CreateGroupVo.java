@@ -10,14 +10,14 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CreateGroupVO extends ChatResponse {
+public class CreateGroupVo extends ChatResponse {
     private Integer id;
     private String name;
     private Integer memberCount;
     private String icon;
     private Long createTimes;
 
-    public CreateGroupVO(Group group) {
+    public CreateGroupVo(Group group) {
         id = group.getId();
         name = group.getName();
         icon = group.getIcon();

@@ -1,6 +1,6 @@
-package com.cxkj.wechat.netty.handler;
+package com.cxkj.wechat.netty.base;
 
-import com.cxkj.wechat.bo.Session;
+import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Attributes;
 import com.cxkj.wechat.util.SessionUtil;
 import io.netty.channel.ChannelHandler;
@@ -35,7 +35,7 @@ public class IMIdleStateAdapter extends ChannelInboundHandlerAdapter {
                 if (handShaker != null) {
                     SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.remove(ctx.channel().id().asLongText());
                 }
-                Session session = ctx.channel().attr(Attributes.SESSION).get();
+                SessionBo session = ctx.channel().attr(Attributes.SESSION).get();
                 if (session != null && SessionUtil.ONLINE_USER_MAP.get(session.getUserId()) != null) {
                     SessionUtil.ONLINE_USER_MAP.remove(session.getUserId());
                 }

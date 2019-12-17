@@ -1,13 +1,15 @@
 package com.cxkj.wechat.service;
 
-import com.cxkj.wechat.bo.GroupInfo;
 import com.cxkj.wechat.entity.Group;
+import com.cxkj.wechat.entity.UserGroupRelation;
 import com.cxkj.wechat.netty.ex.DataEmptyException;
-import com.cxkj.wechat.vo.GroupBaseInfoVO;
-import com.cxkj.wechat.vo.GroupInfoVO;
-import com.cxkj.wechat.vo.ListGroupVO;
+import com.cxkj.wechat.vo.GroupBaseInfoVo;
+import com.cxkj.wechat.vo.GroupInfoVo;
+import com.cxkj.wechat.vo.ListGroupVo;
+import com.cxkj.wechat.vo.ListMembersVo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author tiankong
@@ -28,7 +30,6 @@ public interface GroupService {
      * 修改群信息
      *
      * @param group group
-     * @return group
      */
     void update(Group group);
 
@@ -38,7 +39,7 @@ public interface GroupService {
      * @param ids     用户id
      * @param groupId 群id
      */
-    void insertUserIds(List<Integer> ids, Integer groupId);
+    void insertUserIds(Set<Integer> ids, Integer groupId);
 
     /**
      * 更新二维码
@@ -55,7 +56,7 @@ public interface GroupService {
      * @param userId 用户id
      * @return list
      */
-    List<ListGroupVO> listGroupByUid(Integer userId);
+    List<ListGroupVo> listGroupByUid(Integer userId);
 
     /**
      * 获取群组基本信息
@@ -63,13 +64,63 @@ public interface GroupService {
      * @param groupId 群ID
      * @return groupBaseInfoVO
      */
-    GroupBaseInfoVO getBaseInfo(Integer groupId);
+    GroupBaseInfoVo getBaseInfo(Integer groupId);
 
     /**
      * 获取群详情
      *
      * @param groupId groupId
-     * @return GroupInfo
+     * @return GroupInfoBo
      */
-    GroupInfoVO getGroupInfo(Integer groupId) throws DataEmptyException;
+    GroupInfoVo getGroupInfo(Integer groupId) throws DataEmptyException;
+
+    /**
+     * 获取群完整信息
+     *
+     * @param groupId groupId
+     * @return Group
+     */
+    Group getGroupById(Integer groupId);
+
+    /**
+     * 更新群总人数
+     *
+     * @param num 个数(正为增加 负为减少)
+     * @param gid 群ID
+     */
+    void updateGroupCount(int num, Integer gid);
+
+    /**
+     * 查看群所有成员
+     *
+     * @param groupId 群ID
+     * @return 所有成员
+     */
+    List<ListMembersVo> listGroupMembersByGroupId(Integer groupId);
+
+    /**
+     * 检查用户是否入群
+     *
+     * @param uid     用户ID
+     * @param groupId 群ID
+     * @return boolean
+     */
+    Integer checkUserJoined(Set<Integer> uid, Integer groupId);
+
+    /**
+     * 查询用户群聊
+     *
+     * @param groupId 群ID
+     * @param uid     用户ID
+     * @return UserGroupRelation
+     */
+    UserGroupRelation getNicknameByGroupIdAndUid(Integer groupId, Integer uid);
+
+    /**
+     * 退群
+     *
+     * @param ids 用户id
+     * @param groupId 群id
+     */
+    void quitGroup(Set<Integer> ids, Integer groupId);
 }

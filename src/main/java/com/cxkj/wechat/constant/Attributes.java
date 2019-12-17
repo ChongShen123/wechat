@@ -1,6 +1,6 @@
 package com.cxkj.wechat.constant;
 
-import com.cxkj.wechat.bo.Session;
+import com.cxkj.wechat.bo.SessionBo;
 import io.netty.util.AttributeKey;
 
 /**
@@ -8,6 +8,6 @@ import io.netty.util.AttributeKey;
  * @date 2019/11/17 19:36
  */
 public interface Attributes {
-    AttributeKey<Session> SESSION = AttributeKey.newInstance("session");
+    AttributeKey<SessionBo> SESSION = AttributeKey.newInstance("session");
     AttributeKey<Boolean> IS_LOGIN = AttributeKey.newInstance("isLogin");
 }

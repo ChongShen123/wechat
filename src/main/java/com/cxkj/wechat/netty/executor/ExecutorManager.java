@@ -35,6 +35,7 @@ public class ExecutorManager implements ApplicationListener<ContextRefreshedEven
         beans.forEach((name, bean) -> {
             ExecutorAnno annotation = bean.getClass().getAnnotation(ExecutorAnno.class);
             try {
+                // 为执行者类设置对应的 command
                 Method method = bean.getClass().getMethod("setCommand", Integer.class);
                 if (method != null) {
                     method.invoke(bean, annotation.command());

@@ -1,6 +1,8 @@
 package com.cxkj.wechat.component;
 
 import com.cxkj.wechat.constant.SystemConstant;
+import com.cxkj.wechat.entity.ChatInfo;
+import com.cxkj.wechat.entity.GroupChat;
 import com.cxkj.wechat.entity.SingleChat;
 import com.cxkj.wechat.service.SingleChatService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 public class RabbitReceiver {
     @Resource
     SingleChatService singleChatService;
+
     /**
      * 通过@RabbitListener注解指定一个方法是一个消费方法，方法参数就是所接收的消息。
      */
@@ -28,8 +31,8 @@ public class RabbitReceiver {
         singleChatService.save(singleChat);
     }
 
-    @RabbitListener(queues = SystemConstant.SINGLE_CHAT_QUEUE_ONE)
-    public void handler2(SingleChat singleChat) {
-        System.out.println("handler2:" + singleChat);
+    @RabbitListener(queues = SystemConstant.GROUP_CHAT_QUEUE_ONE)
+    public void handlerGroupChat(ChatInfo singleChat) {
+        System.out.println("群聊:" + singleChat);
     }
 }

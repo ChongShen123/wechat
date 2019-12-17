@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class GroupInfoVO extends GroupBaseInfoVO implements Serializable {
+public class GroupInfoVo extends GroupBaseInfoVo implements Serializable {
     private String icon;
     private String qr;
     private String notice;

@@ -1,9 +1,9 @@
 package com.cxkj.wechat.netty;
 
 
-import com.cxkj.wechat.bo.GroupInfo;
+import com.cxkj.wechat.bo.GroupInfoBo;
 import com.cxkj.wechat.entity.Group;
-import com.cxkj.wechat.netty.notice.IMNotice;
+import com.cxkj.wechat.netty.notice.SystemNotice;
 import com.cxkj.wechat.service.GroupService;
 import com.cxkj.wechat.util.SessionUtil;
 import com.cxkj.wechat.util.ThreadUtil;
@@ -35,10 +35,10 @@ public class NettyServer implements Runnable {
     private EventLoopGroup workerGroup;
     @Resource
     private ServerBootstrap serverBootstrap;
-    @Resource(name = "childChannelHandler")
-    private ChannelHandler childChannelHandler;
+    @Resource(name = "channelManager")
+    private ChannelHandler channelManager;
     @Resource
-    private IMNotice imNotice;
+    private SystemNotice imNotice;
     @Resource
     private GroupService groupService;
 
@@ -61,7 +61,7 @@ public class NettyServer implements Runnable {
                     // 配置固定长度接收缓存区分配器
                     .childOption(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(592048))
                     // 绑定I/O事件的处理类
-                    .childHandler(childChannelHandler);
+                    .childHandler(channelManager);
             long end = System.currentTimeMillis();
             channelFuture = serverBootstrap.bind(port).addListener(future -> {
                 boolean success = future.isSuccess();
@@ -72,7 +72,7 @@ public class NettyServer implements Runnable {
                     // 初始化群组
                     List<Group> groups = groupService.listAllChatGroup();
                     if (groups.size() > 0) {
-                        groups.forEach(group -> SessionUtil.GROUP_MAP.put(group.getId(), new GroupInfo(group, new DefaultChannelGroup(GlobalEventExecutor.INSTANCE))));
+                        groups.forEach(group -> SessionUtil.GROUP_MAP.put(group.getId(), new GroupInfoBo(group, new DefaultChannelGroup(GlobalEventExecutor.INSTANCE))));
                     }
                 }
             }).sync();

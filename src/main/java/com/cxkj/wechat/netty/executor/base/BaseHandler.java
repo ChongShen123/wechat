@@ -1,13 +1,13 @@
 package com.cxkj.wechat.netty.executor.base;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cxkj.wechat.bo.Session;
+import com.cxkj.wechat.bo.GroupInfoBo;
+import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Attributes;
 import com.cxkj.wechat.util.JsonResult;
 import com.cxkj.wechat.util.SessionUtil;
 import com.cxkj.wechat.util.ThreadUtil;
 import io.netty.channel.Channel;
-import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -31,15 +31,17 @@ public class BaseHandler {
         channel.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(jsonResult)));
     }
 
-
     /**
-     * 群聊
+     * 群聊消息
      *
-     * @param group      group
+     * @param gid        group id
      * @param jsonResult 信息
      */
-    protected void sendGroupMessage(ChannelGroup group, JsonResult jsonResult) {
-        group.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(jsonResult)));
+    protected void sendGroupMessage(Integer gid, JsonResult jsonResult) {
+        GroupInfoBo groupInfo = SessionUtil.GROUP_MAP.get(gid);
+        if (groupInfo != null) {
+            groupInfo.getChannelGroup().writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(jsonResult)));
+        }
     }
 
     /**
@@ -50,7 +52,7 @@ public class BaseHandler {
     protected void remove(Channel channel) {
         ThreadUtil.getSingleton().submit(() -> {
             SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.remove(channel.id().asLongText());
-            Session session = channel.attr(Attributes.SESSION).get();
+            SessionBo session = channel.attr(Attributes.SESSION).get();
             log.info("已移除握手实例");
             if (session == null) {
                 channel.close();

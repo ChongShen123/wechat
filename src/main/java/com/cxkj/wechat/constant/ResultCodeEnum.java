@@ -6,21 +6,25 @@ package com.cxkj.wechat.constant;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 用户已加入群聊
+     */
+    USER_JOINED_EXCEPTION(4023, "加群失败！用户已加入群聊"),
+    /**
      * 解析参数失败
      */
-    PARSE_PARAM(4022, "解析参数失败"),
+    PARSE_PARAM(4022, "操作失败！解析参数失败"),
     /**
      * 聊天类型异常
      */
-    CHAT_TYPE_ERROR(4021, "聊天类型命令不存在"),
+    CHAT_TYPE_ERROR(4021, "操作失败！聊天类型命令不存在"),
     /**
      * 数据不存在
      */
-    DATA_NOT_EXIST(4020, "数据不存在"),
+    DATA_NOT_EXIST(4020, "操作失败！数据不存在"),
     /**
      * 重复的操作
      */
-    REPEAT_EXCEPTION(4019, "请不要做重复的操作"),
+    REPEAT_EXCEPTION(4019, "操作失败！请不要做重复的操作"),
     /**
      * token认证
      */
@@ -28,11 +32,11 @@ public enum ResultCodeEnum implements IErrorCode {
     /**
      * 邮箱已存在
      */
-    EMAIL_ALREADY_EXISTS(4017, "邮箱已被使用"),
+    EMAIL_ALREADY_EXISTS(4017, "操作失败！邮箱已被使用"),
     /**
      * 密码格式不正确
      */
-    PASSWORD_FORMAT(4016, "密码格式不正确"),
+    PASSWORD_FORMAT(4016, "操作失败！密码格式不正确"),
     /**
      * 房间不存在
      */

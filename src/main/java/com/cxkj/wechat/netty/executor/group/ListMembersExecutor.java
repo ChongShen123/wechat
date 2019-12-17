@@ -6,20 +6,19 @@ import com.cxkj.wechat.constant.Command;
 import com.cxkj.wechat.netty.executor.ExecutorAnno;
 import com.cxkj.wechat.netty.executor.base.ChatExecutor;
 import com.cxkj.wechat.util.JsonResult;
-import com.cxkj.wechat.vo.GroupInfoVo;
+import com.cxkj.wechat.vo.ListMembersVo;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
-/**
- * 查看群详情
- *
- * @author tiankong
- * @date 2019/12/15 14:31
- */
-@ExecutorAnno(command = Command.GROUP_INFO)
-@Service
-public class GroupInfoExecutor extends ChatExecutor {
+import java.util.List;
 
+/**
+ * @author tiankong
+ * @date 2019/12/17 11:12
+ */
+@Service
+@ExecutorAnno(command = Command.LIST_GROUP_MEMBERS)
+public class ListMembersExecutor extends ChatExecutor {
     @Override
     protected void parseParam(JSONObject param) {
         parseGroupId(param);
@@ -27,7 +26,10 @@ public class GroupInfoExecutor extends ChatExecutor {
 
     @Override
     protected void concreteAction(Channel channel) {
-        GroupInfoVo groupInfo = groupService.getGroupInfo(requestParam.getGroupId());
-        sendMessage(channel, JsonResult.success(groupInfo, command));
+        Integer groupId = requestParam.getGroupId();
+        List<ListMembersVo> listMembersVos = groupService.listGroupMembersByGroupId(groupId);
+        if (listMembersVos.size() > 0) {
+            sendMessage(channel, JsonResult.success(listMembersVos, command));
+        }
     }
 }

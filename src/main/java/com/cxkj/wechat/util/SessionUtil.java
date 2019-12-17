@@ -1,7 +1,7 @@
 package com.cxkj.wechat.util;
 
-import com.cxkj.wechat.bo.GroupInfo;
-import com.cxkj.wechat.bo.Session;
+import com.cxkj.wechat.bo.GroupInfoBo;
+import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Attributes;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
@@ -27,7 +27,7 @@ public class SessionUtil {
     /**
      * 所有群
      */
-    public static Map<Integer, GroupInfo> GROUP_MAP = new ConcurrentHashMap<>();
+    public static Map<Integer, GroupInfoBo> GROUP_MAP = new ConcurrentHashMap<>();
 
     /**
      * 在线用户
@@ -50,7 +50,7 @@ public class SessionUtil {
         ONLINE_USER_MAP.put(uid, channel);
     }
 
-    public static Session getSession(Channel channel) {
+    public static SessionBo getSession(Channel channel) {
         return channel.attr(Attributes.SESSION).get();
     }
 

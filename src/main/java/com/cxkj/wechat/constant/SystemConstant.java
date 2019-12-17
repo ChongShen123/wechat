@@ -32,6 +32,11 @@ public interface SystemConstant {
 
     String RETURN_MESSAGE = "我们已经是好友啦！";
     // ---------------------------------参数获取相关常量-----------------------------------------------
+
+    /**
+     * 命令
+     */
+    String KEY_COMMAND = "command";
     /**
      * ID
      */
@@ -50,19 +55,11 @@ public interface SystemConstant {
      */
     String KEY_TO_USER_ID = "toUserId";
 
-    /**
-     * 发送者
-     */
-    String KEY_FROM_USER_ID = "fromUserId";
 
     /**
      * 内容
      */
     String KEY_CONTENT = "content";
-    /**
-     * 消息
-     */
-    String KEY_MESSAGE = "message";
 
     /**
      * 状态
@@ -78,11 +75,6 @@ public interface SystemConstant {
      * 群ID
      */
     String KEY_GROUP_ID = "group_id";
-
-    /**
-     * token
-     */
-    String KEY_TOKEN = "token";
 
     // ------------------消息回复相关常量----------------------------------------------------------
     /**

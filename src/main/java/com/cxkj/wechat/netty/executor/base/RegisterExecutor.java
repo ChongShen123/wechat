@@ -1,16 +1,18 @@
 package com.cxkj.wechat.netty.executor.base;
 
-import com.cxkj.wechat.bo.RequestParamBo;
-import com.cxkj.wechat.bo.Session;
+import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Attributes;
 import com.cxkj.wechat.constant.Command;
 import com.cxkj.wechat.constant.ResultCodeEnum;
 import com.cxkj.wechat.entity.User;
+import com.cxkj.wechat.netty.ex.ValidateException;
 import com.cxkj.wechat.netty.executor.ExecutorAnno;
 import com.cxkj.wechat.util.JsonResult;
 import com.cxkj.wechat.util.JwtTokenUtil;
 import com.cxkj.wechat.util.SessionUtil;
-import com.cxkj.wechat.vo.ListGroupVO;
+import com.cxkj.wechat.vo.ListGroupVo;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.cxkj.wechat.constant.SystemConstant.KEY_CONTENT;
 
 
 /**
@@ -38,10 +42,22 @@ public class RegisterExecutor extends ChatExecutor {
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
+    @Override
+    protected void parseParam(JSONObject param) {
+        try {
+            String token = param.getString(KEY_CONTENT);
+            if (ObjectUtil.isEmpty(token)) {
+                throw new ValidateException();
+            }
+            requestParam.setToken(token);
+        } catch (Exception e) {
+            throw new ValidateException();
+        }
+    }
 
     @Override
-    protected void concreteAction(RequestParamBo param, Channel channel) {
-        String token = param.getToken();
+    protected void concreteAction(Channel channel) {
+        String token = requestParam.getToken();
         String username;
         try {
             token = token.substring(tokenHead.length() + 1);
@@ -65,12 +81,11 @@ public class RegisterExecutor extends ChatExecutor {
             return;
         }
         SessionUtil.registerUserChannel(userId, channel);
-        channel.attr(Attributes.SESSION).set(new Session(user.getId(), user.getUsername(), user.getIcon()));
+        channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon()));
         sendMessage(channel, JsonResult.success("您已连接成功!", command));
         // 加入群聊
-        List<ListGroupVO> userGroupList = groupService.listGroupByUid(userId);
-        System.out.println(userGroupList);
-        for (ListGroupVO group : userGroupList) {
+        List<ListGroupVo> userGroupList = groupService.listGroupByUid(userId);
+        for (ListGroupVo group : userGroupList) {
             SessionUtil.getChannelGroup(group.getGid()).add(channel);
             log.info("用户{}已进入群聊,群房间名为{}", user.getUsername(), group.getGroupName());
         }
@@ -87,7 +102,7 @@ public class RegisterExecutor extends ChatExecutor {
      * @return boolean
      */
     private boolean checkOnline(Integer userId, Channel channel) {
-        Session session = channel.attr(Attributes.SESSION).get();
+        SessionBo session = channel.attr(Attributes.SESSION).get();
         if (session != null && session.getUserId().equals(userId)) {
             return true;
         } else if (session != null) {
@@ -95,4 +110,6 @@ public class RegisterExecutor extends ChatExecutor {
         }
         return SessionUtil.ONLINE_USER_MAP.get(userId) != null;
     }
+
+
 }

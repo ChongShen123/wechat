@@ -1,12 +1,15 @@
 package com.cxkj.wechat.mapper;
 
 import com.cxkj.wechat.entity.Group;
-import com.cxkj.wechat.vo.GroupBaseInfoVO;
-import com.cxkj.wechat.vo.GroupInfoVO;
-import com.cxkj.wechat.vo.ListGroupVO;
+import com.cxkj.wechat.entity.UserGroupRelation;
+import com.cxkj.wechat.vo.GroupBaseInfoVo;
+import com.cxkj.wechat.vo.GroupInfoVo;
+import com.cxkj.wechat.vo.ListGroupVo;
+import com.cxkj.wechat.vo.ListMembersVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author tiankong
@@ -28,16 +31,25 @@ public interface GroupMapper {
 
     List<Group> selectByAll(Group group);
 
-    void insertUserIds(@Param("ids") List<Integer> ids, @Param("groupId") Integer groupId);
+    void insertUserIds(@Param("ids") Set<Integer> ids, @Param("groupId") Integer groupId);
 
     void updateQr(@Param("id") Integer id, @Param("qr") String qr);
 
     Group getById(@Param("id") Integer id);
 
-    List<ListGroupVO> listGroupByUserId(Integer userId);
+    List<ListGroupVo> listGroupByUserId(Integer userId);
 
-    GroupBaseInfoVO getBaseInfo(@Param("groupId") Integer groupId);
+    GroupBaseInfoVo getBaseInfo(@Param("groupId") Integer groupId);
 
-    GroupInfoVO getInfo(@Param("groupId") Integer groupId);
+    GroupInfoVo getInfo(@Param("groupId") Integer groupId);
 
+    void updateGroupCount(@Param("num") int num, @Param("gid") Integer gid);
+
+    List<ListMembersVo> listGroupMembersByGroupId(Integer groupId);
+
+    Integer checkUserJoined(@Param("uids") Set<Integer> uids, @Param("groupId") Integer groupId);
+
+    UserGroupRelation getByGroupIdAndUid(@Param("groupId") Integer groupId, @Param("uid") Integer uid);
+
+    void quitGroup(@Param("ids") Set<Integer> ids, @Param("groupId") Integer groupId);
 }

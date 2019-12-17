@@ -1,7 +1,7 @@
 package com.cxkj.wechat.netty.executor.friend;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cxkj.wechat.bo.RequestParamBo;
-import com.cxkj.wechat.bo.Session;
 import com.cxkj.wechat.constant.Command;
 import com.cxkj.wechat.constant.ResultCodeEnum;
 import com.cxkj.wechat.constant.SystemConstant;
@@ -11,7 +11,7 @@ import com.cxkj.wechat.netty.executor.ExecutorAnno;
 import com.cxkj.wechat.netty.executor.base.ChatExecutor;
 import com.cxkj.wechat.util.JsonResult;
 import com.cxkj.wechat.util.SessionUtil;
-import com.cxkj.wechat.vo.FriendApplicationVO;
+import com.cxkj.wechat.vo.FriendApplicationVo;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,8 +31,21 @@ import java.util.List;
 public class AgreeFriendCommand extends ChatExecutor {
 
     @Override
-    protected void concreteAction(RequestParamBo param, Channel channel) {
-        FriendApplication application = friendApplicationService.getById(param.getId());
+    protected void parseParam(JSONObject param) {
+        String id = param.getString(SystemConstant.KEY_ID);
+        Byte state = param.getByte(SystemConstant.KEY_STATE);
+        if (!(state == SystemConstant.AGREE || state == SystemConstant.REFUSE)) {
+            throw new RuntimeException();
+        }
+        requestParam.setId(id);
+        requestParam.setState(state);
+    }
+
+    @Override
+    protected void concreteAction(Channel channel) {
+        Byte state = requestParam.getState();
+        String id = requestParam.getId();
+        FriendApplication application = friendApplicationService.getFriendApplicationById(id);
         if (application == null) {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST));
             return;
@@ -41,7 +54,8 @@ public class AgreeFriendCommand extends ChatExecutor {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION, command));
             return;
         }
-        switch (param.getState()) {
+
+        switch (state) {
             case SystemConstant.AGREE:
                 application.setState(SystemConstant.AGREE);
                 // 添加好友表
@@ -62,7 +76,7 @@ public class AgreeFriendCommand extends ChatExecutor {
         FriendApplication returnApplication = getFriendApplication(SessionUtil.getSession(channel), application.getFromUserId(), SystemConstant.RETURN_MESSAGE, SystemConstant.RETURN_FRIEND);
         if (fromUserChannel != null) {
             returnApplication.setRead(true);
-            sendMessage(fromUserChannel, JsonResult.success(new FriendApplicationVO(returnApplication), command));
+            sendMessage(fromUserChannel, JsonResult.success(new FriendApplicationVo(returnApplication), command));
         } else {
             // 设置消息是否被阅读
             returnApplication.setRead(false);
@@ -72,7 +86,6 @@ public class AgreeFriendCommand extends ChatExecutor {
         application.setRead(true);
         friendApplicationService.update(application);
     }
-
 
 
     private List<Friend> getFriend(FriendApplication application) {

@@ -9,11 +9,11 @@ import lombok.Data;
  * @date 2019/12/12 10:11
  */
 @Data
-public class GroupInfo {
+public class GroupInfoBo {
     private Group group;
     private ChannelGroup channelGroup;
 
-    public GroupInfo(Group group, ChannelGroup channelGroup) {
+    public GroupInfoBo(Group group, ChannelGroup channelGroup) {
         this.group = group;
         this.channelGroup = channelGroup;
     }

@@ -1,7 +1,7 @@
 package com.cxkj.wechat.controller;
 
-import com.cxkj.wechat.dto.UserLoginParam;
-import com.cxkj.wechat.dto.UserRegisterParam;
+import com.cxkj.wechat.dto.UserLoginDto;
+import com.cxkj.wechat.dto.UserRegisterDto;
 import com.cxkj.wechat.service.UserService;
 import com.cxkj.wechat.util.JsonResult;
 import org.springframework.validation.annotation.Validated;
@@ -24,12 +24,12 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @PostMapping("/register")
-    public JsonResult register(@Validated @RequestBody UserRegisterParam param, HttpServletRequest request) {
+    public JsonResult register(@Validated @RequestBody UserRegisterDto param, HttpServletRequest request) {
         return JsonResult.success(userService.register(param, request));
     }
 
     @PostMapping("/login")
-    public JsonResult login(@Validated @RequestBody UserLoginParam param, HttpServletRequest request) {
+    public JsonResult login(@Validated @RequestBody UserLoginDto param, HttpServletRequest request) {
         return JsonResult.success(userService.login(param, request, true));
     }
 }

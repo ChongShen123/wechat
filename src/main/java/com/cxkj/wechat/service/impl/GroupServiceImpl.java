@@ -1,17 +1,19 @@
 package com.cxkj.wechat.service.impl;
 
-import com.cxkj.wechat.bo.GroupInfo;
 import com.cxkj.wechat.entity.Group;
+import com.cxkj.wechat.entity.UserGroupRelation;
 import com.cxkj.wechat.mapper.GroupMapper;
 import com.cxkj.wechat.netty.ex.DataEmptyException;
 import com.cxkj.wechat.service.GroupService;
-import com.cxkj.wechat.vo.GroupBaseInfoVO;
-import com.cxkj.wechat.vo.GroupInfoVO;
-import com.cxkj.wechat.vo.ListGroupVO;
+import com.cxkj.wechat.vo.GroupBaseInfoVo;
+import com.cxkj.wechat.vo.GroupInfoVo;
+import com.cxkj.wechat.vo.ListGroupVo;
+import com.cxkj.wechat.vo.ListMembersVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author tiankong
@@ -28,20 +30,18 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<ListGroupVO> listGroupByUid(Integer userId) {
+    public List<ListGroupVo> listGroupByUid(Integer userId) {
         return groupMapper.listGroupByUserId(userId);
     }
 
     @Override
-    public GroupBaseInfoVO getBaseInfo(Integer groupId) {
-        GroupBaseInfoVO baseInfo = groupMapper.getBaseInfo(groupId);
-        System.out.println(baseInfo);
-        return baseInfo;
+    public GroupBaseInfoVo getBaseInfo(Integer groupId) {
+        return groupMapper.getBaseInfo(groupId);
     }
 
     @Override
-    public GroupInfoVO getGroupInfo(Integer groupId) throws DataEmptyException {
-        GroupInfoVO info = groupMapper.getInfo(groupId);
+    public GroupInfoVo getGroupInfo(Integer groupId) throws DataEmptyException {
+        GroupInfoVo info = groupMapper.getInfo(groupId);
         if (info == null) {
             throw new DataEmptyException();
         }
@@ -64,7 +64,37 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void insertUserIds(List<Integer> ids, Integer groupId) {
+    public void insertUserIds(Set<Integer> ids, Integer groupId) {
         groupMapper.insertUserIds(ids, groupId);
+    }
+
+    @Override
+    public Group getGroupById(Integer groupId) {
+        return groupMapper.selectByPrimaryKey(groupId);
+    }
+
+    @Override
+    public void updateGroupCount(int num, Integer gid) {
+        groupMapper.updateGroupCount(num, gid);
+    }
+
+    @Override
+    public List<ListMembersVo> listGroupMembersByGroupId(Integer groupId) {
+        return groupMapper.listGroupMembersByGroupId(groupId);
+    }
+
+    @Override
+    public Integer checkUserJoined(Set<Integer> uid, Integer groupId) {
+        return groupMapper.checkUserJoined(uid, groupId);
+    }
+
+    @Override
+    public UserGroupRelation getNicknameByGroupIdAndUid(Integer groupId, Integer uid) {
+        return groupMapper.getByGroupIdAndUid(groupId, uid);
+    }
+
+    @Override
+    public void quitGroup(Set<Integer> ids, Integer groupId) {
+        groupMapper.quitGroup(ids, groupId);
     }
 }

@@ -10,11 +10,11 @@ import io.netty.channel.Channel;
  * @date 2019/11/18 11:53
  */
 public abstract class Executor extends BaseHandler {
+
     /**
      * 命令类型
      */
     protected int command;
-
 
     /**
      * 执行命令

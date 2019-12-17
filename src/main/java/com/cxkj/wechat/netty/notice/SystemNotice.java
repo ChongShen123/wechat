@@ -12,12 +12,14 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * 系统推送器
+ *
  * @author tiankong
  * @date 2019/11/18 14:12
  */
 @Component
 @Slf4j
-public class IMNotice extends BaseHandler implements Runnable {
+public class SystemNotice extends BaseHandler implements Runnable {
     @Override
     public void run() {
         log.info("已启动通知线程!");
@@ -27,7 +29,7 @@ public class IMNotice extends BaseHandler implements Runnable {
                     sendMessage(integerChannelEntry.getValue(), JsonResult.success("当前时间:" + new Date()));
                 }
             }
-            ThreadUtil.sleep(1000*60*10);
+            ThreadUtil.sleep(1000 * 60 * 10);
         }
     }
 }

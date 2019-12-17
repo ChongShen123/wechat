@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @date 2019/12/15 12:47
  */
 @Data
-public class ListGroupVO implements Serializable {
+public class ListGroupVo implements Serializable {
     private Integer gid;
     private String groupName;
     private String icon;

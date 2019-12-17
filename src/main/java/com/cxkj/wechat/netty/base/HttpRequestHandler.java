@@ -1,4 +1,4 @@
-package com.cxkj.wechat.netty.handler;
+package com.cxkj.wechat.netty.base;
 
 import com.cxkj.wechat.util.SessionUtil;
 import io.netty.buffer.ByteBuf;
@@ -13,7 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
- * 该类的主要作用：完成HTTP协议升级到WebSocket协议
+ * Http升级WebSocket
+ * 该类主要作用：完成HTTP协议升级到WebSocket协议
  *
  * @author tiankong
  * @date 2019/11/17 18:52

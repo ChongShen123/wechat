@@ -1,6 +1,6 @@
 package com.cxkj.wechat.service.impl;
 
-import com.cxkj.wechat.entity.SingleChat;
+import com.cxkj.wechat.entity.ChatInfo;
 import com.cxkj.wechat.service.RabbitTemplateService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class RabbitTemplateServiceImpl implements RabbitTemplateService {
     private RabbitTemplate rabbitTemplate;
 
     @Override
-    public void addSingleChat(String queue, SingleChat content) {
+    public void addChatInfo(String queue, ChatInfo content) {
         rabbitTemplate.convertAndSend(queue, content);
     }
 }
