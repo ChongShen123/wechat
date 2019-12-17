@@ -1,24 +1,31 @@
 package com.cxkj.wechat.service.impl;
 
-import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
+import com.cxkj.wechat.constant.SystemConstant;
 import com.cxkj.wechat.entity.SingleChat;
 import com.cxkj.wechat.service.SingleChatService;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
 
 
 
 @Service
 public class SingleChatServiceImpl implements SingleChatService {
-    @Autowired
+    @Value("${file.root-path}")
+    private String rootPath;
+    @Value("${file.img-path}")
+    private String imgPath;
+    @Resource
     private MongoTemplate mongoTemplate;
+
+    Long time = System.currentTimeMillis()-180000;
+    SingleChat single=new SingleChat();
     @Override
     public void save(SingleChat singleChat) {
-        SingleChat single=new SingleChat();
+
         single.setId(singleChat.getId());
         single.setCreateTimes(singleChat.getCreateTimes());
         single.setType(singleChat.getType());
@@ -30,16 +37,25 @@ public class SingleChatServiceImpl implements SingleChatService {
     }
     /*
     定时器删除数据库存储时间超过7天的数据
-    step:1 查询 7天之前人所有数据  条件 ：
+    step:1 查询 7天之前人所有数据  条件:
     step:2 执行 删除。
      */
-    @Override //604800000
-    public void deleteTask(SingleChat singleChat) {
-        Long time = System.currentTimeMillis()-180000;
+    //604800000
+   @Override
+    public void deleteTask() {
         Query query =Query.query(Criteria.where("createTimes").lt(time));
         mongoTemplate.remove(query,SingleChat.class);
+    }
+    /**
+     * 删除数据库里存储的过期图片地址
+     */
+@Override
+    public void deleteImage() {
+        Query type = Query.query(Criteria.where("type").lt(SystemConstant.CHAT_TYPE_IMG));
 
 
 
     }
+
+
 }

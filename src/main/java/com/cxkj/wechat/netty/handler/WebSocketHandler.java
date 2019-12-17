@@ -76,6 +76,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         Executor executor = commandManager.getCommand(command);
         if (executor == null) {
             sendErrorMessage(ctx, "命令不存在");
+
             return;
         }
         if (executor instanceof RegisterExecutor) {

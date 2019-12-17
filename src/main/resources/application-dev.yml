@@ -57,6 +57,7 @@ jwt:
 netty:
   port: 9012
   heartbeat: 3600 # unit second
+
 file:
   root-path: E:/upload/wechat/
   img-path: img/

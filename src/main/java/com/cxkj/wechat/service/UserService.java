@@ -50,4 +50,11 @@ public interface UserService {
      * @return 用户
      */
     User getByUserId(Integer id);
+
+
+
+/*    *//**
+     * 修改用户的基本信息
+     *//*
+    void updateUserInfo(User user);*/
 }

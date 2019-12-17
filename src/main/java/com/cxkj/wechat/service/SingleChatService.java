@@ -5,5 +5,7 @@ import com.cxkj.wechat.entity.SingleChat;
 public interface SingleChatService {
     void save(SingleChat singleChat);
 
-    void deleteTask(SingleChat singleChat);
+  void deleteTask();
+
+  void deleteImage();
 }

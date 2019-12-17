@@ -26,7 +26,6 @@ public abstract class Executor extends BaseHandler {
 
     /**
      * 获取命令
-     *
      * @return executor
      */
     public Integer getCommand() {
