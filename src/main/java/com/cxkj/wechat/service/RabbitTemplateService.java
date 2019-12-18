@@ -14,6 +14,4 @@ public interface RabbitTemplateService {
      * @param content 内容
      */
     void addChatInfo(String queue, ChatInfo content);
-
-
 }

@@ -15,6 +15,7 @@ import com.cxkj.wechat.netty.ex.*;
 import com.cxkj.wechat.service.*;
 import com.cxkj.wechat.util.JsonResult;
 import com.cxkj.wechat.util.SessionUtil;
+import com.cxkj.wechat.util.ThreadUtil;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +51,7 @@ public abstract class ChatExecutor extends Executor {
     @Resource
     protected SingleChatService singleChatService;
     protected RequestParamBo requestParam = new RequestParamBo();
-    protected SessionBo sessionBo;
+    protected SessionBo session;
 
     /**
      * 解析参数
@@ -75,28 +76,30 @@ public abstract class ChatExecutor extends Executor {
      */
     @Override
     public void execute(JSONObject param, Channel channel) {
-        try {
-            // 获取用户Session
-            sessionBo = SessionUtil.getSession(channel);
-            // 解析参数
-            parseParam(param);
-            //具体执行
-            concreteAction(channel);
-        } catch (ValidateException e) {
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, command));
-        } catch (DataEmptyException e) {
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, command));
-        } catch (ParseParamException e) {
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.PARSE_PARAM, command));
-        } catch (GroupNotFoundException e) {
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.GROUP_NOT_FOUND, command));
-        } catch (UserJoinedException e) {
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_JOINED_EXCEPTION, command));
-        } catch (UserNotInGroup e) {
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_IN_GROUP, command));
-        } catch (Exception e) {
-            sendMessage(channel, JsonResult.failed(command));
-        }
+        ThreadUtil.getSingleton().submit(() -> {
+            try {
+                // 获取用户Session
+                session = SessionUtil.getSession(channel);
+                // 解析参数
+                parseParam(param);
+                //具体执行
+                concreteAction(channel);
+            } catch (ValidateException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, command));
+            } catch (DataEmptyException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, command));
+            } catch (ParseParamException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.PARSE_PARAM, command));
+            } catch (GroupNotFoundException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.GROUP_NOT_FOUND, command));
+            } catch (UserJoinedException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_JOINED_EXCEPTION, command));
+            } catch (UserNotInGroupException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_IN_GROUP, command));
+            } catch (Exception e) {
+                sendMessage(channel, JsonResult.failed(command));
+            }
+        });
     }
 
     /**

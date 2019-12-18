@@ -2,7 +2,6 @@ package com.cxkj.wechat.netty.executor.friend;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Command;
 import com.cxkj.wechat.constant.ResultCodeEnum;
 import com.cxkj.wechat.constant.SystemConstant;
@@ -43,7 +42,6 @@ public class AddFriendCommand extends ChatExecutor {
     protected void concreteAction(Channel channel) {
         String username = requestParam.getUsername();
         String content = requestParam.getContent();
-        SessionBo session = SessionUtil.getSession(channel);
         User friend = userService.getByUsername(username);
         if (friend == null) {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, command));

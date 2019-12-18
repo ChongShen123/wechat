@@ -1,10 +1,7 @@
 package com.cxkj.wechat.service.impl;
 
-import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.cxkj.wechat.entity.SingleChat;
 import com.cxkj.wechat.service.SingleChatService;
-
-import com.cxkj.wechat.util.QrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -48,5 +45,11 @@ public class SingleChatServiceImpl implements SingleChatService {
     public SingleChat getById(String id) {
         Query query = Query.query(Criteria.where("id").is(id));
         return mongoTemplate.findOne(query, SingleChat.class);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        Query query = Query.query(Criteria.where("id").is(id));
+        mongoTemplate.remove(query, SingleChat.class);
     }
 }

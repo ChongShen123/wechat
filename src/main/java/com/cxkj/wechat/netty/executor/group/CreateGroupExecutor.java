@@ -56,7 +56,7 @@ public class CreateGroupExecutor extends ChatExecutor {
             return;
         }
         // 加入当前用户ID
-        ids.add(SessionUtil.getSession(channel).getUserId());
+        ids.add(session.getUserId());
         // 获取一个群
         Group group = createNewGroup(SessionUtil.getSession(channel), ids);
         // 保存用户与群组关系

@@ -27,17 +27,4 @@ public abstract class Executor extends BaseHandler {
      * @param channel 用户channel
      */
     public abstract void execute(JSONObject param, Channel channel);
-
-//    /**
-//     * 获取命令
-//     *
-//     * @return executor
-//     */
-//    public Integer getCommand() {
-//        return command;
-//    }
-//
-//    public void setCommand(Integer command) {
-//        this.command = command;
-//    }
 }

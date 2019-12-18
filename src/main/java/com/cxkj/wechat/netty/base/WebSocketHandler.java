@@ -77,7 +77,6 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             e.printStackTrace();
             return;
         }
-        assert param != null;
         Integer command = param.getInteger(SystemConstant.KEY_COMMAND);
         Executor executor = commandManager.getCommand(command);
         if (executor == null) {

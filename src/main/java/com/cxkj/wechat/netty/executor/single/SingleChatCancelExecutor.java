@@ -51,7 +51,7 @@ public class SingleChatCancelExecutor extends ChatExecutor {
             if (userChannel != null) {
                 sendMessage(userChannel, JsonResult.success(new SingleChatCancelVo(requestParam.getId()), command));
             }
-            friendApplicationService.deleteById(requestParam.getId());
+            singleChatService.deleteById(requestParam.getId());
         }else {
             sendMessage(channel,JsonResult.failed(ResultCodeEnum.UNDO_TIME_EXCEEDED));
         }

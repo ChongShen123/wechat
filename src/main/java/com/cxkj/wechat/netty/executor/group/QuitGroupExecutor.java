@@ -3,7 +3,7 @@ package com.cxkj.wechat.netty.executor.group;
 import com.alibaba.fastjson.JSONObject;
 import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Command;
-import com.cxkj.wechat.netty.ex.UserNotInGroup;
+import com.cxkj.wechat.netty.ex.UserNotInGroupException;
 import com.cxkj.wechat.netty.executor.ExecutorAnno;
 import com.cxkj.wechat.netty.executor.base.ChatExecutor;
 import com.cxkj.wechat.util.JsonResult;
@@ -32,16 +32,16 @@ public class QuitGroupExecutor extends ChatExecutor {
         // 通知该群所有用户退群
         Integer groupId = requestParam.getGroupId();
         if (!SessionUtil.GROUP_MAP.get(groupId).getChannelGroup().contains(channel)) {
-            throw new UserNotInGroup();
+            throw new UserNotInGroupException();
         }
-        RemoveChatVo removeChatVo = createNewRemoveChatVo(groupId, sessionBo);
+        RemoveChatVo removeChatVo = createNewRemoveChatVo(groupId, session);
         SessionUtil.quitGroup(groupId, channel);
         sendGroupMessage(groupId, JsonResult.success(removeChatVo, command));
         // 通知用户退群成功
         sendMessage(channel, JsonResult.success(command));
         // 数据库删除用户与群组关系
         Set<Integer> ids = new HashSet<>();
-        ids.add(sessionBo.getUserId());
+        ids.add(session.getUserId());
         groupService.quitGroup(ids, groupId);
         groupService.updateGroupCount(-ids.size(), groupId);
     }

@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 执行者管理类
+ * 命令执行者管理类
  *
  * @author tiankong
  * @date 2019/11/17 19:58

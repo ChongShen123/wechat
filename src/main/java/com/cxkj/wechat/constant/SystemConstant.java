@@ -1,8 +1,5 @@
 package com.cxkj.wechat.constant;
 
-import com.alibaba.fastjson.JSONObject;
-import com.cxkj.wechat.entity.FriendApplication;
-
 /**
  * @author tiankong
  * @date 2019/12/12 18:26

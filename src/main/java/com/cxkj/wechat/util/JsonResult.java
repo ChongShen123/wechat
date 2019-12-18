@@ -1,13 +1,8 @@
 package com.cxkj.wechat.util;
 
-
 import com.cxkj.wechat.constant.IErrorCode;
 import com.cxkj.wechat.constant.ResultCodeEnum;
-import com.cxkj.wechat.entity.FriendApplication;
-import com.cxkj.wechat.entity.SingleChat;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * @author tiankong
@@ -20,69 +15,40 @@ public class JsonResult<T> {
     private Integer type;
     private T data;
 
-    public JsonResult() {
-        super();
-    }
-
-    public JsonResult(Integer state, String message, Integer type, T data) {
-        this.code = state;
-        this.message = message;
-        this.type = type;
-        this.data = data;
-    }
-
-    public JsonResult(Integer state) {
-        super();
-        this.code = state;
-    }
-
-    public JsonResult(Throwable throwable) {
-        super();
-        this.message = throwable.getMessage();
-    }
-
-    public JsonResult(Integer state, T data) {
-        super();
-        this.code = state;
-        this.data = data;
-    }
-
-    private JsonResult(Integer state, String message) {
-        this.code = state;
-        this.message = message;
-    }
-
-    private JsonResult(IErrorCode code) {
-        this.code = code.getCode();
-        this.message = code.getMessage();
-
-    }
-
-    private JsonResult(IErrorCode success, T loginInfo) {
-        this.code = success.getCode();
-        this.message = success.getMessage();
-        this.data = loginInfo;
-    }
-
-
-    private JsonResult(IErrorCode success, Integer type) {
-        this.code = success.getCode();
-        this.message = success.getMessage();
-        this.type = type;
-    }
-
-    /**
-     * 未授权
-     */
     public static JsonResult forbidden() {
-        return new JsonResult(ResultCodeEnum.FORBIDDEN);
+        JsonResult result = new JsonResult<>();
+        result.setCode(ResultCodeEnum.FORBIDDEN.getCode());
+        result.setMessage(ResultCodeEnum.FORBIDDEN.getMessage());
+        return result;
     }
 
-    /**
-     * 未登录
-     */
     public static JsonResult unauthorized() {
-        return new JsonResult(ResultCodeEnum.UNAUTHORIZED);
+        JsonResult result = new JsonResult<>();
+        result.setCode(ResultCodeEnum.UNAUTHORIZED.getCode());
+        result.setMessage(ResultCodeEnum.UNAUTHORIZED.getMessage());
+        return result;
+    }
+
+    public static JsonResult success() {
+        JsonResult result = new JsonResult<>();
+        result.setCode(ResultCodeEnum.SUCCESS.getCode());
+        result.setMessage(ResultCodeEnum.SUCCESS.getMessage());
+        return result;
+    }
+
+    public static JsonResult success(String msg) {
+        JsonResult<Object> result = new JsonResult<>();
+        result.setMessage(msg);
+        result.setCode(ResultCodeEnum.SUCCESS.getCode());
+        return result;
+    }
+
+    public static JsonResult success(Integer type) {
+        JsonResult<Object> result = new JsonResult<>();
+        result.setType(type);
+        result.setCode(ResultCodeEnum.SUCCESS.getCode());
+        result.setMessage(ResultCodeEnum.SUCCESS.getMessage());
+        return result;
     }
 
     public static JsonResult success(Object loginInfo) {
@@ -93,86 +59,11 @@ public class JsonResult<T> {
         return jsonResult;
     }
 
-    public static <T> JsonResult success(List<T> loginInfo, int command) {
-        return new JsonResult(ResultCodeEnum.SUCCESS, loginInfo);
-    }
-
-
-    public static JsonResult success() {
-        return new JsonResult(ResultCodeEnum.SUCCESS);
-    }
-
-    public static JsonResult success(String msg) {
-        return new JsonResult(ResultCodeEnum.SUCCESS.getCode(), msg);
-    }
-
-    public static JsonResult success(Integer type) {
-        return new JsonResult(ResultCodeEnum.SUCCESS.getCode(), ResultCodeEnum.SUCCESS.getMessage(), type, null);
-    }
-
     public static JsonResult success(String msg, Integer type) {
-        return new JsonResult(ResultCodeEnum.SUCCESS.getCode(), msg, type, null);
-    }
-
-
-    /**
-     * 业务异常
-     *
-     * @param errorCode 异常类型
-     * @return JsonResult
-     */
-    public static JsonResult<Void> failed(IErrorCode errorCode) {
-        return new JsonResult<>(errorCode);
-    }
-
-    public static JsonResult<Void> failed(IErrorCode errorCode, Integer type) {
-        return new JsonResult<>(errorCode, type);
-    }
-
-    public static JsonResult failed(String msg, Integer type) {
-        JsonResult jsonResult = new JsonResult();
-        jsonResult.setCode(ResultCodeEnum.FAILED.getCode());
-        jsonResult.setMessage(msg);
-        jsonResult.setType(type);
-        return jsonResult;
-    }
-
-    public static JsonResult<Void> failed(Integer type) {
-        return new JsonResult<>(ResultCodeEnum.FAILED, type);
-    }
-
-    /**
-     * 操作失败
-     *
-     * @return JsonResult
-     */
-    public static JsonResult<Void> failed() {
-        return new JsonResult<>(ResultCodeEnum.FAILED);
-    }
-
-    public static JsonResult failed(String message) {
-        JsonResult jsonResult = new JsonResult();
-        jsonResult.setCode(ResultCodeEnum.FAILED.getCode());
-        jsonResult.setMessage(message);
-        return jsonResult;
-    }
-
-    public static JsonResult success(FriendApplication friendApplication, Integer command) {
-        JsonResult<FriendApplication> result = new JsonResult<>();
-        result.setData(friendApplication);
-        result.setMessage(ResultCodeEnum.SUCCESS.getMessage());
+        JsonResult<Object> result = new JsonResult<>();
         result.setCode(ResultCodeEnum.SUCCESS.getCode());
-        result.setType(command);
-        return result;
-    }
-
-
-    public static JsonResult success(SingleChat chat, Integer command) {
-        JsonResult<SingleChat> result = new JsonResult<>();
-        result.setMessage(ResultCodeEnum.SUCCESS.getMessage());
-        result.setData(chat);
-        result.setCode(ResultCodeEnum.SUCCESS.getCode());
-        result.setType(command);
+        result.setMessage(msg);
+        result.setType(type);
         return result;
     }
 
@@ -185,4 +76,48 @@ public class JsonResult<T> {
         return result;
     }
 
+    public static JsonResult failed() {
+        JsonResult result = new JsonResult<>();
+        result.setCode(ResultCodeEnum.FAILED.getCode());
+        result.setMessage(ResultCodeEnum.FAILED.getMessage());
+        return result;
+    }
+
+    public static JsonResult failed(String message) {
+        JsonResult jsonResult = new JsonResult();
+        jsonResult.setCode(ResultCodeEnum.FAILED.getCode());
+        jsonResult.setMessage(message);
+        return jsonResult;
+    }
+
+    public static JsonResult failed(IErrorCode errorCode) {
+        JsonResult result = new JsonResult<>();
+        result.setCode(errorCode.getCode());
+        result.setMessage(errorCode.getMessage());
+        return result;
+    }
+
+    public static JsonResult failed(String msg, Integer type) {
+        JsonResult jsonResult = new JsonResult();
+        jsonResult.setCode(ResultCodeEnum.FAILED.getCode());
+        jsonResult.setMessage(msg);
+        jsonResult.setType(type);
+        return jsonResult;
+    }
+
+    public static JsonResult<Void> failed(Integer type) {
+        JsonResult<Void> result = new JsonResult<>();
+        result.setType(type);
+        result.setMessage(ResultCodeEnum.FAILED.getMessage());
+        result.setCode(ResultCodeEnum.FAILED.getCode());
+        return result;
+    }
+
+    public static JsonResult<Void> failed(IErrorCode errorCode, Integer type) {
+        JsonResult<Void> result = new JsonResult<>();
+        result.setType(type);
+        result.setMessage(errorCode.getMessage());
+        result.setCode(errorCode.getCode());
+        return result;
+    }
 }
