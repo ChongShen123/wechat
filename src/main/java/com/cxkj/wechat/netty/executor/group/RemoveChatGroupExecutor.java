@@ -42,7 +42,6 @@ public class RemoveChatGroupExecutor extends ChatExecutor {
             throw new ValidateException();
         }
         Group group = groupService.getGroupById(groupId);
-
         // 通知该群所有在线用户
         RemoveChatVo removeChatVo = createNewRemoveChatVo(ids, groupId, SessionUtil.getSession(channel));
         sendGroupMessage(groupId, JsonResult.success(removeChatVo, command));

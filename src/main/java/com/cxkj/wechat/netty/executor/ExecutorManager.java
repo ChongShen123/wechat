@@ -1,13 +1,16 @@
 package com.cxkj.wechat.netty.executor;
 
 
+import com.cxkj.wechat.bo.CommandBo;
 import com.cxkj.wechat.netty.executor.base.Executor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +25,7 @@ import java.util.Map;
 public class ExecutorManager implements ApplicationListener<ContextRefreshedEvent> {
 
     private static Map<Integer, Executor> commandTypeMap = new HashMap<>();
+    private static Map<Integer, CommandBo> methodMap = new HashMap<>();
 
     public Executor getCommand(Integer type) {
         return commandTypeMap.get(type);
@@ -31,6 +35,7 @@ public class ExecutorManager implements ApplicationListener<ContextRefreshedEven
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // 获取所有带有 ExecutorAnno 注解的bean.
         Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(ExecutorAnno.class);
+
         // 将这些bean添加到 commandTypeMap中
         beans.forEach((name, bean) -> {
             ExecutorAnno annotation = bean.getClass().getAnnotation(ExecutorAnno.class);

@@ -20,7 +20,7 @@ import java.util.Set;
  */
 @ExecutorAnno(command = Command.JOIN_GROUP)
 @Service
-public class JoinGroup extends ChatExecutor {
+public class JoinGroupExecutor extends ChatExecutor {
 
     @Override
     protected void parseParam(JSONObject param) {

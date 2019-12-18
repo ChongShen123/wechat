@@ -25,8 +25,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @ExecutorAnno(command = Command.ADD_FRIEND)
 public class AddFriendCommand extends ChatExecutor {
-
-
     @Override
     protected void parseParam(JSONObject param) {
         String username = param.getString(SystemConstant.KEY_USERNAME);
