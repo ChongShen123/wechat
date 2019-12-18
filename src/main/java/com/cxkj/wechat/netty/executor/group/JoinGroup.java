@@ -8,6 +8,7 @@ import com.cxkj.wechat.netty.ex.UserJoinedException;
 import com.cxkj.wechat.netty.executor.ExecutorAnno;
 import com.cxkj.wechat.netty.executor.base.ChatExecutor;
 import com.cxkj.wechat.util.JsonResult;
+import com.cxkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +36,15 @@ public class JoinGroup extends ChatExecutor {
         if (group == null) {
             throw new GroupNotFoundException();
         }
-        if (!checkGroupUserJoined(ids, requestParam.getGroupId())) {
+        if (checkGroupUserJoined(ids, requestParam.getGroupId())) {
             throw new UserJoinedException();
         }
+        ids.forEach(uid -> {
+            Channel userChannel = SessionUtil.getUserChannel(uid);
+            if (userChannel != null) {
+                SessionUtil.joinGroup(groupId, userChannel);
+            }
+        });
         // 保存用户与群组关系
         groupService.insertUserIds(ids, groupId);
         // 群成员个数增加
@@ -46,7 +53,6 @@ public class JoinGroup extends ChatExecutor {
         sendCreateGroupMessageToUsers(ids, group);
         sendMessage(channel, JsonResult.success(command));
     }
-
 
 
 }

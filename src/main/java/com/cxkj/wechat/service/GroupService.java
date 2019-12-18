@@ -114,7 +114,7 @@ public interface GroupService {
      * @param uid     用户ID
      * @return UserGroupRelation
      */
-    UserGroupRelation getNicknameByGroupIdAndUid(Integer groupId, Integer uid);
+    String getNicknameByGroupIdAndUid(Integer groupId, Integer uid);
 
     /**
      * 退群

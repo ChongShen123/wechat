@@ -1,14 +1,15 @@
 package com.cxkj.wechat.netty.base;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONObject;
-
 import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Attributes;
+import com.cxkj.wechat.constant.ResultCodeEnum;
 import com.cxkj.wechat.constant.SystemConstant;
 import com.cxkj.wechat.netty.executor.ExecutorManager;
+import com.cxkj.wechat.netty.executor.base.BaseHandler;
 import com.cxkj.wechat.netty.executor.base.Executor;
 import com.cxkj.wechat.netty.executor.base.RegisterExecutor;
+import com.cxkj.wechat.util.JsonResult;
 import com.cxkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -56,29 +57,31 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         if (frame instanceof CloseWebSocketFrame) {
             WebSocketServerHandshaker handShaker = SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.get(ctx.channel().id().asLongText());
             if (handShaker == null) {
-                sendErrorMessage(ctx, "不存在的客户端连接！");
+                BaseHandler.sendMessage(ctx.channel(), JsonResult.failed(ResultCodeEnum.CONNECTION_NOT_EXIST));
             } else {
                 handShaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
             }
             return;
         }
         if (!(frame instanceof TextWebSocketFrame)) {
-            sendErrorMessage(ctx, "仅支持文件格式，不支持二进制消息");
+            BaseHandler.sendMessage(ctx.channel(), JsonResult.failed(ResultCodeEnum.MESSAGE_FORMAT_ERROR));
+            return;
         }
         // 客户端发送过来的消息
         String request = ((TextWebSocketFrame) frame).text();
-        JSONObject param = null;
+        JSONObject param;
         try {
             param = JSONObject.parseObject(request);
         } catch (Exception e) {
-            sendErrorMessage(ctx, "JSON字符串转换出错！");
+            BaseHandler.sendMessage(ctx.channel(), JsonResult.failed(ResultCodeEnum.STRING_CONVERSION_ERROR));
             e.printStackTrace();
+            return;
         }
         assert param != null;
         Integer command = param.getInteger(SystemConstant.KEY_COMMAND);
         Executor executor = commandManager.getCommand(command);
         if (executor == null) {
-            sendErrorMessage(ctx, "命令不存在");
+            BaseHandler.sendMessage(ctx.channel(), JsonResult.failed(ResultCodeEnum.COMMAND_NOT_EXIST));
             return;
         }
         if (executor instanceof RegisterExecutor) {
@@ -88,17 +91,13 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         // 检测用户是否登录
         checkLoginHandler.channelRead0(ctx, frame);
         if (null != ctx.channel().attr(Attributes.IS_LOGIN).get()) {
-            ctx.channel().writeAndFlush(new TextWebSocketFrame("请登录后操作"));
-            ctx.channel().close();
-            SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.remove(ctx.channel().id().asLongText());
+            BaseHandler.sendMessage(ctx.channel(), JsonResult.failed(ResultCodeEnum.UNAUTHORIZED));
+            BaseHandler.remove(ctx.channel());
             return;
         }
         executor.execute(param, ctx.channel());
     }
 
-    private void sendErrorMessage(ChannelHandlerContext ctx, String msg) {
-        ctx.channel().writeAndFlush(new TextWebSocketFrame(JSONUtils.toJSONString(msg)));
-    }
 
     /**
      * 客户端断开连接

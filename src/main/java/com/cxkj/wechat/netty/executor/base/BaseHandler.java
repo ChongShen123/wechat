@@ -27,7 +27,7 @@ public class BaseHandler {
      * @param channel    channel
      * @param jsonResult jsonResult
      */
-    protected void sendMessage(Channel channel, JsonResult jsonResult) {
+    public static void sendMessage(Channel channel, JsonResult jsonResult) {
         channel.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(jsonResult)));
     }
 
@@ -37,7 +37,7 @@ public class BaseHandler {
      * @param gid        group id
      * @param jsonResult 信息
      */
-    protected void sendGroupMessage(Integer gid, JsonResult jsonResult) {
+    public static void sendGroupMessage(Integer gid, JsonResult jsonResult) {
         GroupInfoBo groupInfo = SessionUtil.GROUP_MAP.get(gid);
         if (groupInfo != null) {
             groupInfo.getChannelGroup().writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(jsonResult)));
@@ -49,7 +49,7 @@ public class BaseHandler {
      *
      * @param channel channel
      */
-    protected void remove(Channel channel) {
+    public static void remove(Channel channel) {
         ThreadUtil.getSingleton().submit(() -> {
             SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.remove(channel.id().asLongText());
             SessionBo session = channel.attr(Attributes.SESSION).get();

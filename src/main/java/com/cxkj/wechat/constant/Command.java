@@ -81,6 +81,6 @@ public interface Command {
     /**
      * 退出群聊
      */
-    int REMOVE_GROUP_CHAT = 3008;
+    int QUIT_GROUP = 3008;
 
 }

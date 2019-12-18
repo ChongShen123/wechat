@@ -281,8 +281,8 @@
             #{uid}
         </foreach>
     </select>
-    <select id="getByGroupIdAndUid" resultMap="UserGroupRelationMap">
-        select group_nickname from user_group_relation where gid = #{groupId} and uid = #{uid};
+    <select id="getByGroupIdAndUid" resultType="String">
+        select group_nickname from user_group_relation where gid = #{groupId} and uid =#{uid}
     </select>
     <delete id="quitGroup">
         delete from user_group_relation where gid = #{groupId} and uid in

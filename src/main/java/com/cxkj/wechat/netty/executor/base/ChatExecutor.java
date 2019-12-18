@@ -47,8 +47,10 @@ public abstract class ChatExecutor extends Executor {
     protected FriendApplicationService friendApplicationService;
     @Resource
     protected FriendService friendService;
-
+    @Resource
+    protected SingleChatService singleChatService;
     protected RequestParamBo requestParam = new RequestParamBo();
+    protected SessionBo sessionBo;
 
     /**
      * 解析参数
@@ -74,6 +76,8 @@ public abstract class ChatExecutor extends Executor {
     @Override
     public void execute(JSONObject param, Channel channel) {
         try {
+            // 获取用户Session
+            sessionBo = SessionUtil.getSession(channel);
             // 解析参数
             parseParam(param);
             //具体执行
@@ -88,6 +92,8 @@ public abstract class ChatExecutor extends Executor {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.GROUP_NOT_FOUND, command));
         } catch (UserJoinedException e) {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_JOINED_EXCEPTION, command));
+        } catch (UserNotInGroup e) {
+            sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_IN_GROUP, command));
         } catch (Exception e) {
             sendMessage(channel, JsonResult.failed(command));
         }
@@ -99,7 +105,7 @@ public abstract class ChatExecutor extends Executor {
      * @param toUserId   toUserId
      * @param fromUserId fromUserId
      * @param content    content
-     * @param type       0信息 1语音 2图片 3撤销 4 加入群聊 5红包 6转账
+     * @param type       0信息 1语音 2图片 3撤销 4 加入群聊 5退群 6红包 7转账
      * @return SingleChat
      */
     protected SingleChat createNewSingleChat(Integer toUserId, Integer fromUserId, String content, Byte type) {
@@ -198,6 +204,6 @@ public abstract class ChatExecutor extends Executor {
      * @return boolean
      */
     protected boolean checkGroupUserJoined(Set<Integer> ids, Integer groupId) {
-        return groupService.checkUserJoined(ids, groupId) == 0;
+        return groupService.checkUserJoined(ids, groupId) >= 1;
     }
 }

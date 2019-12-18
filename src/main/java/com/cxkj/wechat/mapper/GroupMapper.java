@@ -49,7 +49,7 @@ public interface GroupMapper {
 
     Integer checkUserJoined(@Param("uids") Set<Integer> uids, @Param("groupId") Integer groupId);
 
-    UserGroupRelation getByGroupIdAndUid(@Param("groupId") Integer groupId, @Param("uid") Integer uid);
+    String getByGroupIdAndUid(@Param("groupId") Integer groupId, @Param("uid") Integer uid);
 
     void quitGroup(@Param("ids") Set<Integer> ids, @Param("groupId") Integer groupId);
 }

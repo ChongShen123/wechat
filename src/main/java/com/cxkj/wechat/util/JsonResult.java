@@ -5,11 +5,9 @@ import com.cxkj.wechat.constant.IErrorCode;
 import com.cxkj.wechat.constant.ResultCodeEnum;
 import com.cxkj.wechat.entity.FriendApplication;
 import com.cxkj.wechat.entity.SingleChat;
-import com.cxkj.wechat.vo.ChatResponse;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author tiankong

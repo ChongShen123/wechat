@@ -104,6 +104,11 @@ public interface SystemConstant {
      */
     byte JOIN_GROUP = 4;
 
+    /**
+     * 退群
+     */
+    byte QUIT_GROUP = 5;
+
     // --------------------------RabbitMQ 相关常量-----------------------------------------------
     /**
      * 交换器名字
@@ -141,9 +146,14 @@ public interface SystemConstant {
     String[] SUFFIX_ARRAY = {".png", ".jpg"};
 
 
-    // -----------------------系统通知相关----------------------------------------
+    // -----------------------系统相关----------------------------------------
     /**
      * 系统通知ID
      */
     Integer SYSTEM_USER_ID = 0;
+    /**
+     * 系统消息撤销最大时间
+     * 10s
+     */
+    Long CHAT_CANCEL_TIMES = 1000 * 10L;
 }

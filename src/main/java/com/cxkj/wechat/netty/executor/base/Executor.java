@@ -2,6 +2,8 @@ package com.cxkj.wechat.netty.executor.base;
 
 import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.Channel;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 命令执行抽象类
@@ -9,12 +11,14 @@ import io.netty.channel.Channel;
  * @author tiankong
  * @date 2019/11/18 11:53
  */
+@Getter
+@Setter
 public abstract class Executor extends BaseHandler {
 
     /**
      * 命令类型
      */
-    protected int command;
+    protected Integer command;
 
     /**
      * 执行命令
@@ -24,16 +28,16 @@ public abstract class Executor extends BaseHandler {
      */
     public abstract void execute(JSONObject param, Channel channel);
 
-    /**
-     * 获取命令
-     *
-     * @return executor
-     */
-    public Integer getCommand() {
-        return command;
-    }
-
-    public void setCommand(Integer command) {
-        this.command = command;
-    }
+//    /**
+//     * 获取命令
+//     *
+//     * @return executor
+//     */
+//    public Integer getCommand() {
+//        return command;
+//    }
+//
+//    public void setCommand(Integer command) {
+//        this.command = command;
+//    }
 }
