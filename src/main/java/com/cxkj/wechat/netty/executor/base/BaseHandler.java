@@ -37,7 +37,7 @@ public class BaseHandler {
      * @param gid        group id
      * @param jsonResult 信息
      */
-    public static void sendGroupMessage(Integer gid, JsonResult jsonResult) {
+    protected static void sendGroupMessage(Integer gid, JsonResult jsonResult) {
         GroupInfoBo groupInfo = SessionUtil.GROUP_MAP.get(gid);
         if (groupInfo != null) {
             groupInfo.getChannelGroup().writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(jsonResult)));

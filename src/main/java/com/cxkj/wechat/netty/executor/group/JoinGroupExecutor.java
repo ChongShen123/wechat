@@ -53,6 +53,4 @@ public class JoinGroupExecutor extends ChatExecutor {
         sendCreateGroupMessageToUsers(ids, group);
         sendMessage(channel, JsonResult.success(command));
     }
-
-
 }

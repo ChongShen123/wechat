@@ -6,7 +6,6 @@ import com.cxkj.wechat.constant.Command;
 import com.cxkj.wechat.constant.SystemConstant;
 import com.cxkj.wechat.entity.Group;
 import com.cxkj.wechat.entity.SingleChat;
-import com.cxkj.wechat.entity.UserGroupRelation;
 import com.cxkj.wechat.netty.ex.ValidateException;
 import com.cxkj.wechat.netty.executor.ExecutorAnno;
 import com.cxkj.wechat.netty.executor.base.ChatExecutor;
@@ -61,8 +60,6 @@ public class RemoveChatGroupExecutor extends ChatExecutor {
             }
             rabbitTemplateService.addChatInfo(SystemConstant.SINGLE_CHAT_QUEUE_ONE, newSingleChat);
         });
-
-
         // 返回信息
         sendMessage(channel, JsonResult.success(command));
 

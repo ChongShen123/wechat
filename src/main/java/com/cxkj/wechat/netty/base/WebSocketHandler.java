@@ -1,6 +1,7 @@
 package com.cxkj.wechat.netty.base;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cxkj.wechat.bo.CommandBo;
 import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Attributes;
 import com.cxkj.wechat.constant.ResultCodeEnum;
@@ -79,6 +80,9 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         }
         Integer command = param.getInteger(SystemConstant.KEY_COMMAND);
         Executor executor = commandManager.getCommand(command);
+        // 这样就可以执行方法了。
+//        CommandBo commandBo = commandManager.getCommandBo(command);
+//        commandBo.getMethod().invoke(commandBo.getObject(), param);
         if (executor == null) {
             BaseHandler.sendMessage(ctx.channel(), JsonResult.failed(ResultCodeEnum.COMMAND_NOT_EXIST));
             return;

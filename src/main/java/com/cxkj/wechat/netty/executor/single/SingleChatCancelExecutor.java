@@ -26,9 +26,6 @@ import javax.annotation.Resource;
 @Service
 @ExecutorAnno(command = Command.SINGLE_CHAT_CANCEL)
 public class SingleChatCancelExecutor extends ChatExecutor {
-    @Resource
-    private FriendApplicationService friendApplicationService;
-
 
     @Override
     protected void parseParam(JSONObject param) {

@@ -25,19 +25,33 @@ import java.util.Map;
 public class ExecutorManager implements ApplicationListener<ContextRefreshedEvent> {
 
     private static Map<Integer, Executor> commandTypeMap = new HashMap<>();
-    private static Map<Integer, CommandBo> methodMap = new HashMap<>();
+//    private static Map<Integer, CommandBo> methodMap = new HashMap<>();
+
+//    public CommandBo getCommandBo(Integer type) {
+//        return methodMap.get(type);
+//    }
 
     public Executor getCommand(Integer type) {
         return commandTypeMap.get(type);
     }
 
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // 获取所有带有 ExecutorAnno 注解的bean.
         Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(ExecutorAnno.class);
-
         // 将这些bean添加到 commandTypeMap中
         beans.forEach((name, bean) -> {
+            // 这样就可以将扫描方法上的注解了。
+//            Method[] methods = bean.getClass().getMethods();
+//            for (Method method : methods) {
+//                ExecutorAnno annotation = method.getAnnotation(ExecutorAnno.class);
+//                CommandBo commandBo = new CommandBo();
+//                commandBo.setCmd(annotation.command());
+//                commandBo.setMethod(method);
+//                commandBo.setObject(bean);
+//                methodMap.put(annotation.command(), commandBo);
+//            }
             ExecutorAnno annotation = bean.getClass().getAnnotation(ExecutorAnno.class);
             try {
                 // 为执行者类设置对应的 command

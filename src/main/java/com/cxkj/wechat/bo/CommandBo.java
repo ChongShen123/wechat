@@ -1,11 +1,14 @@
 package com.cxkj.wechat.bo;
 
+import lombok.Data;
+
 import java.lang.reflect.Method;
 
 /**
  * @author tiankong
  * @date 2019/12/18 17:51
  */
+@Data
 public class CommandBo {
     /**
      * 命令
