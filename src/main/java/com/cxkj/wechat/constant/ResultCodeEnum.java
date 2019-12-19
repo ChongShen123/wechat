@@ -7,6 +7,30 @@ package com.cxkj.wechat.constant;
 public enum ResultCodeEnum implements IErrorCode {
 
     /**
+     * 撤销时间超时
+     */
+    UNDO_TIME_EXCEEDED(4029, "操作失败！已经超过撤销时间"),
+    /**
+     * 命令不存在
+     */
+    COMMAND_NOT_EXIST(4028, "操作失败！命令不存在"),
+    /**
+     * 字符串转换错误
+     */
+    STRING_CONVERSION_ERROR(4027, "操作失败！字符串转换错误"),
+    /**
+     * 消息格式错误
+     */
+    MESSAGE_FORMAT_ERROR(4026, "操作失败！仅支持文件格式，不支持二进制消息"),
+    /**
+     * 连接不存在
+     */
+    CONNECTION_NOT_EXIST(4025, "操作失败！不存在的客户端连接"),
+    /**
+     * 用户不在该群组
+     */
+    USER_NOT_IN_GROUP(4024, "操作失败！用户不在该群组"),
+    /**
      * 用户已加入群聊
      */
     USER_JOINED_EXCEPTION(4023, "加群失败！用户已加入群聊"),
@@ -56,9 +80,13 @@ public enum ResultCodeEnum implements IErrorCode {
     FORBIDDEN(4003, "没有相关权限"),
     UNAUTHORIZED(4001, "暂未登录或token已过期"),
     FAILED(4000, "failed"),
+<<<<<<< HEAD
     EMAIL(4050,"邮箱格式错误"),
     SUCCESS(2000, "success");
 
+=======
+    SUCCESS(2000, "ok");
+>>>>>>> c5c3ed6da5f1a81a762f2458cafc7f77fd431c9b
     private Integer code;
     private String message;
 

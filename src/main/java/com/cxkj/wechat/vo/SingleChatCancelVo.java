@@ -7,9 +7,8 @@ import lombok.EqualsAndHashCode;
  * @author tiankong
  * @date 2019/12/14 13:26
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class SingleChatCancelVo extends ChatResponse {
+public class SingleChatCancelVo {
     private Long createTimes;
     private String id;
 

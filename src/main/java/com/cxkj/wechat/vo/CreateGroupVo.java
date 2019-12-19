@@ -8,9 +8,8 @@ import lombok.EqualsAndHashCode;
  * @author tiankong
  * @date 2019/12/14 15:34
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class CreateGroupVo extends ChatResponse {
+public class CreateGroupVo  {
     private Integer id;
     private String name;
     private Integer memberCount;

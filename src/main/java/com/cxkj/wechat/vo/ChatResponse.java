@@ -6,6 +6,6 @@ package com.cxkj.wechat.vo;
  * @author tiankong
  * @date 2019/12/14 13:28
  */
-public class ChatResponse {
-
-}
+//public class ChatResponse {
+//
+//}

@@ -1,18 +1,21 @@
 package com.cxkj.wechat.netty.executor;
 
 
+import com.cxkj.wechat.bo.CommandBo;
 import com.cxkj.wechat.netty.executor.base.Executor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 执行者管理类
+ * 命令执行者管理类
  *
  * @author tiankong
  * @date 2019/11/17 19:58
@@ -22,10 +25,16 @@ import java.util.Map;
 public class ExecutorManager implements ApplicationListener<ContextRefreshedEvent> {
 
     private static Map<Integer, Executor> commandTypeMap = new HashMap<>();
+//    private static Map<Integer, CommandBo> methodMap = new HashMap<>();
+
+//    public CommandBo getCommandBo(Integer type) {
+//        return methodMap.get(type);
+//    }
 
     public Executor getCommand(Integer type) {
         return commandTypeMap.get(type);
     }
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -33,6 +42,16 @@ public class ExecutorManager implements ApplicationListener<ContextRefreshedEven
         Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(ExecutorAnno.class);
         // 将这些bean添加到 commandTypeMap中
         beans.forEach((name, bean) -> {
+            // 这样就可以将扫描方法上的注解了。
+//            Method[] methods = bean.getClass().getMethods();
+//            for (Method method : methods) {
+//                ExecutorAnno annotation = method.getAnnotation(ExecutorAnno.class);
+//                CommandBo commandBo = new CommandBo();
+//                commandBo.setCmd(annotation.command());
+//                commandBo.setMethod(method);
+//                commandBo.setObject(bean);
+//                methodMap.put(annotation.command(), commandBo);
+//            }
             ExecutorAnno annotation = bean.getClass().getAnnotation(ExecutorAnno.class);
             try {
                 // 为执行者类设置对应的 command

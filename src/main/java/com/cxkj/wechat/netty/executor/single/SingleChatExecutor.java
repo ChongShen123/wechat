@@ -37,7 +37,6 @@ public class SingleChatExecutor extends ChatExecutor {
 
     @Override
     protected void concreteAction(Channel channel) {
-        SessionBo session = SessionUtil.getSession(channel);
         SingleChat chat = createNewSingleChat(requestParam.getToUserId(), session.getUserId(), requestParam.getContent(), requestParam.getType());
         // 获取一条消息
         Channel toUserChannel = SessionUtil.ONLINE_USER_MAP.get(requestParam.getToUserId());

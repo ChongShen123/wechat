@@ -89,7 +89,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public UserGroupRelation getNicknameByGroupIdAndUid(Integer groupId, Integer uid) {
+    public String getNicknameByGroupIdAndUid(Integer groupId, Integer uid) {
         return groupMapper.getByGroupIdAndUid(groupId, uid);
     }
 

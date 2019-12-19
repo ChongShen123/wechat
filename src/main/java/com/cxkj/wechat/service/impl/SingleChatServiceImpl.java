@@ -1,10 +1,16 @@
 package com.cxkj.wechat.service.impl;
 
+<<<<<<< HEAD
 import cn.hutool.core.io.FileUtil;
 import com.cxkj.wechat.constant.SystemConstant;
 import com.cxkj.wechat.entity.SingleChat;
 import com.cxkj.wechat.service.SingleChatService;
 import org.springframework.beans.factory.annotation.Value;
+=======
+import com.cxkj.wechat.entity.SingleChat;
+import com.cxkj.wechat.service.SingleChatService;
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> c5c3ed6da5f1a81a762f2458cafc7f77fd431c9b
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -17,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 @Service
 public class SingleChatServiceImpl implements SingleChatService {
     @Value("${file.root-path}")
@@ -27,11 +32,17 @@ public class SingleChatServiceImpl implements SingleChatService {
     @Resource
     private MongoTemplate mongoTemplate;
 
+<<<<<<< HEAD
     Long time = System.currentTimeMillis()-180000;
     SingleChat single=new SingleChat();
     @Override
     public void save(SingleChat singleChat) {
 
+=======
+    @Override
+    public void save(SingleChat singleChat) {
+        SingleChat single = new SingleChat();
+>>>>>>> c5c3ed6da5f1a81a762f2458cafc7f77fd431c9b
         single.setId(singleChat.getId());
         single.setCreateTimes(singleChat.getCreateTimes());
         single.setType(singleChat.getType());
@@ -41,11 +52,13 @@ public class SingleChatServiceImpl implements SingleChatService {
         single.setToUserId(singleChat.getToUserId());
         mongoTemplate.save(single);
     }
+
     /*
     定时器删除数据库存储时间超过7天的数据
     step:1 查询 7天之前人所有数据  条件:
     step:2 执行 删除。
      */
+<<<<<<< HEAD
     //604800000
    @Override
     public void deleteTask() {
@@ -77,4 +90,26 @@ public class SingleChatServiceImpl implements SingleChatService {
     }
 
 
+=======
+    @Override //604800000
+    public void deleteTask(SingleChat singleChat) {
+        Long time = System.currentTimeMillis() - 180000;
+        Query query = Query.query(Criteria.where("createTimes").lt(time));
+        mongoTemplate.remove(query, SingleChat.class);
+
+
+    }
+
+    @Override
+    public SingleChat getById(String id) {
+        Query query = Query.query(Criteria.where("id").is(id));
+        return mongoTemplate.findOne(query, SingleChat.class);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        Query query = Query.query(Criteria.where("id").is(id));
+        mongoTemplate.remove(query, SingleChat.class);
+    }
+>>>>>>> c5c3ed6da5f1a81a762f2458cafc7f77fd431c9b
 }

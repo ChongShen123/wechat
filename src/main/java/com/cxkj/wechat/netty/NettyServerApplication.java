@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutorService;
  * @date 2019/11/17 18:49
  */
 @Component
-@Scope("singleton")
 @Slf4j
 public class NettyServerApplication {
     @Resource

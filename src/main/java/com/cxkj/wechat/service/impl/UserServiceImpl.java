@@ -99,7 +99,6 @@ public class UserServiceImpl implements UserService {
         if (data != null) {
             throw new ServiceException(ResultCodeEnum.USER_ALREADY_EXISTS);
         }
-
         if (!param.getPassword().matches(passwordRegex)) {
             throw new ServiceException(ResultCodeEnum.PASSWORD_FORMAT);
         }
