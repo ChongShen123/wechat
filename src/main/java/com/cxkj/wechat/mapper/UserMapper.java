@@ -3,9 +3,11 @@ package com.cxkj.wechat.mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 import com.cxkj.wechat.entity.User;
 import org.springframework.cache.annotation.CacheConfig;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * @author tiankong
@@ -29,6 +31,6 @@ public interface UserMapper {
 
     Integer countByEmail(@Param("email") String email);
 
-    List<User> listUserByIds(List<Integer> ids);
+    List<User> listUserByIds(Set<Integer> ids);
 
 }

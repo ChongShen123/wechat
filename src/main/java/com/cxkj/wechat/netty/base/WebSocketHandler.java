@@ -1,10 +1,11 @@
-package com.cxkj.wechat.netty.handler;
+package com.cxkj.wechat.netty.base;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONObject;
 
-import com.cxkj.wechat.bo.Session;
+import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Attributes;
+import com.cxkj.wechat.constant.SystemConstant;
 import com.cxkj.wechat.netty.executor.ExecutorManager;
 import com.cxkj.wechat.netty.executor.base.Executor;
 import com.cxkj.wechat.netty.executor.base.RegisterExecutor;
@@ -24,6 +25,8 @@ import javax.annotation.Resource;
 
 
 /**
+ * 业务处理器
+ *
  * @author tiankong
  * @date 2019/11/17 18:51
  */
@@ -72,7 +75,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             e.printStackTrace();
         }
         assert param != null;
-        Integer command = param.getInteger("command");
+        Integer command = param.getInteger(SystemConstant.KEY_COMMAND);
         Executor executor = commandManager.getCommand(command);
         if (executor == null) {
             sendErrorMessage(ctx, "命令不存在");
@@ -104,7 +107,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.remove(ctx.channel().id().asLongText());
-        Session session = ctx.channel().attr(Attributes.SESSION).get();
+        SessionBo session = ctx.channel().attr(Attributes.SESSION).get();
         if (session == null) {
             ctx.channel().close();
             return;
@@ -122,7 +125,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         Channel channel = ctx.channel();
         SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.remove(channel.id().asLongText());
-        Session session = channel.attr(Attributes.SESSION).get();
+        SessionBo session = channel.attr(Attributes.SESSION).get();
         if (session != null) {
             SessionUtil.ONLINE_USER_MAP.remove(session.getUserId());
         }

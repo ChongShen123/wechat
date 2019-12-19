@@ -59,7 +59,7 @@ netty:
   heartbeat: 3600 # unit second
 
 file:
-  root-path: E:/upload/wechat/
+  root-path: c:/upload/wechat/
   img-path: img/
   qr-path: qr/
   voice-path: voice/

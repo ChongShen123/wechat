@@ -1,7 +1,11 @@
 package com.cxkj.wechat.netty.executor.single;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.cxkj.wechat.bo.RequestParamBo;
 import com.cxkj.wechat.constant.Command;
+import com.cxkj.wechat.constant.SystemConstant;
+import com.cxkj.wechat.netty.ex.ValidateException;
 import com.cxkj.wechat.netty.executor.ExecutorAnno;
 import com.cxkj.wechat.netty.executor.base.ChatExecutor;
 import com.cxkj.wechat.service.FriendApplicationService;
@@ -25,12 +29,26 @@ public class SingleChatCancelExecutor extends ChatExecutor {
     @Resource
     private FriendApplicationService friendApplicationService;
 
+
     @Override
-    protected void concreteAction(RequestParamBo param, Channel channel) {
-        Channel userChannel = SessionUtil.getUserChannel(param.getUserId());
-        if (userChannel != null) {
-            sendMessage(userChannel, JsonResult.success(new SingleChatCancelVo(param.getId()), command));
+    protected void parseParam(JSONObject param) {
+        try {
+            Integer toUserId = param.getInteger(SystemConstant.KEY_TO_USER_ID);
+            String singleChatId = param.getString(SystemConstant.KEY_ID);
+            requestParam.setToUserId(toUserId);
+            requestParam.setId(singleChatId);
+        } catch (Exception e) {
+            throw new ValidateException();
         }
-        friendApplicationService.deleteById(param.getId());
+
+    }
+
+    @Override
+    protected void concreteAction(Channel channel) {
+        Channel userChannel = SessionUtil.getUserChannel(requestParam.getToUserId());
+        if (userChannel != null) {
+            sendMessage(userChannel, JsonResult.success(new SingleChatCancelVo(requestParam.getId()), command));
+        }
+        friendApplicationService.deleteById(requestParam.getId());
     }
 }

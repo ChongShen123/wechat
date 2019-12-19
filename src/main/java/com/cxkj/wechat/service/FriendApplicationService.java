@@ -32,7 +32,7 @@ public interface FriendApplicationService {
      * @param id id
      * @return 好友申请
      */
-    FriendApplication getById(String id);
+    FriendApplication getFriendApplicationById(String id);
 
     /**
      * 查询所有好友申请

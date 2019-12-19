@@ -1,6 +1,6 @@
 package com.cxkj.wechat.service;
 
-import com.cxkj.wechat.entity.SingleChat;
+import com.cxkj.wechat.entity.ChatInfo;
 
 /**
  * @author tiankong
@@ -13,6 +13,5 @@ public interface RabbitTemplateService {
      * @param queue   队列名称
      * @param content 内容
      */
-    void addSingleChat(String queue, SingleChat content);
-
+    void addChatInfo(String queue, ChatInfo content);
 }

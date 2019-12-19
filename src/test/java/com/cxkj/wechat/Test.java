@@ -1,6 +1,8 @@
 package com.cxkj.wechat;
 
+import com.cxkj.wechat.mapper.UserMapper;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.*;
 import java.lang.reflect.Field;
@@ -10,13 +12,13 @@ import java.lang.reflect.Field;
  * @date 2019/12/13 17:59
  */
 public class Test {
-    public static void main(String[] args) throws IllegalAccessException {
-        User user = new User("小明");
+/*    public static void main(String[] args) throws IllegalAccessException {
+     *//*   User user = new User("小明");*//*
         initUser(user);
         printResult(checkUser(user));
         user.setAge(22);
         printResult(checkUser(user));
-    }
+    }*/
 
     private static void printResult(boolean checkResult) {
         System.out.println(checkResult ? "检测通过" : "检测未通过");
@@ -109,7 +111,15 @@ class User {
     @InitSex(sex = InitSex.SEX_TYPE.WOMAN)
     private String sex;
 
-    public User(String s) {
+/*    public User(String s) {
         username = s;
+    }*/
+
+    @Autowired
+    UserMapper userMapper;
+    public void Users(){
+
+
+
     }
 }

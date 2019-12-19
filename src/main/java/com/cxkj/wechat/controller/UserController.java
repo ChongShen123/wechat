@@ -1,7 +1,9 @@
 package com.cxkj.wechat.controller;
 
-import com.cxkj.wechat.dto.UserLoginParam;
-import com.cxkj.wechat.dto.UserRegisterParam;
+
+import com.cxkj.wechat.dto.UserLoginDto;
+import com.cxkj.wechat.dto.UserRegisterDto;
+
 import com.cxkj.wechat.dto.UserUpdateInfoParam;
 import com.cxkj.wechat.entity.User;
 import com.cxkj.wechat.service.UserService;
@@ -23,19 +25,18 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @PostMapping("/register")
-    public JsonResult register(@Validated @RequestBody UserRegisterParam param, HttpServletRequest request) {
+    public JsonResult register(@Validated @RequestBody UserRegisterDto param, HttpServletRequest request) {
         return JsonResult.success(userService.register(param, request));
     }
 
     @PostMapping("/login")
-    public JsonResult login(@Validated @RequestBody UserLoginParam param, HttpServletRequest request) {
+    public JsonResult login(@Validated @RequestBody UserLoginDto param, HttpServletRequest request) {
         return JsonResult.success(userService.login(param, request, true));
     }
-/*    @PostMapping("updateuserinfo")
-    public JsonResult updateuserinfo(@Validated @RequestBody UserUpdateInfoParam param ,HttpServletRequest request){
-        User user=new User();
-        userService.updateUserInfo(user);
-        return null;
-    }*/
+    @PostMapping("/update")
+    public JsonResult updateUserInfo(@RequestBody UserUpdateInfoParam param ){
+        userService.updateUserInfo(param);
+        return JsonResult.success();
+    }
 
 }

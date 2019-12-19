@@ -1,6 +1,6 @@
-package com.cxkj.wechat.netty.handler;
+package com.cxkj.wechat.netty.base;
 
-import com.cxkj.wechat.bo.Session;
+import com.cxkj.wechat.bo.SessionBo;
 import com.cxkj.wechat.constant.Attributes;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,7 +20,7 @@ public class CheckLoginHandler extends SimpleChannelInboundHandler<WebSocketFram
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) throws Exception {
-        Session session = ctx.channel().attr(Attributes.SESSION).get();
+        SessionBo session = ctx.channel().attr(Attributes.SESSION).get();
         if (session == null) {
             ctx.channel().attr(Attributes.IS_LOGIN).set(false);
         }

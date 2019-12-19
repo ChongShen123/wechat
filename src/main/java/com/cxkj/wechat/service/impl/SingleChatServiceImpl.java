@@ -1,5 +1,6 @@
 package com.cxkj.wechat.service.impl;
 
+import cn.hutool.core.io.FileUtil;
 import com.cxkj.wechat.constant.SystemConstant;
 import com.cxkj.wechat.entity.SingleChat;
 import com.cxkj.wechat.service.SingleChatService;
@@ -10,6 +11,11 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -46,15 +52,28 @@ public class SingleChatServiceImpl implements SingleChatService {
         Query query =Query.query(Criteria.where("createTimes").lt(time));
         mongoTemplate.remove(query,SingleChat.class);
     }
-    /**
-     * 删除数据库里存储的过期图片地址
-     */
-@Override
+    @Override
     public void deleteImage() {
-        Query type = Query.query(Criteria.where("type").lt(SystemConstant.CHAT_TYPE_IMG));
-
-
-
+        // step1 先查询 7天之前的所有数据。 List<SingleChat> list;
+        Query query1=Query.query(Criteria.where("createTime").lt(time));
+        List<SingleChat> list = mongoTemplate.find(query1, SingleChat.class);
+        // step2 遍历这个list
+        for (SingleChat singleChat : list) {
+            Byte type = singleChat.getType();
+            if (type == SystemConstant.CHAT_TYPE_VOICE || type == SystemConstant.CHAT_TYPE_IMG) {
+              String path =  singleChat.getContent();
+                if (path == null) {
+                    continue;
+                }
+                File file=new File(rootPath+path);
+                if (file.exists()) {
+                    file.delete();
+                }
+            }
+            //  step4 直接删除
+           Query query = Query.query(Criteria.where("id").is(singleChat.getId()));
+            mongoTemplate.remove(query,SingleChat.class);
+        }
     }
 
 

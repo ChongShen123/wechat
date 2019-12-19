@@ -1,10 +1,11 @@
 package com.cxkj.wechat.service.impl;
 
-import com.cxkj.wechat.bo.CurrentUserDetails;
+import com.cxkj.wechat.bo.CurrentUserDetailsBo;
 import com.cxkj.wechat.constant.ResultCodeEnum;
-import com.cxkj.wechat.dto.LoginInfo;
-import com.cxkj.wechat.dto.UserLoginParam;
-import com.cxkj.wechat.dto.UserRegisterParam;
+import com.cxkj.wechat.dto.UserUpdateInfoParam;
+import com.cxkj.wechat.vo.LoginVo;
+import com.cxkj.wechat.dto.UserLoginDto;
+import com.cxkj.wechat.dto.UserRegisterDto;
 import com.cxkj.wechat.entity.User;
 import com.cxkj.wechat.entity.UserLoginLog;
 import com.cxkj.wechat.mapper.UserLoginLogMapper;
@@ -25,6 +26,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author tiankong
@@ -54,8 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LoginInfo login(UserLoginParam param, HttpServletRequest request, boolean check) {
-        System.out.println(param);
+    public LoginVo login(UserLoginDto param, HttpServletRequest request, boolean check) {
         User user = userMapper.getOneByUsername(param.getUsername());
         if (check) {
             if (user == null) {
@@ -65,12 +66,11 @@ public class UserServiceImpl implements UserService {
                 throw new ServiceException(ResultCodeEnum.PASSWORD_NOT_MATCH);
             }
         }
-        CurrentUserDetails currentUserDetails = new CurrentUserDetails(user);
+        CurrentUserDetailsBo currentUserDetails = new CurrentUserDetailsBo(user);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(currentUserDetails, null, null);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-        System.out.println(user);
         insertLoginLog(user, request);
-        return new LoginInfo(user.getId(), user.getUsername(), user.getIcon(), tokenHead + " " + jwtTokenUtil.generateToken(user.getUsername()), user.getQr());
+        return new LoginVo(user.getId(), user.getUsername(), user.getIcon(), tokenHead + " " + jwtTokenUtil.generateToken(user.getUsername()), user.getQr());
     }
 
     private void insertLoginLog(User user, HttpServletRequest request) {
@@ -85,12 +85,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> listUserByIds(List<Integer> ids) {
+    public List<User> listUserByIds(Set<Integer> ids) {
         return userMapper.listUserByIds(ids);
     }
 
+
+
     @Override
-    public LoginInfo register(UserRegisterParam param, HttpServletRequest request) {
+    public LoginVo register(UserRegisterDto param, HttpServletRequest request) {
         String passwordRegex = "^[0-9A-Za-z_]{6,12}$";
 //        String emailRegex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
         User data = getByUsername(param.getUsername());
@@ -106,7 +108,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = getNewUser(param, request);
         userMapper.insert(user);
-        UserLoginParam userLoginParam = new UserLoginParam(param.getUsername(), param.getPassword());
+        UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
         return login(userLoginParam, request, false);
     }
 
@@ -115,7 +117,25 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByPrimaryKey(id);
     }
 
-    private User getNewUser(UserRegisterParam param, HttpServletRequest request) {
+    @Override
+    public void  updateUserInfo(UserUpdateInfoParam param) {
+        String emailRegex=" ^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
+        User user=new User();
+        user.setId(param.getId());
+        user.setIcon(param.getIcon());
+        if(!param.getEmail().matches(emailRegex)){
+          throw  new ServiceException(ResultCodeEnum.EMAIL);
+        }else {
+            user.setEmail(param.getEmail());
+        }
+        user.setTel(param.getTel());
+        user.setQq(param.getQq());
+        userMapper.updateByPrimaryKeySelective(user);
+
+    }
+
+
+    private User getNewUser(UserRegisterDto param, HttpServletRequest request) {
         User user = new User();
         user.setUsername(param.getUsername());
         user.setPassword(encoder.encode(param.getPassword()));

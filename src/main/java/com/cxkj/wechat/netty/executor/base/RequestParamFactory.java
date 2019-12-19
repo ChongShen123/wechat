@@ -10,12 +10,13 @@ import com.cxkj.wechat.netty.ex.ValidateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import static com.cxkj.wechat.constant.SystemConstant.KEY_TOKEN;
+import static com.cxkj.wechat.constant.SystemConstant.KEY_CONTENT;
+import static com.cxkj.wechat.constant.SystemConstant.KEY_GROUP_ID;
 
 import com.cxkj.wechat.constant.Command;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,15 +28,22 @@ public class RequestParamFactory {
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
+    /**
+     * 解析请求参数
+     *
+     * @param command 命令类型
+     * @param param   请求参数JSON
+     * @return 参数对象
+     */
     RequestParamBo getParam(Integer command, JSONObject param) {
-        RequestParamBo requestParamBo = new RequestParamBo();
+        RequestParamBo requestParam = new RequestParamBo();
         switch (command) {
             case Command.REGISTER:
-                String token = param.getString(KEY_TOKEN);
+                String token = param.getString(KEY_CONTENT);
                 if (ObjectUtil.isEmpty(token)) {
                     throw new ValidateException();
                 }
-                requestParamBo.setToken(token);
+                requestParam.setContent(token);
                 break;
             case Command.SINGLE_CHAT_CANCEL:
                 String id = param.getString(SystemConstant.KEY_ID);
@@ -43,28 +51,28 @@ public class RequestParamFactory {
                 if (id == null || uid == null) {
                     throw new ValidateException();
                 }
-                requestParamBo.setId(id);
-                requestParamBo.setUserId(uid);
+                requestParam.setId(id);
+                requestParam.setUserId(uid);
                 break;
             case Command.SINGLE_CHAT:
                 Integer toUserId = param.getInteger(SystemConstant.KEY_TO_USER_ID);
                 String content = param.getString(SystemConstant.KEY_CONTENT);
-                Integer type = param.getInteger(SystemConstant.KEY_TYPE);
+                Byte type = param.getByte(SystemConstant.KEY_TYPE);
                 if (ObjectUtil.isEmpty(toUserId) || ObjectUtil.isEmpty(content) || ObjectUtil.isEmpty(type)) {
                     throw new ValidateException();
                 }
-                requestParamBo.setToUserId(toUserId);
-                requestParamBo.setContent(content);
-                requestParamBo.setType(type);
+                requestParam.setToUserId(toUserId);
+                requestParam.setContent(content);
+                requestParam.setType(type);
                 break;
             case Command.ADD_FRIEND:
                 String username = param.getString(SystemConstant.KEY_USERNAME);
-                String message = param.getString(SystemConstant.KEY_MESSAGE);
-                if (StrUtil.isBlank(username) || StrUtil.isBlank(message)) {
+                content = param.getString(SystemConstant.KEY_CONTENT);
+                if (StrUtil.isBlank(username) || StrUtil.isBlank(content)) {
                     throw new ValidateException();
                 }
-                requestParamBo.setUsername(username);
-                requestParamBo.setMessage(message);
+                requestParam.setUsername(username);
+                requestParam.setMessage(content);
                 break;
             case Command.FRIEND_AGREE:
                 id = param.getString(SystemConstant.KEY_ID);
@@ -72,29 +80,50 @@ public class RequestParamFactory {
                 if (!(state == SystemConstant.AGREE || state == SystemConstant.REFUSE)) {
                     throw new RuntimeException();
                 }
-                requestParamBo.setId(id);
-                requestParamBo.setState(state);
+                requestParam.setId(id);
+                requestParam.setState(state);
                 break;
             case Command.GROUP_INFO:
             case Command.GROUP_BASE_INFO:
+            case Command.LIST_GROUP_MEMBERS:
                 Integer groupId = param.getInteger(SystemConstant.KEY_GROUP_ID);
                 if (ObjectUtil.isEmpty(groupId)) {
                     throw new ValidateException();
                 }
-                requestParamBo.setGroupId(groupId);
+                requestParam.setGroupId(groupId);
                 break;
             case Command.CREATE_GROUP:
-                List<Integer> ids;
+            case Command.JOIN_GROUP:
+            case Command.REMOVE_CHAT_GROUP:
                 try {
-                    ids = Arrays.stream(StrUtil.splitToInt(param.getString(SystemConstant.KEY_IDS), ",")).boxed().collect(Collectors.toList());
+                    Set<Integer> ids;
+                    ids = Arrays.stream(StrUtil.splitToInt(param.getString(SystemConstant.KEY_IDS), ",")).boxed().collect(Collectors.toSet());
+                    groupId = param.getInteger(KEY_GROUP_ID);
+                    if (ObjectUtil.isNotEmpty(groupId)) {
+                        requestParam.setGroupId(groupId);
+                    }
+                    requestParam.setIds(ids);
                 } catch (Exception e) {
                     throw new ValidateException();
                 }
-                requestParamBo.setIds(ids);
+                break;
+            case Command.GROUP_CHAT:
+                try {
+                    groupId = param.getInteger(SystemConstant.KEY_GROUP_ID);
+                    content = param.getString(SystemConstant.KEY_CONTENT);
+                    type = param.getByte(SystemConstant.KEY_TYPE);
+                    requestParam.setGroupId(groupId);
+                    requestParam.setContent(content);
+                    requestParam.setType(type);
+                } catch (Exception e) {
+                    throw new ValidateException();
+                }
+                break;
+            case Command.LIST_USER_GROUP:
                 break;
             default:
                 throw new ParseParamException();
         }
-        return requestParamBo;
+        return requestParam;
     }
 }

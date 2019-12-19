@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component     // 1.主要用于标记配置类，兼备Component的效果。
 public class DeleteWeekTask {
-/*    @Autowired
+   @Autowired
     SingleChatService singleChatService;
-    @Scheduled(cron = "0 15 10 15 * ?" )
+   //0 */1 * * * ?        0 15 10 15 * ?
+    @Scheduled(cron = "0 */1 * * * ?" )
     public void deleteCreateTimes(){
           singleChatService.deleteTask();
-    }*/
+          singleChatService.deleteImage();
+    }
 }

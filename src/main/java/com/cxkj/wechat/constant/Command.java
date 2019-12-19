@@ -49,7 +49,7 @@ public interface Command {
     /**
      * 查看用户所有群
      */
-    int LIST_GROUP = 3001;
+    int LIST_USER_GROUP = 3001;
     /**
      * 群基本信息
      */
@@ -60,28 +60,27 @@ public interface Command {
      */
     int GROUP_INFO = 3003;
     /**
-     * 群聊
-     */
-    int GROUP_CHAT = 3001;
-    /**
-     * 退出群聊
-     */
-    int QUIET_GROUP = 3003;
-
-    /**
      * 加入群聊
      */
     int JOIN_GROUP = 3004;
 
     /**
-     * 加入群聊消息通知
+     * 查看群所有成员
      */
-    int JOIN_GROUP_NOTICE = 3005;
+    int LIST_GROUP_MEMBERS = 3005;
 
     /**
-     * 查看群成员
+     * 群聊
      */
-    int LIST_GROUP_MEMBERS = 3006;
+    int GROUP_CHAT = 3006;
+    /**
+     * 移除群聊
+     */
+    int REMOVE_CHAT_GROUP = 3007;
 
+    /**
+     * 退出群聊
+     */
+    int REMOVE_GROUP_CHAT = 3008;
 
 }

@@ -1,4 +1,4 @@
-package com.cxkj.wechat.netty.handler;
+package com.cxkj.wechat.netty.base;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
@@ -15,11 +15,13 @@ import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Channel管理类
+ *
  * @author tiankong
  * @date 2019/11/17 18:51
  */
 @Component
-public class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
+public class ChannelManager extends ChannelInitializer<SocketChannel> {
     @Resource
     private ChannelHandler httpRequestHandler;
     @Resource

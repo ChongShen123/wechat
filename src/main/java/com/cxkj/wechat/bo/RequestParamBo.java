@@ -2,7 +2,7 @@ package com.cxkj.wechat.bo;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author tiankong
@@ -17,8 +17,8 @@ public class RequestParamBo {
     private Integer toUserId;
     private String content;
     private String message;
-    private Integer type;
+    private Byte type;
     private Byte state;
     private Integer groupId;
-    private List<Integer> ids;
+    private Set<Integer> ids;
 }

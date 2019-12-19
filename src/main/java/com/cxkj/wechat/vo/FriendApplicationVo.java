@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class FriendApplicationVO extends ChatResponse{
+public class FriendApplicationVo extends ChatResponse{
     private String id;
     private Integer fromUserId;
     private String fromUsername;
@@ -19,7 +19,7 @@ public class FriendApplicationVO extends ChatResponse{
     private Boolean read;
     private Long createTimes;
 
-    public FriendApplicationVO(FriendApplication application) {
+    public FriendApplicationVo(FriendApplication application) {
         id = application.getId();
         fromUserId = application.getFromUserId();
         fromUsername = application.getFromUsername();

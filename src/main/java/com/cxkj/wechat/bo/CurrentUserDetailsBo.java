@@ -13,10 +13,10 @@ import java.util.Collection;
  * @date 2019/12/11 13:10
  */
 @Getter
-public class CurrentUserDetails implements UserDetails {
+public class CurrentUserDetailsBo implements UserDetails {
     private User user;
 
-    public CurrentUserDetails(User user) {
+    public CurrentUserDetailsBo(User user) {
         this.user = user;
     }
 

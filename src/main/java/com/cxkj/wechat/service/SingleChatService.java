@@ -3,9 +3,9 @@ package com.cxkj.wechat.service;
 import com.cxkj.wechat.entity.SingleChat;
 
 public interface SingleChatService {
-    void save(SingleChat singleChat);
+     void save(SingleChat singleChat);
 
-  void deleteTask();
+     void deleteTask();
 
-  void deleteImage();
+     void deleteImage();
 }

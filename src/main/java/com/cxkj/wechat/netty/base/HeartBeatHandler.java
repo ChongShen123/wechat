@@ -1,4 +1,4 @@
-package com.cxkj.wechat.netty.handler;
+package com.cxkj.wechat.netty.base;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxkj.wechat.constant.Command;
@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
+ * 心跳处理器
+ *
  * @author tiankong
  * @date 2019/11/18 13:41
  */

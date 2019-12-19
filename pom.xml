@@ -19,6 +19,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+            <version>4.0.0-beta3</version>
+        </dependency>
         <!--Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -68,7 +68,7 @@ public class FileImageController {
     @ResponseBody
     public JsonResult uploadVoice(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
         //如果大于1M 不让上传
-        if (file.getSize() > SystemConstant.UPLOAD_FILE_SIZE) {
+        if (file.getSize() > SystemConstant.UPLOAD_FILE_SIZE){
             return JsonResult.failed("请上传小于1M的文件");
         }
         // 文件夹

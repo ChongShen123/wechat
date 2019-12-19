@@ -1,7 +1,7 @@
 package com.cxkj.wechat.config;
 
 
-import com.cxkj.wechat.bo.CurrentUserDetails;
+import com.cxkj.wechat.bo.CurrentUserDetailsBo;
 import com.cxkj.wechat.component.JwtAuthenticationTokenFilter;
 import com.cxkj.wechat.component.RestAuthenticationEntryPoint;
 import com.cxkj.wechat.component.RestfulAccessDeniedHandler;
@@ -94,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return username -> {
             User user = userService.getByUsername(username);
             if (user != null) {
-                return new CurrentUserDetails(user);
+                return new CurrentUserDetailsBo(user);
             }
             throw new UsernameNotFoundException("用户名或密码错误");
         };

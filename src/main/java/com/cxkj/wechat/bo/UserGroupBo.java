@@ -10,11 +10,11 @@ import java.io.Serializable;
  * @date 2019/12/12 11:09
  */
 @Data
-public class UserGroup implements Serializable {
+public class UserGroupBo implements Serializable {
     private String groupName;
     private Integer gid;
     private String icon;
 
-    public UserGroup() {
+    public UserGroupBo() {
     }
 }

@@ -33,7 +33,7 @@ public class FriendApplicationServiceImpl implements FriendApplicationService {
     }
 
     @Override
-    public FriendApplication getById(String id) {
+    public FriendApplication getFriendApplicationById(String id) {
         return mongoTemplate.findById(new ObjectId(id), FriendApplication.class);
     }
 

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @date 2019/12/15 13:57
  */
 @Data
-public class GroupBaseInfoVO implements Serializable {
+public class GroupBaseInfoVo implements Serializable {
     protected Integer id;
     protected String name;
     protected Integer membersCount;
