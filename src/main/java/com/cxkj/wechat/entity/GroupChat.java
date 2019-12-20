@@ -14,7 +14,6 @@ import java.io.Serializable;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Document(collation = "GroupChat")
 public class GroupChat extends ChatInfo implements Serializable {
     private Integer toGroupId;
 
