@@ -2,6 +2,7 @@ package com.cxkj.wechat.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Document(collation = "GroupChat")
 public class GroupChat extends ChatInfo implements Serializable {
     private Integer toGroupId;
 

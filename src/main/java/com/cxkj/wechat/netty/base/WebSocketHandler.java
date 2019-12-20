@@ -84,12 +84,10 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
 //        CommandBo commandBo = commandManager.getCommandBo(command);
 //        commandBo.getMethod().invoke(commandBo.getObject(), param);
         if (executor == null) {
-<<<<<<< HEAD
-            sendErrorMessage(ctx, "命令不存在");
 
-=======
+//sendErrorMessage(ctx, "命令不存在");
+
             BaseHandler.sendMessage(ctx.channel(), JsonResult.failed(ResultCodeEnum.COMMAND_NOT_EXIST));
->>>>>>> c5c3ed6da5f1a81a762f2458cafc7f77fd431c9b
             return;
         }
         if (executor instanceof RegisterExecutor) {

@@ -5,6 +5,7 @@ import com.cxkj.wechat.dto.UserLoginDto;
 import com.cxkj.wechat.dto.UserRegisterDto;
 
 import com.cxkj.wechat.dto.UserUpdateInfoParam;
+import com.cxkj.wechat.dto.UserUpdatePassword;
 import com.cxkj.wechat.entity.User;
 import com.cxkj.wechat.service.UserService;
 import com.cxkj.wechat.util.JsonResult;
@@ -38,5 +39,11 @@ public class UserController extends BaseController {
         userService.updateUserInfo(param);
         return JsonResult.success();
     }
+    @PostMapping("updatePassWord")
+    public JsonResult  updatePassWord(@RequestBody UserUpdatePassword password){
+        userService.updatePassWord(password);
+        return JsonResult.success();
+    }
+
 
 }

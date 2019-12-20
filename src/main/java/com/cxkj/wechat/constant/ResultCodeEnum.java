@@ -80,13 +80,9 @@ public enum ResultCodeEnum implements IErrorCode {
     FORBIDDEN(4003, "没有相关权限"),
     UNAUTHORIZED(4001, "暂未登录或token已过期"),
     FAILED(4000, "failed"),
-<<<<<<< HEAD
     EMAIL(4050,"邮箱格式错误"),
-    SUCCESS(2000, "success");
-
-=======
     SUCCESS(2000, "ok");
->>>>>>> c5c3ed6da5f1a81a762f2458cafc7f77fd431c9b
+
     private Integer code;
     private String message;
 

@@ -47,6 +47,17 @@ spring:
     port: 5672
     username: root
     password: 123456
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: 404990596@qq.com
+    password: opxotzqvtesebgid
+    default-encoding: UTF-8
+    properties:
+       mail:
+        smtp:
+           socketFactoryClass: javax.net.ssl.SSLSocketFactory
+        debug: true
 server:
   port: 9001
 jwt:
@@ -64,6 +75,8 @@ file:
   qr-path: qr/
   voice-path: voice/
   group-path: group/
+
+
 # Maximum wait time for heartbeat
 # If no customer data is received within the regular time, the connection is disconnected
 logging:
@@ -72,3 +85,5 @@ logging:
       cxkj:
         wechat:
           mapper: debug
+
+

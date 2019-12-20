@@ -3,6 +3,7 @@ package com.cxkj.wechat.service.impl;
 import com.cxkj.wechat.bo.CurrentUserDetailsBo;
 import com.cxkj.wechat.constant.ResultCodeEnum;
 import com.cxkj.wechat.dto.UserUpdateInfoParam;
+import com.cxkj.wechat.dto.UserUpdatePassword;
 import com.cxkj.wechat.vo.LoginVo;
 import com.cxkj.wechat.dto.UserLoginDto;
 import com.cxkj.wechat.dto.UserRegisterDto;
@@ -49,6 +50,21 @@ public class UserServiceImpl implements UserService {
     private String imgPath;
     @Resource
     private QrUtil qrUtil;
+
+    /**
+     * 修改密码
+     * @param password
+     */
+    @Override
+    public void updatePassWord(UserUpdatePassword password) {
+        User user=new User();
+        if(password.getPassWord()==null || password.getPassWord()!=user.getPassword()){
+            throw new ServiceException(ResultCodeEnum.PASSWORD_NOT_MATCH);
+        }
+        user.setId(password.getId());
+        user.setPassword(password.getNewPassWord());
+        userMapper.updateByPrimaryKeySelective(user);
+    }
 
     @Override
     public User getByUsername(String username) {
@@ -116,6 +132,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 修改用户的密码
+     * @param param
+     */
     @Override
     public void  updateUserInfo(UserUpdateInfoParam param) {
         String emailRegex=" ^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
@@ -124,14 +144,17 @@ public class UserServiceImpl implements UserService {
         user.setIcon(param.getIcon());
         if(!param.getEmail().matches(emailRegex)){
           throw  new ServiceException(ResultCodeEnum.EMAIL);
-        }else {
-            user.setEmail(param.getEmail());
         }
-        user.setTel(param.getTel());
+        user.setEmail(param.getEmail());
+
+
+           user.setTel(param.getTel());
         user.setQq(param.getQq());
         userMapper.updateByPrimaryKeySelective(user);
 
     }
+
+
 
 
     private User getNewUser(UserRegisterDto param, HttpServletRequest request) {

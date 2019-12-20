@@ -1,6 +1,7 @@
 package com.cxkj.wechat.service;
 
 import com.cxkj.wechat.dto.UserUpdateInfoParam;
+import com.cxkj.wechat.dto.UserUpdatePassword;
 import com.cxkj.wechat.vo.LoginVo;
 import com.cxkj.wechat.dto.UserLoginDto;
 import com.cxkj.wechat.dto.UserRegisterDto;
@@ -53,6 +54,13 @@ public interface UserService {
      */
     User getByUserId(Integer id);
 
-
+    /**
+     * 修改用户的基本信息
+     * @param param
+     */
     void  updateUserInfo(UserUpdateInfoParam param);
+    /**
+     * 修改用户的密码
+     */
+    void updatePassWord(UserUpdatePassword password);
 }
