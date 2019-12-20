@@ -1,8 +1,10 @@
 package com.cxkj.wechat.service.impl;
 
 import com.cxkj.wechat.constant.SystemConstant;
+import com.cxkj.wechat.entity.FriendApplication;
 import com.cxkj.wechat.entity.GroupChat;
 import com.cxkj.wechat.service.GroupChatService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -14,6 +16,7 @@ import java.util.List;
 
 
 @Service
+@Slf4j
 public class GroupChatServiceImpl implements GroupChatService {
 
     @Value("${file.root-path}")
@@ -24,10 +27,11 @@ public class GroupChatServiceImpl implements GroupChatService {
     private MongoTemplate mongoTemplate;
 
     //一分钟毫秒数为60000
-    Long time = System.currentTimeMillis()-600000;
+    Long time = System.currentTimeMillis() - 600000;
 
     /**
      * 保存群聊
+     *
      * @param groupChat
      */
     @Override
@@ -49,7 +53,7 @@ public class GroupChatServiceImpl implements GroupChatService {
     @Override
     public void deleteGroup() {
         Query createTimes = Query.query(Criteria.where("createTimes").lt(time));
-        mongoTemplate.findAllAndRemove(createTimes,GroupChat.class);
+        mongoTemplate.findAllAndRemove(createTimes, GroupChat.class);
     }
 
     @Override
@@ -59,26 +63,28 @@ public class GroupChatServiceImpl implements GroupChatService {
          */
         Query createTimes = Query.query(Criteria.where("createTimes").lt(time));
         List<GroupChat> groupChats = mongoTemplate.find(createTimes, GroupChat.class);
-        /**
-         * 遍历查询到的储存时间到期的图片和语音
-         */
-        for (GroupChat groupChat:groupChats){
-            Byte type = groupChat.getType();
-            if(type==SystemConstant.CHAT_TYPE_VOICE || type == SystemConstant.CHAT_TYPE_IMG){
-                String path=groupChat.getContent();
-                if(path==null){
-                    continue;
-                }
-                String realName=rootPath+path;
-                File file=new File(realName);
-                if (file.exists()){
-                    file.delete();
+        System.out.println(groupChats.size());
+//        /**
+//         * 遍历查询到的储存时间到期的图片和语音
+//         */
+        if (groupChats.size() > 0) {
+            for (GroupChat groupChat : groupChats) {
+                Byte type = groupChat.getType();
+                if (type == SystemConstant.CHAT_TYPE_VOICE || type == SystemConstant.CHAT_TYPE_IMG) {
+                    String path = groupChat.getContent();
+                    if (path == null) {
+                        continue;
+                    }
+                    String realName = rootPath + path;
+                    File file = new File(realName);
+                    if (file.exists()) {
+                        file.delete();
+                    } else {
+                        log.error("{}文件不存在", file.getName());
+                    }
                 }
             }
+            mongoTemplate.findAllAndRemove(createTimes, GroupChat.class);
         }
-                /*mongoTemplate.findAllAndRemove(createTimes,GroupChat.class);*/
-       /* this.deleteGroup();*/
-
     }
-
 }

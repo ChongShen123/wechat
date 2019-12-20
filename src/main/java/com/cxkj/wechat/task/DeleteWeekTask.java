@@ -10,17 +10,19 @@ import javax.annotation.Resource;
 
 @Component     // 1.主要用于标记配置类，兼备Component的效果。
 public class DeleteWeekTask {
-   @Resource
-   SingleChatService singleChatService;
-   @Resource
+    @Resource
+    SingleChatService singleChatService;
+    @Resource
     GroupChatService groupChatService;
 
-   //0 */1 * * * ?   -1分钟定时器     0 0/5 * * * ? 5分钟
-    @Scheduled(cron = "0 0/5 * * * ?" )
-    public void deleteCreateTimes(){
-          singleChatService.deleteTask();
-          singleChatService.deleteImage();
-          groupChatService.deleteGroup();
-          groupChatService.deleteGroupImage();
+    //0 */1 * * * ?   -1分钟定时器     0 0/5 * * * ? 5分钟
+//    @Scheduled(cron = "0 0/5 * * * ?")
+//    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "* * * * * ? ")
+    public void deleteCreateTimes() {
+//        singleChatService.deleteTask();
+//        singleChatService.deleteImage();
+//        groupChatService.deleteGroup();
+        groupChatService.deleteGroupImage();
     }
 }
