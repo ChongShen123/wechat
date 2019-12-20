@@ -27,7 +27,7 @@ public class GroupChatServiceImpl implements GroupChatService {
     private MongoTemplate mongoTemplate;
 
     //一分钟毫秒数为60000
-    Long time = System.currentTimeMillis() - 600000;
+    Long time = System.currentTimeMillis() - 60000;
 
     /**
      * 保存群聊
@@ -50,14 +50,9 @@ public class GroupChatServiceImpl implements GroupChatService {
     /**
      * 删除群聊消息
      */
-    @Override
-    public void deleteGroup() {
-        Query createTimes = Query.query(Criteria.where("createTimes").lt(time));
-        mongoTemplate.findAllAndRemove(createTimes, GroupChat.class);
-    }
 
     @Override
-    public void deleteGroupImage() {
+    public void deleteGroupChat() {
         /**
          * 获取过期的时间的
          */

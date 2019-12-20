@@ -8,7 +8,6 @@ import com.cxkj.wechat.entity.GroupChat;
 public interface GroupChatService {
     void save (GroupChat groupChat);
 
-    void deleteGroup();
 
-    void deleteGroupImage();
+    void deleteGroupChat();
 }

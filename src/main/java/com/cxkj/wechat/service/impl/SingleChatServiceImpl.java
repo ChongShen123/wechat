@@ -29,7 +29,7 @@ public class SingleChatServiceImpl implements SingleChatService {
     private MongoTemplate mongoTemplate;
 
     //一分钟毫秒数为60000
-    Long time = System.currentTimeMillis() - 600000;
+    Long time = System.currentTimeMillis() - 60000;
 
     @Override
     public void save(SingleChat singleChat) {
@@ -51,7 +51,7 @@ public class SingleChatServiceImpl implements SingleChatService {
 
     //604800000
     @Override
-    public void deleteImage() {
+    public void deleteSingchat() {
         // step1 先查询 7天之前的所有数据。 List<SingleChat> list;
         Query query1 = Query.query(Criteria.where("createTimes").lt(time));
         List<SingleChat> list = mongoTemplate.find(query1, SingleChat.class);
@@ -78,11 +78,7 @@ public class SingleChatServiceImpl implements SingleChatService {
     }
 
 
-    @Override //604800000
-    public void deleteTask() {
-        Query query = Query.query(Criteria.where("createTimes").lt(time));
-        mongoTemplate.findAllAndRemove(query, SingleChat.class);
-    }
+
 
     @Override
     public SingleChat getById(String id) {

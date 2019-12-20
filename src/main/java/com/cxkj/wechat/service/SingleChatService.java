@@ -9,9 +9,8 @@ public interface SingleChatService {
      void save(SingleChat singleChat);
 
 
-     void deleteTask();
 
-     void deleteImage();
+     void deleteSingchat();
 
 
 
