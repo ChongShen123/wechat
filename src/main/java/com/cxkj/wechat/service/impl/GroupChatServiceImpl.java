@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.List;
@@ -20,15 +19,14 @@ import java.util.List;
 @Slf4j
 public class GroupChatServiceImpl implements GroupChatService {
 
-    @Value("${file.root-path}")
-    private String rootPath;
+    @Value("${file.group-chat}")
+    private String groupChatFile;
 
 
     @Resource
     private MongoTemplate mongoTemplate;
-
-    //一分钟毫秒数为60000
-    Long time = System.currentTimeMillis() - 600000;
+//获取当前时间的前15天的时间戳
+    Long time = System.currentTimeMillis() - 1296000000;
 
     /**
      * 保存群聊
@@ -51,14 +49,9 @@ public class GroupChatServiceImpl implements GroupChatService {
     /**
      * 删除群聊消息
      */
-    @Override
-    public void deleteGroup() {
-        Query createTimes = Query.query(Criteria.where("createTimes").lt(time));
-        mongoTemplate.findAllAndRemove(createTimes, GroupChat.class);
-    }
 
     @Override
-    public void deleteGroupImage() {
+    public void deleteGroupChat() {
         /**
          * 获取过期的时间的
          */
@@ -76,12 +69,13 @@ public class GroupChatServiceImpl implements GroupChatService {
                     if (path == null) {
                         continue;
                     }
-                    String realName = rootPath + path;
+                    String realName = groupChatFile + path;
                     File file = new File(realName);
                     if (file.exists()) {
                         file.delete();
                     } else {
                         log.error("{}文件不存在", file.getName());
+                        continue;
                     }
                 }
             }

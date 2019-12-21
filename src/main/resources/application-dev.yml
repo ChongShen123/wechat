@@ -42,6 +42,7 @@ spring:
       port: 27017
       username: root2
       password: awekaldj412
+
   rabbitmq:
     host: 103.48.170.167
     port: 5672
@@ -75,8 +76,8 @@ file:
   qr-path: qr/
   voice-path: voice/
   group-path: group/
-
-
+  single-chat: c:/upload/wechat/singleChat
+  group-chat: c:/upload/wechat/groupChat
 # Maximum wait time for heartbeat
 # If no customer data is received within the regular time, the connection is disconnected
 logging:

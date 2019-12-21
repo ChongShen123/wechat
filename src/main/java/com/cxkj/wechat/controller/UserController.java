@@ -39,7 +39,7 @@ public class UserController extends BaseController {
         userService.updateUserInfo(param);
         return JsonResult.success();
     }
-    @PostMapping("updatePassWord")
+    @PostMapping("/updatePassWord")
     public JsonResult  updatePassWord(@RequestBody UserUpdatePassword password){
         userService.updatePassWord(password);
         return JsonResult.success();
