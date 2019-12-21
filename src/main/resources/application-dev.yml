@@ -79,6 +79,8 @@ file:
   qr-path: qr/
   voice-path: voice/
   group-path: group/
+  single-chat: c:/upload/wechat/singleChat
+  group-chat: c:/upload/wechat/groupChat
 
 
 # Maximum wait time for heartbeat

@@ -4,6 +4,7 @@ import com.cxkj.wechat.bo.CurrentUserDetailsBo;
 import com.cxkj.wechat.constant.ResultCodeEnum;
 import com.cxkj.wechat.dto.UserUpdateInfoParam;
 import com.cxkj.wechat.dto.UserUpdatePassword;
+import com.cxkj.wechat.util.UserUtil;
 import com.cxkj.wechat.vo.LoginVo;
 import com.cxkj.wechat.dto.UserLoginDto;
 import com.cxkj.wechat.dto.UserRegisterDto;
@@ -50,6 +51,8 @@ public class UserServiceImpl implements UserService {
     private String imgPath;
     @Resource
     private QrUtil qrUtil;
+    @Resource
+    private UserUtil userUtil;
 
     /**
      * 修改密码
@@ -57,13 +60,25 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void updatePassWord(UserUpdatePassword password) {
-        User user=new User();
-        if(password.getPassWord()==null || password.getPassWord()!=user.getPassword()){
-            throw new ServiceException(ResultCodeEnum.PASSWORD_NOT_MATCH);
+        //获取当前的用户信息
+       User user = userUtil.currentUser();
+       //获取当前用户传过来的老密码，并对密码进行比对返回一个boolean的值
+        String passWord = password.getPassWord();
+        boolean matches = encoder.matches(passWord, user.getPassword());
+        //如果返回值是true，就把新密码插入
+        if(matches==true){
+            user.setPassword(password.getNewPassWord());
+            userMapper.updateByPrimaryKeySelective(user);
         }
-        user.setId(password.getId());
-        user.setPassword(password.getNewPassWord());
-        userMapper.updateByPrimaryKeySelective(user);
+
+
+//        User user=new User();
+//        if(password.getPassWord()==null || password.getPassWord()!=user.getPassword()){
+//            throw new ServiceException(ResultCodeEnum.PASSWORD_NOT_MATCH);
+//        }
+//        user.setId(password.getId());
+//        user.setPassword(password.getNewPassWord());
+//        userMapper.updateByPrimaryKeySelective(user);
     }
 
     @Override
@@ -131,7 +146,6 @@ public class UserServiceImpl implements UserService {
     public User getByUserId(Integer id) {
         return userMapper.selectByPrimaryKey(id);
     }
-
     /**
      * 修改用户的密码
      * @param param
@@ -146,12 +160,9 @@ public class UserServiceImpl implements UserService {
           throw  new ServiceException(ResultCodeEnum.EMAIL);
         }
         user.setEmail(param.getEmail());
-
-
            user.setTel(param.getTel());
         user.setQq(param.getQq());
         userMapper.updateByPrimaryKeySelective(user);
-
     }
 
 

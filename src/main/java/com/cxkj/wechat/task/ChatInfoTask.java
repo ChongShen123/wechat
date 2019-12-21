@@ -21,8 +21,9 @@ public class ChatInfoTask {
 
     /**
      *定时删除消息
+     * 在每月的1号 15号 0点0分执行
      */
-    @Scheduled(cron = "0 0/5 * * * ? ")
+    @Scheduled(cron = "0 0 0 1,15 * ?")
     public void TimedClearMessage() {
         singleChatService.deleteSingchat();
         groupChatService.deleteGroupChat();

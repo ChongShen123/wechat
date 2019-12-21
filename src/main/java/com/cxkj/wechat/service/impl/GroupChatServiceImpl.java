@@ -19,15 +19,14 @@ import java.util.List;
 @Slf4j
 public class GroupChatServiceImpl implements GroupChatService {
 
-    @Value("${file.root-path}")
-    private String rootPath;
+    @Value("${file.group-chat}")
+    private String groupChatFile;
 
 
     @Resource
     private MongoTemplate mongoTemplate;
-
-    //一分钟毫秒数为60000
-    Long time = System.currentTimeMillis() - 60000;
+//获取当前时间的前15天的时间戳
+    Long time = System.currentTimeMillis() - 1296000000;
 
     /**
      * 保存群聊
@@ -70,12 +69,13 @@ public class GroupChatServiceImpl implements GroupChatService {
                     if (path == null) {
                         continue;
                     }
-                    String realName = rootPath + path;
+                    String realName = groupChatFile + path;
                     File file = new File(realName);
                     if (file.exists()) {
                         file.delete();
                     } else {
                         log.error("{}文件不存在", file.getName());
+                        continue;
                     }
                 }
             }

@@ -21,15 +21,13 @@ import java.util.List;
 @Service
 @Slf4j
 public class SingleChatServiceImpl implements SingleChatService {
-    @Value("${file.root-path}")
-    private String rootPath;
-    @Value("${file.img-path}")
-    private String imgPath;
+    @Value("${file.single-chat}")
+    private String singleChatFile;
     @Resource
     private MongoTemplate mongoTemplate;
 
-    //一分钟毫秒数为60000
-    Long time = System.currentTimeMillis() - 60000;
+    //获取当前时间的前15天的时间戳
+    Long time = System.currentTimeMillis() - 1296000000;
 
     @Override
     public void save(SingleChat singleChat) {
@@ -65,11 +63,12 @@ public class SingleChatServiceImpl implements SingleChatService {
                     if (path == null) {
                         continue;
                     }
-                    File file = new File(rootPath + path);
+                    File file = new File(singleChatFile + path);
                     if (file.exists()) {
                         file.delete();
                     } else {
                         log.error("{}文件不存在", file.getName());
+                        continue;
                     }
                 }
             }
@@ -85,7 +84,6 @@ public class SingleChatServiceImpl implements SingleChatService {
         Query query = Query.query(Criteria.where("id").is(id));
         return mongoTemplate.findOne(query, SingleChat.class);
     }
-
     @Override
     public void deleteById(String id) {
         Query query = Query.query(Criteria.where("id").is(id));
