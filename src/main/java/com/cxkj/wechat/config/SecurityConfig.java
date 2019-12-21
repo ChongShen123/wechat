@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "swagger-resources/**",
                         "v2/api-docs/**")
                 .permitAll()
-                .antMatchers("/user/login", "/user/register", "/file/upload/img")
+                .antMatchers("/user/login", "/user/register", "/file/upload/img","/admin/**")
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)
                 .permitAll()
