@@ -20,12 +20,17 @@ import java.io.IOException;
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        httpServletResponse.setCharacterEncoding("utf-8");
-        httpServletResponse.setContentType("application/json");
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        httpServletResponse.setStatus(401);
-        httpServletResponse.getWriter().println(JSONUtil.parse(JsonResult.unauthorized()));
-        httpServletResponse.getWriter().flush();
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/admin")) {
+            response.sendRedirect("/admin/login");
+            return;
+        }
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setStatus(401);
+        response.getWriter().println(JSONUtil.parse(JsonResult.unauthorized()));
+        response.getWriter().flush();
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cxkj.wechat.mapper.UserMapper">
+
     <resultMap id="BaseResultMap" type="com.cxkj.wechat.entity.User">
         <!--@mbg.generated-->
         <!--@Table user-->
@@ -240,9 +241,17 @@
     </select>
     <select id="listUserByIds" resultMap="BaseResultMap">
         select * from user where id in
-        <foreach collection="list" item="id" separator="," open="(" close=")">
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
+    </select>
+    <select id="listPermissionByUid" resultType="com.cxkj.wechat.bo.PermissionBo">
+        select p.*
+        from permission p
+        left join role_permission_relation rpr on p.id = rpr.pid
+        left join role r on rpr.rid = r.id
+        left join user_role_relation urr on r.id = urr.rid
+        where urr.uid = #{uid} order by p.pid;
     </select>
 
 

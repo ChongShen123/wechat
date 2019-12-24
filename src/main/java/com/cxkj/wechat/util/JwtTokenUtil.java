@@ -87,6 +87,12 @@ public class JwtTokenUtil {
         return generateToken(claims);
     }
 
+    public String pastDueToken(String token) {
+        Claims claims = getClaimsFormToken(token);
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return generateToken(claims);
+    }
+
 
     /**
      * 判断token是否有效

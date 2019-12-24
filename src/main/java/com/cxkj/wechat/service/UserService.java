@@ -1,11 +1,13 @@
 package com.cxkj.wechat.service;
 
+import com.cxkj.wechat.bo.PermissionBo;
 import com.cxkj.wechat.dto.UserUpdateInfoParam;
 import com.cxkj.wechat.dto.UserUpdatePassword;
 import com.cxkj.wechat.vo.LoginVo;
 import com.cxkj.wechat.dto.UserLoginDto;
 import com.cxkj.wechat.dto.UserRegisterDto;
 import com.cxkj.wechat.entity.User;
+import com.cxkj.wechat.vo.admin.LoginInfoVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -42,6 +44,7 @@ public interface UserService {
 
     /**
      * 查询用户
+     *
      * @param ids ids
      * @return List
      */
@@ -49,6 +52,7 @@ public interface UserService {
 
     /**
      * 查询用户
+     *
      * @param id id
      * @return 用户
      */
@@ -56,11 +60,29 @@ public interface UserService {
 
     /**
      * 修改用户的基本信息
-     * @param param
+     *
+     * @param param param
      */
-    void  updateUserInfo(UserUpdateInfoParam param);
+    void updateUserInfo(UserUpdateInfoParam param);
+
     /**
      * 修改用户的密码
      */
-    void updatePassWord(UserUpdatePassword password);
+    void updatePassword(UserUpdatePassword password);
+
+    /**
+     * 后台管理员登录 获取管理员信息
+     *
+     * @return LoginInfoVo
+     */
+    LoginInfoVo getInfo();
+
+    /**
+     * 获取用户菜单
+     *
+     * @param id 用户id
+     * @return list
+     */
+    List<PermissionBo> getUserPermission(Integer id);
+
 }

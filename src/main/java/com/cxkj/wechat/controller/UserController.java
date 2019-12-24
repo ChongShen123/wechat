@@ -6,7 +6,6 @@ import com.cxkj.wechat.dto.UserRegisterDto;
 
 import com.cxkj.wechat.dto.UserUpdateInfoParam;
 import com.cxkj.wechat.dto.UserUpdatePassword;
-import com.cxkj.wechat.entity.User;
 import com.cxkj.wechat.service.UserService;
 import com.cxkj.wechat.util.JsonResult;
 import org.springframework.validation.annotation.Validated;
@@ -32,7 +31,8 @@ public class UserController extends BaseController {
 
     @PostMapping("/login")
     public JsonResult login(@Validated @RequestBody UserLoginDto param, HttpServletRequest request) {
-        return JsonResult.success(userService.login(param, request, true));
+        JsonResult success = JsonResult.success(userService.login(param, request, true));
+        return success;
     }
     @PostMapping("/update")
     public JsonResult updateUserInfo(@RequestBody UserUpdateInfoParam param ){
@@ -41,7 +41,7 @@ public class UserController extends BaseController {
     }
     @PostMapping("/updatePassWord")
     public JsonResult  updatePassWord(@RequestBody UserUpdatePassword password){
-        userService.updatePassWord(password);
+        userService.updatePassword(password);
         return JsonResult.success();
     }
 

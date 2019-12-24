@@ -1,5 +1,7 @@
 package com.cxkj.wechat.mapper;
 
+import com.cxkj.wechat.bo.PermissionBo;
+import com.cxkj.wechat.entity.Permission;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public interface UserMapper {
 
     Integer countByEmail(@Param("email") String email);
 
-    List<User> listUserByIds(Set<Integer> ids);
+    List<User> listUserByIds(@Param("ids") Set<Integer> ids);
 
+    List<PermissionBo> listPermissionByUid(@Param("uid") Integer uid);
 }

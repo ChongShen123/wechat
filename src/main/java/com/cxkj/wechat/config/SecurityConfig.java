@@ -60,10 +60,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "swagger-resources/**",
                         "v2/api-docs/**")
                 .permitAll()
-                .antMatchers("/user/login", "/user/register", "/file/upload/img","/admin/**")
+                .antMatchers("/user/login",
+                        "/user/register",
+                        "/file/upload/img",
+                        "/admin/login",
+                        "/layuiadmin/**",
+                        "/common/**")
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)
                 .permitAll()
+//                .antMatchers("**")
+//                .permitAll()
                 .anyRequest()
                 .authenticated();
         //禁用缓存
@@ -74,6 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)
                 .authenticationEntryPoint(restAuthenticationEntryPoint);
+        //Spring Security禁用X-Frame-Options 不加此配置.在网页内部 iframe 来能加载其他网页
+        http.headers().frameOptions().disable();
     }
 
 

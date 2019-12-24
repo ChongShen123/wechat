@@ -85,6 +85,6 @@ logging:
     com:
       cxkj:
         wechat:
-          mapper: debug
+          mapper: info
 
 

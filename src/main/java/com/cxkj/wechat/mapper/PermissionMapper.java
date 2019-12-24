@@ -4,7 +4,7 @@ import com.cxkj.wechat.entity.Permission;
 
 /**
  * @author tiankong
- * @date 2019/12/11 11:39
+ * @date 2019/12/23 13:46
  */
 public interface PermissionMapper {
     int deleteByPrimaryKey(Integer id);

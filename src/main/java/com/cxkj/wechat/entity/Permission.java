@@ -5,36 +5,44 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2019/12/11 11:39
+ * @date 2019/12/23 13:46
  */
 @Data
 public class Permission implements Serializable {
-    private Integer id;
+    protected Integer id;
 
-    private Integer pid;
+    protected Integer pid;
 
-    private String value;
+    protected String name;
 
-    private String icon;
-
-    /**
-    * 权限类型: 0目录 1菜单 2按钮 3 接口
-    */
-    private Byte type;
+    protected String path;
 
     /**
-    * 前端资源路径
-    */
-    private String uri;
+     * 前端资源路径
+     */
+    protected String component;
+
+    protected String title;
+
+    protected String icon;
+
+    protected String redirect;
 
     /**
-    * 启用状态：0禁用 1启用
-    */
-    private Byte status;
+     * 权限类型: 0目录 1菜单 2按钮 3 接口
+     */
+    protected Byte type;
 
-    private Long createTimes;
+    protected Boolean hidden;
 
-    private Integer sort;
+    /**
+     * 启用状态：0禁用 1启用
+     */
+    protected Byte status;
 
-    private static final long serialVersionUID = 1L;
+    protected Integer sort;
+
+    protected Long createTimes;
+
+    protected static final long serialVersionUID = 1L;
 }

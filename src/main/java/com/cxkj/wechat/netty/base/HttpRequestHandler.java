@@ -50,7 +50,11 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<Object> {
             WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
         } else {
             SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.put(ctx.channel().id().asLongText(), handShaker);
-            handShaker.handshake(ctx.channel(), request);
+            try {
+                handShaker.handshake(ctx.channel(), request);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -7,14 +7,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author tiankong
  * @date 2019/12/11 13:10
  */
-@Getter
+@Data
 public class CurrentUserDetailsBo implements UserDetails {
     private User user;
+    private List<PermissionBo> permissionBos;
 
     public CurrentUserDetailsBo(User user) {
         this.user = user;

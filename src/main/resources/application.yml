@@ -5,12 +5,14 @@ spring:
     ehcache:
       config: classpath:ehcache.xml
   thymeleaf:
-    cache: true
+    cache: false
     check-template: true
     encoding: UTF-8
     servlet:
       content-type: text/html
     suffix: .html
+  mvc:
+    static-path-pattern: /**
 logging:
   config: classpath:log4j.xml
 mybatis:
