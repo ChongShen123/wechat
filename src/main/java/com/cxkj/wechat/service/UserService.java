@@ -1,5 +1,6 @@
 package com.cxkj.wechat.service;
 
+import com.cxkj.wechat.bo.CurrentUserDetailsBo;
 import com.cxkj.wechat.bo.PermissionBo;
 import com.cxkj.wechat.dto.UserUpdateInfoParam;
 import com.cxkj.wechat.dto.UserUpdatePassword;
@@ -26,18 +27,23 @@ public interface UserService {
      */
     User getByUsername(String username);
 
+
     /**
      * 登录
      *
-     * @param param 登录参数
+     * @param param   参数
+     * @param request 连接
+     * @param check   是否验证密码
      * @return 登录信息
      */
     LoginVo login(UserLoginDto param, HttpServletRequest request, boolean check);
 
+
     /**
      * 用户注册
      *
-     * @param param 注册参数
+     * @param param   参数
+     * @param request 连接信息
      * @return 登录信息
      */
     LoginVo register(UserRegisterDto param, HttpServletRequest request);
@@ -85,4 +91,11 @@ public interface UserService {
      */
     List<PermissionBo> getUserPermission(Integer id);
 
+    /**
+     * 创建一个当前用户对象
+     *
+     * @param user 用户
+     * @return CurrentUserDetailsBo
+     */
+    CurrentUserDetailsBo createCurrentUserDetailsBo(User user);
 }

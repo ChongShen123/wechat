@@ -145,12 +145,32 @@ public interface SystemConstant {
 
     // -----------------------系统相关----------------------------------------
     /**
+     * 邮箱正则
+     */
+    String EMAIL_REGEX = "^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
+    /**
      * 系统通知ID
      */
     Integer SYSTEM_USER_ID = 0;
+
     /**
      * 系统消息撤销最大时间
      * 10s
      */
     Long CHAT_CANCEL_TIMES = 1000 * 10L;
+
+    // ----------------redis 相关-----------------------------------------------------
+    /**
+     * 用户key
+     * user_+用户名
+     */
+    String REDIS_USER_KEY = "user_";
+
+    /**
+     * 用户缓存过期时间
+     * 单位s
+     */
+    long REDIS_USER_TIMEOUT = 60 * 60 * 24;
+
+
 }

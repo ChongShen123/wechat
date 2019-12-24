@@ -2,11 +2,17 @@ package com.cxkj.wechat.config;
 
 
 import com.cxkj.wechat.bo.CurrentUserDetailsBo;
+import com.cxkj.wechat.bo.GroupInfoBo;
 import com.cxkj.wechat.component.JwtAuthenticationTokenFilter;
 import com.cxkj.wechat.component.RestAuthenticationEntryPoint;
 import com.cxkj.wechat.component.RestfulAccessDeniedHandler;
+import com.cxkj.wechat.constant.SystemConstant;
 import com.cxkj.wechat.entity.User;
+import com.cxkj.wechat.service.GroupService;
 import com.cxkj.wechat.service.UserService;
+import com.cxkj.wechat.util.RedisUtil;
+import com.cxkj.wechat.util.SessionUtil;
+import com.cxkj.wechat.vo.ListGroupVo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,6 +30,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author tiankong
@@ -35,6 +43,10 @@ import javax.annotation.Resource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private UserService userService;
+    @Resource
+    private GroupService groupService;
+    @Resource
+    private RedisUtil redisUtil;
     @Resource
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     @Resource
@@ -85,7 +97,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -101,6 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected UserDetailsService userDetailsService() {
         return username -> {
+            // TODO 这里好像没用
             User user = userService.getByUsername(username);
             if (user != null) {
                 return new CurrentUserDetailsBo(user);

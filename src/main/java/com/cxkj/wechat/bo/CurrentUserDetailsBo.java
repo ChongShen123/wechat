@@ -1,6 +1,7 @@
 package com.cxkj.wechat.bo;
 
 import com.cxkj.wechat.entity.User;
+import com.cxkj.wechat.vo.ListGroupVo;
 import lombok.Data;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +17,14 @@ import java.util.List;
 @Data
 public class CurrentUserDetailsBo implements UserDetails {
     private User user;
+    /**
+     * 用户的的菜单
+     */
     private List<PermissionBo> permissionBos;
+    /**
+     * 用户的所有群组
+     */
+    private List<ListGroupVo> groupInfoBos;
 
     public CurrentUserDetailsBo(User user) {
         this.user = user;

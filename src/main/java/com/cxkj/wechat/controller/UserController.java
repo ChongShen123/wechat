@@ -31,8 +31,7 @@ public class UserController extends BaseController {
 
     @PostMapping("/login")
     public JsonResult login(@Validated @RequestBody UserLoginDto param, HttpServletRequest request) {
-        JsonResult success = JsonResult.success(userService.login(param, request, true));
-        return success;
+        return JsonResult.success(userService.login(param, request, true));
     }
     @PostMapping("/update")
     public JsonResult updateUserInfo(@RequestBody UserUpdateInfoParam param ){

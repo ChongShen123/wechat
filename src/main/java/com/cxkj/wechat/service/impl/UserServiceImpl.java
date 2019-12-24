@@ -3,9 +3,12 @@ package com.cxkj.wechat.service.impl;
 import com.cxkj.wechat.bo.CurrentUserDetailsBo;
 import com.cxkj.wechat.bo.PermissionBo;
 import com.cxkj.wechat.constant.ResultCodeEnum;
+import com.cxkj.wechat.constant.SystemConstant;
 import com.cxkj.wechat.dto.UserUpdateInfoParam;
 import com.cxkj.wechat.dto.UserUpdatePassword;
+import com.cxkj.wechat.service.BaseService;
 import com.cxkj.wechat.util.UserUtil;
+import com.cxkj.wechat.vo.ListGroupVo;
 import com.cxkj.wechat.vo.LoginVo;
 import com.cxkj.wechat.dto.UserLoginDto;
 import com.cxkj.wechat.dto.UserRegisterDto;
@@ -36,7 +39,7 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseService implements UserService {
     @Resource
     private UserMapper userMapper;
     @Resource
@@ -54,11 +57,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserUtil userUtil;
 
-    /**
-     * 修改密码
-     *
-     * @param password
-     */
     @Override
     public void updatePassword(UserUpdatePassword password) {
         //获取当前的用户信息
@@ -72,8 +70,6 @@ public class UserServiceImpl implements UserService {
             user.setPassword(password.getNewPassWord());
             userMapper.updateByPrimaryKeySelective(user);
         }
-
-
 //        User user=new User();
 //        if(password.getPassWord()==null || password.getPassWord()!=user.getPassword()){
 //            throw new ServiceException(ResultCodeEnum.PASSWORD_NOT_MATCH);
@@ -99,20 +95,24 @@ public class UserServiceImpl implements UserService {
                 throw new ServiceException(ResultCodeEnum.PASSWORD_NOT_MATCH);
             }
         }
-        CurrentUserDetailsBo currentUserDetails = new CurrentUserDetailsBo(user);
-        currentUserDetails.setPermissionBos(getUserPermission(user.getId()));
+
+        CurrentUserDetailsBo currentUserDetails = createCurrentUserDetailsBo(user);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(currentUserDetails, null, null);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         insertLoginLog(user, request);
+        //将用户信息保存到redis
+        redisUtil.set(SystemConstant.REDIS_USER_KEY + user.getUsername(), currentUserDetails, SystemConstant.REDIS_USER_TIMEOUT);
         return new LoginVo(user.getId(), user.getUsername(), user.getIcon(), tokenHead + " " + jwtTokenUtil.generateToken(user.getUsername()), user.getQr());
     }
 
-    /**
-     * 获取用户可访问的路径
-     *
-     * @param id 用户ID
-     * @return list
-     */
+    @Override
+    public CurrentUserDetailsBo createCurrentUserDetailsBo(User user) {
+        CurrentUserDetailsBo currentUserDetailsBo = new CurrentUserDetailsBo(user);
+        currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
+        currentUserDetailsBo.setGroupInfoBos(groupService.listGroupByUid(user.getId()));
+        return currentUserDetailsBo;
+    }
+
     @Override
     public List<PermissionBo> getUserPermission(Integer id) {
         List<PermissionBo> permissionList = userMapper.listPermissionByUid(id);
@@ -160,7 +160,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.listUserByIds(ids);
     }
 
-
     @Override
     public LoginVo register(UserRegisterDto param, HttpServletRequest request) {
         String passwordRegex = "^[0-9A-Za-z_]{6,12}$";
@@ -186,14 +185,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByPrimaryKey(id);
     }
 
-    /**
-     * 修改用户的密码
-     *
-     * @param param
-     */
     @Override
     public void updateUserInfo(UserUpdateInfoParam param) {
-        String emailRegex = " ^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
+        String emailRegex = SystemConstant.EMAIL_REGEX;
         User user = new User();
         user.setId(param.getId());
         user.setIcon(param.getIcon());
@@ -205,7 +199,6 @@ public class UserServiceImpl implements UserService {
         user.setQq(param.getQq());
         userMapper.updateByPrimaryKeySelective(user);
     }
-
 
     private User getNewUser(UserRegisterDto param, HttpServletRequest request) {
         User user = new User();
@@ -231,6 +224,5 @@ public class UserServiceImpl implements UserService {
         loginInfoVo.setMenus(user.getPermissionBos());
         return loginInfoVo;
     }
-
 
 }
