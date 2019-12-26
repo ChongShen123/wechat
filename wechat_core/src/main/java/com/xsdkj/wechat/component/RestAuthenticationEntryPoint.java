@@ -21,11 +21,6 @@ import java.io.IOException;
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-        String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/admin")) {
-            response.sendRedirect("/admin/login");
-            return;
-        }
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json");
         response.setHeader("Access-Control-Allow-Origin", "*");

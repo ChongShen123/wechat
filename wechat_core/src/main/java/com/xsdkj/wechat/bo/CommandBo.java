@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
  * @date 2019/12/18 17:51
  */
 @Data
+@Deprecated
 public class CommandBo {
     /**
      * 命令

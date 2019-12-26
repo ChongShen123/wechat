@@ -2,7 +2,7 @@ package com.xsdkj.wechat.netty.cmd.single;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.RabbitMessageBox;
+import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.SystemConstant;
@@ -47,6 +47,7 @@ public class SingleChatCmd extends BaseChatCmd {
             chat.setRead(false);
         }
         // TODO 使用到RabbitMQ
-        rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBox.createBox(SystemConstant.BOX_TYPE_SING_CHAT, chat));
+        rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, chat));
+        sendMessage(channel, JsonResult.success(cmd));
     }
 }

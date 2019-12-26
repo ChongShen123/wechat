@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.service;
 
 
-import com.xsdkj.wechat.bo.RabbitMessageBox;
+import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 
 /**
  * @author tiankong
@@ -14,5 +14,5 @@ public interface RabbitTemplateService {
      * @param queue 队列名称
      * @param box   内容
      */
-    void addChatInfo(String queue, RabbitMessageBox box);
+    void addChatInfo(String queue, RabbitMessageBoxBo box);
 }

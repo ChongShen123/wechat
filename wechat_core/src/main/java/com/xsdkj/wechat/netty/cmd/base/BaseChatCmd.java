@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.RabbitMessageBox;
+import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.bo.RequestParamBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.JsonResult;
@@ -169,7 +169,7 @@ public abstract class BaseChatCmd extends BaseCmd {
                 sendGroupMessage(group.getId(), JsonResult.success(String.format("%s已加入群聊", SessionUtil.getSession(toUserChannel).getUsername()), cmd));
             }
             singleChat.setRead(toUserChannel != null);
-            rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBox.createBox(SystemConstant.BOX_TYPE_SING_CHAT, singleChat));
+            rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
         });
     }
 

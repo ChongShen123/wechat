@@ -12,12 +12,13 @@ import static com.xsdkj.wechat.common.SystemConstant.FANOUT_CHAT_NAME;
 import static com.xsdkj.wechat.common.SystemConstant.FANOUT_SERVICE_NAME;
 
 /**
+ * RabbitMQ 分列模式
+ *
  * @author tiankong
  * @date 2019/12/26 12:59
  */
 @Configuration
 public class RabbitFanoutConfig {
-
     /**
      * 聊天交换器
      *

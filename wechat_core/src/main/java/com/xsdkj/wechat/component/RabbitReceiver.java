@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.component;
 
 
-import com.xsdkj.wechat.bo.RabbitMessageBox;
+import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.GroupChat;
 import com.xsdkj.wechat.entity.chat.SingleChat;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * BabbitMQ 消费者
+ * RabbitMQ 消费者
  *
  * @author tiankong
  * @date 2019/12/10 13:26
@@ -32,7 +32,7 @@ public class RabbitReceiver {
      * 通过@RabbitListener注解指定一个方法是一个消费方法，方法参数就是所接收的消息。
      */
     @RabbitListener(queues = SystemConstant.CHAT_QUEUE_MAIN)
-    public void handleChatQueueMain(RabbitMessageBox box) {
+    public void handleChatQueueMain(RabbitMessageBoxBo box) {
 
         System.out.println("聊天主消费者:" + box.getData().toString());
         action(box);
@@ -40,26 +40,26 @@ public class RabbitReceiver {
 
 
     @RabbitListener(queues = SystemConstant.CHAT_QUEUE_ASSIST)
-    public void handleChatQueueAssist(RabbitMessageBox box) {
+    public void handleChatQueueAssist(RabbitMessageBoxBo box) {
         System.out.println("聊天辅消费者:" + box.getData().toString());
 //        action(box);
     }
 
     @RabbitListener(queues = SystemConstant.CHAT_QUEUE_ASSIST)
-    public void handleServiceQueueMain(RabbitMessageBox box) {
+    public void handleServiceQueueMain(RabbitMessageBoxBo box) {
         System.out.println("服务主消费者:" + box.getData().toString());
 //        action(box);
     }
 
     @RabbitListener(queues = SystemConstant.CHAT_QUEUE_ASSIST)
-    public void handleServiceQueueAssist(RabbitMessageBox box) {
+    public void handleServiceQueueAssist(RabbitMessageBoxBo box) {
         System.out.println("服务辅消费者:" + box.getData().toString());
 //        action(box);
     }
 
-    private void action(RabbitMessageBox box) {
+    private void action(RabbitMessageBoxBo box) {
         switch (box.getType()) {
-            case SystemConstant.BOX_TYPE_SING_CHAT:
+            case SystemConstant.BOX_TYPE_SINGLE_CHAT:
                 // 单聊
                 SingleChat singleChat = (SingleChat) box.getData();
                 System.out.println("chatQueueMain:" + singleChat);

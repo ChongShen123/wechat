@@ -46,8 +46,10 @@ public class SingleChatCancelCmd extends BaseChatCmd {
                 sendMessage(userChannel, JsonResult.success(new SingleChatCancelVo(requestParam.getId()), cmd));
             }
             singleChatService.deleteById(requestParam.getId());
-        }else {
-            sendMessage(channel,JsonResult.failed(ResultCodeEnum.UNDO_TIME_EXCEEDED));
+            sendMessage(channel, JsonResult.success(cmd));
+        } else {
+            sendMessage(channel, JsonResult.failed(ResultCodeEnum.UNDO_TIME_EXCEEDED));
         }
     }
 }
+

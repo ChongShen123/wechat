@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.netty.cmd.group;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.RabbitMessageBox;
+import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
@@ -59,7 +59,7 @@ public class RemoveChatGroupCmd extends BaseChatCmd {
             } else {
                 newSingleChat.setRead(false);
             }
-            rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBox.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, newSingleChat));
+            rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, newSingleChat));
         });
         // 返回信息
         sendMessage(channel, JsonResult.success(cmd));

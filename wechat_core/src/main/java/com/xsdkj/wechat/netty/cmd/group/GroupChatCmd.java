@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.netty.cmd.group;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.RabbitMessageBox;
+import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
@@ -44,7 +44,7 @@ public class GroupChatCmd extends BaseChatCmd {
         // 将消息发送给群在线所有用户
         sendGroupMessage(requestParam.getGroupId(), JsonResult.success(groupChat, cmd));
         // TODO 使用到RabbitMQ
-        rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBox.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, groupChat));
+        rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, groupChat));
     }
 
     /**

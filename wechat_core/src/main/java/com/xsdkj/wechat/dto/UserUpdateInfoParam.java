@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class UserUpdateInfoParam {
-    //TODO 将所有是ID 的修改为Uno
     private Integer id;
     private String icon;
     private String tel;

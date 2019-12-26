@@ -163,7 +163,7 @@ public interface SystemConstant {
     /**
      * 单聊类型
      */
-    int BOX_TYPE_SING_CHAT = 1;
+    int BOX_TYPE_SINGLE_CHAT = 1;
     /**
      * 群聊类型
      */
@@ -180,6 +180,12 @@ public interface SystemConstant {
 
 
     // -----------------------系统相关----------------------------------------
+    /**
+     * 机器人接口
+     * 要付费的..(⊙﹏⊙)b
+     */
+//    String ROBOT_URL = "https://api.ownthink.com/bot?appid=xiaosi&userid=user&spoken=";
+    String ROBOT_URL = "http://api.qingyunke.com/api.php?key=free&appid=0&msg=";
     /**
      * 系统账号生成最小值
      */
@@ -204,9 +210,9 @@ public interface SystemConstant {
 
     /**
      * 系统消息撤销最大时间
-     * 10s
+     * 20s
      */
-    Long CHAT_CANCEL_TIMES = 1000 * 10L;
+    Long CHAT_CANCEL_TIMES = 2000 * 10L;
 
     // ----------------redis 相关-----------------------------------------------------
     /**
