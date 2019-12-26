@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsdkj.wechat.mapper.FriendMapper">
+    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.Friend">
+        <!--@mbg.generated-->
+        <!--@Table friend-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="fid" jdbcType="INTEGER" property="fid"/>
+        <result column="flag" jdbcType="VARCHAR" property="flag"/>
+        <result column="remark_name" jdbcType="VARCHAR" property="remarkName"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="create_times" jdbcType="BIGINT" property="createTimes"/>
+        <result column="modified_times" jdbcType="BIGINT" property="modifiedTimes"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `uid`, fid, flag, remark_name, tel, description, img, `state`, create_times,
+        modified_times
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from friend
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from friend
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Friend"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into friend (`uid`, fid, flag,
+        remark_name, tel, description,
+        img, `state`, create_times,
+        modified_times)
+        values (#{uid,jdbcType=INTEGER}, #{fid,jdbcType=INTEGER}, #{flag,jdbcType=VARCHAR},
+        #{remarkName,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+        #{img,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{createTimes,jdbcType=BIGINT},
+        #{modifiedTimes,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Friend"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into friend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                `uid`,
+            </if>
+            <if test="fid != null">
+                fid,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="remarkName != null">
+                remark_name,
+            </if>
+            <if test="tel != null">
+                tel,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="img != null">
+                img,
+            </if>
+            <if test="state != null">
+                `state`,
+            </if>
+            <if test="createTimes != null">
+                create_times,
+            </if>
+            <if test="modifiedTimes != null">
+                modified_times,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="fid != null">
+                #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=VARCHAR},
+            </if>
+            <if test="remarkName != null">
+                #{remarkName,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="img != null">
+                #{img,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=TINYINT},
+            </if>
+            <if test="createTimes != null">
+                #{createTimes,jdbcType=BIGINT},
+            </if>
+            <if test="modifiedTimes != null">
+                #{modifiedTimes,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.Friend">
+        <!--@mbg.generated-->
+        update friend
+        <set>
+            <if test="uid != null">
+                `uid` = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="fid != null">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=VARCHAR},
+            </if>
+            <if test="remarkName != null">
+                remark_name = #{remarkName,jdbcType=VARCHAR},
+            </if>
+            <if test="tel != null">
+                tel = #{tel,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="img != null">
+                img = #{img,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                `state` = #{state,jdbcType=TINYINT},
+            </if>
+            <if test="createTimes != null">
+                create_times = #{createTimes,jdbcType=BIGINT},
+            </if>
+            <if test="modifiedTimes != null">
+                modified_times = #{modifiedTimes,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.Friend">
+        <!--@mbg.generated-->
+        update friend
+        set `uid` = #{uid,jdbcType=INTEGER},
+        fid = #{fid,jdbcType=INTEGER},
+        flag = #{flag,jdbcType=VARCHAR},
+        remark_name = #{remarkName,jdbcType=VARCHAR},
+        tel = #{tel,jdbcType=VARCHAR},
+        description = #{description,jdbcType=VARCHAR},
+        img = #{img,jdbcType=VARCHAR},
+        `state` = #{state,jdbcType=TINYINT},
+        create_times = #{createTimes,jdbcType=BIGINT},
+        modified_times = #{modifiedTimes,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <insert id="saveList">
+        insert into friend(uid,fid,state,create_times,modified_times) values
+        <foreach collection="friends" separator="," item="item">
+            (#{item.uid},#{item.fid},#{item.state},#{item.createTimes},#{item.modifiedTimes})
+        </foreach>
+    </insert>
+</mapper>
