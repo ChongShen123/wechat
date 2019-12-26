@@ -1,9 +1,11 @@
 package com.xsdkj.wechat.service.impl;
 
+import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.Group;
 import com.xsdkj.wechat.mapper.GroupMapper;
 import com.xsdkj.wechat.netty.ex.DataEmptyException;
 import com.xsdkj.wechat.service.GroupService;
+import com.xsdkj.wechat.util.RedisUtil;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;
 import com.xsdkj.wechat.vo.ListGroupVo;
@@ -22,10 +24,14 @@ import java.util.Set;
 public class GroupServiceImpl implements GroupService {
     @Resource
     private GroupMapper groupMapper;
+    @Resource
+    private RedisUtil redisUtil;
 
     @Override
     public List<Group> listAllChatGroup() {
-        return groupMapper.selectByAll(null);
+        List<Group> groups = groupMapper.selectByAll(null);
+        groups.forEach(group -> redisUtil.set(SystemConstant.REDIS_GROUP_KEY + group.getId(), group));
+        return groups;
     }
 
     @Override
@@ -69,7 +75,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group getGroupById(Integer groupId) {
-        return groupMapper.selectByPrimaryKey(groupId);
+        Group group = (Group) redisUtil.get(SystemConstant.REDIS_GROUP_KEY + groupId);
+        if (group == null) {
+            group = groupMapper.selectByPrimaryKey(groupId);
+            if (group == null) {
+                return null;
+            }
+            redisUtil.set(SystemConstant.REDIS_GROUP_KEY + group.getId(), group);
+        }
+        return group;
     }
 
     @Override

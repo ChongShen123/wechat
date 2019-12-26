@@ -288,3 +288,64 @@
 
 > 只有管理员可以创建群聊
 
+## 3001 查看用户所有群
+
+请求
+
+```
+{
+  "cmd":3001
+}
+```
+
+响应
+
+```
+{
+  "code":2000,
+  "data":{
+    "count":1,
+    "groupList":[
+      {
+        "gid":66,
+        "groupName":"sky、sky2的群聊",
+        "icon":"group/护眼模式_20191109094558.jpg",
+        "noticeType":true
+      }
+    ]
+  },
+  "message":"ok",
+  "type":3001
+}
+```
+
+> noticeType: 是否强行通知
+
+## 3002 查看群基本信息
+
+请求
+
+```
+{     
+	"cmd":3002,
+	"group_id":66 
+}
+```
+
+响应
+
+```
+{
+  "code":2000,
+  "data":{
+    "id":66,
+    "membersCount":2,
+    "name":"sky、sky2的群聊"
+  },
+  "message":"ok",
+  "type":3002
+}
+```
+
+> membersCount: 群成员个数
+

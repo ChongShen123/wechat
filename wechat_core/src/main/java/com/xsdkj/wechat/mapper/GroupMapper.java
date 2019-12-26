@@ -1,19 +1,10 @@
 package com.xsdkj.wechat.mapper;
 
-
-import com.xsdkj.wechat.entity.chat.Group;
-import com.xsdkj.wechat.vo.GroupBaseInfoVo;
-import com.xsdkj.wechat.vo.GroupInfoVo;
-import com.xsdkj.wechat.vo.ListGroupVo;
-import com.xsdkj.wechat.vo.ListMembersVo;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
-import java.util.Set;
+import com.xsdkj.wechat.entity.chat.Group;import com.xsdkj.wechat.vo.GroupBaseInfoVo;import com.xsdkj.wechat.vo.GroupInfoVo;import com.xsdkj.wechat.vo.ListGroupVo;import com.xsdkj.wechat.vo.ListMembersVo;import org.apache.ibatis.annotations.Param;import java.util.List;import java.util.Set;
 
 /**
  * @author tiankong
- * @date 2019/12/14 18:51
+ * @date 2019/12/26 20:08
  */
 public interface GroupMapper {
     int deleteByPrimaryKey(Integer id);
@@ -27,7 +18,6 @@ public interface GroupMapper {
     int updateByPrimaryKeySelective(Group record);
 
     int updateByPrimaryKey(Group record);
-
 
     List<Group> selectByAll(Group group);
 

@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.GroupMapper">
-    <resultMap id="UserGroupRelationMap" type="com.xsdkj.wechat.entity.chat.UserGroupRelation">
-        <result column="group_nickname" property="groupNickname"/>
-    </resultMap>
-    <resultMap id="ListGroupMembersMap" type="com.xsdkj.wechat.vo.ListMembersVo">
-        <result column="uid" property="uid"/>
-        <result column="group_nickname" property="groupNickname"/>
-        <result column="icon" property="icon"/>
-    </resultMap>
     <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.Group">
         <!--@mbg.generated-->
         <!--@Table group-->
@@ -21,42 +13,32 @@
         <result column="admin_ids" jdbcType="VARCHAR" property="adminIds"/>
         <result column="members_count" jdbcType="INTEGER" property="membersCount"/>
         <result column="state" jdbcType="BOOLEAN" property="state"/>
+        <result column="add_friend_type" jdbcType="BOOLEAN" property="addFriendType"/>
         <result column="is_save" jdbcType="BOOLEAN" property="isSave"/>
         <result column="create_times" jdbcType="BIGINT" property="createTimes"/>
         <result column="modified_times" jdbcType="BIGINT" property="modifiedTimes"/>
     </resultMap>
-    <resultMap id="GroupBaseInfoVO" type="com.xsdkj.wechat.vo.GroupBaseInfoVo">
-        <result column="id" property="id"/>
-        <result column="name" property="name"/>
-        <result column="members_count" property="membersCount"/>
-    </resultMap>
-    <resultMap id="GroupInfoVo" type="com.xsdkj.wechat.vo.GroupInfoVo" extends="BaseResultMap">
-        <result column="icon" property="icon"/>
-        <result column="qr" property="qr"/>
-        <result column="notice" property="notice"/>
-        <result column="create_times" property="createTimes"/>
-    </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `name`, icon, qr, notice, owner_id, admin_ids, members_count, `state`, is_save,
-        create_times, modified_times
+        id, `name`, icon, qr, notice, owner_id, admin_ids, members_count, `state`, add_friend_type,
+        is_save, create_times, modified_times
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         <!--@mbg.generated-->
         select
         <include refid="Base_Column_List"/>
-        from `group`
+        from group
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--@mbg.generated-->
-        delete from `group`
+        delete from group
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Group"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into `group`
+        insert into group
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">
                 `name`,
@@ -81,6 +63,9 @@
             </if>
             <if test="state != null">
                 `state`,
+            </if>
+            <if test="addFriendType != null">
+                add_friend_type,
             </if>
             <if test="isSave != null">
                 is_save,
@@ -117,6 +102,9 @@
             <if test="state != null">
                 #{state,jdbcType=BOOLEAN},
             </if>
+            <if test="addFriendType != null">
+                #{addFriendType,jdbcType=BOOLEAN},
+            </if>
             <if test="isSave != null">
                 #{isSave,jdbcType=BOOLEAN},
             </if>
@@ -130,7 +118,7 @@
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.Group">
         <!--@mbg.generated-->
-        update `group`
+        update group
         <set>
             <if test="name != null">
                 `name` = #{name,jdbcType=VARCHAR},
@@ -156,6 +144,9 @@
             <if test="state != null">
                 `state` = #{state,jdbcType=BOOLEAN},
             </if>
+            <if test="addFriendType != null">
+                add_friend_type = #{addFriendType,jdbcType=BOOLEAN},
+            </if>
             <if test="isSave != null">
                 is_save = #{isSave,jdbcType=BOOLEAN},
             </if>
@@ -170,7 +161,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.Group">
         <!--@mbg.generated-->
-        update `group`
+        update group
         set `name` = #{name,jdbcType=VARCHAR},
         icon = #{icon,jdbcType=VARCHAR},
         qr = #{qr,jdbcType=VARCHAR},
@@ -179,11 +170,32 @@
         admin_ids = #{adminIds,jdbcType=VARCHAR},
         members_count = #{membersCount,jdbcType=INTEGER},
         `state` = #{state,jdbcType=BOOLEAN},
+        add_friend_type = #{addFriendType,jdbcType=BOOLEAN},
         is_save = #{isSave,jdbcType=BOOLEAN},
         create_times = #{createTimes,jdbcType=BIGINT},
         modified_times = #{modifiedTimes,jdbcType=BIGINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <resultMap id="UserGroupRelationMap" type="com.xsdkj.wechat.entity.chat.UserGroupRelation">
+        <result column="group_nickname" property="groupNickname"/>
+    </resultMap>
+    <resultMap id="ListGroupMembersMap" type="com.xsdkj.wechat.vo.ListMembersVo">
+        <result column="uid" property="uid"/>
+        <result column="group_nickname" property="groupNickname"/>
+        <result column="icon" property="icon"/>
+    </resultMap>
+    <resultMap id="GroupBaseInfoVO" type="com.xsdkj.wechat.vo.GroupBaseInfoVo">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="members_count" property="membersCount"/>
+        <result column="add_friend_type" property="addFriendType"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="GroupInfoVo" type="com.xsdkj.wechat.vo.GroupInfoVo">
+        <result column="icon" property="icon"/>
+        <result column="qr" property="qr"/>
+        <result column="notice" property="notice"/>
+        <result column="create_times" property="createTimes"/>
+    </resultMap>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Group"
             useGeneratedKeys="true">
         insert into `group`
@@ -258,7 +270,7 @@
         where ugr.uid = #{userId};
     </select>
     <select id="getBaseInfo" resultMap="GroupBaseInfoVO">
-        select id , name , members_count
+        select id , name , members_count,add_friend_type
         from `group`
         where id = #{groupId}
     </select>
@@ -277,7 +289,7 @@
     </select>
     <select id="checkUserJoined" resultType="java.lang.Integer">
         select count(1) from user_group_relation where gid = #{groupId} and uid in
-        <foreach collection="uids" open="(" close=")" separator="," item="uid">
+        <foreach close=")" collection="uids" item="uid" open="(" separator=",">
             #{uid}
         </foreach>
     </select>
@@ -286,7 +298,7 @@
     </select>
     <delete id="quitGroup">
         delete from user_group_relation where gid = #{groupId} and uid in
-        <foreach collection="ids" separator="," open="(" close=")" item="uid">
+        <foreach close=")" collection="ids" item="uid" open="(" separator=",">
             #{uid}
         </foreach>
     </delete>

@@ -13,4 +13,5 @@ public class GroupBaseInfoVo implements Serializable {
     protected Integer id;
     protected String name;
     protected Integer membersCount;
+    protected Boolean addFriendType;
 }

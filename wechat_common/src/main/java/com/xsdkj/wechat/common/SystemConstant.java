@@ -225,6 +225,11 @@ public interface SystemConstant {
 
     // ----------------redis 相关-----------------------------------------------------
     /**
+     * 缓存群信息
+     * group_+群id
+     */
+    String REDIS_GROUP_KEY = "group_";
+    /**
      * 用户key
      * user_+username
      */

@@ -65,6 +65,7 @@ public interface GroupService {
      */
     GroupBaseInfoVo getBaseInfo(Integer groupId);
 
+
     /**
      * 获取群详情
      *

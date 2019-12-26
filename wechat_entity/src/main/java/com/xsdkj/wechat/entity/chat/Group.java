@@ -1,12 +1,11 @@
 package com.xsdkj.wechat.entity.chat;
 
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2019/12/14 18:51
+ * @date 2019/12/26 20:08
  */
 @Data
 public class Group implements Serializable {
@@ -48,6 +47,11 @@ public class Group implements Serializable {
      * 是否禁言
      */
     private Boolean state;
+
+    /**
+     * 是否开启添加好友(关闭则该群成员不能相互加好友)
+     */
+    private Boolean addFriendType;
 
     /**
      * 是否保存到数据库
