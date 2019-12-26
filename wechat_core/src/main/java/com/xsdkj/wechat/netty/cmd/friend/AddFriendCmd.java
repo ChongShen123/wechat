@@ -36,7 +36,6 @@ public class AddFriendCmd extends BaseChatCmd {
         requestParam.setUsername(username);
         requestParam.setContent(content);
     }
-
     @Override
     protected void concreteAction(Channel channel) {
         String username = requestParam.getUsername();

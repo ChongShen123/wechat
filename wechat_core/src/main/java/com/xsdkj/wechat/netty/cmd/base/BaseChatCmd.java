@@ -100,7 +100,10 @@ public abstract class BaseChatCmd extends BaseCmd {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_IN_GROUP, cmd));
             } catch (UserNotFountException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, cmd));
+            } catch (PermissionDeniedException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.FORBIDDEN, cmd));
             } catch (Exception e) {
+                e.printStackTrace();
                 sendMessage(channel, JsonResult.failed(cmd));
             }
         });

@@ -110,6 +110,4 @@ public class RegisterCmd extends BaseChatCmd {
         }
         return SessionUtil.ONLINE_USER_MAP.get(userId) != null;
     }
-
-
 }

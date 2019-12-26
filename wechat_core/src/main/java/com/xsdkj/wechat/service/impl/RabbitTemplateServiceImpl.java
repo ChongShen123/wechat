@@ -20,5 +20,4 @@ public class RabbitTemplateServiceImpl implements RabbitTemplateService {
     public void addChatInfo(String queue, RabbitMessageBoxBo box) {
         rabbitTemplate.convertAndSend(queue, null, box);
     }
-
 }

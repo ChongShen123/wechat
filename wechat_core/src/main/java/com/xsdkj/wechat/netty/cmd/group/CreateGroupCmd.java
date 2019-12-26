@@ -8,10 +8,12 @@ import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
+import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.Group;
 import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.ex.PermissionDeniedException;
 import com.xsdkj.wechat.util.QrUtil;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.CreateGroupVo;
@@ -49,6 +51,10 @@ public class CreateGroupCmd extends BaseChatCmd {
 
     @Override
     protected void concreteAction(Channel channel) {
+        User user = userService.getByUsername(session.getUsername());
+        if (!user.getType().equals(SystemConstant.TYPE_ADMIN)) {
+            throw new PermissionDeniedException();
+        }
         Set<Integer> ids = requestParam.getIds();
         if (!checkUser(ids)) {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, cmd));
@@ -110,6 +116,7 @@ public class CreateGroupCmd extends BaseChatCmd {
         group.setOwnerId(session.getUid());
         group.setState(false);
         group.setIsSave(true);
+        group.setMembersCount(0);
         long currentTimeMillis = System.currentTimeMillis();
         group.setCreateTimes(currentTimeMillis);
         group.setModifiedTimes(currentTimeMillis);

@@ -24,10 +24,10 @@ public interface UserService {
     /**
      * 查询用户
      *
-     * @param uno 用户系统账号
+     * @param username 用户名
      * @return 用户
      */
-    User getByUsername(String uno);
+    User getByUsername(String username);
 
     /**
      * 登录
