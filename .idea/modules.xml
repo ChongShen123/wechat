@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/wechat.iml" filepath="$PROJECT_DIR$/wechat.iml" />
       <module fileurl="file://$PROJECT_DIR$/wechat_common/wechat_common.iml" filepath="$PROJECT_DIR$/wechat_common/wechat_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wechat_consumer/wechat_consumer.iml" filepath="$PROJECT_DIR$/wechat_consumer/wechat_consumer.iml" />
       <module fileurl="file://$PROJECT_DIR$/wechat_core/wechat_core.iml" filepath="$PROJECT_DIR$/wechat_core/wechat_core.iml" />
       <module fileurl="file://$PROJECT_DIR$/wechat_entity/wechat_entity.iml" filepath="$PROJECT_DIR$/wechat_entity/wechat_entity.iml" />
     </modules>

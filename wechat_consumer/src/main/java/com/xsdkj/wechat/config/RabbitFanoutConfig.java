@@ -44,60 +44,60 @@ public class RabbitFanoutConfig {
      *
      * @return Queue
      */
-//    @Bean
-//    Queue chatQueueMain() {
-//        return new Queue(SystemConstant.CHAT_QUEUE_MAIN);
-//    }
+    @Bean
+    Queue chatQueueMain() {
+        return new Queue(SystemConstant.CHAT_QUEUE_MAIN);
+    }
 
     /**
      * 聊天辅队列
      *
      * @return Queue
      */
-//    @Bean
-//    Queue chatQueueAssist() {
-//        return new Queue(SystemConstant.CHAT_QUEUE_ASSIST);
-//    }
+    @Bean
+    Queue chatQueueAssist() {
+        return new Queue(SystemConstant.CHAT_QUEUE_ASSIST);
+    }
 
     /**
      * 服务主队列
      *
      * @return Queue
      */
-//    @Bean
-//    Queue serviceQueueMain() {
-//        return new Queue(SystemConstant.SERVICE_QUEUE_MAIN);
-//    }
+    @Bean
+    Queue serviceQueueMain() {
+        return new Queue(SystemConstant.SERVICE_QUEUE_MAIN);
+    }
 
     /**
      * 服务辅队列
      *
      * @return Queue
      */
-//    @Bean
-//    Queue serviceQueueAssist() {
-//        return new Queue(SystemConstant.SERVICE_QUEUE_ASSIST);
-//    }
+    @Bean
+    Queue serviceQueueAssist() {
+        return new Queue(SystemConstant.SERVICE_QUEUE_ASSIST);
+    }
 
     /**
      * 聊天主队列绑定到聊天交换器
      *
      * @return Binding
      */
-//    @Bean
-//    Binding bindingChatMain() {
-//        return BindingBuilder.bind(chatQueueMain()).to(chatFanoutExchange());
-//    }
+    @Bean
+    Binding bindingChatMain() {
+        return BindingBuilder.bind(chatQueueMain()).to(chatFanoutExchange());
+    }
 
     /**
      * 聊天辅队列绑定到聊天交换器
      *
      * @return Binding
      */
-//    @Bean
-//    Binding bindingChatAssist() {
-//        return BindingBuilder.bind(chatQueueAssist()).to(chatFanoutExchange());
-//    }
+    @Bean
+    Binding bindingChatAssist() {
+        return BindingBuilder.bind(chatQueueAssist()).to(chatFanoutExchange());
+    }
 
 
     /**
@@ -105,18 +105,18 @@ public class RabbitFanoutConfig {
      *
      * @return Binding
      */
-//    @Bean
-//    Binding bindingServiceMain() {
-//        return BindingBuilder.bind(serviceQueueMain()).to(serviceFanoutExchange());
-//    }
+    @Bean
+    Binding bindingServiceMain() {
+        return BindingBuilder.bind(serviceQueueMain()).to(serviceFanoutExchange());
+    }
 
     /**
      * 服务辅队列绑定到服务交换器
      *
      * @return Binding
      */
-//    @Bean
-//    Binding bindingServiceAssist() {
-//        return BindingBuilder.bind(serviceQueueAssist()).to(serviceFanoutExchange());
-//    }
+    @Bean
+    Binding bindingServiceAssist() {
+        return BindingBuilder.bind(serviceQueueAssist()).to(serviceFanoutExchange());
+    }
 }

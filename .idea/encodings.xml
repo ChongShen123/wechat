@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wechat_common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wechat_consumer" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wechat_core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wechat_entity" charset="UTF-8" />
   </component>
