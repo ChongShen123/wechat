@@ -4,7 +4,8 @@ import com.xsdkj.wechat.action.MessageHandler;
 import com.xsdkj.wechat.action.SaveAnno;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.SystemConstant;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import com.xsdkj.wechat.entity.chat.GroupChat;
+import com.xsdkj.wechat.service.GroupChatService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -19,10 +20,10 @@ import javax.annotation.Resource;
 @SaveAnno(type = SystemConstant.BOX_TYPE_SINGLE_CHAT)
 public class SingleChatHandler implements MessageHandler {
     @Resource
-    private MongoTemplate mongoTemplate;
+    private GroupChatService groupChatService;
 
     @Override
     public void execute(RabbitMessageBoxBo box) {
-        mongoTemplate.save(box.getData());
+        groupChatService.save((GroupChat) box.getData());
     }
 }
