@@ -144,19 +144,19 @@ public interface SystemConstant {
      */
     String DIRECT_PATTERN = "direct";
     /**
-     * 聊天主队列
+     * 聊天主交换器
      */
     String CHAT_QUEUE_MAIN = "chat-queue-main";
     /**
-     * 聊天辅队列
+     * 聊天辅交换器
      */
     String CHAT_QUEUE_ASSIST = "chat-queue-assist";
     /**
-     * 服务主队列
+     * 服务主交换器
      */
     String SERVICE_QUEUE_MAIN = "service-queue-main";
     /**
-     * 服务辅队列
+     * 服务辅交换器
      */
     String SERVICE_QUEUE_ASSIST = "service-queue-assist";
 
