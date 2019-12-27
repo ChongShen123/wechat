@@ -338,6 +338,7 @@
 {
   "code":2000,
   "data":{
+    "addFriendType":true,
     "id":66,
     "membersCount":2,
     "name":"sky、sky2的群聊"
@@ -348,4 +349,6 @@
 ```
 
 > membersCount: 群成员个数
+>
+> addFriendType: 群成员是否可互加好友
 

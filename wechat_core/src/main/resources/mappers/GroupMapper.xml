@@ -27,12 +27,12 @@
         <!--@mbg.generated-->
         select
         <include refid="Base_Column_List"/>
-        from group
+        from `group`
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--@mbg.generated-->
-        delete from group
+        delete from`group`
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Group"
@@ -118,7 +118,7 @@
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.Group">
         <!--@mbg.generated-->
-        update group
+        update `group`
         <set>
             <if test="name != null">
                 `name` = #{name,jdbcType=VARCHAR},
@@ -161,7 +161,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.Group">
         <!--@mbg.generated-->
-        update group
+        update `group`
         set `name` = #{name,jdbcType=VARCHAR},
         icon = #{icon,jdbcType=VARCHAR},
         qr = #{qr,jdbcType=VARCHAR},

@@ -6,10 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.RequestParamBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.netty.ex.ParseParamException;
-import com.xsdkj.wechat.netty.ex.ValidateException;
+import com.xsdkj.wechat.service.ex.ParseParamException;
+import com.xsdkj.wechat.service.ex.ValidateException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Set;

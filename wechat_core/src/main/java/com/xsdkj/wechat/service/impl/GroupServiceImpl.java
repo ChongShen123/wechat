@@ -3,7 +3,7 @@ package com.xsdkj.wechat.service.impl;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.Group;
 import com.xsdkj.wechat.mapper.GroupMapper;
-import com.xsdkj.wechat.netty.ex.DataEmptyException;
+import com.xsdkj.wechat.service.ex.DataEmptyException;
 import com.xsdkj.wechat.service.GroupService;
 import com.xsdkj.wechat.util.RedisUtil;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
@@ -40,8 +40,21 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupBaseInfoVo getBaseInfo(Integer groupId) {
-        return groupMapper.getBaseInfo(groupId);
+    public GroupBaseInfoVo getBaseInfo(Integer groupId) throws  DataEmptyException {
+        Group group = getGroupById(groupId);
+        if (group == null) {
+            throw new DataEmptyException();
+        }
+        return createNewGroupBaseInfoVo(group);
+    }
+
+    private GroupBaseInfoVo createNewGroupBaseInfoVo(Group group) {
+        GroupBaseInfoVo groupBaseInfoVo = new GroupBaseInfoVo();
+        groupBaseInfoVo.setAddFriendType(group.getAddFriendType());
+        groupBaseInfoVo.setId(group.getId());
+        groupBaseInfoVo.setMembersCount(group.getMembersCount());
+        groupBaseInfoVo.setName(group.getName());
+        return groupBaseInfoVo;
     }
 
     @Override
