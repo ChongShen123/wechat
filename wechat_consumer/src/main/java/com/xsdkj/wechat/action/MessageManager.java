@@ -3,27 +3,19 @@ package com.xsdkj.wechat.action;
 
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.entity.chat.GroupChat;
-import com.xsdkj.wechat.entity.chat.SingleChat;
-import com.xsdkj.wechat.service.GroupChatService;
-import com.xsdkj.wechat.service.SingleChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * RabbitMQ 消息存储管理类
  *
  * @author tiankong
  * @date 2019/12/10 13:26
  */
-
 @Component
 @Slf4j
 public class MessageManager implements ApplicationListener<ContextRefreshedEvent> {
@@ -39,26 +31,21 @@ public class MessageManager implements ApplicationListener<ContextRefreshedEvent
         log.info("a:{}", a++);
         action(box);
     }
-
-
     @RabbitListener(queues = SystemConstant.CHAT_QUEUE_ASSIST)
     public void handleChatQueueAssist(RabbitMessageBoxBo box) {
         log.info("b:{}", b++);
 //        action(box);
     }
-
     @RabbitListener(queues = SystemConstant.SERVICE_QUEUE_MAIN)
     public void handleServiceQueueMain(RabbitMessageBoxBo box) {
         log.info("main");
         action(box);
     }
-
     @RabbitListener(queues = SystemConstant.SERVICE_QUEUE_ASSIST)
     public void handleServiceQueueAssist(RabbitMessageBoxBo box) {
         log.info("assist");
 //        action(box);
     }
-
     private void action(RabbitMessageBoxBo box) {
         MessageHandler messageHandler = messageManagerMap.get(box.getType());
         if (messageHandler == null) {
@@ -67,7 +54,6 @@ public class MessageManager implements ApplicationListener<ContextRefreshedEvent
         }
         messageHandler.execute(box);
     }
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(SaveAnno.class);

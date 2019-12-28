@@ -1,6 +1,5 @@
 package com.xsdkj.wechat.mapper;
-import org.apache.ibatis.annotations.Param;
-import java.util.List;
+
 
 import com.xsdkj.wechat.entity.chat.UserMood;
 

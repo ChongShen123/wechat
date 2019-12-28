@@ -15,7 +15,6 @@ import javax.annotation.Resource;
 public class GroupChatServiceImpl implements GroupChatService {
     @Resource
     private MongoTemplate mongoTemplate;
-
     @Override
     public void save(GroupChat groupChat) {
         System.out.println(groupChat);

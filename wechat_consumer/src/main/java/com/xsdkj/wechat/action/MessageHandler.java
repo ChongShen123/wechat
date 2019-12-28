@@ -11,7 +11,6 @@ import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 public interface MessageHandler {
     /**
      * 执行方法
-     *
      * @param box 消息
      */
     void execute(RabbitMessageBoxBo box);

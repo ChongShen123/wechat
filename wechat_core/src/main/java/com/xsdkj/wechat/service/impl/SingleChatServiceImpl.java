@@ -24,7 +24,9 @@ public class SingleChatServiceImpl implements SingleChatService {
     @Resource
     private MongoTemplate mongoTemplate;
 
-    //获取当前时间的前15天的时间戳
+    /**
+     * //获取当前时间的前15天的时间戳
+     */
     Long time = System.currentTimeMillis() - 1296000000;
 
     @Override
@@ -45,9 +47,9 @@ public class SingleChatServiceImpl implements SingleChatService {
     step:2 执行 删除。
      */
 
-    //604800000
+
     @Override
-    public void deleteSingleChat() {
+    public void deleteSingleChat(){
         // step1 先查询 7天之前的所有数据。 List<SingleChat> list;
         Query query1 = Query.query(Criteria.where("createTimes").lt(time));
         List<SingleChat> list = mongoTemplate.find(query1, SingleChat.class);

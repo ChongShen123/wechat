@@ -177,6 +177,10 @@ public interface SystemConstant {
      * 群聊类型
      */
     int BOX_TYPE_GROUP_CHAT = 2;
+    /**
+     * 发朋友圈消息
+     */
+    int BOX_TYPE_MOOD =3;
     // -------------------文件操作------------------------------------------------
     /**
      * 上传文件的大小
