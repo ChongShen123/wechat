@@ -8,7 +8,7 @@ import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
  * @author tiankong
  * @date 2019/12/27 10:41
  */
-public interface MessageHandler {
+public interface MsgHandler {
     /**
      * 执行方法
      *

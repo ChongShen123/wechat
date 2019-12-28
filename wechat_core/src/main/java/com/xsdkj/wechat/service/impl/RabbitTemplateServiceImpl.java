@@ -17,7 +17,7 @@ public class RabbitTemplateServiceImpl implements RabbitTemplateService {
     private RabbitTemplate rabbitTemplate;
 
     @Override
-    public void addChatInfo(String queue, RabbitMessageBoxBo box) {
-        rabbitTemplate.convertAndSend(queue, null, box);
+    public void addExchange(String exchangeName, RabbitMessageBoxBo box) {
+        rabbitTemplate.convertAndSend(exchangeName, null, box);
     }
 }

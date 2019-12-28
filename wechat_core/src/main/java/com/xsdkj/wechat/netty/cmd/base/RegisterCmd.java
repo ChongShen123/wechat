@@ -1,5 +1,6 @@
 package com.xsdkj.wechat.netty.cmd.base;
 
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.SessionBo;
@@ -23,6 +24,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 import static com.xsdkj.wechat.common.SystemConstant.KEY_TOKEN;
+import static com.xsdkj.wechat.common.SystemConstant.KEY_USER_ID;
 
 
 /**
@@ -50,13 +52,18 @@ public class RegisterCmd extends BaseChatCmd {
                 throw new ValidateException();
             }
             requestParam.setToken(token);
+            Integer userId = param.getInteger(KEY_USER_ID);
+            if (ObjectUtil.isEmpty(userId)) {
+                throw new ValidateException();
+            }
+            requestParam.setUserId(userId);
         } catch (Exception e) {
             throw new ValidateException();
         }
     }
 
     @Override
-    protected void concreteAction(Channel channel) {
+    protected void concreteAction(Channel channel) throws RuntimeException {
         String token = requestParam.getToken();
         String username;
         try {
@@ -65,21 +72,17 @@ public class RegisterCmd extends BaseChatCmd {
             jwtTokenUtil.validateToken(token, userDetailsService.loadUserByUsername(username));
         } catch (Exception e) {
             e.printStackTrace();
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_TOKEN));
             remove(channel);
+            sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_TOKEN));
             return;
         }
-        Integer userId = userService.getByUsername(username).getId();
+        Integer userId = requestParam.getUserId();
         if (checkOnline(userId, channel)) {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_LOGGED_IN, cmd));
             channel.close();
             return;
         }
         User user = userService.getByUserId(userId);
-        if (user == null) {
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, cmd));
-            return;
-        }
         SessionUtil.registerUserChannel(userId, channel);
         channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon()));
         sendMessage(channel, JsonResult.success("您已连接成功!", cmd));

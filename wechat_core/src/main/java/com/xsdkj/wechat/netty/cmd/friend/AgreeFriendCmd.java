@@ -54,8 +54,7 @@ public class AgreeFriendCmd extends BaseChatCmd {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION, cmd));
             return;
         }
-
-        String msg = "";
+        String msg;
         switch (state) {
             case SystemConstant.AGREE:
                 application.setState(SystemConstant.AGREE);
@@ -63,6 +62,7 @@ public class AgreeFriendCmd extends BaseChatCmd {
                 List<Friend> friends = createFriend(application);
                 friendService.saveList(friends);
                 msg = SystemConstant.RETURN_MESSAGE_SUCCESS;
+                friends.forEach(friend -> userService.updateRedisDataByUid(friend.getUid()));
                 break;
             // 回复好友
             case SystemConstant.REFUSE:
@@ -88,6 +88,7 @@ public class AgreeFriendCmd extends BaseChatCmd {
         application.setModifiedTime(System.currentTimeMillis());
         application.setRead(true);
         friendApplicationService.update(application);
+        sendMessage(channel, JsonResult.success(cmd));
     }
 
 

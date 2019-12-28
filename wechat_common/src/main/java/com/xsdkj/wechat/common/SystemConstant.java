@@ -43,6 +43,10 @@ public interface SystemConstant {
     // ---------------------------------参数获取相关常量-----------------------------------------------
 
     /**
+     * 用户id
+     */
+    String KEY_USER_ID = "user_id";
+    /**
      * 命令
      */
     String KEY_CMD = "cmd";
@@ -177,6 +181,10 @@ public interface SystemConstant {
      * 群聊类型
      */
     int BOX_TYPE_GROUP_CHAT = 2;
+    /**
+     * 好友申请类型
+     */
+    int BOX_TYPE_FRIEND_APPLICATION = 10;
     // -------------------文件操作------------------------------------------------
     /**
      * 上传文件的大小
@@ -233,7 +241,8 @@ public interface SystemConstant {
      * 用户key
      * user_+username
      */
-    String REDIS_USER_KEY = "user_";
+    String REDIS_USER_ID = "user_";
+
 
     /**
      * 用户好友列表

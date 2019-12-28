@@ -9,10 +9,10 @@ import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
  */
 public interface RabbitTemplateService {
     /**
-     * 单聊消息进入队列
+     * 消息进入队列
      *
-     * @param queue 队列名称
-     * @param box   内容
+     * @param exchangeName 交换器名称
+     * @param box          box
      */
-    void addChatInfo(String queue, RabbitMessageBoxBo box);
+    void addExchange(String exchangeName, RabbitMessageBoxBo box);
 }

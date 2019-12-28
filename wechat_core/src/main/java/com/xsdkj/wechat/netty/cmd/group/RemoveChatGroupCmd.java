@@ -8,6 +8,7 @@ import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.Group;
 import com.xsdkj.wechat.entity.chat.SingleChat;
+import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
@@ -35,6 +36,7 @@ public class RemoveChatGroupCmd extends BaseChatCmd {
 
     @Override
     protected void concreteAction(Channel channel) {
+        System.out.println(1);
         // 检查要移除的用户是否合法
         Set<Integer> ids = requestParam.getIds();
         Integer groupId = requestParam.getGroupId();
@@ -59,8 +61,12 @@ public class RemoveChatGroupCmd extends BaseChatCmd {
             } else {
                 newSingleChat.setRead(false);
             }
-            rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, newSingleChat));
+            // 更新被移除用户的redis数据
+            userService.updateRedisDataByUid(uid);
+            rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, newSingleChat));
         });
+        // 更新群组redis数据
+        groupService.updateRedisGroupByGroupId(groupId);
         // 返回信息
         sendMessage(channel, JsonResult.success(cmd));
 

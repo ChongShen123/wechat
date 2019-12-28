@@ -2,8 +2,6 @@ package com.xsdkj.wechat.util;
 
 import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.entity.chat.User;
-import com.xsdkj.wechat.service.GroupService;
 import com.xsdkj.wechat.service.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,18 +30,12 @@ public class UserUtil {
     private UserService userService;
     @Resource
     private RedisUtil redisUtil;
-    @Resource
-    private GroupService groupService;
 
     public UserDetailsBo currentUser() {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetailsBo bo = (UserDetailsBo) redisUtil.get(SystemConstant.REDIS_USER_KEY + currentUsername);
+        UserDetailsBo bo = (UserDetailsBo) redisUtil.get(SystemConstant.REDIS_USER_ID + currentUsername);
         if (bo == null) {
-            User user = userService.getByUsername(currentUsername);
-            UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
-            currentUserDetailsBo.setPermissionBos(userService.getUserPermission(user.getId()));
-            currentUserDetailsBo.setGroupInfoBos(groupService.listGroupByUid(user.getId()));
-            redisUtil.set(SystemConstant.REDIS_USER_KEY + currentUsername, currentUserDetailsBo, SystemConstant.REDIS_USER_TIMEOUT);
+            bo = userService.updateRedisDataByUid(userService.getByUsername(currentUsername).getId());
         }
         return bo;
     }

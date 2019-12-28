@@ -123,4 +123,10 @@ public interface GroupService {
      * @param groupId 群id
      */
     void quitGroup(Set<Integer> ids, Integer groupId);
+
+    /**
+     * 更新群组redis信息
+     * @param groupId 群id
+     */
+    void updateRedisGroupByGroupId(Integer groupId);
 }

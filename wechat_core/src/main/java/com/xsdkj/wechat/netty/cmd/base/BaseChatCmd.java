@@ -67,8 +67,9 @@ public abstract class BaseChatCmd extends BaseCmd {
      * 具体执行
      *
      * @param channel 用户channel
+     * @throws RuntimeException 业务异常
      */
-    protected abstract void concreteAction(Channel channel);
+    protected abstract void concreteAction(Channel channel) throws RuntimeException;
 
     /**
      * 执行命令模板方法
@@ -86,20 +87,16 @@ public abstract class BaseChatCmd extends BaseCmd {
                 parseParam(param);
                 //具体执行
                 concreteAction(channel);
-            } catch (ValidateException e) {
+            } catch (ValidateException | ParseParamException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, cmd));
-            } catch (DataEmptyException e) {
+            } catch (DataEmptyException | UserNotFountException | NullPointerException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
-            } catch (ParseParamException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.PARSE_PARAM, cmd));
             } catch (GroupNotFoundException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.GROUP_NOT_FOUND, cmd));
             } catch (UserJoinedException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_JOINED_EXCEPTION, cmd));
             } catch (UserNotInGroupException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_IN_GROUP, cmd));
-            } catch (UserNotFountException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, cmd));
             } catch (PermissionDeniedException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.FORBIDDEN, cmd));
             } catch (Exception e) {
@@ -170,9 +167,11 @@ public abstract class BaseChatCmd extends BaseCmd {
                 sendMessage(toUserChannel, JsonResult.success(singleChat));
                 // 通知群里在线的用户XXX已经进入群聊
                 sendGroupMessage(group.getId(), JsonResult.success(String.format("%s已加入群聊", SessionUtil.getSession(toUserChannel).getUsername()), cmd));
+                // 更新用户redis缓存
+                userService.updateRedisDataByUid(session.getUid());
             }
             singleChat.setRead(toUserChannel != null);
-            rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
+            rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
         });
     }
 

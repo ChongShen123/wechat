@@ -47,7 +47,7 @@ public class SingleChatCmd extends BaseChatCmd {
             chat.setRead(false);
         }
         // TODO 使用到RabbitMQ
-        rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, chat));
+        rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, chat));
         sendMessage(channel, JsonResult.success(cmd));
     }
 }

@@ -51,6 +51,8 @@ public class JoinGroupCmd extends BaseChatCmd {
         groupService.updateGroupCount(ids.size(), groupId);
         //给用户发送一个入群消息,保存到数据库
         sendCreateGroupMessageToUsers(ids, group);
+        // 更新群组redis缓存
+        groupService.updateRedisGroupByGroupId(group.getId());
         sendMessage(channel, JsonResult.success(cmd));
     }
 }

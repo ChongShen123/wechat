@@ -1,12 +1,11 @@
 package com.xsdkj.wechat.action.handle;
 
-import com.xsdkj.wechat.action.MessageHandler;
+import com.xsdkj.wechat.action.MsgHandler;
 import com.xsdkj.wechat.action.SaveAnno;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.entity.chat.SingleChat;
-import com.xsdkj.wechat.service.SingleChatService;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import com.xsdkj.wechat.entity.chat.GroupChat;
+import com.xsdkj.wechat.service.GroupChatService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -19,12 +18,12 @@ import javax.annotation.Resource;
  */
 @Component
 @SaveAnno(type = SystemConstant.BOX_TYPE_GROUP_CHAT)
-public class GroupChatHandler implements MessageHandler {
+public class GroupChatHandler implements MsgHandler {
     @Resource
-    private SingleChatService singleChatService;
+    private GroupChatService groupChatService;
 
     @Override
     public void execute(RabbitMessageBoxBo box) {
-        singleChatService.save((SingleChat) box.getData());
+        groupChatService.save((GroupChat) box.getData());
     }
 }
