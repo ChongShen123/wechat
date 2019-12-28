@@ -83,6 +83,7 @@ public interface Cmd {
      * 群聊
      */
     int GROUP_CHAT = 3006;
+
     /**
      * 移除群聊
      * (群管理员操作)
@@ -93,4 +94,19 @@ public interface Cmd {
      * 退出群聊
      */
     int QUIT_GROUP = 3008;
+
+    /**
+     * 解散群组
+     */
+    int DISSOLVE_GROUP = 3009;
+
+    /**
+     * 禁言
+     */
+    int NO_SAY = 3010;
+
+    /**
+     * 设置群管理员
+     */
+    int SET_GROUP_MANAGER = 3011;
 }

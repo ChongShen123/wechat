@@ -24,8 +24,8 @@ public class CmdManager implements ApplicationListener<ContextRefreshedEvent> {
     private static Map<Integer, BaseCmd> commandTypeMap = new HashMap<>();
 //    private static Map<Integer, CommandBo> methodMap = new HashMap<>();
 
-//    public CommandBo getCommandBo(Integer type) {
-//        return methodMap.get(type);
+//    public CommandBo getCommandBo(Integer byteType) {
+//        return methodMap.get(byteType);
 //    }
 
     public BaseCmd getCommand(Integer type) {

@@ -32,12 +32,12 @@ public class SingleChatCmd extends BaseChatCmd {
         }
         requestParam.setToUserId(toUserId);
         requestParam.setContent(content);
-        requestParam.setType(type);
+        requestParam.setByteType(type);
     }
 
     @Override
     protected void concreteAction(Channel channel) {
-        SingleChat chat = createNewSingleChat(requestParam.getToUserId(), session.getUid(), requestParam.getContent(), requestParam.getType());
+        SingleChat chat = createNewSingleChat(requestParam.getToUserId(), session.getUid(), requestParam.getContent(), requestParam.getByteType());
         // 获取一条消息
         Channel toUserChannel = SessionUtil.ONLINE_USER_MAP.get(requestParam.getToUserId());
         if (toUserChannel != null) {
@@ -46,7 +46,6 @@ public class SingleChatCmd extends BaseChatCmd {
         } else {
             chat.setRead(false);
         }
-        // TODO 使用到RabbitMQ
         rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, chat));
         sendMessage(channel, JsonResult.success(cmd));
     }

@@ -5,6 +5,14 @@ package com.xsdkj.wechat.common;
  * @date 2019/11/17 15:41
  */
 public enum ResultCodeEnum implements IErrorCode {
+    /**
+     * 重复操作异常
+     */
+    REPETITION_EXCEPTION(4031, "操作失败!重复异常"),
+    /**
+     * 禁止发言
+     */
+    NO_SAY_EXCEPTION(4030, "您已被禁止发言"),
 
     /**
      * 撤销时间超时
@@ -75,12 +83,12 @@ public enum ResultCodeEnum implements IErrorCode {
     USER_LOGGED_IN(4008, "请不要重复登录"),
     PASSWORD_NOT_MATCH(4007, "密码不匹配"),
     USER_ALREADY_EXISTS(4006, "用户已存在"),
-    USER_NOT_FOND(4005, "数据不存在"),
+    USER_NOT_FOND(4005, "用户数据不存在"),
     VALIDATE_FAILED(4004, "参数检验失败"),
     FORBIDDEN(4003, "没有相关权限"),
     UNAUTHORIZED(4001, "暂未登录或token已过期"),
     FAILED(4000, "failed"),
-    EMAIL(4050,"邮箱格式错误"),
+    EMAIL(4050, "邮箱格式错误"),
     SUCCESS(2000, "ok");
 
     private Integer code;

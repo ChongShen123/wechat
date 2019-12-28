@@ -27,7 +27,7 @@ public class PermissionBo extends Permission {
                 ", title='" + title + '\'' +
                 ", icon='" + icon + '\'' +
                 ", redirect='" + redirect + '\'' +
-                ", type=" + type +
+                ", byteType=" + type +
                 ", hidden=" + hidden +
                 ", status=" + status +
                 ", sort=" + sort +

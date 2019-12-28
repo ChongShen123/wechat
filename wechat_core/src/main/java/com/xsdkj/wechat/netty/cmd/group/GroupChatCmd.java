@@ -5,8 +5,10 @@ import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
+import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.GroupChat;
+import com.xsdkj.wechat.entity.chat.GroupNoSay;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
@@ -31,7 +33,7 @@ public class GroupChatCmd extends BaseChatCmd {
             Byte type = param.getByte(SystemConstant.KEY_TYPE);
             requestParam.setGroupId(groupId);
             requestParam.setContent(content);
-            requestParam.setType(type);
+            requestParam.setByteType(type);
         } catch (Exception e) {
             throw new ValidateException();
         }
@@ -39,15 +41,29 @@ public class GroupChatCmd extends BaseChatCmd {
 
     @Override
     protected void concreteAction(Channel channel) {
-        // 构建一个群聊消息
-        GroupChat groupChat = createNewGroupChat(requestParam.getType(), requestParam.getGroupId(), requestParam.getContent(), SessionUtil.getSession(channel));
-        // 将消息发送给群在线所有用户
+        Long times = groupService.getNoSayTimesByUidAndGroupId(session.getUid(), requestParam.getGroupId());
+        System.out.println(times);
+        if (times != null) {
+            long noSayTimes = times - System.currentTimeMillis();
+            if (noSayTimes > 0) {
+                sendMessage(channel, JsonResult.failed(String.format("请在%s秒后发言", noSayTimes / 1000), cmd));
+                return;
+            } else if (times == -1) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.NO_SAY_EXCEPTION, cmd));
+                return;
+            }
+        }
+//         构建一个群聊消息
+        GroupChat groupChat = createNewGroupChat(requestParam.getByteType(), requestParam.getGroupId(), requestParam.getContent(), SessionUtil.getSession(channel));
+//         将消息发送给群在线所有用户
         sendGroupMessage(requestParam.getGroupId(), JsonResult.success(groupChat, cmd));
-        // TODO 使用到RabbitMQ
         RabbitMessageBoxBo box = RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, groupChat);
         rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, box);
     }
 
+    public static void main(String[] args) {
+        System.out.println(System.currentTimeMillis() + 20 * 1000);
+    }
     /**
      * 创建一个群聊消息
      *

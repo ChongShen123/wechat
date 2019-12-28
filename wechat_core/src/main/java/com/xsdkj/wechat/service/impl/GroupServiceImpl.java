@@ -1,21 +1,25 @@
 package com.xsdkj.wechat.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.entity.chat.GroupNoSay;
 import com.xsdkj.wechat.mapper.GroupMapper;
-import com.xsdkj.wechat.service.UserService;
-import com.xsdkj.wechat.service.ex.DataEmptyException;
+import com.xsdkj.wechat.mapper.GroupNoSayMapper;
 import com.xsdkj.wechat.service.GroupService;
+import com.xsdkj.wechat.service.ex.DataEmptyException;
 import com.xsdkj.wechat.util.RedisUtil;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;
-import com.xsdkj.wechat.vo.ListGroupVo;
+import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.ListMembersVo;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author tiankong
@@ -27,16 +31,80 @@ public class GroupServiceImpl implements GroupService {
     private GroupMapper groupMapper;
     @Resource
     private RedisUtil redisUtil;
+    @Resource
+    private GroupNoSayMapper groupNoSayMapper;
+
+    @Override
+    public Long getNoSayTimesByUidAndGroupId(Integer uid, Integer groupId) {
+        Object redisData = redisUtil.get(SystemConstant.REDIS_GROUP_NO_SAY);
+        Long times;
+        if (redisData == null) {
+            times = groupNoSayMapper.findOneByUidAndGroupId(uid, groupId).getTimes();
+            if (times == null) {
+                return null;
+            }
+            Map<Integer, Map<Integer, Long>> noSayMap = new HashMap<>();
+            Map<Integer, Long> map = new HashMap<>();
+            map.put(groupId, times);
+            noSayMap.put(uid, map);
+            redisUtil.set(SystemConstant.REDIS_GROUP_NO_SAY, JSONObject.toJSONString(noSayMap));
+        }
+        assert redisData != null;
+        Map map = JSONObject.toJavaObject(JSONObject.parseObject(redisData.toString()), Map.class);
+        Map noSayMap = (Map) map.get(uid);
+        times = Long.parseLong(noSayMap.get(groupId).toString());
+        return times;
+    }
+
+    @Override
+    public void updateRedisNoSayData() {
+        Map<Integer, Map<Integer, Long>> noSayMap = new HashMap<>(100);
+        List<GroupNoSay> groupNoSays = groupNoSayMapper.selectByAll(null);
+        if (groupNoSays.size() > 0) {
+            // 初始化map
+            groupNoSays.forEach(groupNoSay -> {
+                Map<Integer, Long> map = new HashMap<>(10);
+                noSayMap.put(groupNoSay.getUid(), map);
+            });
+            // 为map赋值
+            groupNoSays.forEach(groupNoSay -> noSayMap.get(groupNoSay.getUid()).put(groupNoSay.getGroupId(), groupNoSay.getTimes()));
+        }
+        redisUtil.set(SystemConstant.REDIS_GROUP_NO_SAY, JSONObject.toJSONString(noSayMap));
+    }
+
+    @Override
+    public void saveNoSay(Integer uid, Integer groupId, Long times) {
+        GroupNoSay noSay = groupNoSayMapper.findOneByUidAndGroupId(uid, groupId);
+        if (noSay == null) {
+            groupNoSayMapper.save(uid, groupId, times);
+        }
+        groupNoSayMapper.updateByUidAndGid(uid, groupId, times);
+    }
 
     @Override
     public List<Group> listAllChatGroup() {
         List<Group> groups = groupMapper.selectByAll(null);
-        groups.forEach(group -> redisUtil.set(SystemConstant.REDIS_GROUP_KEY + group.getId(), group));
+        groups.forEach(this::updateRedisGroupById);
         return groups;
     }
 
     @Override
-    public List<ListGroupVo> listGroupByUid(Integer userId) {
+    public void updateRedisGroupById(Integer groupId) {
+        Group group = groupMapper.selectByPrimaryKey(groupId);
+        List<ListMembersVo> listMembersVos = groupMapper.listGroupMembersByGroupId(group.getId());
+        redisUtil.set(SystemConstant.REDIS_GROUP_KEY + group.getId(), JSONObject.toJSONString(group));
+        redisUtil.set(SystemConstant.REDIS_GROUP_MEMBERS + group.getId(), JSONObject.toJSONString(listMembersVos));
+    }
+
+    @Override
+    public void updateRedisGroupById(Group group) {
+        List<ListMembersVo> listMembersVos = groupMapper.listGroupMembersByGroupId(group.getId());
+        redisUtil.set(SystemConstant.REDIS_GROUP_KEY + group.getId(), JSONObject.toJSONString(group));
+        redisUtil.set(SystemConstant.REDIS_GROUP_MEMBERS + group.getId(), JSONObject.toJSONString(listMembersVos));
+    }
+
+    @Override
+    public List<GroupVo> listGroupByUid(Integer userId) {
         return groupMapper.listGroupByUserId(userId);
     }
 
@@ -102,7 +170,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group getGroupById(Integer groupId) {
-        Group group = (Group) redisUtil.get(SystemConstant.REDIS_GROUP_KEY + groupId);
+        String redisData = redisUtil.get(SystemConstant.REDIS_GROUP_KEY + groupId).toString();
+        Group group = JSONObject.toJavaObject(JSONObject.parseObject(redisData), Group.class);
         if (group == null) {
             group = groupMapper.selectByPrimaryKey(groupId);
             if (group == null) {
@@ -120,7 +189,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<ListMembersVo> listGroupMembersByGroupId(Integer groupId) {
-        return groupMapper.listGroupMembersByGroupId(groupId);
+        String redisData = redisUtil.get(SystemConstant.REDIS_GROUP_MEMBERS + groupId).toString();
+        return JSONObject.parseArray(redisData, ListMembersVo.class);
     }
 
     @Override
@@ -138,11 +208,35 @@ public class GroupServiceImpl implements GroupService {
         groupMapper.quitGroup(ids, groupId);
     }
 
+
     @Override
-    public void updateRedisGroupByGroupId(Integer groupId) {
-        Group group = groupMapper.selectByPrimaryKey(groupId);
-        if (group != null) {
-            redisUtil.set(SystemConstant.REDIS_GROUP_KEY + group.getId(), group);
-        }
+    public void deleteById(Integer groupId) {
+        groupMapper.deleteByPrimaryKey(groupId);
+    }
+
+    @Override
+    public void deleteRedisData(Integer groupId) {
+        redisUtil.expire(SystemConstant.REDIS_GROUP_MEMBERS + groupId, 1);
+        redisUtil.expire(SystemConstant.REDIS_GROUP_KEY + groupId, 1);
+    }
+
+    @Override
+    public void addGroupManager(Integer groupId, Integer userId) throws DataIntegrityViolationException {
+        groupMapper.setGroupManager(groupId, userId);
+    }
+
+    @Override
+    public List<Integer> listGroupManagerByUserId(Integer groupId) {
+        return groupMapper.listGroupManagerByUserId(groupId);
+    }
+
+    @Override
+    public Integer countGroupManger(Integer groupId, Integer uid) {
+        return groupMapper.countGroupManger(groupId, uid);
+    }
+
+    @Override
+    public void deleteGroupManager(Integer groupId, Integer userId) {
+        groupMapper.deleteGroupManager(groupId, userId);
     }
 }

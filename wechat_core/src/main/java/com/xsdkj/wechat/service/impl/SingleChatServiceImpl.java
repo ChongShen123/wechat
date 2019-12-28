@@ -51,7 +51,6 @@ public class SingleChatServiceImpl implements SingleChatService {
         // step1 先查询 7天之前的所有数据。 List<SingleChat> list;
         Query query1 = Query.query(Criteria.where("createTimes").lt(time));
         List<SingleChat> list = mongoTemplate.find(query1, SingleChat.class);
-        System.out.println(list.size());
         if (list.size() > 0) {
             // step2 遍历这个list
             for (SingleChat singleChat : list) {

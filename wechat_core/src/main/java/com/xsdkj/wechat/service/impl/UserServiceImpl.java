@@ -23,6 +23,7 @@ import com.xsdkj.wechat.util.IpUtil;
 import com.xsdkj.wechat.util.JwtTokenUtil;
 import com.xsdkj.wechat.util.QrUtil;
 import com.xsdkj.wechat.util.UserUtil;
+import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;
 import com.xsdkj.wechat.vo.admin.LoginInfoVo;
@@ -273,7 +274,11 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
-        currentUserDetailsBo.setGroupInfoBos(groupService.listGroupByUid(user.getId()));
+        List<GroupVo> groupInfoBos = groupService.listGroupByUid(user.getId());
+        for (GroupVo groupInfoBo : groupInfoBos) {
+            currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
+        }
+        currentUserDetailsBo.setGroupInfoBos(groupInfoBos);
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
         redisUtil.set(SystemConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), SystemConstant.REDIS_USER_TIMEOUT);
         return currentUserDetailsBo;
@@ -289,5 +294,12 @@ public class UserServiceImpl extends BaseService implements UserService {
             bo = JSONObject.toJavaObject(JSONObject.parseObject(redisData), UserDetailsBo.class);
         }
         return bo;
+    }
+
+    @Override
+    public GroupVo getUserRedisGroup(Integer uid, Integer gid) {
+        Map<Integer, GroupVo> userGroupRelationMap = getRedisDataByUid(uid).getUserGroupRelationMap();
+        System.out.println(userGroupRelationMap);
+        return userGroupRelationMap.get(gid);
     }
 }

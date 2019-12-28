@@ -52,7 +52,7 @@ public class JoinGroupCmd extends BaseChatCmd {
         //给用户发送一个入群消息,保存到数据库
         sendCreateGroupMessageToUsers(ids, group);
         // 更新群组redis缓存
-        groupService.updateRedisGroupByGroupId(group.getId());
+        groupService.updateRedisGroupById(groupId);
         sendMessage(channel, JsonResult.success(cmd));
     }
 }

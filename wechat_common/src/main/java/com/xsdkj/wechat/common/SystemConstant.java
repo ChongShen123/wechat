@@ -43,6 +43,10 @@ public interface SystemConstant {
     // ---------------------------------参数获取相关常量-----------------------------------------------
 
     /**
+     * 时间
+     */
+    String KEY_TIMES = "times";
+    /**
      * 用户id
      */
     String KEY_USER_ID = "user_id";
@@ -233,10 +237,19 @@ public interface SystemConstant {
 
     // ----------------redis 相关-----------------------------------------------------
     /**
+     * redis群组禁言key
+     */
+    String REDIS_GROUP_NO_SAY = "group_no_say";
+    /**
      * 缓存群信息
      * group_+群id
      */
     String REDIS_GROUP_KEY = "group_";
+    /**
+     * 群所有用户
+     * group_members_+群id
+     */
+    String REDIS_GROUP_MEMBERS = "group_members_";
     /**
      * 用户key
      * user_+username
@@ -256,5 +269,13 @@ public interface SystemConstant {
      */
     long REDIS_USER_TIMEOUT = 60 * 60 * 24;
 
+    /**
+     * 添加管理员
+     */
+    int ADD_MANAGER = 1;
 
+    /**
+     * 删除管理员
+     */
+    int DELETE_MANAGER = 2;
 }

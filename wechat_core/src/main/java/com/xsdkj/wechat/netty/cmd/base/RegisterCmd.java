@@ -1,6 +1,5 @@
 package com.xsdkj.wechat.netty.cmd.base;
 
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.SessionBo;
@@ -13,7 +12,7 @@ import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.util.JwtTokenUtil;
 import com.xsdkj.wechat.util.SessionUtil;
-import com.xsdkj.wechat.vo.ListGroupVo;
+import com.xsdkj.wechat.vo.GroupVo;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -87,8 +86,8 @@ public class RegisterCmd extends BaseChatCmd {
         channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon()));
         sendMessage(channel, JsonResult.success("您已连接成功!", cmd));
         // 加入群聊
-        List<ListGroupVo> userGroupList = groupService.listGroupByUid(userId);
-        for (ListGroupVo group : userGroupList) {
+        List<GroupVo> userGroupList = groupService.listGroupByUid(userId);
+        for (GroupVo group : userGroupList) {
             SessionUtil.getChannelGroup(group.getGid()).add(channel);
             log.info("用户{}已进入群聊,群房间名为{}", user.getUsername(), group.getGroupName());
         }

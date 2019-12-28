@@ -1,11 +1,10 @@
 package com.xsdkj.wechat.mapper;
 
-
 import com.xsdkj.wechat.entity.chat.UserGroupRelation;
 
 /**
  * @author tiankong
- * @date 2019/12/11 11:39
+ * @date 2019/12/28 16:09
  */
 public interface UserGroupRelationMapper {
     int deleteByPrimaryKey(Integer id);
