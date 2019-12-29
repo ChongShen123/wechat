@@ -17,7 +17,6 @@ public class GroupChatServiceImpl implements GroupChatService {
     private MongoTemplate mongoTemplate;
     @Override
     public void save(GroupChat groupChat) {
-        System.out.println(groupChat);
         mongoTemplate.save(groupChat);
     }
 }

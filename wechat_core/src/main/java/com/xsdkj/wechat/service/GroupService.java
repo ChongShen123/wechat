@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.entity.chat.Group;
-import com.xsdkj.wechat.netty.ex.DataEmptyException;
+import com.xsdkj.wechat.service.ex.DataEmptyException;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;
 import com.xsdkj.wechat.vo.ListGroupVo;
@@ -63,7 +63,7 @@ public interface GroupService {
      * @param groupId 群ID
      * @return groupBaseInfoVO
      */
-    GroupBaseInfoVo getBaseInfo(Integer groupId);
+    GroupBaseInfoVo getBaseInfo(Integer groupId) throws DataEmptyException;
 
 
     /**
@@ -119,8 +119,14 @@ public interface GroupService {
     /**
      * 退群
      *
-     * @param ids 用户id
+     * @param ids     用户id
      * @param groupId 群id
      */
     void quitGroup(Set<Integer> ids, Integer groupId);
+
+    /**
+     * 更新群组redis信息
+     * @param groupId 群id
+     */
+    void updateRedisGroupByGroupId(Integer groupId);
 }

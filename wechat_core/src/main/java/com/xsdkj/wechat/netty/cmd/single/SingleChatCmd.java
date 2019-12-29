@@ -7,7 +7,7 @@ import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
-import com.xsdkj.wechat.netty.ex.ValidateException;
+import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -47,7 +47,7 @@ public class SingleChatCmd extends BaseChatCmd {
             chat.setRead(false);
         }
         // TODO 使用到RabbitMQ
-        rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, chat));
+        rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, chat));
         sendMessage(channel, JsonResult.success(cmd));
     }
 }

@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.entity.chat.Group;
-import com.xsdkj.wechat.netty.ex.GroupNotFoundException;
-import com.xsdkj.wechat.netty.ex.UserJoinedException;
+import com.xsdkj.wechat.service.ex.GroupNotFoundException;
+import com.xsdkj.wechat.service.ex.UserJoinedException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -51,6 +51,8 @@ public class JoinGroupCmd extends BaseChatCmd {
         groupService.updateGroupCount(ids.size(), groupId);
         //给用户发送一个入群消息,保存到数据库
         sendCreateGroupMessageToUsers(ids, group);
+        // 更新群组redis缓存
+        groupService.updateRedisGroupByGroupId(group.getId());
         sendMessage(channel, JsonResult.success(cmd));
     }
 }

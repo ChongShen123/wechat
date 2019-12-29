@@ -93,5 +93,4 @@ public interface Cmd {
      * 退出群聊
      */
     int QUIT_GROUP = 3008;
-
 }

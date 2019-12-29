@@ -3,6 +3,8 @@ package com.xsdkj.wechat.entity.chat;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
+
 /**
  * 好友申请消息
  *
@@ -10,7 +12,8 @@ import org.springframework.data.annotation.Id;
  * @date 2019/12/12 13:50
  */
 @Data
-public class FriendApplication {
+public class FriendApplication implements Serializable {
+    private static final long serialVersionUID = 3299136926378775672L;
     @Id
     private String id;
     private Integer toUserId;

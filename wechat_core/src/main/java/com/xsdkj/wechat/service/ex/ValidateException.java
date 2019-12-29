@@ -1,4 +1,4 @@
-package com.xsdkj.wechat.netty.ex;
+package com.xsdkj.wechat.service.ex;
 
 /**
  * @author tiankong

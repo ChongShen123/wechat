@@ -5,7 +5,7 @@ import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
-import com.xsdkj.wechat.vo.ListUserFriendVo;
+import com.xsdkj.wechat.vo.UserFriendVo;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class ListUserFriendCmd extends BaseChatCmd {
 
     @Override
     protected void concreteAction(Channel channel) {
-        List<ListUserFriendVo> listUserFriendVos = userService.listFriendByUserId(session.getUid());
+        List<UserFriendVo> listUserFriendVos = userService.listFriendByUid(session.getUid());
         sendMessage(channel, JsonResult.success(listUserFriendVos, cmd));
     }
 }

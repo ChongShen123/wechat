@@ -13,5 +13,4 @@ public class MoodParamDto {
     private String content;
     private String file;
     private Byte fileType;
-
 }

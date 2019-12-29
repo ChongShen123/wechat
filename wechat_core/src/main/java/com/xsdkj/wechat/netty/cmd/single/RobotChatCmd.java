@@ -3,13 +3,10 @@ package com.xsdkj.wechat.netty.cmd.single;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
-import com.xsdkj.wechat.netty.ex.ValidateException;
+import com.xsdkj.wechat.service.ex.ValidateException;
 import io.netty.channel.Channel;
-import org.springframework.stereotype.Service;
 
 /**
  * 机器人要付费的.暂时不要用了.

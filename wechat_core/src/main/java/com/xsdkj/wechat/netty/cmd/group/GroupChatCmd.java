@@ -7,7 +7,7 @@ import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.GroupChat;
-import com.xsdkj.wechat.netty.ex.ValidateException;
+import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -44,7 +44,8 @@ public class GroupChatCmd extends BaseChatCmd {
         // 将消息发送给群在线所有用户
         sendGroupMessage(requestParam.getGroupId(), JsonResult.success(groupChat, cmd));
         // TODO 使用到RabbitMQ
-        rabbitTemplateService.addChatInfo(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, groupChat));
+        RabbitMessageBoxBo box = RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, groupChat);
+        rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, box);
     }
 
     /**

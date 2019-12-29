@@ -43,6 +43,10 @@ public interface SystemConstant {
     // ---------------------------------参数获取相关常量-----------------------------------------------
 
     /**
+     * 用户id
+     */
+    String KEY_USER_ID = "user_id";
+    /**
      * 命令
      */
     String KEY_CMD = "cmd";
@@ -144,19 +148,19 @@ public interface SystemConstant {
      */
     String DIRECT_PATTERN = "direct";
     /**
-     * 聊天主队列
+     * 聊天主交换器
      */
     String CHAT_QUEUE_MAIN = "chat-queue-main";
     /**
-     * 聊天辅队列
+     * 聊天辅交换器
      */
     String CHAT_QUEUE_ASSIST = "chat-queue-assist";
     /**
-     * 服务主队列
+     * 服务主交换器
      */
     String SERVICE_QUEUE_MAIN = "service-queue-main";
     /**
-     * 服务辅队列
+     * 服务辅交换器
      */
     String SERVICE_QUEUE_ASSIST = "service-queue-assist";
 
@@ -181,6 +185,11 @@ public interface SystemConstant {
      * 发朋友圈消息
      */
     int BOX_TYPE_MOOD =3;
+    /**
+     * 好友申请类型
+     */
+    int BOX_TYPE_FRIEND_APPLICATION = 10;
+
     // -------------------文件操作------------------------------------------------
     /**
      * 上传文件的大小
@@ -237,7 +246,8 @@ public interface SystemConstant {
      * 用户key
      * user_+username
      */
-    String REDIS_USER_KEY = "user_";
+    String REDIS_USER_ID = "user_";
+
 
     /**
      * 用户好友列表

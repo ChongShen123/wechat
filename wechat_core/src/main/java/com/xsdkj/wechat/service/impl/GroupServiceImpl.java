@@ -3,7 +3,8 @@ package com.xsdkj.wechat.service.impl;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.Group;
 import com.xsdkj.wechat.mapper.GroupMapper;
-import com.xsdkj.wechat.netty.ex.DataEmptyException;
+import com.xsdkj.wechat.service.UserService;
+import com.xsdkj.wechat.service.ex.DataEmptyException;
 import com.xsdkj.wechat.service.GroupService;
 import com.xsdkj.wechat.util.RedisUtil;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
@@ -40,17 +41,43 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupBaseInfoVo getBaseInfo(Integer groupId) {
-        return groupMapper.getBaseInfo(groupId);
+    public GroupBaseInfoVo getBaseInfo(Integer groupId) throws DataEmptyException {
+        Group group = getGroupById(groupId);
+        if (group == null) {
+            throw new DataEmptyException();
+        }
+        return createNewGroupBaseInfoVo(group);
+    }
+
+    private GroupBaseInfoVo createNewGroupBaseInfoVo(Group group) {
+        GroupBaseInfoVo groupBaseInfoVo = new GroupBaseInfoVo();
+        groupBaseInfoVo.setAddFriendType(group.getAddFriendType());
+        groupBaseInfoVo.setId(group.getId());
+        groupBaseInfoVo.setMembersCount(group.getMembersCount());
+        groupBaseInfoVo.setName(group.getName());
+        return groupBaseInfoVo;
     }
 
     @Override
     public GroupInfoVo getGroupInfo(Integer groupId) throws DataEmptyException {
-        GroupInfoVo info = groupMapper.getInfo(groupId);
-        if (info == null) {
+        Group group = getGroupById(groupId);
+        if (group == null) {
             throw new DataEmptyException();
         }
-        return info;
+        return createNewGroupInfo(group);
+    }
+
+    private GroupInfoVo createNewGroupInfo(Group group) {
+        GroupInfoVo result = new GroupInfoVo();
+        result.setCreateTimes(group.getCreateTimes());
+        result.setIcon(group.getIcon());
+        result.setId(group.getId());
+        result.setName(group.getName());
+        result.setMembersCount(group.getMembersCount());
+        result.setQr(group.getQr());
+        result.setNotice(group.getNotice());
+        result.setAddFriendType(group.getAddFriendType());
+        return result;
     }
 
     @Override
@@ -109,5 +136,13 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void quitGroup(Set<Integer> ids, Integer groupId) {
         groupMapper.quitGroup(ids, groupId);
+    }
+
+    @Override
+    public void updateRedisGroupByGroupId(Integer groupId) {
+        Group group = groupMapper.selectByPrimaryKey(groupId);
+        if (group != null) {
+            redisUtil.set(SystemConstant.REDIS_GROUP_KEY + group.getId(), group);
+        }
     }
 }

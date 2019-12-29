@@ -37,11 +37,11 @@ public enum ResultCodeEnum implements IErrorCode {
     /**
      * 解析参数失败
      */
-    PARSE_PARAM(4022, "操作失败！解析参数失败"),
+    PARSE_PARAM(4022, "操作失败！解析参数出错"),
     /**
      * 聊天类型异常
      */
-    CHAT_TYPE_ERROR(4021, "操作失败！聊天类型命令不存在"),
+    CHAT_TYPE_ERROR(4021, "操作失败！聊天命令不存在"),
     /**
      * 数据不存在
      */
@@ -75,7 +75,7 @@ public enum ResultCodeEnum implements IErrorCode {
     USER_LOGGED_IN(4008, "请不要重复登录"),
     PASSWORD_NOT_MATCH(4007, "密码不匹配"),
     USER_ALREADY_EXISTS(4006, "用户已存在"),
-    USER_NOT_FOND(4005, "用户不存在"),
+    USER_NOT_FOND(4005, "数据不存在"),
     VALIDATE_FAILED(4004, "参数检验失败"),
     FORBIDDEN(4003, "没有相关权限"),
     UNAUTHORIZED(4001, "暂未登录或token已过期"),

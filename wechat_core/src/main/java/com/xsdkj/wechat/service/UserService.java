@@ -8,7 +8,7 @@ import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
 import com.xsdkj.wechat.dto.UserUpdatePassword;
 import com.xsdkj.wechat.entity.chat.User;
-import com.xsdkj.wechat.vo.ListUserFriendVo;
+import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;
 import com.xsdkj.wechat.vo.admin.LoginInfoVo;
 
@@ -105,15 +105,8 @@ public interface UserService {
      * @param uid 用户ID
      * @return 好友列表
      */
-    List<ListUserFriendVo> listFriendByUserId(Integer uid);
+    List<UserFriendVo> listFriendByUid(Integer uid);
 
-    /**
-     * 更新redis 用户好友列表
-     *
-     * @param uid 用户ID
-     * @return 好友列表
-     */
-    List<ListUserFriendVo> updateRedisListFriendByUserId(Integer uid);
 
     /**
      * 删除好友
@@ -122,4 +115,20 @@ public interface UserService {
      * @param friendId 好友ID
      */
     void deleteFriend(Integer uid, Integer friendId);
+
+    /**
+     * 更新用户Redis 数据
+     * 更新用户菜单,用户群组,用户信息
+     *
+     * @param uid 用户id
+     * @return List
+     */
+    UserDetailsBo updateRedisDataByUid(Integer uid);
+
+    /**
+     * 获取用户缓存信息
+     * @param uid 用户id
+     * @return UserDetailsBo
+     */
+    UserDetailsBo getRedisDataByUid(Integer uid);
 }

@@ -8,6 +8,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+
+
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -18,8 +20,8 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class MessageManager implements ApplicationListener<ContextRefreshedEvent> {
-    private static Map<Integer, MessageHandler> messageManagerMap = new HashMap<>();
+public class MsgManager implements ApplicationListener<ContextRefreshedEvent> {
+    private static Map<Integer, MsgHandler> messageManagerMap = new HashMap<>();
     private int a = 0;
     private int b = 0;
 
@@ -47,7 +49,7 @@ public class MessageManager implements ApplicationListener<ContextRefreshedEvent
 //        action(box);
     }
     private void action(RabbitMessageBoxBo box) {
-        MessageHandler messageHandler = messageManagerMap.get(box.getType());
+        MsgHandler messageHandler = messageManagerMap.get(box.getType());
         if (messageHandler == null) {
             log.error("信息为空");
             return;
@@ -60,7 +62,7 @@ public class MessageManager implements ApplicationListener<ContextRefreshedEvent
         beans.forEach((name, bean) -> {
             try {
                 SaveAnno annotation = bean.getClass().getAnnotation(SaveAnno.class);
-                messageManagerMap.put(annotation.type(), (MessageHandler) bean);
+                messageManagerMap.put(annotation.type(), (MsgHandler) bean);
             } catch (Exception e) {
                 log.error(String.valueOf(e));
             }

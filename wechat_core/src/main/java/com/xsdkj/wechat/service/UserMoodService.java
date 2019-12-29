@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.dto.MoodParamDto;
+import com.xsdkj.wechat.dto.UserThumbsDto;
 import com.xsdkj.wechat.entity.chat.UserMood;
 
 /**
@@ -13,5 +14,11 @@ public interface UserMoodService {
      */
     void save(MoodParamDto moodDto);
 
+    /**
+     * 保存
+     * @param userMood
+     */
     void delete(UserMood userMood);
+
+    void saveThumbs(UserThumbsDto userThumbsDto);
 }

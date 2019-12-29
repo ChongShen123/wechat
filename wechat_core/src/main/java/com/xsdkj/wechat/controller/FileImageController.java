@@ -72,7 +72,7 @@ public class FileImageController {
             return JsonResult.failed("请上传小于1M的文件");
         }
         // 文件夹
-        String folder = imgPath + new SimpleDateFormat("y/M/d/").format(new Date());
+        String folder = voicePath + new SimpleDateFormat("y/M/d/").format(new Date());
         // 真实文件夹地址
         String realFolder = rootPath + folder;
         if (!FileUtil.exist(realFolder)) {

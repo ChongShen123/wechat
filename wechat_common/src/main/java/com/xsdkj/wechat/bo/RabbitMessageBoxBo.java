@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 @Data
 public class RabbitMessageBoxBo implements Serializable {
+    private static final long serialVersionUID = 3354949203382724146L;
     private Integer type;
     private Object data;
 

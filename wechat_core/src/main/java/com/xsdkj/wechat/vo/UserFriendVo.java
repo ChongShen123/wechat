@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @date 2019/12/25 17:17
  */
 @Data
-public class ListUserFriendVo implements Serializable {
+public class UserFriendVo implements Serializable {
     private Integer uid;
     private Long uno;
     private String icon;

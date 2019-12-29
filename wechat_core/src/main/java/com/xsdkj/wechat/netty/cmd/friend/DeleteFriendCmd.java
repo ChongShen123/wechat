@@ -5,10 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.netty.ex.UserNotFountException;
+import com.xsdkj.wechat.service.ex.UserNotFountException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
-import com.xsdkj.wechat.vo.ListUserFriendVo;
+import com.xsdkj.wechat.util.SessionUtil;
+import com.xsdkj.wechat.vo.UserFriendVo;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,10 @@ public class DeleteFriendCmd extends BaseChatCmd {
             throw new UserNotFountException();
         }
         userService.deleteFriend(session.getUid(), friendId);
+        if (SessionUtil.getUserChannel(friendId) != null) {
+            userService.updateRedisDataByUid(friendId);
+        }
+        userService.updateRedisDataByUid(session.getUid());
         sendMessage(channel, JsonResult.success(cmd));
     }
 
@@ -48,8 +53,8 @@ public class DeleteFriendCmd extends BaseChatCmd {
      * @return boolean
      */
     private boolean checkIsFriend(Integer uid, Integer friendId) {
-        List<ListUserFriendVo> listUserFriendVos = userService.listFriendByUserId(uid);
-        for (ListUserFriendVo friendVo : listUserFriendVos) {
+        List<UserFriendVo> listUserFriendVos = userService.listFriendByUid(uid);
+        for (UserFriendVo friendVo : listUserFriendVos) {
             if (friendVo.getUid().equals(friendId)) {
                 return true;
             }

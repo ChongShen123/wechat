@@ -2,6 +2,7 @@ package com.xsdkj.wechat.bo;
 
 import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.vo.ListGroupVo;
+import com.xsdkj.wechat.vo.UserFriendVo;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,8 @@ public class UserDetailsBo implements UserDetails, Serializable {
      * 用户的所有群组
      */
     private List<ListGroupVo> groupInfoBos;
+
+    private List<UserFriendVo> userFriendVos;
 
     public UserDetailsBo(User user) {
         this.user = user;

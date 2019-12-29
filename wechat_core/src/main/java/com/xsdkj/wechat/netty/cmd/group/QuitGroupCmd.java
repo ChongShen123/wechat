@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.netty.ex.UserNotInGroupException;
+import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.service.ex.UserNotInGroupException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -43,7 +44,14 @@ public class QuitGroupCmd extends BaseChatCmd {
         Set<Integer> ids = new HashSet<>();
         ids.add(session.getUid());
         groupService.quitGroup(ids, groupId);
+        //更新群组用户redis数据
+        ids.forEach(id -> {
+            User user = userService.getByUserId(id);
+            userService.updateRedisDataByUid(user.getId());
+        });
         groupService.updateGroupCount(-ids.size(), groupId);
+        // 更新群组redis数据
+        groupService.updateRedisGroupByGroupId(groupId);
     }
 
     private RemoveChatVo createNewRemoveChatVo(Integer groupId, SessionBo session) {

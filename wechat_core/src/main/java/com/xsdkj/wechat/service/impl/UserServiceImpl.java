@@ -1,6 +1,8 @@
 package com.xsdkj.wechat.service.impl;
 
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.PermissionBo;
 import com.xsdkj.wechat.bo.UserDetailsBo;
@@ -21,7 +23,7 @@ import com.xsdkj.wechat.util.IpUtil;
 import com.xsdkj.wechat.util.JwtTokenUtil;
 import com.xsdkj.wechat.util.QrUtil;
 import com.xsdkj.wechat.util.UserUtil;
-import com.xsdkj.wechat.vo.ListUserFriendVo;
+import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;
 import com.xsdkj.wechat.vo.admin.LoginInfoVo;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,19 +79,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public User getByUsername(String username) {
-        Object jsonData = redisUtil.get(SystemConstant.REDIS_USER_KEY + username);
-        UserDetailsBo userDetailsBo;
-        if (jsonData == null) {
-            User user = userMapper.getOneByUsername(username);
-            if (user == null) {
-                return null;
-            }
-            userDetailsBo = createCurrentUserDetailsBo(user);
-            redisUtil.set(SystemConstant.REDIS_USER_KEY + user.getUsername(), JSONObject.toJSONString(userDetailsBo), SystemConstant.REDIS_USER_TIMEOUT);
-        } else {
-            userDetailsBo = JSONObject.toJavaObject(JSONObject.parseObject(jsonData.toString()), UserDetailsBo.class);
-        }
-        return userDetailsBo.getUser();
+        return userMapper.getOneByUsername(username);
     }
 
     @Override
@@ -108,16 +98,16 @@ public class UserServiceImpl extends BaseService implements UserService {
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         insertLoginLog(user, request);
         //将用户信息保存到redis
-        redisUtil.set(SystemConstant.REDIS_USER_KEY + user.getUsername(), JSONObject.toJSONString(currentUserDetails), SystemConstant.REDIS_USER_TIMEOUT);
+        updateRedisDataByUid(user.getId());
         return new LoginVo(user.getId(), user.getUsername(), user.getIcon(), tokenHead + " " + jwtTokenUtil.generateToken(user.getUsername() + ""), user.getQr(), user.getUno());
     }
 
     @Override
     public UserDetailsBo createCurrentUserDetailsBo(User user) {
-        // TODO 用户登录后将其所有好友也缓存到redis
         UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
         currentUserDetailsBo.setGroupInfoBos(groupService.listGroupByUid(user.getId()));
+        currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(user.getId()));
         return currentUserDetailsBo;
     }
 
@@ -196,7 +186,14 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public User getByUserId(Integer id) {
-        return userMapper.selectByPrimaryKey(id);
+        UserDetailsBo bo;
+        String redisData = redisUtil.get(SystemConstant.REDIS_USER_ID + id).toString();
+        if (StrUtil.isBlank(redisData)) {
+            bo = updateRedisDataByUid(id);
+        } else {
+            bo = JSONObject.toJavaObject(JSONObject.parseObject(redisData), UserDetailsBo.class);
+        }
+        return bo.getUser();
     }
 
     @Override
@@ -255,25 +252,42 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public List<ListUserFriendVo> listFriendByUserId(Integer uid) {
-        List<ListUserFriendVo> listUserFriendVos = (List<ListUserFriendVo>) redisUtil.get(SystemConstant.REDIS_USER_FRIEND + uid);
-        if (listUserFriendVos == null) {
-            listUserFriendVos = updateRedisListFriendByUserId(uid);
-        }
-        return listUserFriendVos;
+    public List<UserFriendVo> listFriendByUid(Integer uid) {
+        UserDetailsBo redisDataByUid = getRedisDataByUid(uid);
+        return redisDataByUid.getUserFriendVos();
     }
 
-    @Override
-    public List<ListUserFriendVo> updateRedisListFriendByUserId(Integer uid) {
-        List<ListUserFriendVo> listUserFriendVos = userMapper.listFriendByUserId(uid);
-        redisUtil.set(SystemConstant.REDIS_USER_FRIEND + uid, listUserFriendVos, SystemConstant.REDIS_USER_TIMEOUT);
-        return listUserFriendVos;
-    }
 
     @Override
     public void deleteFriend(Integer uid, Integer friendId) {
         userMapper.deleteFriend(uid, friendId);
-        // 更新下redis好友列表
-        updateRedisListFriendByUserId(uid);
+        userMapper.deleteFriend(friendId, uid);
+        // TODO 更新下redis好友列表
+    }
+
+    @Override
+    public UserDetailsBo updateRedisDataByUid(Integer uid) {
+        User user = userMapper.selectByPrimaryKey(uid);
+        if (ObjectUtil.isNull(user)) {
+            throw new NullPointerException();
+        }
+        UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
+        currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
+        currentUserDetailsBo.setGroupInfoBos(groupService.listGroupByUid(user.getId()));
+        currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
+        redisUtil.set(SystemConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), SystemConstant.REDIS_USER_TIMEOUT);
+        return currentUserDetailsBo;
+    }
+
+    @Override
+    public UserDetailsBo getRedisDataByUid(Integer uid) {
+        String redisData = redisUtil.get(SystemConstant.REDIS_USER_ID + uid).toString();
+        UserDetailsBo bo;
+        if (StrUtil.isBlank(redisData)) {
+            bo = updateRedisDataByUid(uid);
+        } else {
+            bo = JSONObject.toJavaObject(JSONObject.parseObject(redisData), UserDetailsBo.class);
+        }
+        return bo;
     }
 }
