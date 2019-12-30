@@ -30,12 +30,11 @@ public  class UserMoodServiceImpl implements UserMoodService {
     private String imgPath;
     @Override
     public void save(MoodParamDto moodDto) {
-
         String[] files = moodDto.getFile().split(",");
         if (files.length > 0) {
             for (String file : files) {
                 boolean exist = FileUtil.exist(rootPath + imgPath + file);
-                if (!exist) {
+                if (!exist){
                     throw new NullPointerException();
                 }
             }
@@ -44,7 +43,6 @@ public  class UserMoodServiceImpl implements UserMoodService {
         System.out.println(userMood);
         rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userMood));
     }
-
     @Override
     public void delete(UserMood userMood) {
         if(userMood.getId()!=null){
@@ -52,7 +50,6 @@ public  class UserMoodServiceImpl implements UserMoodService {
             rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userMood));
         }
     }
-
     private UserMood createNewUserMood(MoodParamDto moodDto) {
         UserMood userMood = new UserMood();
         userMood.setContent(moodDto.getContent());
