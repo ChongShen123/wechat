@@ -188,7 +188,13 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public User getByUserId(Integer id) {
         UserDetailsBo bo;
-        String redisData = redisUtil.get(SystemConstant.REDIS_USER_ID + id).toString();
+        String redisData;
+        try {
+            redisData = redisUtil.get(SystemConstant.REDIS_USER_ID + id).toString();
+        } catch (NullPointerException e) {
+            // 如果缓存里面没有用户信息则说明用户没有登录
+            return null;
+        }
         if (StrUtil.isBlank(redisData)) {
             bo = updateRedisDataByUid(id);
         } else {

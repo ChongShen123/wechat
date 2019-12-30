@@ -1,7 +1,5 @@
 package com.xsdkj.wechat.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.chat.Group;
@@ -19,7 +17,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author tiankong
@@ -52,18 +53,27 @@ public class GroupServiceImpl implements GroupService {
         assert redisData != null;
         Map map = JSONObject.toJavaObject(JSONObject.parseObject(redisData.toString()), Map.class);
         Map noSayMap = (Map) map.get(uid);
-        times = Long.parseLong(noSayMap.get(groupId).toString());
+        // 判断用户是否有在禁言黑名单内
+        if (noSayMap == null) {
+            return null;
+        }
+        // 判断用户在groupId 是否有禁言类型
+        Object group = noSayMap.get(groupId);
+        if (group == null) {
+            return null;
+        }
+        times = Long.parseLong(group.toString());
         return times;
     }
 
     @Override
     public void updateRedisNoSayData() {
-        Map<Integer, Map<Integer, Long>> noSayMap = new HashMap<>(100);
+        Map<Integer, Map<Integer, Long>> noSayMap = new HashMap<>();
         List<GroupNoSay> groupNoSays = groupNoSayMapper.selectByAll(null);
         if (groupNoSays.size() > 0) {
             // 初始化map
             groupNoSays.forEach(groupNoSay -> {
-                Map<Integer, Long> map = new HashMap<>(10);
+                Map<Integer, Long> map = new HashMap<>();
                 noSayMap.put(groupNoSay.getUid(), map);
             });
             // 为map赋值
@@ -238,5 +248,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void deleteGroupManager(Integer groupId, Integer userId) {
         groupMapper.deleteGroupManager(groupId, userId);
+    }
+
+    @Override
+    public void relieveNoSay(Integer userId, Integer groupId) {
+        groupMapper.deleteNoSayByUidAndGid(userId, groupId);
     }
 }

@@ -256,26 +256,20 @@ public interface SystemConstant {
      */
     String REDIS_USER_ID = "user_";
 
-
-    /**
-     * 用户好友列表
-     * user_friend_+用户id
-     */
-    String REDIS_USER_FRIEND = "user_friend_";
-
     /**
      * 用户缓存过期时间
      * 单位s
      */
     long REDIS_USER_TIMEOUT = 60 * 60 * 24;
 
+    // 群聊相关
     /**
-     * 添加管理员
+     * 添加群管理员
      */
     int ADD_MANAGER = 1;
 
     /**
-     * 删除管理员
+     * 删除群管理员
      */
     int DELETE_MANAGER = 2;
 }

@@ -16,6 +16,9 @@ import com.xsdkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 群聊
  *
@@ -28,12 +31,9 @@ public class GroupChatCmd extends BaseChatCmd {
     @Override
     protected void parseParam(JSONObject param) {
         try {
-            Integer groupId = param.getInteger(SystemConstant.KEY_GROUP_ID);
-            String content = param.getString(SystemConstant.KEY_CONTENT);
-            Byte type = param.getByte(SystemConstant.KEY_TYPE);
-            requestParam.setGroupId(groupId);
-            requestParam.setContent(content);
-            requestParam.setByteType(type);
+            requestParam.setGroupId(param.getInteger(SystemConstant.KEY_GROUP_ID));
+            requestParam.setContent(param.getString(SystemConstant.KEY_CONTENT));
+            requestParam.setByteType(param.getByte(SystemConstant.KEY_TYPE));
         } catch (Exception e) {
             throw new ValidateException();
         }
@@ -41,29 +41,48 @@ public class GroupChatCmd extends BaseChatCmd {
 
     @Override
     protected void concreteAction(Channel channel) {
-        Long times = groupService.getNoSayTimesByUidAndGroupId(session.getUid(), requestParam.getGroupId());
-        System.out.println(times);
-        if (times != null) {
-            long noSayTimes = times - System.currentTimeMillis();
-            if (noSayTimes > 0) {
-                sendMessage(channel, JsonResult.failed(String.format("请在%s秒后发言", noSayTimes / 1000), cmd));
-                return;
-            } else if (times == -1) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.NO_SAY_EXCEPTION, cmd));
-                return;
-            }
+        Integer groupId = requestParam.getGroupId();
+        // 检查用户是否被禁言
+        if (checkUserNoSay(channel, groupId)) {
+            return;
         }
-//         构建一个群聊消息
-        GroupChat groupChat = createNewGroupChat(requestParam.getByteType(), requestParam.getGroupId(), requestParam.getContent(), SessionUtil.getSession(channel));
-//         将消息发送给群在线所有用户
-        sendGroupMessage(requestParam.getGroupId(), JsonResult.success(groupChat, cmd));
-        RabbitMessageBoxBo box = RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, groupChat);
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, box);
+        // 构建一个群聊消息
+        GroupChat groupChat = createNewGroupChat(requestParam.getByteType(), groupId, requestParam.getContent(), session);
+        // 将消息发送给群在线所有用户
+        sendGroupMessage(groupId, JsonResult.success(groupChat, cmd));
+        rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, groupChat));
     }
 
-    public static void main(String[] args) {
-        System.out.println(System.currentTimeMillis() + 20 * 1000);
+    /**
+     * 检查用户是否被禁言
+     *
+     * @param channel 用户 channel
+     * @param groupId 群id
+     * @return 返回用户是否被禁言
+     */
+    private boolean checkUserNoSay(Channel channel, Integer groupId) {
+        Long times = groupService.getNoSayTimesByUidAndGroupId(session.getUid(), groupId);
+        if (times != null) {
+            long noSayTimes = times - System.currentTimeMillis();
+            // 用户被禁言 noSayTimes ms
+            if (noSayTimes > 0) {
+                sendMessage(channel, JsonResult.failed(String.format("请在%s秒后发言", noSayTimes / 1000), cmd));
+                return true;
+            }
+            // 用户被永久禁言
+            else if (times == -1) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.NO_SAY_EXCEPTION, cmd));
+                return true;
+            }
+            // 用户禁言时间已过,删除禁言记录
+            else {
+                groupService.relieveNoSay(session.getUid(), groupId);
+                groupService.updateRedisNoSayData();
+            }
+        }
+        return false;
     }
+
     /**
      * 创建一个群聊消息
      *

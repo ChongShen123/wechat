@@ -28,7 +28,7 @@ public interface GroupService {
     Long getNoSayTimesByUidAndGroupId(Integer uid, Integer groupId);
 
     /**
-     * 禁言redis群组禁言表
+     * 更新redis群组禁言黑名单
      */
     void updateRedisNoSayData();
 
@@ -218,4 +218,12 @@ public interface GroupService {
      * @param userId  用户id
      */
     void deleteGroupManager(Integer groupId, Integer userId);
+
+    /**
+     * 解除用户禁言
+     *
+     * @param userId  用户id
+     * @param groupId 群id
+     */
+    void relieveNoSay(Integer userId, Integer groupId);
 }

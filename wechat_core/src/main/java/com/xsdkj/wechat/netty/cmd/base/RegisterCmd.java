@@ -8,6 +8,7 @@ import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.Attributes;
 import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.service.ex.UnAuthorizedException;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.util.JwtTokenUtil;
@@ -63,27 +64,31 @@ public class RegisterCmd extends BaseChatCmd {
 
     @Override
     protected void concreteAction(Channel channel) throws RuntimeException {
-        String token = requestParam.getToken();
-        String username;
+        boolean tokenState;
         try {
-            token = token.substring(tokenHead.length() + 1);
-            username = jwtTokenUtil.getUserNameFormToken(token);
-            jwtTokenUtil.validateToken(token, userDetailsService.loadUserByUsername(username));
+            String token = requestParam.getToken().substring(tokenHead.length() + 1);
+            tokenState = jwtTokenUtil.validateToken(token, userDetailsService.loadUserByUsername(jwtTokenUtil.getUserNameFormToken(token)));
         } catch (Exception e) {
-            e.printStackTrace();
+            // 获取token 异常
             remove(channel);
-            sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_TOKEN));
-            return;
+            throw new ValidateException();
+        }
+        // token过期
+        if (!tokenState) {
+            throw new UnAuthorizedException();
         }
         Integer userId = requestParam.getUserId();
         if (checkOnline(userId, channel)) {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_LOGGED_IN, cmd));
-            channel.close();
+            remove(channel);
             return;
         }
         User user = userService.getByUserId(userId);
-        SessionUtil.registerUserChannel(userId, channel);
+        if (user == null) {
+            throw new UnAuthorizedException();
+        }
         channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon()));
+        SessionUtil.registerUserChannel(userId, channel);
         sendMessage(channel, JsonResult.success("您已连接成功!", cmd));
         // 加入群聊
         List<GroupVo> userGroupList = groupService.listGroupByUid(userId);
@@ -110,6 +115,7 @@ public class RegisterCmd extends BaseChatCmd {
         } else if (session != null) {
             SessionUtil.ONLINE_USER_MAP.remove(session.getUid());
         }
-        return SessionUtil.ONLINE_USER_MAP.get(userId) != null;
+        Channel channel1 = SessionUtil.ONLINE_USER_MAP.get(userId);
+        return channel1 != null;
     }
 }

@@ -26,18 +26,18 @@
         <!--@mbg.generated-->
         select
         <include refid="Base_Column_List"/>
-        from group
+        from `group`
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--@mbg.generated-->
-        delete from group
+        delete from `group`
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Group"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into group (`name`, icon, qr,
+        insert into `group` (`name`, icon, qr,
         notice, owner_id, members_count,
         `state`, add_friend_type, is_save,
         create_times, modified_times)
@@ -49,7 +49,7 @@
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Group"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into group
+        insert into `group`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">
                 `name`,
@@ -123,7 +123,7 @@
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.Group">
         <!--@mbg.generated-->
-        update group
+        update `group`
         <set>
             <if test="name != null">
                 `name` = #{name,jdbcType=VARCHAR},
@@ -163,7 +163,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.Group">
         <!--@mbg.generated-->
-        update group
+        update `group`
         set `name` = #{name,jdbcType=VARCHAR},
         icon = #{icon,jdbcType=VARCHAR},
         qr = #{qr,jdbcType=VARCHAR},
@@ -239,9 +239,9 @@
         </if>
     </select>
     <insert id="insertUserIds">
-        insert into user_group_relation(uid,gid,group_nickname,notice_type,no_say) values
+        insert into user_group_relation(uid,gid,group_nickname,notice_type) values
         <foreach collection="ids" item="id" separator=",">
-            (#{id},#{groupId},(select username from user where id = #{id}),1,1)
+            (#{id},#{groupId},(select username from user where id = #{id}),1)
         </foreach>
     </insert>
     <update id="updateQr">
@@ -303,5 +303,8 @@
     </select>
     <delete id="deleteGroupManager">
         delete from group_manager where group_id = #{groupId} and uid = #{userId}
+    </delete>
+    <delete id="deleteNoSayByUidAndGid">
+        delete from group_no_say where uid = #{userId} and group_id = #{groupId}
     </delete>
 </mapper>

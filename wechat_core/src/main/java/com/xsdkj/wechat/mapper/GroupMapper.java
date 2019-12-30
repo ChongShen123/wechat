@@ -58,4 +58,6 @@ public interface GroupMapper {
     Integer countGroupManger(@Param("groupId") Integer groupId, @Param("uid") Integer uid);
 
     void deleteGroupManager(@Param("groupId") Integer groupId, @Param("userId") Integer userId);
+
+    void deleteNoSayByUidAndGid(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
 }

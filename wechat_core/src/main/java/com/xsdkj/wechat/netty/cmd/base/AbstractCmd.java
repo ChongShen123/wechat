@@ -2,8 +2,6 @@ package com.xsdkj.wechat.netty.cmd.base;
 
 import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.Channel;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 命令执行抽象类
@@ -11,9 +9,7 @@ import lombok.Setter;
  * @author tiankong
  * @date 2019/11/18 11:53
  */
-@Getter
-@Setter
-public abstract class BaseCmd extends BaseHandler {
+public abstract class AbstractCmd extends BaseHandler {
 
     /**
      * 命令类型

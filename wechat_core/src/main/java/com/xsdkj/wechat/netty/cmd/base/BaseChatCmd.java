@@ -39,7 +39,7 @@ import static com.xsdkj.wechat.common.SystemConstant.KEY_USER_ID;
  * @date 2019/11/17 19:54
  */
 @Service
-public abstract class BaseChatCmd extends BaseCmd {
+public abstract class BaseChatCmd extends AbstractCmd {
     @Resource
     protected UserService userService;
     @Resource
@@ -107,6 +107,8 @@ public abstract class BaseChatCmd extends BaseCmd {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.NO_SAY_EXCEPTION, cmd));
             } catch (RepetitionException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION, cmd));
+            } catch (UnAuthorizedException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.UNAUTHORIZED, cmd));
             } catch (NullPointerException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
                 e.printStackTrace();

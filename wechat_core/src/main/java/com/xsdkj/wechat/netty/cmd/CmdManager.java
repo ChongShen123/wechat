@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.netty.cmd;
 
 
-import com.xsdkj.wechat.netty.cmd.base.BaseCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractCmd;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -21,14 +21,14 @@ import java.util.Map;
 @Slf4j
 public class CmdManager implements ApplicationListener<ContextRefreshedEvent> {
 
-    private static Map<Integer, BaseCmd> commandTypeMap = new HashMap<>();
+    private static Map<Integer, AbstractCmd> commandTypeMap = new HashMap<>();
 //    private static Map<Integer, CommandBo> methodMap = new HashMap<>();
 
 //    public CommandBo getCommandBo(Integer byteType) {
 //        return methodMap.get(byteType);
 //    }
 
-    public BaseCmd getCommand(Integer type) {
+    public AbstractCmd getCommand(Integer type) {
         return commandTypeMap.get(type);
     }
 
@@ -60,7 +60,7 @@ public class CmdManager implements ApplicationListener<ContextRefreshedEvent> {
                 log.error(bean.getClass().getName() + "初始化命令失败");
                 e.printStackTrace();
             }
-            commandTypeMap.put(annotation.cmd(), (BaseCmd) bean);
+            commandTypeMap.put(annotation.cmd(), (AbstractCmd) bean);
         });
     }
 }
