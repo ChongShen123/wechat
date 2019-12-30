@@ -44,14 +44,11 @@ public class QuitGroupCmd extends BaseChatCmd {
         Set<Integer> ids = new HashSet<>();
         ids.add(session.getUid());
         groupService.quitGroup(ids, groupId);
-        //更新群组用户redis数据
-        ids.forEach(id -> {
-            User user = userService.getByUserId(id);
-            userService.updateRedisDataByUid(user.getId());
-        });
         groupService.updateGroupCount(-ids.size(), groupId);
         // 更新群组redis数据
-        groupService.updateRedisGroupByGroupId(groupId);
+        groupService.updateRedisGroupById(groupId);
+        //更新群组用户redis数据
+        userService.updateRedisDataByUid(session.getUid());
     }
 
     private RemoveChatVo createNewRemoveChatVo(Integer groupId, SessionBo session) {

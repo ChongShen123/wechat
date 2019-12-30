@@ -65,7 +65,7 @@ public class RequestParamFactory {
                 }
                 requestParam.setToUserId(toUserId);
                 requestParam.setContent(content);
-                requestParam.setType(type);
+                requestParam.setByteType(type);
                 break;
             case Cmd.ADD_FRIEND:
                 String username = param.getString(SystemConstant.KEY_USERNAME);
@@ -116,7 +116,7 @@ public class RequestParamFactory {
                     type = param.getByte(SystemConstant.KEY_TYPE);
                     requestParam.setGroupId(groupId);
                     requestParam.setContent(content);
-                    requestParam.setType(type);
+                    requestParam.setByteType(type);
                 } catch (Exception e) {
                     throw new ValidateException();
                 }

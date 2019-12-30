@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.bo;
 
 import com.xsdkj.wechat.entity.chat.User;
-import com.xsdkj.wechat.vo.ListGroupVo;
+import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author tiankong
@@ -30,10 +32,18 @@ public class UserDetailsBo implements UserDetails, Serializable {
     private List<PermissionBo> permissionBos;
     /**
      * 用户的所有群组
+     * TODO 这里可以去掉.与下面的Map重复了
      */
-    private List<ListGroupVo> groupInfoBos;
+    private List<GroupVo> groupInfoBos;
 
+    /**
+     * 用户所有好友
+     */
     private List<UserFriendVo> userFriendVos;
+    /**
+     * 用户所有群组
+     */
+    private Map<Integer, GroupVo> userGroupRelationMap = new HashMap<>();
 
     public UserDetailsBo(User user) {
         this.user = user;

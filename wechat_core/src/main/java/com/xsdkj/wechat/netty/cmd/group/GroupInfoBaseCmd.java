@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @CmdAnno(cmd = Cmd.GROUP_BASE_INFO)
 @Service
-public class GroupBaseInfoCmd extends BaseChatCmd {
+public class GroupInfoBaseCmd extends BaseChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {

@@ -9,7 +9,8 @@ import java.io.Serializable;
  * @date 2019/12/15 12:47
  */
 @Data
-public class ListGroupVo implements Serializable {
+public class GroupVo implements Serializable {
+    private static final long serialVersionUID = 1360634805266076582L;
     private Integer gid;
     private String groupName;
     private String icon;

@@ -74,6 +74,7 @@ public class NettyServer implements Runnable {
                     if (groups.size() > 0) {
                         groups.forEach(group -> SessionUtil.GROUP_MAP.put(group.getId(), new GroupInfoBo(group, new DefaultChannelGroup(GlobalEventExecutor.INSTANCE))));
                     }
+                    groupService.updateRedisNoSayData();
                 }
             }).sync();
         } catch (Exception e) {

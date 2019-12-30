@@ -23,7 +23,7 @@ public class GroupChat extends ChatInfo implements Serializable {
                 ", id='" + id + '\'' +
                 ", fromUserId=" + fromUserId +
                 ", content='" + content + '\'' +
-                ", type=" + type +
+                ", byteType=" + type +
                 ", createTimes=" + createTimes +
                 '}';
     }

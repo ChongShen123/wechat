@@ -1,11 +1,13 @@
 package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.entity.chat.GroupNoSay;
 import com.xsdkj.wechat.service.ex.DataEmptyException;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;
-import com.xsdkj.wechat.vo.ListGroupVo;
+import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.ListMembersVo;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.Set;
@@ -16,7 +18,49 @@ import java.util.Set;
  */
 public interface GroupService {
 
+    /**
+     * 获取用户禁言时间
+     *
+     * @param uid     用户id
+     * @param groupId 群组id
+     * @return GroupNoSay
+     */
+    Long getNoSayTimesByUidAndGroupId(Integer uid, Integer groupId);
+
+    /**
+     * 禁言redis群组禁言表
+     */
+    void updateRedisNoSayData();
+
+    /**
+     * 保存一个禁言用户
+     *
+     * @param uid     用户uid
+     * @param groupId 群组id
+     * @param times   禁言时间
+     */
+    void saveNoSay(Integer uid, Integer groupId, Long times);
+
+    /**
+     * 查看所有群
+     *
+     * @return List
+     */
     List<Group> listAllChatGroup();
+
+    /**
+     * 更新redis群组信息
+     *
+     * @param groupId 群组id
+     */
+    void updateRedisGroupById(Integer groupId);
+
+    /**
+     * 更新redis群组信息
+     *
+     * @param group 群组id
+     */
+    void updateRedisGroupById(Group group);
 
     /**
      * 创建群聊
@@ -55,22 +99,23 @@ public interface GroupService {
      * @param userId 用户id
      * @return list
      */
-    List<ListGroupVo> listGroupByUid(Integer userId);
+    List<GroupVo> listGroupByUid(Integer userId);
 
     /**
      * 获取群组基本信息
      *
      * @param groupId 群ID
      * @return groupBaseInfoVO
+     * @throws DataEmptyException 未找到该群异常
      */
     GroupBaseInfoVo getBaseInfo(Integer groupId) throws DataEmptyException;
-
 
     /**
      * 获取群详情
      *
      * @param groupId groupId
      * @return GroupInfoBo
+     * @throws DataEmptyException 未找到该群异常
      */
     GroupInfoVo getGroupInfo(Integer groupId) throws DataEmptyException;
 
@@ -124,9 +169,53 @@ public interface GroupService {
      */
     void quitGroup(Set<Integer> ids, Integer groupId);
 
+
     /**
-     * 更新群组redis信息
-     * @param groupId 群id
+     * 删除redis数据
+     *
+     * @param groupId 群组id
      */
-    void updateRedisGroupByGroupId(Integer groupId);
+    void deleteRedisData(Integer groupId);
+
+    /**
+     * 删除群组
+     *
+     * @param groupId 群组id
+     */
+    void deleteById(Integer groupId);
+
+
+    /**
+     * 添加群管理员
+     *
+     * @param groupId 群组id
+     * @param userId  用户id
+     * @throws DataIntegrityViolationException 指定的用户不存在,抛出的外键关联失败异常
+     */
+    void addGroupManager(Integer groupId, Integer userId) throws DataIntegrityViolationException;
+
+    /**
+     * 查询群管理人员
+     *
+     * @param groupId 群id
+     * @return 管理员id
+     */
+    List<Integer> listGroupManagerByUserId(Integer groupId);
+
+    /**
+     * 判断用户是是否已为管理员
+     *
+     * @param groupId 群id
+     * @param uid     用户id
+     * @return int
+     */
+    Integer countGroupManger(Integer groupId, Integer uid);
+
+    /**
+     * 删除群管理员
+     *
+     * @param groupId 群id
+     * @param userId  用户id
+     */
+    void deleteGroupManager(Integer groupId, Integer userId);
 }

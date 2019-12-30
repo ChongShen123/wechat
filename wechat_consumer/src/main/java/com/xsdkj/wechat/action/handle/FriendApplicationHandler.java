@@ -19,7 +19,6 @@ import javax.annotation.Resource;
 public class FriendApplicationHandler implements MsgHandler {
     @Resource
     private MongoTemplate mongoTemplate;
-
     @Override
     public void execute(RabbitMessageBoxBo box) {
         FriendApplication application = (FriendApplication) box.getData();

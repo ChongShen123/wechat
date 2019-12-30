@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @author Administrator
  */
 @Service
-public abstract class UserMoodServiceImpl implements UserMoodService {
+public  class UserMoodServiceImpl implements UserMoodService {
     @Resource
     private UserUtil userUtil;
     @Resource
@@ -32,8 +32,6 @@ public abstract class UserMoodServiceImpl implements UserMoodService {
             userMood.setUid(userUtil.currentUser().getUser().getId());
             rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userMood));
         }
-
-
     }
 
     private UserMood createNewUserMood(MoodParamDto moodDto) {

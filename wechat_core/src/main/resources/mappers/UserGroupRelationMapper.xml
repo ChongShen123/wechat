@@ -16,7 +16,7 @@
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select
+    select 
     <include refid="Base_Column_List" />
     from user_group_relation
     where id = #{id,jdbcType=INTEGER}
@@ -28,9 +28,9 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserGroupRelation" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into user_group_relation (`uid`, gid, group_nickname,
+    insert into user_group_relation (`uid`, gid, group_nickname, 
       notice_type)
-    values (#{uid,jdbcType=INTEGER}, #{gid,jdbcType=INTEGER}, #{groupNickname,jdbcType=VARCHAR},
+    values (#{uid,jdbcType=INTEGER}, #{gid,jdbcType=INTEGER}, #{groupNickname,jdbcType=VARCHAR}, 
       #{noticeType,jdbcType=BOOLEAN})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserGroupRelation" useGeneratedKeys="true">

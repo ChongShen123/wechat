@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2019/12/26 20:08
+ * @date 2019/12/28 18:18
  */
 @Data
 public class Group implements Serializable {
@@ -34,11 +34,6 @@ public class Group implements Serializable {
     private Integer ownerId;
 
     /**
-     * 管理员id
-     */
-    private String adminIds;
-
-    /**
      * 群成员个数
      */
     private Integer membersCount;
@@ -49,7 +44,7 @@ public class Group implements Serializable {
     private Boolean state;
 
     /**
-     * 是否开启添加好友(关闭则该群成员不能相互加好友)
+     * 是否开启添加好友 0关闭 1开启(关闭则该群成员不能相互加好友)
      */
     private Boolean addFriendType;
 

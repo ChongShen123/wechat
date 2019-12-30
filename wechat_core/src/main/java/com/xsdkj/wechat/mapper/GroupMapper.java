@@ -1,10 +1,18 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.chat.Group;import com.xsdkj.wechat.vo.GroupBaseInfoVo;import com.xsdkj.wechat.vo.GroupInfoVo;import com.xsdkj.wechat.vo.ListGroupVo;import com.xsdkj.wechat.vo.ListMembersVo;import org.apache.ibatis.annotations.Param;import java.util.List;import java.util.Set;
+import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.vo.GroupBaseInfoVo;
+import com.xsdkj.wechat.vo.GroupInfoVo;
+import com.xsdkj.wechat.vo.GroupVo;
+import com.xsdkj.wechat.vo.ListMembersVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author tiankong
- * @date 2019/12/26 20:08
+ * @date 2019/12/28 18:18
  */
 public interface GroupMapper {
     int deleteByPrimaryKey(Integer id);
@@ -27,7 +35,7 @@ public interface GroupMapper {
 
     Group getById(@Param("id") Integer id);
 
-    List<ListGroupVo> listGroupByUserId(Integer userId);
+    List<GroupVo> listGroupByUserId(Integer userId);
 
     GroupBaseInfoVo getBaseInfo(@Param("groupId") Integer groupId);
 
@@ -42,4 +50,12 @@ public interface GroupMapper {
     String getByGroupIdAndUid(@Param("groupId") Integer groupId, @Param("uid") Integer uid);
 
     void quitGroup(@Param("ids") Set<Integer> ids, @Param("groupId") Integer groupId);
+
+    void setGroupManager(@Param("groupId") Integer groupId, @Param("userId") Integer userId);
+
+    List<Integer> listGroupManagerByUserId(Integer groupId);
+
+    Integer countGroupManger(@Param("groupId") Integer groupId, @Param("uid") Integer uid);
+
+    void deleteGroupManager(@Param("groupId") Integer groupId, @Param("userId") Integer userId);
 }

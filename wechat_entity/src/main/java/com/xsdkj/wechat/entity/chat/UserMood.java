@@ -3,6 +3,9 @@ package com.xsdkj.wechat.entity.chat;
 import java.io.Serializable;
 import lombok.Data;
 
+/**
+ * @author Administrator
+ */
 @Data
 public class UserMood implements Serializable {
     private Integer id;

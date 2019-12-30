@@ -10,6 +10,7 @@ import java.util.Set;
  */
 @Data
 public class RequestParamBo {
+    private Long times;
     private String id;
     private String token;
     private String username;
@@ -18,7 +19,8 @@ public class RequestParamBo {
     private Integer friendId;
     private String content;
     private String message;
-    private Byte type;
+    private Byte byteType;
+    private Integer intType;
     private Byte state;
     private Integer groupId;
     private Set<Integer> ids;

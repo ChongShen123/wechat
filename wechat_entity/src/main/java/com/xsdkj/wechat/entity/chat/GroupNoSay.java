@@ -5,25 +5,20 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2019/12/28 16:09
+ * @date 2019/12/28 15:54
  */
 @Data
-public class UserGroupRelation implements Serializable {
+public class GroupNoSay implements Serializable {
     private Integer id;
 
     private Integer uid;
 
-    private Integer gid;
+    private Integer groupId;
 
     /**
-     * 群昵称
+     * 禁言类型 -1 永久禁言, 当前时间戳之内则为正常发言,之外则为禁言时间
      */
-    private String groupNickname;
-
-    /**
-     * 是否屏蔽消息
-     */
-    private Boolean noticeType;
+    private Long times;
 
     private static final long serialVersionUID = 1L;
 }

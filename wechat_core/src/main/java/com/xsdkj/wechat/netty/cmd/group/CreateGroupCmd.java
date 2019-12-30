@@ -68,8 +68,6 @@ public class CreateGroupCmd extends BaseChatCmd {
         groupService.insertUserIds(ids, group.getId());
         // 群成员个数添加
         groupService.updateGroupCount(ids.size(), group.getId());
-        // 回复用户创建群成功
-        sendMessage(channel, JsonResult.success(new CreateGroupVo(group), cmd));
         // 给用户发送一个入群消息,保存到数据库
         sendCreateGroupMessageToUsers(ids, group);
         // 将在线用户添加到 channelGroup
@@ -82,6 +80,11 @@ public class CreateGroupCmd extends BaseChatCmd {
             }
         });
         SessionUtil.GROUP_MAP.put(group.getId(), groupInfo);
+        groupService.updateRedisGroupById(group.getId());
+        // 回复用户创建群成功
+        CreateGroupVo response = new CreateGroupVo(group);
+        response.setMemberCount(ids.size());
+        sendMessage(channel, JsonResult.success(response, cmd));
     }
 
 

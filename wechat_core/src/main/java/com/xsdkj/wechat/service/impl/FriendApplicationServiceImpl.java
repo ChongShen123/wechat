@@ -59,7 +59,7 @@ public class FriendApplicationServiceImpl implements FriendApplicationService {
     @Override
     public List<FriendApplication> listByUserId(Integer userId) {
         Query query = Query.query(Criteria.where("toUserId").is(userId));
-        query.fields().exclude("modifiedTime").exclude("type").exclude("toUserId");
+        query.fields().exclude("modifiedTime").exclude("byteType").exclude("toUserId");
         return mongoTemplate.find(query, FriendApplication.class);
     }
 }

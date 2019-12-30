@@ -9,6 +9,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ChannelHandler.Sharable
+@Slf4j
 public class IMIdleStateAdapter extends ChannelInboundHandlerAdapter {
     @Value("${netty.heartbeat}")
     private Integer heartbeat;
@@ -30,7 +32,7 @@ public class IMIdleStateAdapter extends ChannelInboundHandlerAdapter {
             IdleStateEvent idleVent = (IdleStateEvent) evt;
             // 读
             if (idleVent.state() == IdleState.READER_IDLE) {
-                System.out.println(heartbeat + "秒内未读到数据，关闭连接");
+                log.info("{}秒内未读到数据，关闭连接", heartbeat);
                 WebSocketServerHandshaker handShaker = SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.get(ctx.channel().id().asLongText());
                 if (handShaker != null) {
                     SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.remove(ctx.channel().id().asLongText());

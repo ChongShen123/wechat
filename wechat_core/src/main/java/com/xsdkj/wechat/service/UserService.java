@@ -8,6 +8,7 @@ import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
 import com.xsdkj.wechat.dto.UserUpdatePassword;
 import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;
 import com.xsdkj.wechat.vo.admin.LoginInfoVo;
@@ -131,4 +132,12 @@ public interface UserService {
      * @return UserDetailsBo
      */
     UserDetailsBo getRedisDataByUid(Integer uid);
+        /**
+     * 获取用户redis群组信息
+     *
+     * @param uid 用户id
+     * @param gid 群组id
+     * @return GroupVo
+     */
+    GroupVo getUserRedisGroup(Integer uid, Integer gid);
 }

@@ -18,6 +18,7 @@ import com.xsdkj.wechat.service.ex.*;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.util.ThreadUtil;
 import io.netty.channel.Channel;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,6 +29,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.xsdkj.wechat.common.SystemConstant.KEY_GROUP_ID;
+import static com.xsdkj.wechat.common.SystemConstant.KEY_USER_ID;
 
 
 /**
@@ -89,8 +91,10 @@ public abstract class BaseChatCmd extends BaseCmd {
                 concreteAction(channel);
             } catch (ValidateException | ParseParamException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, cmd));
-            } catch (DataEmptyException | UserNotFountException | NullPointerException e) {
+            } catch (DataEmptyException | UserNotFountException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
+            } catch (DataIntegrityViolationException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, cmd));
             } catch (GroupNotFoundException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.GROUP_NOT_FOUND, cmd));
             } catch (UserJoinedException e) {
@@ -99,6 +103,13 @@ public abstract class BaseChatCmd extends BaseCmd {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_IN_GROUP, cmd));
             } catch (PermissionDeniedException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.FORBIDDEN, cmd));
+            } catch (NoSayException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.NO_SAY_EXCEPTION, cmd));
+            } catch (RepetitionException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION, cmd));
+            } catch (NullPointerException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
+                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
                 sendMessage(channel, JsonResult.failed(cmd));
@@ -168,7 +179,7 @@ public abstract class BaseChatCmd extends BaseCmd {
                 // 通知群里在线的用户XXX已经进入群聊
                 sendGroupMessage(group.getId(), JsonResult.success(String.format("%s已加入群聊", SessionUtil.getSession(toUserChannel).getUsername()), cmd));
                 // 更新用户redis缓存
-                userService.updateRedisDataByUid(session.getUid());
+                userService.updateRedisDataByUid(singleChat.getToUserId());
             }
             singleChat.setRead(toUserChannel != null);
             rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
@@ -206,6 +217,30 @@ public abstract class BaseChatCmd extends BaseCmd {
         requestParam.setGroupId(groupId);
     }
 
+    protected void parseUserId(JSONObject param) {
+        Integer uid = param.getInteger(KEY_USER_ID);
+        if (ObjectUtil.isEmpty(uid)) {
+            throw new ValidateException();
+        }
+        requestParam.setUserId(uid);
+    }
+
+    protected void parseTimes(JSONObject param) {
+        Long times = param.getLong(SystemConstant.KEY_TIMES);
+        if (ObjectUtil.isEmpty(times)) {
+            throw new ValidateException();
+        }
+        requestParam.setTimes(times);
+    }
+
+    protected void parseIntegerType(JSONObject param) {
+        Integer type = param.getInteger(SystemConstant.KEY_TYPE);
+        if (ObjectUtil.isEmpty(type)) {
+            throw new ValidateException();
+        }
+        requestParam.setIntType(type);
+    }
+
     /**
      * 检查用户是否已入群
      *
@@ -216,4 +251,5 @@ public abstract class BaseChatCmd extends BaseCmd {
     protected boolean checkGroupUserJoined(Set<Integer> ids, Integer groupId) {
         return groupService.checkUserJoined(ids, groupId) >= 1;
     }
+
 }

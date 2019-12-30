@@ -36,7 +36,6 @@ public class RemoveChatGroupCmd extends BaseChatCmd {
 
     @Override
     protected void concreteAction(Channel channel) {
-        System.out.println(1);
         // 检查要移除的用户是否合法
         Set<Integer> ids = requestParam.getIds();
         Integer groupId = requestParam.getGroupId();
@@ -66,7 +65,7 @@ public class RemoveChatGroupCmd extends BaseChatCmd {
             rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, newSingleChat));
         });
         // 更新群组redis数据
-        groupService.updateRedisGroupByGroupId(groupId);
+        groupService.updateRedisGroupById(groupId);
         // 返回信息
         sendMessage(channel, JsonResult.success(cmd));
 

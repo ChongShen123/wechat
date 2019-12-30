@@ -7,7 +7,7 @@ import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.util.ThreadUtil;
-import com.xsdkj.wechat.vo.ListGroupVo;
+import com.xsdkj.wechat.vo.GroupVo;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +30,11 @@ public class ListUserGroupCmd extends BaseChatCmd {
     @Override
     protected void concreteAction(Channel channel) {
         ThreadUtil.getSingleton().submit(() -> {
-            List<ListGroupVo> list = groupService.listGroupByUid(SessionUtil.getSession(channel).getUid());
+            List<GroupVo> list = userService.getRedisDataByUid(SessionUtil.getSession(channel).getUid()).getGroupInfoBos();
             Map<String, Object> map = new HashMap<>(2);
             map.put("groupList", list);
             map.put("count", list.size());
             sendMessage(channel, JsonResult.success(map, cmd));
         });
     }
-
 }

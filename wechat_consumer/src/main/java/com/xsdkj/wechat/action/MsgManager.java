@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 /**
  * RabbitMQ 消息存储管理类
- *
  * @author tiankong
  * @date 2019/12/10 13:26
  */
