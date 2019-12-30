@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 /**
  * @author tiankong
  * @date 2019/12/11 18:28
@@ -25,7 +24,7 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(value = ServiceException.class)
     public JsonResult serviceExceptionHandler(ServiceException e) {
-        log.error("业务异常>>>>{}", e.getCode().getMessage());
+        log.error("业务异常>>>>{}",e.getCode());
         return JsonResult.failed(e.getCode());
     }
 

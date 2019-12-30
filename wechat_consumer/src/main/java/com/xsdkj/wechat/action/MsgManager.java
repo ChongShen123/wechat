@@ -2,6 +2,7 @@ package com.xsdkj.wechat.action;
 
 
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -9,16 +10,14 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * RabbitMQ 消息存储管理类
- *
  * @author tiankong
  * @date 2019/12/10 13:26
  */
-
 @Component
 @Slf4j
 public class MsgManager implements ApplicationListener<ContextRefreshedEvent> {
@@ -35,13 +34,11 @@ public class MsgManager implements ApplicationListener<ContextRefreshedEvent> {
         action(box);
     }
 
-
     @RabbitListener(queues = RabbitConstant.CHAT_QUEUE_ASSIST)
     public void handleChatQueueAssist(RabbitMessageBoxBo box) {
         log.info("b:{}", b++);
 //        action(box);
     }
-
     @RabbitListener(queues = RabbitConstant.SERVICE_QUEUE_MAIN)
     public void handleServiceQueueMain(RabbitMessageBoxBo box) {
         log.info("main");
@@ -53,7 +50,6 @@ public class MsgManager implements ApplicationListener<ContextRefreshedEvent> {
         log.info("assist");
 //        action(box);
     }
-
     private void action(RabbitMessageBoxBo box) {
         MsgHandler messageHandler = messageManagerMap.get(box.getType());
         if (messageHandler == null) {
@@ -62,7 +58,6 @@ public class MsgManager implements ApplicationListener<ContextRefreshedEvent> {
         }
         messageHandler.execute(box);
     }
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(SaveAnno.class);

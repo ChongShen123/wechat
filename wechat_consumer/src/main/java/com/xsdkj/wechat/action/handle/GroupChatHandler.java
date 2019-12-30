@@ -6,6 +6,7 @@ import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.GroupChat;
 import com.xsdkj.wechat.service.GroupChatService;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -20,10 +21,13 @@ import javax.annotation.Resource;
 @SaveAnno(type = RabbitConstant.BOX_TYPE_GROUP_CHAT)
 public class GroupChatHandler implements MsgHandler {
     @Resource
+    private MongoTemplate mongoTemplate;
     private GroupChatService groupChatService;
+
 
     @Override
     public void execute(RabbitMessageBoxBo box) {
+
         groupChatService.save((GroupChat) box.getData());
     }
 }

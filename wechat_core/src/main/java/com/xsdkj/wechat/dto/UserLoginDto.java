@@ -14,7 +14,6 @@ public class UserLoginDto {
     private String username;
     @NotNull(message = "密码不能为空")
     private String password;
-
     public UserLoginDto() {
     }
 

@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 
 /**
  * 单聊消息存储
- *
  * @author tiankong
  * @date 2019/12/27 11:00
  */
@@ -21,7 +20,6 @@ import javax.annotation.Resource;
 public class SingleChatHandler implements MsgHandler {
     @Resource
     private SingleChatService singleChatService;
-
     @Override
     public void execute(RabbitMessageBoxBo box) {
         singleChatService.save((SingleChat) box.getData());
