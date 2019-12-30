@@ -63,7 +63,7 @@ public interface UserService {
      * @param id id
      * @return 用户
      */
-    User getByUserId(Integer id);
+    User getRedisUserByUserId(Integer id);
 
     /**
      * 修改用户的基本信息
@@ -127,12 +127,23 @@ public interface UserService {
     UserDetailsBo updateRedisDataByUid(Integer uid);
 
     /**
+     * 更新用户Redis 数据
+     * 更新用户菜单,用户群组,用户信息
+     *
+     * @param user 用户
+     * @return UserDetailsBo
+     */
+    UserDetailsBo updateRedisDataByUid(User user);
+
+    /**
      * 获取用户缓存信息
+     *
      * @param uid 用户id
      * @return UserDetailsBo
      */
     UserDetailsBo getRedisDataByUid(Integer uid);
-        /**
+
+    /**
      * 获取用户redis群组信息
      *
      * @param uid 用户id
@@ -140,4 +151,20 @@ public interface UserService {
      * @return GroupVo
      */
     GroupVo getUserRedisGroup(Integer uid, Integer gid);
+
+    /**
+     * 查询本地用户
+     *
+     * @param userId 用户iD
+     * @return User
+     */
+    User getUserById(Integer userId);
+
+    /**
+     * 修改用户登录状态
+     *
+     * @param uid  用户id
+     * @param type 登录状态
+     */
+    void updateLoginState(Integer uid, Boolean type);
 }

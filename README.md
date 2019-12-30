@@ -249,6 +249,39 @@
 }
 ```
 
+## 2005 查询好友详情
+
+请求
+
+```
+{
+  "cmd":2005,
+  "user_id":20
+}
+```
+
+响应
+
+```
+{
+  "code":2000,
+  "data":{
+    "email":"2928448688@qq.com",
+    "gender":0,
+    "icon":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm7O1QZxOj38DFs9pFHwX3it2CiCMXiVMUPOXI337CKfRhFaYVaw&s",
+    "id":20,
+    "lastLoginTimes":1577704602566,
+    "loginState":true,
+    "qr":"qr/2019/12/12/sky21576132284724.png",
+    "uno":123123123
+  },
+  "message":"ok",
+  "type":2005
+}
+```
+
+> loginState:好友登录状态, true 在线 ,false 离线
+
 ## 3000 创建群聊
 
 **说明**:  只有管理员可以创建群聊

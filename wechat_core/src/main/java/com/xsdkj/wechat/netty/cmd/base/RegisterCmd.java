@@ -8,6 +8,7 @@ import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.Attributes;
 import com.xsdkj.wechat.constant.ParamConstant;
+import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.service.ex.UnAuthorizedException;
 import com.xsdkj.wechat.service.ex.ValidateException;
@@ -83,7 +84,7 @@ public class RegisterCmd extends AbstractChatCmd {
             remove(channel);
             return;
         }
-        User user = userService.getByUserId(userId);
+        User user = userService.getRedisUserByUserId(userId);
         if (user == null) {
             throw new UnAuthorizedException();
         }
@@ -99,6 +100,8 @@ public class RegisterCmd extends AbstractChatCmd {
         log.info("用户{} 已登记到在线用户表,当前在线人数为:{}", user.getUsername(), SessionUtil.ONLINE_USER_MAP.size());
         // TODO 查看有无好友申请消息
         // TODO 查看有无离线单聊消息
+        user.setLoginState(UserConstant.LOGGED);
+        userService.updateRedisDataByUid(user);
     }
 
     /**

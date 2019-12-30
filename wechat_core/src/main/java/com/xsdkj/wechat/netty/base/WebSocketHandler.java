@@ -6,15 +6,14 @@ import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.Attributes;
 import com.xsdkj.wechat.constant.ParamConstant;
+import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.netty.cmd.CmdManager;
 import com.xsdkj.wechat.netty.cmd.base.BaseHandler;
 import com.xsdkj.wechat.netty.cmd.base.AbstractCmd;
 import com.xsdkj.wechat.netty.cmd.base.RegisterCmd;
+import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.util.SessionUtil;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
@@ -39,6 +38,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     private CmdManager commandManager;
     @Resource
     private CheckLoginHandler checkLoginHandler;
+    @Resource
+    private UserService userService;
 
     /**
      * 读取完连接的消息后，对消息进行处理
@@ -119,6 +120,20 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         log.info("已移除握手实例,当前握手实例总数为:{}", SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.size());
         log.info("userId为{}的用户已经退出聊天,当前在线人数为{}", ctx.channel().attr(Attributes.SESSION).get().getUid(), SessionUtil.ONLINE_USER_MAP.size());
         ctx.channel();
+    }
+
+    /**
+     * 更新用户离线状态
+     *
+     * @param ctx 用户连接
+     */
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) {
+        SessionBo session = SessionUtil.getSession(ctx.channel());
+        if (session != null) {
+            userService.updateLoginState(session.getUid(), UserConstant.NOT_LOGIN);
+            userService.updateRedisDataByUid(session.getUid());
+        }
     }
 
     /**
