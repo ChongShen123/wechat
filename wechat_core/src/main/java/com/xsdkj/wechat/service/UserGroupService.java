@@ -230,7 +230,16 @@ public interface UserGroupService {
      * 设置群是否开起聊天
      *
      * @param groupId 群id
-     * @param type 0 关闭 1开启
+     * @param type    0 关闭 1开启
      */
     void setGroupChat(Integer groupId, Integer type);
+
+    /**
+     * 修改群信息
+     *  @param groupId 群id
+     * @param name
+     * @param icon    头像
+     * @param notice  公告
+     */
+    void updateGroupInfo(Integer groupId, String name, String icon, String notice);
 }

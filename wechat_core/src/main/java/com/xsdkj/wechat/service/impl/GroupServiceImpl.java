@@ -261,4 +261,9 @@ public class GroupServiceImpl implements UserGroupService {
     public void setGroupChat(Integer groupId, Integer type) {
         groupMapper.setGroupChat(groupId, type);
     }
+
+    @Override
+    public void updateGroupInfo(Integer groupId, String name, String icon, String notice) {
+        groupMapper.updateGroupInfo(groupId,name, icon, notice);
+    }
 }

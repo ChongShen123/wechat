@@ -62,4 +62,7 @@ public interface UserGroupMapper {
     void deleteNoSayByUidAndGid(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
 
     void setGroupChat(@Param("groupId") Integer groupId, @Param("type") Integer type);
+
+    void updateGroupInfo(@Param("groupId") Integer groupId, @Param("name") String name, @Param("icon") String icon, @Param("notice") String notice);
+
 }

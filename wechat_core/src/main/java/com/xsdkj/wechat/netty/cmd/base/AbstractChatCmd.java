@@ -91,6 +91,8 @@ public abstract class AbstractChatCmd extends AbstractCmd {
                 parseParam(param);
                 //具体执行
                 concreteAction(channel);
+            } catch (FileNotFoundException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.FILE_NOT_FUND, cmd));
             } catch (BannedChatException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.BANNED_CHAT, cmd));
             } catch (ValidateException | ParseParamException e) {
@@ -223,6 +225,11 @@ public abstract class AbstractChatCmd extends AbstractCmd {
         requestParam.setGroupId(groupId);
     }
 
+    /**
+     * 解析用户id
+     *
+     * @param param 参数
+     */
     protected void parseUserId(JSONObject param) {
         Integer uid = param.getInteger(KEY_USER_ID);
         if (ObjectUtil.isEmpty(uid)) {
@@ -231,6 +238,11 @@ public abstract class AbstractChatCmd extends AbstractCmd {
         requestParam.setUserId(uid);
     }
 
+    /**
+     * 解析时间
+     *
+     * @param param 参数
+     */
     protected void parseTimes(JSONObject param) {
         Long times = param.getLong(ParamConstant.KEY_TIMES);
         if (ObjectUtil.isEmpty(times)) {
@@ -239,12 +251,31 @@ public abstract class AbstractChatCmd extends AbstractCmd {
         requestParam.setTimes(times);
     }
 
+    /**
+     * 解析为Integer类型
+     *
+     * @param param 参数
+     */
     protected void parseIntegerType(JSONObject param) {
         Integer type = param.getInteger(ParamConstant.KEY_TYPE);
         if (ObjectUtil.isEmpty(type)) {
             throw new ValidateException();
         }
         requestParam.setIntType(type);
+    }
+
+    /**
+     * 解析参数
+     *
+     * @param param 参数
+     * @param type  类型
+     */
+    protected String parseParam(JSONObject param, String type) {
+        String data = param.getString(type);
+        if (StrUtil.isBlank(data)) {
+            throw new ValidateException();
+        }
+        return data;
     }
 
     /**

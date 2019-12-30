@@ -65,4 +65,22 @@ public interface ParamConstant {
      * 好友ID
      */
     String KEY_FRIEND_ID = "friend_id";
+    /**
+     * icon
+     */
+    String KEY_ICON = "icon";
+
+    /**
+     * 二维码
+     */
+    String KEY_QR = "qr";
+
+    /**
+     * 公告
+     */
+    String KEY_NOTICE = "notice";
+    /**
+     * 群名称
+     */
+    String KEY_GROUP_NAME = "group_name";
 }

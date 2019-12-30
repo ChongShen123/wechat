@@ -336,4 +336,20 @@
     <update id="setGroupChat">
         update user_group set no_say_type = #{type} where id = #{groupId}
     </update>
+    <update id="updateGroupInfo">
+        update user_group
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null and icon != ''">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="notice != null and notice != ''">
+                notice = #{notice,jdbcType=VARCHAR},
+            </if>
+            modified_times = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+        </set>
+        where id = #{groupId}
+    </update>
 </mapper>
