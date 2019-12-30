@@ -3,7 +3,7 @@ package com.xsdkj.wechat.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.SystemConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;

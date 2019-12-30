@@ -9,10 +9,13 @@ import com.xsdkj.wechat.bo.RequestParamBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.ChatConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
-import com.xsdkj.wechat.entity.chat.Group;
 import com.xsdkj.wechat.entity.chat.SingleChat;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.service.*;
 import com.xsdkj.wechat.service.ex.*;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -28,9 +31,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.xsdkj.wechat.common.SystemConstant.KEY_GROUP_ID;
-import static com.xsdkj.wechat.common.SystemConstant.KEY_USER_ID;
-
+import static com.xsdkj.wechat.constant.ParamConstant.KEY_GROUP_ID;
+import static com.xsdkj.wechat.constant.ParamConstant.KEY_USER_ID;
 
 /**
  * 聊天相关业务 命令抽象类
@@ -45,7 +47,7 @@ public abstract class BaseChatCmd extends AbstractCmd {
     @Resource
     protected Snowflake snowflake;
     @Resource
-    protected GroupService groupService;
+    protected UserGroupService groupService;
     @Resource
     protected RabbitTemplateService rabbitTemplateService;
     @Resource
@@ -89,6 +91,8 @@ public abstract class BaseChatCmd extends AbstractCmd {
                 parseParam(param);
                 //具体执行
                 concreteAction(channel);
+            } catch (BannedChatException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.BANNED_CHAT, cmd));
             } catch (ValidateException | ParseParamException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, cmd));
             } catch (DataEmptyException | UserNotFountException e) {
@@ -156,7 +160,7 @@ public abstract class BaseChatCmd extends AbstractCmd {
         application.setFromUserIcon(session.getIcon());
         application.setToUserId(fid);
         application.setMessage(message);
-        application.setState(SystemConstant.UNTREATED);
+        application.setState(ChatConstant.UNTREATED);
         application.setRead(false);
         application.setType(type);
         long createTimes = System.currentTimeMillis();
@@ -171,9 +175,9 @@ public abstract class BaseChatCmd extends AbstractCmd {
      * @param ids   用户ID
      * @param group 群信息
      */
-    protected void sendCreateGroupMessageToUsers(Set<Integer> ids, Group group) {
+    protected void sendCreateGroupMessageToUsers(Set<Integer> ids, UserGroup group) {
         List<SingleChat> list = new ArrayList<>();
-        ids.forEach(id -> list.add(createNewSingleChat(id, SystemConstant.SYSTEM_USER_ID, "您已加入【" + group.getName() + "】 开始聊天吧", SystemConstant.JOIN_GROUP)));
+        ids.forEach(id -> list.add(createNewSingleChat(id, SystemConstant.SYSTEM_USER_ID, "您已加入【" + group.getName() + "】 开始聊天吧", ChatConstant.JOIN_GROUP)));
         list.forEach(singleChat -> {
             Channel toUserChannel = SessionUtil.ONLINE_USER_MAP.get(singleChat.getToUserId());
             if (toUserChannel != null) {
@@ -184,7 +188,7 @@ public abstract class BaseChatCmd extends AbstractCmd {
                 userService.updateRedisDataByUid(singleChat.getToUserId());
             }
             singleChat.setRead(toUserChannel != null);
-            rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
         });
     }
 
@@ -195,7 +199,7 @@ public abstract class BaseChatCmd extends AbstractCmd {
      */
     protected void parseIdsAndGroupId(JSONObject param) {
         try {
-            Set<Integer> ids = Arrays.stream(StrUtil.splitToInt(param.getString(SystemConstant.KEY_IDS), ",")).boxed().collect(Collectors.toSet());
+            Set<Integer> ids = Arrays.stream(StrUtil.splitToInt(param.getString(ParamConstant.KEY_IDS), ",")).boxed().collect(Collectors.toSet());
             Integer groupId = param.getInteger(KEY_GROUP_ID);
             if (ObjectUtil.isNotEmpty(groupId)) {
                 requestParam.setGroupId(groupId);
@@ -228,7 +232,7 @@ public abstract class BaseChatCmd extends AbstractCmd {
     }
 
     protected void parseTimes(JSONObject param) {
-        Long times = param.getLong(SystemConstant.KEY_TIMES);
+        Long times = param.getLong(ParamConstant.KEY_TIMES);
         if (ObjectUtil.isEmpty(times)) {
             throw new ValidateException();
         }
@@ -236,7 +240,7 @@ public abstract class BaseChatCmd extends AbstractCmd {
     }
 
     protected void parseIntegerType(JSONObject param) {
-        Integer type = param.getInteger(SystemConstant.KEY_TYPE);
+        Integer type = param.getInteger(ParamConstant.KEY_TYPE);
         if (ObjectUtil.isEmpty(type)) {
             throw new ValidateException();
         }

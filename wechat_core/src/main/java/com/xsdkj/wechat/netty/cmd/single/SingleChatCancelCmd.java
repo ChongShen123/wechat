@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
@@ -27,8 +28,8 @@ public class SingleChatCancelCmd extends BaseChatCmd {
     @Override
     protected void parseParam(JSONObject param) {
         try {
-            Integer toUserId = param.getInteger(SystemConstant.KEY_TO_USER_ID);
-            String singleChatId = param.getString(SystemConstant.KEY_ID);
+            Integer toUserId = param.getInteger(ParamConstant.KEY_TO_USER_ID);
+            String singleChatId = param.getString(ParamConstant.KEY_ID);
             requestParam.setToUserId(toUserId);
             requestParam.setId(singleChatId);
         } catch (Exception e) {

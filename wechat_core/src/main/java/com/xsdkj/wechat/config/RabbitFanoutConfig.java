@@ -4,8 +4,9 @@ import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.xsdkj.wechat.common.SystemConstant.FANOUT_CHAT_NAME;
-import static com.xsdkj.wechat.common.SystemConstant.FANOUT_SERVICE_NAME;
+import static com.xsdkj.wechat.constant.RabbitConstant.FANOUT_CHAT_NAME;
+import static com.xsdkj.wechat.constant.RabbitConstant.FANOUT_SERVICE_NAME;
+
 
 /**
  * RabbitMQ 分列模式

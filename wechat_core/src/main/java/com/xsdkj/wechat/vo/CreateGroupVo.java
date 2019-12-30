@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.vo;
 
-import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import lombok.Data;
 
 /**
@@ -15,7 +15,7 @@ public class CreateGroupVo  {
     private String icon;
     private Long createTimes;
 
-    public CreateGroupVo(Group group) {
+    public CreateGroupVo(UserGroup group) {
         id = group.getId();
         name = group.getName();
         icon = group.getIcon();

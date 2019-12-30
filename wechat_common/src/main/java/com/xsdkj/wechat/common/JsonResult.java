@@ -2,6 +2,8 @@ package com.xsdkj.wechat.common;
 
 import lombok.Data;
 
+import java.util.Map;
+
 /**
  * @author tiankong
  * @date 2019/11/17 15:27
@@ -78,6 +80,22 @@ public class JsonResult<T> {
         JsonResult result = new JsonResult<>();
         result.setCode(ResultCodeEnum.FAILED.getCode());
         result.setMessage(ResultCodeEnum.FAILED.getMessage());
+        return result;
+    }
+
+    public static JsonResult failed(Map map, Integer cmd) {
+        JsonResult<Map> result = new JsonResult<>();
+        result.setCode(ResultCodeEnum.FAILED.getCode());
+        result.setData(map);
+        result.setType(cmd);
+        return result;
+    }
+
+    public static JsonResult failed(long times, Integer type) {
+        JsonResult<Long> result = new JsonResult<>();
+        result.setCode(ResultCodeEnum.FAILED.getCode());
+        result.setData(times);
+        result.setType(type);
         return result;
     }
 

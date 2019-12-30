@@ -3,8 +3,8 @@ package com.xsdkj.wechat.netty.cmd.group;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.constant.GroupConstant;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
 import com.xsdkj.wechat.service.ex.DataEmptyException;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SetGroupManagerCmd extends BaseChatCmd {
     @Override
-    protected void parseParam(JSONObject param) throws Exception {
+    protected void parseParam(JSONObject param) {
         parseGroupId(param);
         parseUserId(param);
         parseIntegerType(param);
@@ -36,7 +36,7 @@ public class SetGroupManagerCmd extends BaseChatCmd {
         Integer groupId = requestParam.getGroupId();
         // 管理员id
         Integer userId = requestParam.getUserId();
-        Group group = groupService.getGroupById(groupId);
+        UserGroup group = groupService.getGroupById(groupId);
         if (group == null) {
             throw new DataEmptyException();
         }
@@ -47,7 +47,7 @@ public class SetGroupManagerCmd extends BaseChatCmd {
         Integer type = requestParam.getIntType();
         switch (type) {
             // 添加管理员
-            case SystemConstant.ADD_MANAGER:
+            case GroupConstant.ADD_MANAGER:
                 Integer count = groupService.countGroupManger(group.getId(), userId);
                 if (count > 0) {
                     throw new RepetitionException();
@@ -55,7 +55,7 @@ public class SetGroupManagerCmd extends BaseChatCmd {
                 groupService.addGroupManager(group.getId(), userId);
                 break;
             // 删除管理员
-            case SystemConstant.DELETE_MANAGER:
+            case GroupConstant.DELETE_MANAGER:
                 count = groupService.countGroupManger(group.getId(), userId);
                 if (count < 1) {
                     throw new DataEmptyException();

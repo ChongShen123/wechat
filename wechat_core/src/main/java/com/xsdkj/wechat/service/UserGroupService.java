@@ -2,6 +2,7 @@ package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.entity.chat.Group;
 import com.xsdkj.wechat.entity.chat.GroupNoSay;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.service.ex.DataEmptyException;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;
@@ -16,7 +17,7 @@ import java.util.Set;
  * @author tiankong
  * @date 2019/12/12 11:37
  */
-public interface GroupService {
+public interface UserGroupService {
 
     /**
      * 获取用户禁言时间
@@ -46,7 +47,7 @@ public interface GroupService {
      *
      * @return List
      */
-    List<Group> listAllChatGroup();
+    List<UserGroup> listAllChatGroup();
 
     /**
      * 更新redis群组信息
@@ -60,21 +61,21 @@ public interface GroupService {
      *
      * @param group 群组id
      */
-    void updateRedisGroupById(Group group);
+    void updateRedisGroupById(UserGroup group);
 
     /**
      * 创建群聊
      *
      * @param group group
      */
-    void save(Group group);
+    void save(UserGroup group);
 
     /**
      * 修改群信息
      *
      * @param group group
      */
-    void update(Group group);
+    void update(UserGroup group);
 
     /**
      * 保存用户与群组关系
@@ -125,7 +126,7 @@ public interface GroupService {
      * @param groupId groupId
      * @return Group
      */
-    Group getGroupById(Integer groupId);
+    UserGroup getGroupById(Integer groupId);
 
     /**
      * 更新群总人数

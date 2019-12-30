@@ -5,7 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
@@ -24,9 +25,9 @@ public class SingleChatCmd extends BaseChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {
-        Integer toUserId = param.getInteger(SystemConstant.KEY_TO_USER_ID);
-        String content = param.getString(SystemConstant.KEY_CONTENT);
-        Byte type = param.getByte(SystemConstant.KEY_TYPE);
+        Integer toUserId = param.getInteger(ParamConstant.KEY_TO_USER_ID);
+        String content = param.getString(ParamConstant.KEY_CONTENT);
+        Byte type = param.getByte(ParamConstant.KEY_TYPE);
         if (ObjectUtil.isEmpty(toUserId) || ObjectUtil.isEmpty(content) || ObjectUtil.isEmpty(type)) {
             throw new ValidateException();
         }
@@ -46,7 +47,7 @@ public class SingleChatCmd extends BaseChatCmd {
         } else {
             chat.setRead(false);
         }
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, chat));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT, chat));
         sendMessage(channel, JsonResult.success(cmd));
     }
 }

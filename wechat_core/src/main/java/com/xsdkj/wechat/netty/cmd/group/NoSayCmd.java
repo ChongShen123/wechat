@@ -3,8 +3,6 @@ package com.xsdkj.wechat.netty.cmd.group;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.entity.chat.Group;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
 import com.xsdkj.wechat.service.ex.PermissionDeniedException;

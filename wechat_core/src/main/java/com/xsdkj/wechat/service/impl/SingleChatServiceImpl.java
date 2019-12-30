@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.service.impl;
 
 
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.ChatConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.SingleChatService;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +55,7 @@ public class SingleChatServiceImpl implements SingleChatService {
             // step2 遍历这个list
             for (SingleChat singleChat : list) {
                 Byte type = singleChat.getType();
-                if (type == SystemConstant.CHAT_TYPE_VOICE || type == SystemConstant.CHAT_TYPE_IMG) {
+                if (type == ChatConstant.CHAT_TYPE_VOICE || type == ChatConstant.CHAT_TYPE_IMG) {
                     String path = singleChat.getContent();
                     if (path == null) {
                         continue;

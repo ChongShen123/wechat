@@ -3,7 +3,7 @@ package com.xsdkj.wechat.netty.cmd.group;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
 import com.xsdkj.wechat.service.ex.PermissionDeniedException;
@@ -31,7 +31,7 @@ public class DissolveGroupCmd extends BaseChatCmd {
     @Override
     protected void concreteAction(Channel channel) throws RuntimeException {
         Integer groupId = requestParam.getGroupId();
-        Group group = groupService.getGroupById(groupId);
+        UserGroup group = groupService.getGroupById(groupId);
         // 只有群主可以解散该群
         if (!session.getUid().equals(group.getOwnerId())) {
             throw new PermissionDeniedException();

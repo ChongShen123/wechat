@@ -5,13 +5,14 @@ import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.ChatConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
-import com.xsdkj.wechat.entity.chat.User;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.RemoveChatVo;
 import io.netty.channel.Channel;
@@ -42,7 +43,7 @@ public class RemoveChatGroupCmd extends BaseChatCmd {
         if (!checkGroupUserJoined(ids, groupId)) {
             throw new ValidateException();
         }
-        Group group = groupService.getGroupById(groupId);
+        UserGroup group = groupService.getGroupById(groupId);
         // 通知该群所有在线用户
         RemoveChatVo removeChatVo = createNewRemoveChatVo(ids, groupId, SessionUtil.getSession(channel));
         sendGroupMessage(groupId, JsonResult.success(removeChatVo, cmd));
@@ -51,7 +52,7 @@ public class RemoveChatGroupCmd extends BaseChatCmd {
         groupService.updateGroupCount(-ids.size(), groupId);
         // 通知被移除用户
         ids.forEach(uid -> {
-            SingleChat newSingleChat = createNewSingleChat(uid, SystemConstant.SYSTEM_USER_ID, "您已退出【" + group.getName() + "】群聊", SystemConstant.QUIT_GROUP);
+            SingleChat newSingleChat = createNewSingleChat(uid, SystemConstant.SYSTEM_USER_ID, "您已退出【" + group.getName() + "】群聊", ChatConstant.QUIT_GROUP);
             Channel userChannel = SessionUtil.ONLINE_USER_MAP.get(uid);
             if (userChannel != null) {
                 sendMessage(userChannel, JsonResult.success(newSingleChat));
@@ -62,7 +63,7 @@ public class RemoveChatGroupCmd extends BaseChatCmd {
             }
             // 更新被移除用户的redis数据
             userService.updateRedisDataByUid(uid);
-            rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, newSingleChat));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT, newSingleChat));
         });
         // 更新群组redis数据
         groupService.updateRedisGroupById(groupId);

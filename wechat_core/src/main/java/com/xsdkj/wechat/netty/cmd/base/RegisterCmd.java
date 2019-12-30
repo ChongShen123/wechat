@@ -7,6 +7,7 @@ import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.Attributes;
+import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.service.ex.UnAuthorizedException;
 import com.xsdkj.wechat.service.ex.ValidateException;
@@ -23,8 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static com.xsdkj.wechat.common.SystemConstant.KEY_TOKEN;
-import static com.xsdkj.wechat.common.SystemConstant.KEY_USER_ID;
+import static com.xsdkj.wechat.constant.ParamConstant.KEY_USER_ID;
 
 
 /**
@@ -47,7 +47,7 @@ public class RegisterCmd extends BaseChatCmd {
     @Override
     protected void parseParam(JSONObject param) {
         try {
-            String token = param.getString(KEY_TOKEN);
+            String token = param.getString(ParamConstant.KEY_TOKEN);
             if (ObjectUtil.isEmpty(token)) {
                 throw new ValidateException();
             }

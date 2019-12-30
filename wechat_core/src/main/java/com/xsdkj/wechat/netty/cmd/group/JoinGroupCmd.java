@@ -3,7 +3,7 @@ package com.xsdkj.wechat.netty.cmd.group;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.service.ex.GroupNotFoundException;
 import com.xsdkj.wechat.service.ex.UserJoinedException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
@@ -32,7 +32,7 @@ public class JoinGroupCmd extends BaseChatCmd {
         Set<Integer> ids = requestParam.getIds();
         Integer groupId = requestParam.getGroupId();
         // 判断群是否存在
-        Group group = groupService.getGroupById(groupId);
+        UserGroup group = groupService.getGroupById(groupId);
         if (group == null) {
             throw new GroupNotFoundException();
         }

@@ -3,7 +3,8 @@ package com.xsdkj.wechat.netty.cmd.single;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import io.netty.channel.Channel;
@@ -20,7 +21,7 @@ import io.netty.channel.Channel;
 public class RobotChatCmd extends BaseChatCmd {
     @Override
     protected void parseParam(JSONObject param) throws Exception {
-        String content = param.getString(SystemConstant.KEY_CONTENT);
+        String content = param.getString(ParamConstant.KEY_CONTENT);
         if (StrUtil.isBlank(content)) {
             throw new ValidateException();
         }

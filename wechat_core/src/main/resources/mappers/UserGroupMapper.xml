@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsdkj.wechat.mapper.UserGroupMapper">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.UserGroup">
+    <!--@mbg.generated-->
+    <!--@Table user_group-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="qr" jdbcType="VARCHAR" property="qr" />
+    <result column="notice" jdbcType="VARCHAR" property="notice" />
+    <result column="owner_id" jdbcType="INTEGER" property="ownerId" />
+    <result column="members_count" jdbcType="INTEGER" property="membersCount" />
+    <result column="state" jdbcType="BOOLEAN" property="state" />
+    <result column="add_friend_type" jdbcType="BOOLEAN" property="addFriendType" />
+    <result column="is_save" jdbcType="BOOLEAN" property="isSave" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="no_say_type" jdbcType="TINYINT" property="noSayType" />
+    <result column="create_times" jdbcType="BIGINT" property="createTimes" />
+    <result column="modified_times" jdbcType="BIGINT" property="modifiedTimes" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, icon, qr, notice, owner_id, members_count, `state`, add_friend_type, 
+    is_save, `type`, no_say_type, create_times, modified_times
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from user_group
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from user_group
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserGroup" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into user_group (`name`, icon, qr, 
+      notice, owner_id, members_count, 
+      `state`, add_friend_type, is_save, 
+      `type`, no_say_type, create_times, 
+      modified_times)
+    values (#{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{qr,jdbcType=VARCHAR}, 
+      #{notice,jdbcType=VARCHAR}, #{ownerId,jdbcType=INTEGER}, #{membersCount,jdbcType=INTEGER}, 
+      #{state,jdbcType=BOOLEAN}, #{addFriendType,jdbcType=BOOLEAN}, #{isSave,jdbcType=BOOLEAN}, 
+      #{type,jdbcType=TINYINT}, #{noSayType,jdbcType=TINYINT}, #{createTimes,jdbcType=BIGINT}, 
+      #{modifiedTimes,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserGroup" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into user_group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="qr != null">
+        qr,
+      </if>
+      <if test="notice != null">
+        notice,
+      </if>
+      <if test="ownerId != null">
+        owner_id,
+      </if>
+      <if test="membersCount != null">
+        members_count,
+      </if>
+      <if test="state != null">
+        `state`,
+      </if>
+      <if test="addFriendType != null">
+        add_friend_type,
+      </if>
+      <if test="isSave != null">
+        is_save,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="noSayType != null">
+        no_say_type,
+      </if>
+      <if test="createTimes != null">
+        create_times,
+      </if>
+      <if test="modifiedTimes != null">
+        modified_times,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="qr != null">
+        #{qr,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null">
+        #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerId != null">
+        #{ownerId,jdbcType=INTEGER},
+      </if>
+      <if test="membersCount != null">
+        #{membersCount,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=BOOLEAN},
+      </if>
+      <if test="addFriendType != null">
+        #{addFriendType,jdbcType=BOOLEAN},
+      </if>
+      <if test="isSave != null">
+        #{isSave,jdbcType=BOOLEAN},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="noSayType != null">
+        #{noSayType,jdbcType=TINYINT},
+      </if>
+      <if test="createTimes != null">
+        #{createTimes,jdbcType=BIGINT},
+      </if>
+      <if test="modifiedTimes != null">
+        #{modifiedTimes,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.UserGroup">
+    <!--@mbg.generated-->
+    update user_group
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="qr != null">
+        qr = #{qr,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null">
+        notice = #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerId != null">
+        owner_id = #{ownerId,jdbcType=INTEGER},
+      </if>
+      <if test="membersCount != null">
+        members_count = #{membersCount,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        `state` = #{state,jdbcType=BOOLEAN},
+      </if>
+      <if test="addFriendType != null">
+        add_friend_type = #{addFriendType,jdbcType=BOOLEAN},
+      </if>
+      <if test="isSave != null">
+        is_save = #{isSave,jdbcType=BOOLEAN},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="noSayType != null">
+        no_say_type = #{noSayType,jdbcType=TINYINT},
+      </if>
+      <if test="createTimes != null">
+        create_times = #{createTimes,jdbcType=BIGINT},
+      </if>
+      <if test="modifiedTimes != null">
+        modified_times = #{modifiedTimes,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.UserGroup">
+    <!--@mbg.generated-->
+    update user_group
+    set `name` = #{name,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      qr = #{qr,jdbcType=VARCHAR},
+      notice = #{notice,jdbcType=VARCHAR},
+      owner_id = #{ownerId,jdbcType=INTEGER},
+      members_count = #{membersCount,jdbcType=INTEGER},
+      `state` = #{state,jdbcType=BOOLEAN},
+      add_friend_type = #{addFriendType,jdbcType=BOOLEAN},
+      is_save = #{isSave,jdbcType=BOOLEAN},
+      `type` = #{type,jdbcType=TINYINT},
+      no_say_type = #{noSayType,jdbcType=TINYINT},
+      create_times = #{createTimes,jdbcType=BIGINT},
+      modified_times = #{modifiedTimes,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <resultMap id="UserGroupRelationMap" type="com.xsdkj.wechat.entity.chat.UserGroupRelation">
+        <result column="group_nickname" property="groupNickname" />
+    </resultMap>
+    <resultMap id="ListGroupMembersMap" type="com.xsdkj.wechat.vo.ListMembersVo">
+        <result column="uid" property="uid" />
+        <result column="group_nickname" property="groupNickname" />
+        <result column="icon" property="icon" />
+    </resultMap>
+    <resultMap id="GroupBaseInfoVO" type="com.xsdkj.wechat.vo.GroupBaseInfoVo">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="members_count" property="membersCount" />
+        <result column="add_friend_type" property="addFriendType" />
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="GroupInfoVo" type="com.xsdkj.wechat.vo.GroupInfoVo">
+        <result column="icon" property="icon" />
+        <result column="qr" property="qr" />
+        <result column="notice" property="notice" />
+        <result column="create_times" property="createTimes" />
+    </resultMap>
+
+    <!--auto generated by MybatisCodeHelper on 2019-12-12-->
+    <select id="selectByAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_group
+        where 1=1
+        <if test="id != null">
+            and id=#{id,jdbcType=INTEGER}
+        </if>
+        <if test="name != null">
+            and `name`=#{name,jdbcType=VARCHAR}
+        </if>
+        <if test="icon != null">
+            and icon=#{icon,jdbcType=VARCHAR}
+        </if>
+        <if test="qr != null">
+            and qr=#{qr,jdbcType=VARCHAR}
+        </if>
+        <if test="notice != null">
+            and notice=#{notice,jdbcType=VARCHAR}
+        </if>
+        <if test="ownerId != null">
+            and owner_id=#{ownerId,jdbcType=INTEGER}
+        </if>
+        <if test="membersCount != null">
+            and members_count=#{membersCount,jdbcType=INTEGER}
+        </if>
+        <if test="state != null">
+            and `state`=#{state,jdbcType=BOOLEAN}
+        </if>
+        <if test="isSave != null">
+            and is_save=#{isSave,jdbcType=BOOLEAN}
+        </if>
+        <if test="createTimes != null">
+            and create_times=#{createTimes,jdbcType=BIGINT}
+        </if>
+        <if test="modifiedTimes != null">
+            and modified_times=#{modifiedTimes,jdbcType=BIGINT}
+        </if>
+    </select>
+    <insert id="insertUserIds">
+        insert into user_group_relation(uid,gid,group_nickname,notice_type) values
+        <foreach collection="ids" item="id" separator=",">
+            (#{id},#{groupId},(select username from user where id = #{id}),1)
+        </foreach>
+    </insert>
+    <update id="updateQr">
+        update user_group set qr = #{qr},modified_times = REPLACE(unix_timestamp(current_timestamp(3)),'.','') where id
+        =
+        #{id}
+    </update>
+    <select id="getById" resultType="com.xsdkj.wechat.entity.chat.UserGroup">
+        select id,name,icon,qr,notice,owner_id ownerId, admin_ids adminIds, members_count membersCount,
+        state,is_save isSave,create_times createTimes,modified_times modifiedTimes
+        from user_group where id = #{id}
+    </select>
+    <select id="listGroupByUserId" resultType="com.xsdkj.wechat.vo.GroupVo">
+        select g.id gid, g.name groupName, g.icon, ugr.notice_type noticeType
+        from user_group g
+        left join user_group_relation ugr on g.id = ugr.gid
+        where ugr.uid = #{userId};
+    </select>
+    <select id="getBaseInfo" resultMap="GroupBaseInfoVO">
+        select id , name , members_count,add_friend_type
+        from user_group
+        where id = #{groupId}
+    </select>
+    <select id="getInfo" resultMap="GroupInfoVo">
+        select icon,qr,notice,create_times,id,name,members_count from user_group where id = #{groupId};
+    </select>
+    <update id="updateGroupCount">
+        update user_group set members_count = members_count+#{num},modified_times =
+        REPLACE(unix_timestamp(current_timestamp(3)),'.','') where id = #{gid}
+    </update>
+    <select id="listGroupMembersByGroupId" resultMap="ListGroupMembersMap">
+        select uid, icon, group_nickname
+        from user_group_relation ugr
+        left join user u on ugr.uid = u.id
+        where ugr.gid = #{groupId};
+    </select>
+    <select id="checkUserJoined" resultType="java.lang.Integer">
+        select count(1) from user_group_relation where gid = #{groupId} and uid in
+        <foreach close=")" collection="uids" item="uid" open="(" separator=",">
+            #{uid}
+        </foreach>
+    </select>
+    <select id="getByGroupIdAndUid" resultType="String">
+        select group_nickname from user_group_relation where gid = #{groupId} and uid =#{uid}
+    </select>
+    <delete id="quitGroup">
+        delete from user_group_relation where gid = #{groupId} and uid in
+        <foreach close=")" collection="ids" item="uid" open="(" separator=",">
+            #{uid}
+        </foreach>
+    </delete>
+    <update id="setGroupManager">
+        insert into group_manager (group_id, uid) values (#{groupId},#{userId})
+    </update>
+    <select id="listGroupManagerByUserId" resultType="java.lang.Integer">
+        select uid from group_manager where group_id = #{groupId};
+    </select>
+    <select id="countGroupManger" resultType="java.lang.Integer">
+        select count(1) from group_manager where group_id = #{groupId} and uid = #{uid};
+    </select>
+    <delete id="deleteGroupManager">
+        delete from group_manager where group_id = #{groupId} and uid = #{userId}
+    </delete>
+    <delete id="deleteNoSayByUidAndGid">
+        delete from group_no_say where uid = #{userId} and group_id = #{groupId}
+    </delete>
+</mapper>

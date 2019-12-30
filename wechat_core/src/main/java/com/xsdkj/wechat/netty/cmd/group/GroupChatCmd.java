@@ -6,13 +6,15 @@ import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.GroupConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.GroupChat;
-import com.xsdkj.wechat.entity.chat.GroupNoSay;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
-import com.xsdkj.wechat.util.SessionUtil;
+import com.xsdkj.wechat.service.ex.BannedChatException;
+import com.xsdkj.wechat.service.ex.ValidateException;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +33,9 @@ public class GroupChatCmd extends BaseChatCmd {
     @Override
     protected void parseParam(JSONObject param) {
         try {
-            requestParam.setGroupId(param.getInteger(SystemConstant.KEY_GROUP_ID));
-            requestParam.setContent(param.getString(SystemConstant.KEY_CONTENT));
-            requestParam.setByteType(param.getByte(SystemConstant.KEY_TYPE));
+            requestParam.setGroupId(param.getInteger(ParamConstant.KEY_GROUP_ID));
+            requestParam.setContent(param.getString(ParamConstant.KEY_CONTENT));
+            requestParam.setByteType(param.getByte(ParamConstant.KEY_TYPE));
         } catch (Exception e) {
             throw new ValidateException();
         }
@@ -42,6 +44,10 @@ public class GroupChatCmd extends BaseChatCmd {
     @Override
     protected void concreteAction(Channel channel) {
         Integer groupId = requestParam.getGroupId();
+        UserGroup group = groupService.getGroupById(groupId);
+        if (group.getNoSayType().equals(GroupConstant.GROUP_NO_SAY)) {
+            throw new BannedChatException();
+        }
         // 检查用户是否被禁言
         if (checkUserNoSay(channel, groupId)) {
             return;
@@ -50,7 +56,7 @@ public class GroupChatCmd extends BaseChatCmd {
         GroupChat groupChat = createNewGroupChat(requestParam.getByteType(), groupId, requestParam.getContent(), session);
         // 将消息发送给群在线所有用户
         sendGroupMessage(groupId, JsonResult.success(groupChat, cmd));
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_GROUP_CHAT, groupChat));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_GROUP_CHAT, groupChat));
     }
 
     /**
@@ -66,7 +72,9 @@ public class GroupChatCmd extends BaseChatCmd {
             long noSayTimes = times - System.currentTimeMillis();
             // 用户被禁言 noSayTimes ms
             if (noSayTimes > 0) {
-                sendMessage(channel, JsonResult.failed(String.format("请在%s秒后发言", noSayTimes / 1000), cmd));
+                Map<String, Long> map = new HashMap<>(1);
+                map.put("relieveTimes", noSayTimes);
+                sendMessage(channel, JsonResult.failed(map, cmd));
                 return true;
             }
             // 用户被永久禁言

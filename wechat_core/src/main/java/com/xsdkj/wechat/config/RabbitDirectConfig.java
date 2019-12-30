@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.config;
 
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -20,7 +20,7 @@ public class RabbitDirectConfig {
     /**
      * 交换器名字
      */
-    public final static String DIRECT_NAME = SystemConstant.DIRECT_NAME;
+    public final static String DIRECT_NAME = RabbitConstant.DIRECT_NAME;
 
     /**
      * 创建一个消息队列
@@ -28,22 +28,22 @@ public class RabbitDirectConfig {
      */
     @Bean
     Queue singleChatQueueOne() {
-        return new Queue(SystemConstant.CHAT_QUEUE_MAIN);
+        return new Queue(RabbitConstant.CHAT_QUEUE_MAIN);
     }
 
     @Bean
     Queue singleChatQueueTow() {
-        return new Queue(SystemConstant.CHAT_QUEUE_ASSIST);
+        return new Queue(RabbitConstant.CHAT_QUEUE_ASSIST);
     }
 
     @Bean
     Queue groupChatQueueOne() {
-        return new Queue(SystemConstant.GROUP_CHAT_QUEUE_MAIN);
+        return new Queue(RabbitConstant.GROUP_CHAT_QUEUE_MAIN);
     }
 
     @Bean
     Queue groupChatQueueTow() {
-        return new Queue(SystemConstant.GROUP_CHAT_QUEUE_ASSIST);
+        return new Queue(RabbitConstant.GROUP_CHAT_QUEUE_ASSIST);
     }
 
     /**
@@ -61,21 +61,21 @@ public class RabbitDirectConfig {
      */
     @Bean
     Binding bindingSingleChatOne() {
-        return BindingBuilder.bind(singleChatQueueOne()).to(directExchange()).with(SystemConstant.DIRECT_PATTERN);
+        return BindingBuilder.bind(singleChatQueueOne()).to(directExchange()).with(RabbitConstant.DIRECT_PATTERN);
     }
 
     @Bean
     Binding bindingSingleChatTow() {
-        return BindingBuilder.bind(singleChatQueueTow()).to(directExchange()).with(SystemConstant.DIRECT_PATTERN);
+        return BindingBuilder.bind(singleChatQueueTow()).to(directExchange()).with(RabbitConstant.DIRECT_PATTERN);
     }
 
     @Bean
     Binding bindingGroupChatOne() {
-        return BindingBuilder.bind(groupChatQueueOne()).to(directExchange()).with(SystemConstant.DIRECT_PATTERN);
+        return BindingBuilder.bind(groupChatQueueOne()).to(directExchange()).with(RabbitConstant.DIRECT_PATTERN);
     }
 
     @Bean
     Binding bindingGroupChatTow() {
-        return BindingBuilder.bind(groupChatQueueTow()).to(directExchange()).with(SystemConstant.DIRECT_PATTERN);
+        return BindingBuilder.bind(groupChatQueueTow()).to(directExchange()).with(RabbitConstant.DIRECT_PATTERN);
     }
 }

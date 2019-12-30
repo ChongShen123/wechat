@@ -5,10 +5,10 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2019/12/28 18:18
+ * @date 2019/12/30 11:55
  */
 @Data
-public class Group implements Serializable {
+public class UserGroup implements Serializable {
     private Integer id;
 
     private String name;
@@ -52,6 +52,16 @@ public class Group implements Serializable {
      * 是否保存到数据库
      */
     private Boolean isSave;
+
+    /**
+     * 群类型
+     */
+    private Byte type;
+
+    /**
+     * 群发言类型 0禁止发言 1 允许发言
+     */
+    private Byte noSayType;
 
     private Long createTimes;
 

@@ -2,17 +2,18 @@ package com.xsdkj.wechat.netty.cmd.friend;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.ChatConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.entity.chat.User;
-import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.FriendApplicationVo;
 import io.netty.channel.Channel;
@@ -29,8 +30,8 @@ import org.springframework.stereotype.Service;
 public class AddFriendCmd extends BaseChatCmd {
     @Override
     protected void parseParam(JSONObject param) {
-        String username = param.getString(SystemConstant.KEY_USERNAME);
-        String content = param.getString(SystemConstant.KEY_CONTENT);
+        String username = param.getString(ParamConstant.KEY_USERNAME);
+        String content = param.getString(ParamConstant.KEY_CONTENT);
         if (StrUtil.isBlank(username) || StrUtil.isBlank(content)) {
             throw new ValidateException();
         }
@@ -51,14 +52,14 @@ public class AddFriendCmd extends BaseChatCmd {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION));
             return;
         }
-        FriendApplication application = createFriendApplication(session, friend.getId(), content, SystemConstant.ADD_FRIEND);
+        FriendApplication application = createFriendApplication(session, friend.getId(), content, ChatConstant.ADD_FRIEND);
         Channel friendChannel = SessionUtil.getUserChannel(userService.getByUsername(username).getId());
         application.setRead(friendChannel != null);
         if (friendChannel != null) {
             sendMessage(friendChannel, JsonResult.success(new FriendApplicationVo(application), Cmd.ADD_FRIEND));
         }
         // 放入消息队列
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_FRIEND_APPLICATION, application));
-        sendMessage(channel, JsonResult.success(SystemConstant.MSG_SUCCESS, cmd));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_FRIEND_APPLICATION, application));
+        sendMessage(channel, JsonResult.success(ChatConstant.MSG_SUCCESS, cmd));
     }
 }
