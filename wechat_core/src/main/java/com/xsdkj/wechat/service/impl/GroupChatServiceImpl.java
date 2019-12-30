@@ -1,5 +1,5 @@
 package com.xsdkj.wechat.service.impl;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.ChatConstant;
 import com.xsdkj.wechat.entity.chat.GroupChat;
 import com.xsdkj.wechat.service.GroupChatService;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +62,7 @@ public class GroupChatServiceImpl implements GroupChatService {
         if (groupChats.size() > 0) {
             for (GroupChat groupChat : groupChats) {
                 Byte type = groupChat.getType();
-                if (type == SystemConstant.CHAT_TYPE_VOICE || type == SystemConstant.CHAT_TYPE_IMG) {
+                if (type == ChatConstant.CHAT_TYPE_VOICE || type == ChatConstant.CHAT_TYPE_IMG) {
                     String path = groupChat.getContent();
                     if (path == null) {
                         continue;

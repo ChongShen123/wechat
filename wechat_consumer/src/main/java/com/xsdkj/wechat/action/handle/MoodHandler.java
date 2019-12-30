@@ -21,9 +21,10 @@ public class MoodHandler implements MsgHandler {
     private UserMoodService userMoodService;
     @Override
     public void execute(RabbitMessageBoxBo box) {
+        System.out.println(box);
         UserMood mood = (UserMood) box.getData();
         userMoodService.save(mood);
-        userMoodService.delete(mood);
+//        userMoodService.delete(mood);
     }
 
 }

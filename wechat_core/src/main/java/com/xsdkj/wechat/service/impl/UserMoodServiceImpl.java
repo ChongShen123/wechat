@@ -1,12 +1,16 @@
 package com.xsdkj.wechat.service.impl;
 
+import cn.hutool.core.io.FileUtil;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.dto.MoodParamDto;
 import com.xsdkj.wechat.entity.chat.UserMood;
 import com.xsdkj.wechat.service.RabbitTemplateService;
 import com.xsdkj.wechat.service.UserMoodService;
+import com.xsdkj.wechat.service.ex.FileNotFoundException;
 import com.xsdkj.wechat.util.UserUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,9 +24,24 @@ public  class UserMoodServiceImpl implements UserMoodService {
     private UserUtil userUtil;
     @Resource
     private RabbitTemplateService rabbitTemplateService;
+    @Value("${file.root-path}")
+    private String rootPath;
+    @Value("${file.img-path}")
+    private String imgPath;
     @Override
     public void save(MoodParamDto moodDto) {
+
+        String[] files = moodDto.getFile().split(",");
+        if (files.length > 0) {
+            for (String file : files) {
+                boolean exist = FileUtil.exist(rootPath + imgPath + file);
+                if (!exist) {
+                    throw new NullPointerException();
+                }
+            }
+        }
         UserMood userMood  = createNewUserMood(moodDto);
+        System.out.println(userMood);
         rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userMood));
     }
 

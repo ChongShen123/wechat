@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * @author panda
  */
 @Component
-@SaveAnno(type = SystemConstant.BOX_TYPE_MOOD)
+@SaveAnno(type = SystemConstant.BOX_TYPE_COMMENT)
 public class UserCommentHandler implements MsgHandler {
     @Resource
     UserCommentService userCommentService;

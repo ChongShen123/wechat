@@ -4,10 +4,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.service.ex.UserNotFountException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import io.netty.channel.Channel;
@@ -21,10 +21,10 @@ import java.util.List;
  */
 @CmdAnno(cmd = Cmd.DELETE_FRIEND)
 @Service
-public class DeleteFriendCmd extends BaseChatCmd {
+public class DeleteFriendCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) throws Exception {
-        Integer fid = param.getInteger(SystemConstant.KEY_FRIEND_ID);
+        Integer fid = param.getInteger(ParamConstant.KEY_FRIEND_ID);
         if (ObjectUtil.isEmpty(fid)) {
             throw new UserNotFountException();
         }

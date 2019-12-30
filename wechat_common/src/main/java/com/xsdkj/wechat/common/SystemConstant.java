@@ -190,6 +190,15 @@ public interface SystemConstant {
      */
     int BOX_TYPE_MOOD =3;
     /**
+     * 发朋友圈消息
+     */
+    int BOX_TYPE_THUMS =4;
+    /**
+     * 发朋友圈消息
+     */
+    int BOX_TYPE_COMMENT =5;
+
+    /**
      * 好友申请类型
      */
     int BOX_TYPE_FRIEND_APPLICATION = 10;

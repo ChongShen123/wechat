@@ -5,7 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.RequestParamBo;
 import com.xsdkj.wechat.common.Cmd;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.ChatConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.service.ex.ParseParamException;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +15,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.xsdkj.wechat.common.SystemConstant.KEY_CONTENT;
-import static com.xsdkj.wechat.common.SystemConstant.KEY_GROUP_ID;
+import static com.xsdkj.wechat.constant.ParamConstant.KEY_CONTENT;
+import static com.xsdkj.wechat.constant.ParamConstant.KEY_GROUP_ID;
 
 
 /**
@@ -48,8 +49,8 @@ public class RequestParamFactory {
                 requestParam.setContent(token);
                 break;
             case Cmd.SINGLE_CHAT_CANCEL:
-                String id = param.getString(SystemConstant.KEY_ID);
-                Integer uid = param.getInteger(SystemConstant.KEY_TO_USER_ID);
+                String id = param.getString(ParamConstant.KEY_ID);
+                Integer uid = param.getInteger(ParamConstant.KEY_TO_USER_ID);
                 if (id == null || uid == null) {
                     throw new ValidateException();
                 }
@@ -57,9 +58,9 @@ public class RequestParamFactory {
                 requestParam.setUserId(uid);
                 break;
             case Cmd.SINGLE_CHAT:
-                Integer toUserId = param.getInteger(SystemConstant.KEY_TO_USER_ID);
-                String content = param.getString(SystemConstant.KEY_CONTENT);
-                Byte type = param.getByte(SystemConstant.KEY_TYPE);
+                Integer toUserId = param.getInteger(ParamConstant.KEY_TO_USER_ID);
+                String content = param.getString(ParamConstant.KEY_CONTENT);
+                Byte type = param.getByte(ParamConstant.KEY_TYPE);
                 if (ObjectUtil.isEmpty(toUserId) || ObjectUtil.isEmpty(content) || ObjectUtil.isEmpty(type)) {
                     throw new ValidateException();
                 }
@@ -68,8 +69,8 @@ public class RequestParamFactory {
                 requestParam.setByteType(type);
                 break;
             case Cmd.ADD_FRIEND:
-                String username = param.getString(SystemConstant.KEY_USERNAME);
-                content = param.getString(SystemConstant.KEY_CONTENT);
+                String username = param.getString(ParamConstant.KEY_USERNAME);
+                content = param.getString(ParamConstant.KEY_CONTENT);
                 if (StrUtil.isBlank(username) || StrUtil.isBlank(content)) {
                     throw new ValidateException();
                 }
@@ -77,9 +78,9 @@ public class RequestParamFactory {
                 requestParam.setMessage(content);
                 break;
             case Cmd.FRIEND_AGREE:
-                id = param.getString(SystemConstant.KEY_ID);
-                Byte state = param.getByte(SystemConstant.KEY_STATE);
-                if (!(state == SystemConstant.AGREE || state == SystemConstant.REFUSE)) {
+                id = param.getString(ParamConstant.KEY_ID);
+                Byte state = param.getByte(ParamConstant.KEY_STATE);
+                if (!(state == ChatConstant.AGREE || state == ChatConstant.REFUSE)) {
                     throw new RuntimeException();
                 }
                 requestParam.setId(id);
@@ -99,7 +100,7 @@ public class RequestParamFactory {
             case Cmd.REMOVE_CHAT_GROUP:
                 try {
                     Set<Integer> ids;
-                    ids = Arrays.stream(StrUtil.splitToInt(param.getString(SystemConstant.KEY_IDS), ",")).boxed().collect(Collectors.toSet());
+                    ids = Arrays.stream(StrUtil.splitToInt(param.getString(ParamConstant.KEY_IDS), ",")).boxed().collect(Collectors.toSet());
                     groupId = param.getInteger(KEY_GROUP_ID);
                     if (ObjectUtil.isNotEmpty(groupId)) {
                         requestParam.setGroupId(groupId);
@@ -112,8 +113,8 @@ public class RequestParamFactory {
             case Cmd.GROUP_CHAT:
                 try {
                     groupId = param.getInteger(KEY_GROUP_ID);
-                    content = param.getString(SystemConstant.KEY_CONTENT);
-                    type = param.getByte(SystemConstant.KEY_TYPE);
+                    content = param.getString(ParamConstant.KEY_CONTENT);
+                    type = param.getByte(ParamConstant.KEY_TYPE);
                     requestParam.setGroupId(groupId);
                     requestParam.setContent(content);
                     requestParam.setByteType(type);

@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * @author  p
  */
 @Component
-@SaveAnno(type = SystemConstant.BOX_TYPE_MOOD)
+@SaveAnno(type = SystemConstant.BOX_TYPE_THUMS)
 public class UserThumbsHandler implements MsgHandler {
     @Resource
     UserThumbsService userThumbsService;

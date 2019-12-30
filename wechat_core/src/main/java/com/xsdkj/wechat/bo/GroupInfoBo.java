@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.bo;
 
-import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import io.netty.channel.group.ChannelGroup;
 import lombok.Data;
 
@@ -10,10 +10,10 @@ import lombok.Data;
  */
 @Data
 public class GroupInfoBo {
-    private Group group;
+    private UserGroup group;
     private ChannelGroup channelGroup;
 
-    public GroupInfoBo(Group group, ChannelGroup channelGroup) {
+    public GroupInfoBo(UserGroup group, ChannelGroup channelGroup) {
         this.group = group;
         this.channelGroup = channelGroup;
     }

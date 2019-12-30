@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.constant.Attributes;
+import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.netty.cmd.CmdManager;
 import com.xsdkj.wechat.netty.cmd.base.BaseHandler;
-import com.xsdkj.wechat.netty.cmd.base.BaseCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractCmd;
 import com.xsdkj.wechat.netty.cmd.base.RegisterCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
@@ -77,8 +77,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             e.printStackTrace();
             return;
         }
-        Integer command = param.getInteger(SystemConstant.KEY_CMD);
-        BaseCmd executor = commandManager.getCommand(command);
+        Integer command = param.getInteger(ParamConstant.KEY_CMD);
+        AbstractCmd executor = commandManager.getCommand(command);
         // 这样就可以执行方法了。
 //        CommandBo commandBo = commandManager.getCommandBo(cmd);
 //        commandBo.getMethod().invoke(commandBo.getObject(), param);

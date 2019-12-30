@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.service.ex.UserNotInGroupException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.RemoveChatVo;
 import io.netty.channel.Channel;
@@ -22,7 +21,7 @@ import java.util.Set;
  */
 @Service
 @CmdAnno(cmd = Cmd.QUIT_GROUP)
-public class QuitGroupCmd extends BaseChatCmd {
+public class QuitGroupCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) throws Exception {
         parseGroupId(param);

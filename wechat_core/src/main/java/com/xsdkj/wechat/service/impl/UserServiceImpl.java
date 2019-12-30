@@ -7,7 +7,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.PermissionBo;
 import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.RedisConstant;
 import com.xsdkj.wechat.dto.UserLoginDto;
 import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
@@ -188,7 +189,13 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public User getByUserId(Integer id) {
         UserDetailsBo bo;
-        String redisData = redisUtil.get(SystemConstant.REDIS_USER_ID + id).toString();
+        String redisData;
+        try {
+            redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + id).toString();
+        } catch (NullPointerException e) {
+            // 如果缓存里面没有用户信息则说明用户没有登录
+            return null;
+        }
         if (StrUtil.isBlank(redisData)) {
             bo = updateRedisDataByUid(id);
         } else {
@@ -280,13 +287,13 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         currentUserDetailsBo.setGroupInfoBos(groupInfoBos);
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
-        redisUtil.set(SystemConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), SystemConstant.REDIS_USER_TIMEOUT);
+        redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
         return currentUserDetailsBo;
     }
 
     @Override
     public UserDetailsBo getRedisDataByUid(Integer uid) {
-        String redisData = redisUtil.get(SystemConstant.REDIS_USER_ID + uid).toString();
+        String redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + uid).toString();
         UserDetailsBo bo;
         if (StrUtil.isBlank(redisData)) {
             bo = updateRedisDataByUid(uid);

@@ -8,11 +8,11 @@ import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.PermissionDeniedException;
 import com.xsdkj.wechat.util.QrUtil;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -36,7 +36,7 @@ import java.util.Set;
 @Service
 @CmdAnno(cmd = Cmd.CREATE_GROUP)
 @Slf4j
-public class CreateGroupCmd extends BaseChatCmd {
+public class CreateGroupCmd extends AbstractChatCmd {
     @Value("${file.root-path}")
     private String root;
     @Value("${file.group-path}")
@@ -63,11 +63,13 @@ public class CreateGroupCmd extends BaseChatCmd {
         // 加入当前用户ID
         ids.add(session.getUid());
         // 获取一个群
-        Group group = createNewGroup(SessionUtil.getSession(channel), ids);
+        UserGroup group = createNewGroup(SessionUtil.getSession(channel), ids);
         // 保存用户与群组关系
         groupService.insertUserIds(ids, group.getId());
         // 群成员个数添加
         groupService.updateGroupCount(ids.size(), group.getId());
+        //添加群管理员
+        groupService.addGroupManager(group.getId(), session.getUid());
         // 给用户发送一个入群消息,保存到数据库
         sendCreateGroupMessageToUsers(ids, group);
         // 将在线用户添加到 channelGroup
@@ -112,8 +114,8 @@ public class CreateGroupCmd extends BaseChatCmd {
      * @param ids     群成员
      * @return 群
      */
-    private Group createNewGroup(SessionBo session, Set<Integer> ids) {
-        Group group = new Group();
+    private UserGroup createNewGroup(SessionBo session, Set<Integer> ids) {
+        UserGroup group = new UserGroup();
         group.setName(generateGroupName(ids));
         group.setIcon(getRandomIcon(root, groupPath));
         group.setOwnerId(session.getUid());
@@ -123,6 +125,9 @@ public class CreateGroupCmd extends BaseChatCmd {
         long currentTimeMillis = System.currentTimeMillis();
         group.setCreateTimes(currentTimeMillis);
         group.setModifiedTimes(currentTimeMillis);
+        group.setNoSayType((byte) 1);
+        group.setType((byte) 1);
+        group.setAddFriendType(true);
         groupService.save(group);
         groupService.updateQr(group.getId(), qrUtil.generate("group_" + group.getId()));
         return group;

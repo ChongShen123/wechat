@@ -5,23 +5,29 @@ import lombok.Data;
 import java.util.Set;
 
 /**
+ * 请求参数
+ *
  * @author tiankong
  * @date 2019/12/15 15:09
  */
 @Data
 public class RequestParamBo {
-    private Long times;
-    private String id;
-    private String token;
-    private String username;
+    private Integer groupId;
     private Integer userId;
     private Integer toUserId;
     private Integer friendId;
+    private Integer intType;
+    private Long times;
+    private String name;
+    private String id;
+    private String token;
+    private String username;
     private String content;
     private String message;
+    private String icon;
+    private String qr;
+    private String notice;
     private Byte byteType;
-    private Integer intType;
     private Byte state;
-    private Integer groupId;
     private Set<Integer> ids;
 }

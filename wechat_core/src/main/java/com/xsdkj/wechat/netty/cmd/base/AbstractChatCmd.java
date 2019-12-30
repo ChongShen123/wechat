@@ -9,10 +9,13 @@ import com.xsdkj.wechat.bo.RequestParamBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.ChatConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
-import com.xsdkj.wechat.entity.chat.Group;
 import com.xsdkj.wechat.entity.chat.SingleChat;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.service.*;
 import com.xsdkj.wechat.service.ex.*;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -28,9 +31,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.xsdkj.wechat.common.SystemConstant.KEY_GROUP_ID;
-import static com.xsdkj.wechat.common.SystemConstant.KEY_USER_ID;
-
+import static com.xsdkj.wechat.constant.ParamConstant.KEY_GROUP_ID;
+import static com.xsdkj.wechat.constant.ParamConstant.KEY_USER_ID;
 
 /**
  * 聊天相关业务 命令抽象类
@@ -39,13 +41,13 @@ import static com.xsdkj.wechat.common.SystemConstant.KEY_USER_ID;
  * @date 2019/11/17 19:54
  */
 @Service
-public abstract class BaseChatCmd extends BaseCmd {
+public abstract class AbstractChatCmd extends AbstractCmd {
     @Resource
     protected UserService userService;
     @Resource
     protected Snowflake snowflake;
     @Resource
-    protected GroupService groupService;
+    protected UserGroupService groupService;
     @Resource
     protected RabbitTemplateService rabbitTemplateService;
     @Resource
@@ -89,6 +91,10 @@ public abstract class BaseChatCmd extends BaseCmd {
                 parseParam(param);
                 //具体执行
                 concreteAction(channel);
+            } catch (FileNotFoundException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.FILE_NOT_FUND, cmd));
+            } catch (BannedChatException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.BANNED_CHAT, cmd));
             } catch (ValidateException | ParseParamException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, cmd));
             } catch (DataEmptyException | UserNotFountException e) {
@@ -107,6 +113,8 @@ public abstract class BaseChatCmd extends BaseCmd {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.NO_SAY_EXCEPTION, cmd));
             } catch (RepetitionException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION, cmd));
+            } catch (UnAuthorizedException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.UNAUTHORIZED, cmd));
             } catch (NullPointerException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
                 e.printStackTrace();
@@ -154,7 +162,7 @@ public abstract class BaseChatCmd extends BaseCmd {
         application.setFromUserIcon(session.getIcon());
         application.setToUserId(fid);
         application.setMessage(message);
-        application.setState(SystemConstant.UNTREATED);
+        application.setState(ChatConstant.UNTREATED);
         application.setRead(false);
         application.setType(type);
         long createTimes = System.currentTimeMillis();
@@ -169,9 +177,9 @@ public abstract class BaseChatCmd extends BaseCmd {
      * @param ids   用户ID
      * @param group 群信息
      */
-    protected void sendCreateGroupMessageToUsers(Set<Integer> ids, Group group) {
+    protected void sendCreateGroupMessageToUsers(Set<Integer> ids, UserGroup group) {
         List<SingleChat> list = new ArrayList<>();
-        ids.forEach(id -> list.add(createNewSingleChat(id, SystemConstant.SYSTEM_USER_ID, "您已加入【" + group.getName() + "】 开始聊天吧", SystemConstant.JOIN_GROUP)));
+        ids.forEach(id -> list.add(createNewSingleChat(id, SystemConstant.SYSTEM_USER_ID, "您已加入【" + group.getName() + "】 开始聊天吧", ChatConstant.JOIN_GROUP)));
         list.forEach(singleChat -> {
             Channel toUserChannel = SessionUtil.ONLINE_USER_MAP.get(singleChat.getToUserId());
             if (toUserChannel != null) {
@@ -182,7 +190,7 @@ public abstract class BaseChatCmd extends BaseCmd {
                 userService.updateRedisDataByUid(singleChat.getToUserId());
             }
             singleChat.setRead(toUserChannel != null);
-            rabbitTemplateService.addExchange(SystemConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
         });
     }
 
@@ -193,7 +201,7 @@ public abstract class BaseChatCmd extends BaseCmd {
      */
     protected void parseIdsAndGroupId(JSONObject param) {
         try {
-            Set<Integer> ids = Arrays.stream(StrUtil.splitToInt(param.getString(SystemConstant.KEY_IDS), ",")).boxed().collect(Collectors.toSet());
+            Set<Integer> ids = Arrays.stream(StrUtil.splitToInt(param.getString(ParamConstant.KEY_IDS), ",")).boxed().collect(Collectors.toSet());
             Integer groupId = param.getInteger(KEY_GROUP_ID);
             if (ObjectUtil.isNotEmpty(groupId)) {
                 requestParam.setGroupId(groupId);
@@ -217,6 +225,11 @@ public abstract class BaseChatCmd extends BaseCmd {
         requestParam.setGroupId(groupId);
     }
 
+    /**
+     * 解析用户id
+     *
+     * @param param 参数
+     */
     protected void parseUserId(JSONObject param) {
         Integer uid = param.getInteger(KEY_USER_ID);
         if (ObjectUtil.isEmpty(uid)) {
@@ -225,20 +238,44 @@ public abstract class BaseChatCmd extends BaseCmd {
         requestParam.setUserId(uid);
     }
 
+    /**
+     * 解析时间
+     *
+     * @param param 参数
+     */
     protected void parseTimes(JSONObject param) {
-        Long times = param.getLong(SystemConstant.KEY_TIMES);
+        Long times = param.getLong(ParamConstant.KEY_TIMES);
         if (ObjectUtil.isEmpty(times)) {
             throw new ValidateException();
         }
         requestParam.setTimes(times);
     }
 
+    /**
+     * 解析为Integer类型
+     *
+     * @param param 参数
+     */
     protected void parseIntegerType(JSONObject param) {
-        Integer type = param.getInteger(SystemConstant.KEY_TYPE);
+        Integer type = param.getInteger(ParamConstant.KEY_TYPE);
         if (ObjectUtil.isEmpty(type)) {
             throw new ValidateException();
         }
         requestParam.setIntType(type);
+    }
+
+    /**
+     * 解析参数
+     *
+     * @param param 参数
+     * @param type  类型
+     */
+    protected String parseParam(JSONObject param, String type) {
+        String data = param.getString(type);
+        if (StrUtil.isBlank(data)) {
+            throw new ValidateException();
+        }
+        return data;
     }
 
     /**
@@ -252,4 +289,15 @@ public abstract class BaseChatCmd extends BaseCmd {
         return groupService.checkUserJoined(ids, groupId) >= 1;
     }
 
+    /**
+     * 检查用户是否为群管理员
+     *
+     * @param groupId 群id
+     * @param uid     用户id
+     * @return boolean
+     */
+    protected boolean checkAdmin(Integer groupId, Integer uid) {
+        List<Integer> adminIds = groupService.listGroupManagerByUserId(groupId);
+        return adminIds.contains(uid);
+    }
 }

@@ -4,11 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.ChatConstant;
+import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.entity.chat.Friend;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.FriendApplicationVo;
 import io.netty.channel.Channel;
@@ -27,13 +28,13 @@ import java.util.List;
 @Service
 @Slf4j
 @CmdAnno(cmd = Cmd.FRIEND_AGREE)
-public class AgreeFriendCmd extends BaseChatCmd {
+public class AgreeFriendCmd extends AbstractChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {
-        String id = param.getString(SystemConstant.KEY_ID);
-        Byte state = param.getByte(SystemConstant.KEY_STATE);
-        if (!(state == SystemConstant.AGREE || state == SystemConstant.REFUSE)) {
+        String id = param.getString(ParamConstant.KEY_ID);
+        Byte state = param.getByte(ParamConstant.KEY_STATE);
+        if (!(state == ChatConstant.AGREE || state == ChatConstant.REFUSE)) {
             throw new RuntimeException();
         }
         requestParam.setId(id);
@@ -50,24 +51,24 @@ public class AgreeFriendCmd extends BaseChatCmd {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST));
             return;
         }
-        if (application.getState() != SystemConstant.UNTREATED) {
+        if (application.getState() != ChatConstant.UNTREATED) {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION, cmd));
             return;
         }
         String msg;
         switch (state) {
-            case SystemConstant.AGREE:
-                application.setState(SystemConstant.AGREE);
+            case ChatConstant.AGREE:
+                application.setState(ChatConstant.AGREE);
                 // 添加好友表
                 List<Friend> friends = createFriend(application);
                 friendService.saveList(friends);
-                msg = SystemConstant.RETURN_MESSAGE_SUCCESS;
+                msg = ChatConstant.RETURN_MESSAGE_SUCCESS;
                 friends.forEach(friend -> userService.updateRedisDataByUid(friend.getUid()));
                 break;
             // 回复好友
-            case SystemConstant.REFUSE:
-                application.setState(SystemConstant.REFUSE);
-                msg = SystemConstant.RETURN_MESSAGE_REFUSE;
+            case ChatConstant.REFUSE:
+                application.setState(ChatConstant.REFUSE);
+                msg = ChatConstant.RETURN_MESSAGE_REFUSE;
                 break;
             default:
                 sendMessage(channel, JsonResult.failed(cmd));
@@ -76,7 +77,7 @@ public class AgreeFriendCmd extends BaseChatCmd {
         }
         // 回应添邀请方
         Channel fromUserChannel = SessionUtil.ONLINE_USER_MAP.get(application.getFromUserId());
-        FriendApplication returnApplication = createFriendApplication(SessionUtil.getSession(channel), application.getFromUserId(), msg, SystemConstant.RETURN_FRIEND);
+        FriendApplication returnApplication = createFriendApplication(SessionUtil.getSession(channel), application.getFromUserId(), msg, ChatConstant.RETURN_FRIEND);
         if (fromUserChannel != null) {
             returnApplication.setRead(true);
             sendMessage(fromUserChannel, JsonResult.success(new FriendApplicationVo(returnApplication), cmd));
@@ -103,7 +104,7 @@ public class AgreeFriendCmd extends BaseChatCmd {
         Friend friend = new Friend();
         friend.setUid(toUserId);
         friend.setFid(fromUserId);
-        friend.setState(SystemConstant.AGREE);
+        friend.setState(ChatConstant.AGREE);
         long currentTimeMillis = System.currentTimeMillis();
         friend.setModifiedTimes(currentTimeMillis);
         friend.setCreateTimes(currentTimeMillis);

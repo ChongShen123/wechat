@@ -3,7 +3,7 @@ package com.xsdkj.wechat.action.handle;
 import com.xsdkj.wechat.action.MsgHandler;
 import com.xsdkj.wechat.action.SaveAnno;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.SingleChatService;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * @date 2019/12/27 11:00
  */
 @Component
-@SaveAnno(type = SystemConstant.BOX_TYPE_SINGLE_CHAT)
+@SaveAnno(type = RabbitConstant.BOX_TYPE_SINGLE_CHAT)
 public class SingleChatHandler implements MsgHandler {
     @Resource
     private SingleChatService singleChatService;

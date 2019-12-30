@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.config;
 
-import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
@@ -8,8 +8,9 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.xsdkj.wechat.common.SystemConstant.FANOUT_CHAT_NAME;
-import static com.xsdkj.wechat.common.SystemConstant.FANOUT_SERVICE_NAME;
+import static com.xsdkj.wechat.constant.RabbitConstant.FANOUT_CHAT_NAME;
+import static com.xsdkj.wechat.constant.RabbitConstant.FANOUT_SERVICE_NAME;
+
 
 /**
  * RabbitMQ 分列模式
@@ -46,7 +47,7 @@ public class RabbitFanoutConfig {
      */
     @Bean
     Queue chatQueueMain() {
-        return new Queue(SystemConstant.CHAT_QUEUE_MAIN);
+        return new Queue(RabbitConstant.CHAT_QUEUE_MAIN);
     }
 
     /**
@@ -56,7 +57,7 @@ public class RabbitFanoutConfig {
      */
     @Bean
     Queue chatQueueAssist() {
-        return new Queue(SystemConstant.CHAT_QUEUE_ASSIST);
+        return new Queue(RabbitConstant.CHAT_QUEUE_ASSIST);
     }
 
     /**
@@ -66,7 +67,7 @@ public class RabbitFanoutConfig {
      */
     @Bean
     Queue serviceQueueMain() {
-        return new Queue(SystemConstant.SERVICE_QUEUE_MAIN);
+        return new Queue(RabbitConstant.SERVICE_QUEUE_MAIN);
     }
 
     /**
@@ -76,7 +77,7 @@ public class RabbitFanoutConfig {
      */
     @Bean
     Queue serviceQueueAssist() {
-        return new Queue(SystemConstant.SERVICE_QUEUE_ASSIST);
+        return new Queue(RabbitConstant.SERVICE_QUEUE_ASSIST);
     }
 
     /**

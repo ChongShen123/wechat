@@ -2,9 +2,9 @@ package com.xsdkj.wechat.netty;
 
 
 import com.xsdkj.wechat.bo.GroupInfoBo;
-import com.xsdkj.wechat.entity.chat.Group;
+import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.notice.SystemNotice;
-import com.xsdkj.wechat.service.GroupService;
+import com.xsdkj.wechat.service.UserGroupService;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.util.ThreadUtil;
 import io.netty.bootstrap.ServerBootstrap;
@@ -40,7 +40,7 @@ public class NettyServer implements Runnable {
     @Resource
     private SystemNotice imNotice;
     @Resource
-    private GroupService groupService;
+    private UserGroupService groupService;
 
     private ChannelFuture channelFuture;
 
@@ -70,7 +70,7 @@ public class NettyServer implements Runnable {
                     // 启动通知线程
                     ThreadUtil.getSingleton().submit(imNotice);
                     // 初始化群组
-                    List<Group> groups = groupService.listAllChatGroup();
+                    List<UserGroup> groups = groupService.listAllChatGroup();
                     if (groups.size() > 0) {
                         groups.forEach(group -> SessionUtil.GROUP_MAP.put(group.getId(), new GroupInfoBo(group, new DefaultChannelGroup(GlobalEventExecutor.INSTANCE))));
                     }

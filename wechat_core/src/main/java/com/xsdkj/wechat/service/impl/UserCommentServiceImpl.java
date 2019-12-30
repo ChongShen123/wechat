@@ -23,7 +23,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     @Override
     public void save(UserCommentDto userCommentDto) {
         UserComment userComment=createUserComment(userCommentDto);
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userComment));
+        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT,userComment));
     }
     private UserComment createUserComment(UserCommentDto userCommentDto) {
         UserComment userComment=new UserComment();

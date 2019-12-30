@@ -109,4 +109,14 @@ public interface Cmd {
      * 设置群管理员
      */
     int SET_GROUP_MANAGER = 3011;
+
+    /**
+     * 设置群是否可聊天
+     */
+    int SET_GROUP_CHAT = 3012;
+
+    /**
+     * 修改群信息
+     */
+    int UPDATE_GROUP_INFO = 3013;
 }

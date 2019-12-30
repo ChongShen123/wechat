@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.util.ThreadUtil;
 import com.xsdkj.wechat.vo.GroupVo;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @CmdAnno(cmd = Cmd.LIST_USER_GROUP)
 @Service
-public class ListUserGroupCmd extends BaseChatCmd {
+public class ListUserGroupCmd extends AbstractChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {

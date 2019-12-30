@@ -6,6 +6,14 @@ package com.xsdkj.wechat.common;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 文件不存在异常
+     */
+    FILE_NOT_FUND(4033, "操作失败!文件不存在"),
+    /**
+     * 群禁止聊天
+     */
+    BANNED_CHAT(4032, "该群已关闭聊天功能"),
+    /**
      * 重复操作异常
      */
     REPETITION_EXCEPTION(4031, "操作失败!重复异常"),

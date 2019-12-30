@@ -28,7 +28,7 @@ public class UserThumbsServiceImpl implements UserThumbsService {
     @Override
     public void save(UserThumbsDto userThumbsDto) {
         UserThumbs userThumbs=saveThums(userThumbsDto);
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userThumbs));
+        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));
     }
     private UserThumbs saveThums(UserThumbsDto userThumbsDto) {
         UserThumbs userThumbs=new UserThumbs();
