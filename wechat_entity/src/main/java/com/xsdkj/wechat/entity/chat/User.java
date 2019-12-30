@@ -5,11 +5,16 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2019/12/26 14:23
+ * @date 2019/12/30 17:26
  */
 @Data
 public class User implements Serializable {
     private Integer id;
+
+    /**
+     * 平台id
+     */
+    private Integer platformId;
 
     /**
      * 系统账号
@@ -79,9 +84,9 @@ public class User implements Serializable {
     private String lastLoginIp;
 
     /**
-     * 平台id
+     * 登录状态 0未登录 1已登录
      */
-    private Integer platformId;
+    private Boolean loginState;
 
     private static final long serialVersionUID = 1L;
 }

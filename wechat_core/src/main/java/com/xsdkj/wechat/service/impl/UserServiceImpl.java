@@ -9,6 +9,7 @@ import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.RedisConstant;
+import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.dto.UserLoginDto;
 import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
@@ -95,6 +96,7 @@ public class UserServiceImpl extends BaseService implements UserService {
                 throw new ServiceException(ResultCodeEnum.PASSWORD_NOT_MATCH);
             }
         }
+        userMapper.updateLoginState(user.getId(), UserConstant.LOGGED);
         UserDetailsBo currentUserDetails = createCurrentUserDetailsBo(user);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(currentUserDetails, null, null);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
@@ -189,17 +191,14 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public User getByUserId(Integer id) {
         UserDetailsBo bo;
-        String redisData;
-        try {
-            redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + id).toString();
-        } catch (NullPointerException e) {
-            // 如果缓存里面没有用户信息则说明用户没有登录
+        Object redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + id);
+        if (redisData == null) {
             return null;
         }
-        if (StrUtil.isBlank(redisData)) {
+        if (StrUtil.isBlank(redisData.toString())) {
             bo = updateRedisDataByUid(id);
         } else {
-            bo = JSONObject.toJavaObject(JSONObject.parseObject(redisData), UserDetailsBo.class);
+            bo = JSONObject.toJavaObject(JSONObject.parseObject(redisData.toString()), UserDetailsBo.class);
         }
         return bo.getUser();
     }

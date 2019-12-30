@@ -9,6 +9,7 @@ import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
@@ -52,7 +53,7 @@ public class CreateGroupCmd extends AbstractChatCmd {
     @Override
     protected void concreteAction(Channel channel) {
         User user = userService.getByUsername(session.getUsername());
-        if (!user.getType().equals(SystemConstant.TYPE_ADMIN)) {
+        if (!user.getType().equals(UserConstant.TYPE_ADMIN)) {
             throw new PermissionDeniedException();
         }
         Set<Integer> ids = requestParam.getIds();

@@ -87,7 +87,7 @@ public class RegisterCmd extends AbstractChatCmd {
         if (user == null) {
             throw new UnAuthorizedException();
         }
-        channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon()));
+        channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon(), user.getPlatformId(),user.getType()));
         SessionUtil.registerUserChannel(userId, channel);
         sendMessage(channel, JsonResult.success("您已连接成功!", cmd));
         // 加入群聊
