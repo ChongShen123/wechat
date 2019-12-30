@@ -6,7 +6,7 @@ import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.constant.GroupConstant;
 import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.DataEmptyException;
 import com.xsdkj.wechat.service.ex.PermissionDeniedException;
 import com.xsdkj.wechat.service.ex.RepetitionException;
@@ -15,14 +15,14 @@ import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
 /**
- * 设置管理员
+ * 设置群管理员
  *
  * @author tiankong
  * @date 2019/12/28 17:46
  */
 @CmdAnno(cmd = Cmd.SET_GROUP_MANAGER)
 @Service
-public class SetGroupManagerCmd extends BaseChatCmd {
+public class SetGroupManagerCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) {
         parseGroupId(param);

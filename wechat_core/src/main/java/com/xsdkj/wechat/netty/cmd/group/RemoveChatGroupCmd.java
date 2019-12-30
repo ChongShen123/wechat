@@ -11,7 +11,7 @@ import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.RemoveChatVo;
@@ -28,7 +28,7 @@ import java.util.Set;
  */
 @Service
 @CmdAnno(cmd = Cmd.REMOVE_CHAT_GROUP)
-public class RemoveChatGroupCmd extends BaseChatCmd {
+public class RemoveChatGroupCmd extends AbstractChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {

@@ -12,7 +12,7 @@ import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.GroupChat;
 import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.BannedChatException;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import io.netty.channel.Channel;
@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @Service
 @CmdAnno(cmd = Cmd.GROUP_CHAT)
-public class GroupChatCmd extends BaseChatCmd {
+public class GroupChatCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) {
         try {

@@ -349,8 +349,9 @@
   "data":{
     "addFriendType":true,
     "id":66,
-    "membersCount":2,
-    "name":"sky、sky2的群聊"
+    "membersCount":3,
+    "name":"sky、sky2的群聊",
+    "noSayType":0
   },
   "message":"ok",
   "type":3002
@@ -360,6 +361,8 @@
 > membersCount: 群成员个数
 >
 > addFriendType: 群成员是否可互加好友
+>
+> noSayType: 群是否开启聊天功能 0禁止发言 1 允许发言
 
 ## 3003 查看群详情信息
 
@@ -382,8 +385,9 @@
     "createTimes":1577360650010,
     "icon":"group/护眼模式_20191109094558.jpg",
     "id":66,
-    "membersCount":2,
+    "membersCount":3,
     "name":"sky、sky2的群聊",
+    "noSayType":0,
     "notice":"这是群简介",
     "qr":"qr/2019/12/26/group_661577360650216.png"
   },
@@ -395,6 +399,8 @@
 > qr: 群二维码
 >
 > addFriendType 是否允许群内用户互加好友
+>
+> noSayType: 群是否开启聊天功能 0禁止发言 1 允许发言
 
 ## 3004 加入群聊
 
@@ -799,3 +805,43 @@
   "type":3011
 }
 ```
+
+## 3012 开启或关闭群聊天功能
+
+只有群管理员可以进行设置
+
+请求
+
+```
+{
+  "cmd":3012,
+  "group_id":66,
+  "type":0
+}
+```
+
+> type: 0关闭 1开启
+
+响应
+
+```
+{
+  "code":2000,
+  "message":"ok",
+  "type":3012
+}
+```
+
+
+
+若群关闭聊天功能,群聊时返回响应
+
+```
+{
+  "code":4032,
+  "message":"该群已关闭聊天功能",
+  "type":3006
+}
+```
+
+> 判断该群是否可进行群聊. 可从缓存该群基本信息的 noSayType 来判断.而不必让群成员每次发送信息到服务端,让服务端进行判断,从而减少客户端与服务端的交互.

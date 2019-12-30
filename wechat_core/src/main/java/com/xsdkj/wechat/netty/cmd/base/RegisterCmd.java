@@ -36,7 +36,7 @@ import static com.xsdkj.wechat.constant.ParamConstant.KEY_USER_ID;
 @Service
 @Slf4j
 @CmdAnno(cmd = Cmd.REGISTER)
-public class RegisterCmd extends BaseChatCmd {
+public class RegisterCmd extends AbstractChatCmd {
     @Resource
     private JwtTokenUtil jwtTokenUtil;
     @Resource

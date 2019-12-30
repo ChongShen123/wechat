@@ -12,7 +12,7 @@ import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.FriendApplicationVo;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @CmdAnno(cmd = Cmd.ADD_FRIEND)
-public class AddFriendCmd extends BaseChatCmd {
+public class AddFriendCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) {
         String username = param.getString(ParamConstant.KEY_USERNAME);

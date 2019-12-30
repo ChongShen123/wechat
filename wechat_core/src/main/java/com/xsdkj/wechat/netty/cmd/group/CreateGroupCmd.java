@@ -12,7 +12,7 @@ import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.PermissionDeniedException;
 import com.xsdkj.wechat.util.QrUtil;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -36,7 +36,7 @@ import java.util.Set;
 @Service
 @CmdAnno(cmd = Cmd.CREATE_GROUP)
 @Slf4j
-public class CreateGroupCmd extends BaseChatCmd {
+public class CreateGroupCmd extends AbstractChatCmd {
     @Value("${file.root-path}")
     private String root;
     @Value("${file.group-path}")
@@ -68,6 +68,8 @@ public class CreateGroupCmd extends BaseChatCmd {
         groupService.insertUserIds(ids, group.getId());
         // 群成员个数添加
         groupService.updateGroupCount(ids.size(), group.getId());
+        //添加群管理员
+        groupService.addGroupManager(group.getId(), session.getUid());
         // 给用户发送一个入群消息,保存到数据库
         sendCreateGroupMessageToUsers(ids, group);
         // 将在线用户添加到 channelGroup

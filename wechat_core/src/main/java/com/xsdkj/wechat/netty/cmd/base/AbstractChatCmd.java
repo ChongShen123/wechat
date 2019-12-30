@@ -41,7 +41,7 @@ import static com.xsdkj.wechat.constant.ParamConstant.KEY_USER_ID;
  * @date 2019/11/17 19:54
  */
 @Service
-public abstract class BaseChatCmd extends AbstractCmd {
+public abstract class AbstractChatCmd extends AbstractCmd {
     @Resource
     protected UserService userService;
     @Resource
@@ -258,4 +258,15 @@ public abstract class BaseChatCmd extends AbstractCmd {
         return groupService.checkUserJoined(ids, groupId) >= 1;
     }
 
+    /**
+     * 检查用户是否为群管理员
+     *
+     * @param groupId 群id
+     * @param uid     用户id
+     * @return boolean
+     */
+    protected boolean checkAdmin(Integer groupId, Integer uid) {
+        List<Integer> adminIds = groupService.listGroupManagerByUserId(groupId);
+        return adminIds.contains(uid);
+    }
 }

@@ -1,7 +1,5 @@
 package com.xsdkj.wechat.service;
 
-import com.xsdkj.wechat.entity.chat.Group;
-import com.xsdkj.wechat.entity.chat.GroupNoSay;
 import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.service.ex.DataEmptyException;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
@@ -227,4 +225,12 @@ public interface UserGroupService {
      * @param groupId 群id
      */
     void relieveNoSay(Integer userId, Integer groupId);
+
+    /**
+     * 设置群是否开起聊天
+     *
+     * @param groupId 群id
+     * @param type 0 关闭 1开启
+     */
+    void setGroupChat(Integer groupId, Integer type);
 }

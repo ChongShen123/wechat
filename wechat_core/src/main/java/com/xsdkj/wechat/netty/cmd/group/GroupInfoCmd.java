@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.vo.GroupInfoVo;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  */
 @CmdAnno(cmd = Cmd.GROUP_INFO)
 @Service
-public class GroupInfoCmd extends BaseChatCmd {
+public class GroupInfoCmd extends AbstractChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {

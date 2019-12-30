@@ -9,7 +9,7 @@ import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.SingleChatCancelVo;
 import io.netty.channel.Channel;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @CmdAnno(cmd = Cmd.SINGLE_CHAT_CANCEL)
-public class SingleChatCancelCmd extends BaseChatCmd {
+public class SingleChatCancelCmd extends AbstractChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {

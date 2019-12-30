@@ -62,5 +62,13 @@ public interface SystemConstant {
      */
     Long CHAT_CANCEL_TIMES = 2000 * 10L;
 
+    /**
+     * 开启
+     */
+    Integer OPEN = 1;
 
+    /**
+     * 关闭
+     */
+    Integer OFF = 0;
 }

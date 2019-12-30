@@ -10,7 +10,7 @@ import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @CmdAnno(cmd = Cmd.SINGLE_CHAT)
-public class SingleChatCmd extends BaseChatCmd {
+public class SingleChatCmd extends AbstractChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {

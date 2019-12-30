@@ -60,4 +60,6 @@ public interface UserGroupMapper {
     void deleteGroupManager(@Param("groupId") Integer groupId, @Param("userId") Integer userId);
 
     void deleteNoSayByUidAndGid(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
+
+    void setGroupChat(@Param("groupId") Integer groupId, @Param("type") Integer type);
 }

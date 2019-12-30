@@ -9,7 +9,7 @@ import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.entity.chat.Friend;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.FriendApplicationVo;
 import io.netty.channel.Channel;
@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 @Slf4j
 @CmdAnno(cmd = Cmd.FRIEND_AGREE)
-public class AgreeFriendCmd extends BaseChatCmd {
+public class AgreeFriendCmd extends AbstractChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {

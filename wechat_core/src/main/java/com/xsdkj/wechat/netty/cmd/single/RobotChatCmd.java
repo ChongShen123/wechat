@@ -5,7 +5,7 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.ParamConstant;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import io.netty.channel.Channel;
 
@@ -18,7 +18,7 @@ import io.netty.channel.Channel;
 //@CmdAnno(cmd = Cmd.ROBOT_CHAT)
 //@Service
 @Deprecated
-public class RobotChatCmd extends BaseChatCmd {
+public class RobotChatCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) throws Exception {
         String content = param.getString(ParamConstant.KEY_CONTENT);

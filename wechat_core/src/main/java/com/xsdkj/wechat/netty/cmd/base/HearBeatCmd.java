@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @CmdAnno(cmd = Cmd.HEARTBEAT)
-public class HearBeatCmd extends BaseChatCmd {
+public class HearBeatCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) throws Exception {
 

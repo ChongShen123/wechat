@@ -5,7 +5,7 @@ import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.PermissionDeniedException;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.ListMembersVo;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @CmdAnno(cmd = Cmd.DISSOLVE_GROUP)
 @Service
-public class DissolveGroupCmd extends BaseChatCmd {
+public class DissolveGroupCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) throws Exception {
         parseGroupId(param);

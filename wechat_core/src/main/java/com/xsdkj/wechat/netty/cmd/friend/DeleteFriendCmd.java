@@ -7,7 +7,7 @@ import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.service.ex.UserNotFountException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import io.netty.channel.Channel;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 @CmdAnno(cmd = Cmd.DELETE_FRIEND)
 @Service
-public class DeleteFriendCmd extends BaseChatCmd {
+public class DeleteFriendCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) throws Exception {
         Integer fid = param.getInteger(ParamConstant.KEY_FRIEND_ID);

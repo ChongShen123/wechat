@@ -133,6 +133,7 @@ public class GroupServiceImpl implements UserGroupService {
         groupBaseInfoVo.setId(group.getId());
         groupBaseInfoVo.setMembersCount(group.getMembersCount());
         groupBaseInfoVo.setName(group.getName());
+        groupBaseInfoVo.setNoSayType(group.getNoSayType());
         return groupBaseInfoVo;
     }
 
@@ -155,6 +156,7 @@ public class GroupServiceImpl implements UserGroupService {
         result.setQr(group.getQr());
         result.setNotice(group.getNotice());
         result.setAddFriendType(group.getAddFriendType());
+        result.setNoSayType(group.getNoSayType());
         return result;
     }
 
@@ -253,5 +255,10 @@ public class GroupServiceImpl implements UserGroupService {
     @Override
     public void relieveNoSay(Integer userId, Integer groupId) {
         groupMapper.deleteNoSayByUidAndGid(userId, groupId);
+    }
+
+    @Override
+    public void setGroupChat(Integer groupId, Integer type) {
+        groupMapper.setGroupChat(groupId, type);
     }
 }

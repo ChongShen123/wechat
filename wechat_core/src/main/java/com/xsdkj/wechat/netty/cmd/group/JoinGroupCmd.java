@@ -7,7 +7,7 @@ import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.service.ex.GroupNotFoundException;
 import com.xsdkj.wechat.service.ex.UserJoinedException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
-import com.xsdkj.wechat.netty.cmd.base.BaseChatCmd;
+import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.Set;
  */
 @CmdAnno(cmd = Cmd.JOIN_GROUP)
 @Service
-public class JoinGroupCmd extends BaseChatCmd {
+public class JoinGroupCmd extends AbstractChatCmd {
 
     @Override
     protected void parseParam(JSONObject param) {
