@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * @author tiankong
@@ -61,5 +62,14 @@ public class FriendApplicationServiceImpl implements FriendApplicationService {
         Query query = Query.query(Criteria.where("toUserId").is(userId));
         query.fields().exclude("modifiedTime").exclude("byteType").exclude("toUserId");
         return mongoTemplate.find(query, FriendApplication.class);
+    }
+
+
+    @Override
+    public List<FriendApplication> listByReadAndUserId(boolean isRead, Integer uid) {
+        Criteria criteria = new Criteria();
+        criteria.and("isRead").is(isRead);
+        criteria.and("toUserId").is(uid);
+        return mongoTemplate.find(Query.query(criteria), FriendApplication.class);
     }
 }

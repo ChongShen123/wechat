@@ -1,7 +1,6 @@
 package com.xsdkj.wechat.service.impl;
 
 
-
 import com.sun.xml.internal.bind.v2.TODO;
 import com.xsdkj.wechat.common.SystemConstant;
 
@@ -27,8 +26,8 @@ import java.util.List;
 @Slf4j
 public class SingleChatServiceImpl implements SingleChatService {
     /**
-     *  TODO 这里文件路径有问题需要修改
-      */
+     * TODO 这里文件路径有问题需要修改
+     */
 
     @Value("${file.single-chat}")
     private String singleChatFile;
@@ -60,7 +59,7 @@ public class SingleChatServiceImpl implements SingleChatService {
 
 
     @Override
-    public void deleteSingleChat(){
+    public void deleteSingleChat() {
         // step1 先查询 7天之前的所有数据。 List<SingleChat> list;
         Query query1 = Query.query(Criteria.where("createTimes").lt(time));
         List<SingleChat> list = mongoTemplate.find(query1, SingleChat.class);
@@ -98,4 +97,12 @@ public class SingleChatServiceImpl implements SingleChatService {
         mongoTemplate.remove(query, SingleChat.class);
     }
 
+
+    @Override
+    public List<SingleChat> listByReadAndToUserId(boolean read, Integer toUserId) {
+        Criteria criteria = new Criteria();
+        criteria.and("read").is(read);
+        criteria.and("toUserId").is(toUserId);
+        return mongoTemplate.find(Query.query(criteria), SingleChat.class);
+    }
 }
