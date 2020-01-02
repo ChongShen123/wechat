@@ -16,7 +16,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     UserCommentMapper userCommentMapper;
     @Override
     public void save(UserComment userComment) {
-        userCommentMapper.insertSelective(userComment);
+        userCommentMapper.insert(userComment);
     }
 
     @Override

@@ -24,10 +24,7 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(value = ServiceException.class)
     public JsonResult serviceExceptionHandler(ServiceException e) {
-        log.error("业务异常>>>>{}",e);
-        if (e == null) {
-            return JsonResult.failed();
-        }
+        log.error("业务异常>>>>{}",e.getCode());
         return JsonResult.failed(e.getCode());
     }
 

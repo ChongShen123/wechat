@@ -3,6 +3,7 @@ package com.xsdkj.wechat.controller;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.MoodParamDto;
 import com.xsdkj.wechat.dto.UserThumbsDto;
+import com.xsdkj.wechat.entity.chat.UserComment;
 import com.xsdkj.wechat.entity.chat.UserMood;
 import com.xsdkj.wechat.entity.chat.UserThumbs;
 import com.xsdkj.wechat.service.UserMoodService;
@@ -27,6 +28,17 @@ public class UserMoodController {
     @PostMapping("/delete")
     public  void deleteMood(@RequestBody UserMood userMood){
         userMoodService.delete(userMood);
+    }
+
+    /**
+     * 查询所有好友的动态，点赞，评论
+     * @return
+     */
+    @PostMapping("/selectAllMood")
+    public JsonResult selectAllMood(){
+        userMoodService.selectAll();
+        return  JsonResult.success();
+
     }
 
 }

@@ -22,6 +22,6 @@ public class UserThumbsHandler implements MsgHandler {
     public void execute(RabbitMessageBoxBo box) {
        UserThumbs thumbs = (UserThumbs) box.getData();
         userThumbsService.save(thumbs);
-        userThumbsService.delete(thumbs);
+/*        userThumbsService.delete(thumbs);*/
     }
 }

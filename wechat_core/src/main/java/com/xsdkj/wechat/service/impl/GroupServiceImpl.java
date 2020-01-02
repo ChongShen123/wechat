@@ -182,8 +182,11 @@ public class GroupServiceImpl implements UserGroupService {
 
     @Override
     public UserGroup getGroupById(Integer groupId) {
-        String redisData = redisUtil.get(RedisConstant.REDIS_GROUP_KEY + groupId).toString();
-        UserGroup group = JSONObject.toJavaObject(JSONObject.parseObject(redisData), UserGroup.class);
+        Object redisData = redisUtil.get(RedisConstant.REDIS_GROUP_KEY + groupId);
+        if (redisData == null) {
+            return null;
+        }
+        UserGroup group = JSONObject.toJavaObject(JSONObject.parseObject(redisData.toString()), UserGroup.class);
         if (group == null) {
             group = groupMapper.selectByPrimaryKey(groupId);
             if (group == null) {
@@ -264,6 +267,6 @@ public class GroupServiceImpl implements UserGroupService {
 
     @Override
     public void updateGroupInfo(Integer groupId, String name, String icon, String notice) {
-        groupMapper.updateGroupInfo(groupId,name, icon, notice);
+        groupMapper.updateGroupInfo(groupId, name, icon, notice);
     }
 }

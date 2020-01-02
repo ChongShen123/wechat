@@ -6,20 +6,24 @@ import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.dto.MoodParamDto;
 import com.xsdkj.wechat.entity.chat.UserMood;
+import com.xsdkj.wechat.mapper.UserMoodMapper;
 import com.xsdkj.wechat.service.RabbitTemplateService;
 import com.xsdkj.wechat.service.UserMoodService;
 import com.xsdkj.wechat.service.ex.FileNotFoundException;
 import com.xsdkj.wechat.util.UserUtil;
+import com.xsdkj.wechat.vo.UserMoodVo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Administrator
  */
 @Service
-public  class UserMoodServiceImpl implements UserMoodService {
+public class UserMoodServiceImpl implements UserMoodService {
+
+
     @Resource
     private UserUtil userUtil;
     @Resource
@@ -28,28 +32,52 @@ public  class UserMoodServiceImpl implements UserMoodService {
     private String rootPath;
     @Value("${file.img-path}")
     private String imgPath;
+    @Resource
+    UserMoodMapper userMoodMapper;
+    /**
+     * 查询好友的动态
+     *
+     */
+    @Override
+    public void selectAll( ) {
+        UserMood userMood=new UserMood();
+        userMood.setUid(userUtil.currentUser().getUser().getId());
+/*        userMoodMapper.selectAllMood(userMood);*/
+
+
+    }
+
+    @Override
+    public List<UserMoodVo> listUserMoodByUid(Integer uid) {
+
+        return userMoodMapper.listUserMoodByUid(uid);
+    }
+
     @Override
     public void save(MoodParamDto moodDto) {
         String[] files = moodDto.getFile().split(",");
         if (files.length > 0) {
             for (String file : files) {
                 boolean exist = FileUtil.exist(rootPath + imgPath + file);
-                if (!exist){
-                    throw new NullPointerException();
+                if (!exist) {
+                    throw new FileNotFoundException(ResultCodeEnum.FILE_NOT_FUND);
                 }
             }
         }
-        UserMood userMood  = createNewUserMood(moodDto);
-        System.out.println(userMood);
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userMood));
+        UserMood userMood = createNewUserMood(moodDto);
+        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userMood));
     }
     @Override
     public void delete(UserMood userMood) {
-        if(userMood.getId()!=null){
+        if (userMood.getId() != null) {
             userMood.setUid(userUtil.currentUser().getUser().getId());
-            rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userMood));
+            rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userMood));
         }
     }
+
+
+
+
     private UserMood createNewUserMood(MoodParamDto moodDto) {
         UserMood userMood = new UserMood();
         userMood.setContent(moodDto.getContent());

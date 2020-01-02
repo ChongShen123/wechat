@@ -15,7 +15,6 @@ public class UserMoodServiceImpl implements UserMoodService {
     private UserMoodMapper userMoodMapper;
     @Override
     public void save(UserMood mood) {
-        System.out.println(mood);
         userMoodMapper.insert(mood);
     }
 

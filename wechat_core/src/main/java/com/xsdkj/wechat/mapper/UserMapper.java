@@ -1,10 +1,16 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.bo.PermissionBo;import com.xsdkj.wechat.entity.chat.User;import com.xsdkj.wechat.vo.UserFriendVo;import org.apache.ibatis.annotations.Param;import java.util.List;import java.util.Set;
+import com.xsdkj.wechat.bo.PermissionBo;
+import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.vo.UserFriendVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author tiankong
- * @date 2019/12/26 14:23
+ * @date 2019/12/30 17:26
  */
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -46,4 +52,12 @@ public interface UserMapper {
      * @param friendId 好友ID
      */
     void deleteFriend(@Param("uid") Integer uid, @Param("friendId") Integer friendId);
+
+    /**
+     * 修改用户登录状态
+     *
+     * @param uid  用户id
+     * @param type 登录状态
+     */
+    void updateLoginState(@Param("uid") Integer uid, @Param("type") Boolean type);
 }

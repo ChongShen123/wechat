@@ -45,7 +45,7 @@ public class UserThumbsServiceImpl implements UserThumbsService {
     public void delete(UserThumbs userThumbs) {
         if(userThumbs.getId()!=null){
             userThumbs.setUid(userUtil.currentUser().getUser().getId());
-            rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userThumbs));
+            rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));
         }
     }
 

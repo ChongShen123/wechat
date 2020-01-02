@@ -190,11 +190,11 @@ public interface SystemConstant {
      */
     int BOX_TYPE_MOOD =3;
     /**
-     * 发朋友圈消息
+     * 朋友圈点赞
      */
     int BOX_TYPE_THUMS =4;
     /**
-     * 发朋友圈消息
+     * 朋友圈评论
      */
     int BOX_TYPE_COMMENT =5;
 

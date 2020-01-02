@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.xsdkj.wechat.mapper.UserMoodMapper">
   <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.UserMood">
     <!--@mbg.generated-->
@@ -11,6 +12,7 @@
     <result column="file_type" jdbcType="TINYINT" property="fileType" />
     <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
     <result column="create_times" jdbcType="BIGINT" property="createTimes" />
+<!--    <collection property=""-->
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -23,6 +25,21 @@
     from user_mood
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="listUserMoodByUid" resultType="com.xsdkj.wechat.vo.UserMoodVo">
+
+
+
+  </select>
+
+
+<!--  <select id="selectAllMood" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    mood.content,mood.file,mood.comment_count,mood.create_times,thums.nickname,comment.nickname,comment.content,comment.create_times
+    from user_mood as mood join user_thumbs as thums join user_comment as comment
+    where mood.uid=thums.mood_id
+    and
+    mood.uid=comment.mood_id
+  </select>-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from user_mood

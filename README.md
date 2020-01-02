@@ -874,3 +874,42 @@
 }
 ```
 
+## 4000 查询用户详情
+
+请求
+
+```
+{
+    "cmd":4000,
+    "user_id":7
+}
+```
+
+响应
+
+```
+{
+  "code":2000,
+  "data":{
+    "email":"2928448687@qq.com",
+    "gender":0,
+    "icon":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm7O1QZxOj38DFs9pFHwX3it2CiCMXiVMUPOXI337CKfRhFaYVaw&s",
+    "id":7,
+    "lastLoginTimes":1577670607122,
+    "qr":"qr/2019/12/11/sky1576061378229.png",
+    "type":1,
+    "uno":413413413,
+    "username":"sky"
+  },
+  "message":"ok",
+  "type":4000
+}
+```
+
+> qr: 二维码
+>
+> uno: 系统账号
+>
+> gender: 性别 0女 1男
+>
+> type: 会员类型  0会员  1管理员

@@ -2,6 +2,10 @@ package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.entity.chat.UserMood;
 
+import com.xsdkj.wechat.vo.UserMoodVo;
+
+import java.util.List;
+
 public interface UserMoodMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +18,8 @@ public interface UserMoodMapper {
     int updateByPrimaryKeySelective(UserMood record);
 
     int updateByPrimaryKey(UserMood record);
+
+
+    List<UserMoodVo> listUserMoodByUid(Integer uid);
+
 }

@@ -38,7 +38,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     public void delete(UserComment userComment) {
     if(userComment.getId()!=null){
         userComment.setUid(userUtil.currentUser().getUser().getId());
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userComment));
+        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT,userComment));
     }
     }
 }

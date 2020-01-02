@@ -22,6 +22,6 @@ public class UserCommentHandler implements MsgHandler {
     public void execute(RabbitMessageBoxBo box){
         UserComment userComment= (UserComment) box.getData();
         userCommentService.save(userComment);
-        userCommentService.delete(userComment);
+/*        userCommentService.delete(userComment);*/
     }
 }

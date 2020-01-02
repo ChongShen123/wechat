@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.bo;
 
 import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import lombok.Data;
@@ -19,6 +20,8 @@ import java.util.Map;
  */
 @Data
 public class UserDetailsBo implements UserDetails, Serializable {
+    private static final long serialVersionUID = -3880140593105583167L;
+
     /**
      * 此无参构造器不能删除 否则 JSONObject 会解析失败
      */
@@ -35,7 +38,6 @@ public class UserDetailsBo implements UserDetails, Serializable {
      * TODO 这里可以去掉.与下面的Map重复了
      */
     private List<GroupVo> groupInfoBos;
-
     /**
      * 用户所有好友
      */

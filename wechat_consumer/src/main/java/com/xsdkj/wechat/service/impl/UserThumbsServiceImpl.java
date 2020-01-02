@@ -16,7 +16,7 @@ public class UserThumbsServiceImpl implements UserThumbsService {
     UserThumbsMapper userThumbsMapper;
     @Override
     public void save(UserThumbs thumbs) {
-    userThumbsMapper.insertSelective(thumbs);
+    userThumbsMapper.insert(thumbs);
     }
     @Override
     public void delete(UserThumbs userThumbs) {
