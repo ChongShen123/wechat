@@ -60,4 +60,14 @@ public interface ChatConstant {
      * 退群
      */
     byte QUIT_GROUP = 5;
+
+    /**
+     * 充值
+     */
+    byte TOP_UP = 6;
+
+    /**
+     * 提现
+     */
+    byte WITHDRAW = 7;
 }

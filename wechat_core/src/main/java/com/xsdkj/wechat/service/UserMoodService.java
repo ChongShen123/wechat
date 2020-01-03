@@ -1,14 +1,10 @@
 package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.dto.MoodParamDto;
-<<<<<<< HEAD
-import com.xsdkj.wechat.entity.chat.UserMood;
 import com.xsdkj.wechat.vo.UserMoodVo;
 
 import java.util.List;
-=======
 import com.xsdkj.wechat.entity.mood.UserMood;
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
 
 /**
  * @author Administrator

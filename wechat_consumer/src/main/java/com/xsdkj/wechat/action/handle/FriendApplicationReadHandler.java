@@ -2,7 +2,7 @@ package com.xsdkj.wechat.action.handle;
 
 import com.xsdkj.wechat.action.MsgHandler;
 import com.xsdkj.wechat.action.SaveAnno;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.service.FriendApplicationService;
@@ -24,7 +24,7 @@ public class FriendApplicationReadHandler implements MsgHandler {
     @Resource
     private FriendApplicationService friendApplicationService;
     @Override
-    public void execute(RabbitMessageBoxBo box) {
+    public void execute(MsgBox box) {
         List<FriendApplication> friendApplications = (List<FriendApplication>) box.getData();
         List<String> ids = new ArrayList<>();
         friendApplications.forEach(friendApplication -> ids.add(friendApplication.getId()));

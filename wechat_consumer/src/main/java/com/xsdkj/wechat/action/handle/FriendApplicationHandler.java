@@ -2,7 +2,7 @@ package com.xsdkj.wechat.action.handle;
 
 import com.xsdkj.wechat.action.MsgHandler;
 import com.xsdkj.wechat.action.SaveAnno;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -23,7 +23,7 @@ public class FriendApplicationHandler implements MsgHandler {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public void execute(RabbitMessageBoxBo box) {
+    public void execute(MsgBox box) {
         FriendApplication application = (FriendApplication) box.getData();
         mongoTemplate.save(application);
     }

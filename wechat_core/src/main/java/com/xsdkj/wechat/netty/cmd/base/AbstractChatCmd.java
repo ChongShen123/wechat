@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.bo.RequestParamBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.JsonResult;
@@ -18,6 +18,7 @@ import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.service.*;
 import com.xsdkj.wechat.service.ex.*;
+import com.xsdkj.wechat.util.ChatUtil;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.util.ThreadUtil;
 import io.netty.channel.Channel;
@@ -54,6 +55,8 @@ public abstract class AbstractChatCmd extends AbstractCmd {
     protected FriendApplicationService friendApplicationService;
     @Resource
     protected FriendService friendService;
+    @Resource
+    protected ChatUtil chatUtil;
     @Resource
     protected SingleChatService singleChatService;
     protected RequestParamBo requestParam = new RequestParamBo();
@@ -125,25 +128,6 @@ public abstract class AbstractChatCmd extends AbstractCmd {
         });
     }
 
-    /**
-     * 创建一条单聊消息
-     *
-     * @param toUserId   toUserId
-     * @param fromUserId fromUserId
-     * @param content    content
-     * @param type       0信息 1语音 2图片 3撤销 4 加入群聊 5退群 6红包 7转账
-     * @return SingleChat
-     */
-    protected SingleChat createNewSingleChat(Integer toUserId, Integer fromUserId, String content, Byte type) {
-        SingleChat chat = new SingleChat();
-        chat.setId(snowflake.nextIdStr());
-        chat.setContent(content);
-        chat.setFromUserId(fromUserId);
-        chat.setToUserId(toUserId);
-        chat.setType(type);
-        chat.setCreateTimes(System.currentTimeMillis());
-        return chat;
-    }
 
     /**
      * 获取一条好友申请或回复 消息
@@ -179,7 +163,7 @@ public abstract class AbstractChatCmd extends AbstractCmd {
      */
     protected void sendCreateGroupMessageToUsers(Set<Integer> ids, UserGroup group) {
         List<SingleChat> list = new ArrayList<>();
-        ids.forEach(id -> list.add(createNewSingleChat(id, SystemConstant.SYSTEM_USER_ID, "您已加入【" + group.getName() + "】 开始聊天吧", ChatConstant.JOIN_GROUP)));
+        ids.forEach(id -> list.add(chatUtil.createNewSingleChat(id, SystemConstant.SYSTEM_USER_ID, "您已加入【" + group.getName() + "】 开始聊天吧", ChatConstant.JOIN_GROUP)));
         list.forEach(singleChat -> {
             Channel toUserChannel = SessionUtil.ONLINE_USER_MAP.get(singleChat.getToUserId());
             if (toUserChannel != null) {
@@ -190,7 +174,7 @@ public abstract class AbstractChatCmd extends AbstractCmd {
                 userService.updateRedisDataByUid(singleChat.getToUserId());
             }
             singleChat.setRead(toUserChannel != null);
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
         });
     }
 

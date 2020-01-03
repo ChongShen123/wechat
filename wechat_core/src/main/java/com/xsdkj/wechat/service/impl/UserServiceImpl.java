@@ -5,7 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.PermissionBo;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.RabbitConstant;
@@ -111,7 +111,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 //            throw new ServiceException(ResultCodeEnum.EMAIL_ALREADY_EXISTS);
 //        }
 //        User user = getNewUser(param, request);
-//        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_USER_REGISTER, user));
+//        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_REGISTER, user));
 //        UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
 //        return login(userLoginParam, request, false);
 //    }
@@ -134,7 +134,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             throw new ServiceException(ResultCodeEnum.EMAIL_ALREADY_EXISTS);
         }
         User user = getNewUser(param, request);
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_USER_REGISTER, user));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_REGISTER, user));
     }
 
     @Override
@@ -358,18 +358,15 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public GroupVo getUserRedisGroup(Integer uid, Integer gid) {
         Map<Integer, GroupVo> userGroupRelationMap = getRedisDataByUid(uid).getUserGroupRelationMap();
-        System.out.println(userGroupRelationMap);
         return userGroupRelationMap.get(gid);
     }
 
     @Override
-    public User getUserById(Integer userId) {
+    public User getUserById(Integer userId, boolean type) {
         User user = userMapper.selectByPrimaryKey(userId);
-        updateRedisDataByUid(user);
+        if (type) {
+            updateRedisDataByUid(user);
+        }
         return user;
-    }
-
-
-    public static void main(String[] args) {
     }
 }

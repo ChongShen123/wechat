@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.service;
 
 
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 
 /**
  * @author tiankong
@@ -12,7 +12,7 @@ public interface RabbitTemplateService {
      * 消息进入队列
      *
      * @param exchangeName 交换器名称 RabbitConstant.FANOUT_SERVICE_NAME/FANOUT_CHAT_NAME
-     * @param box          box  RabbitMessageBoxBo.createBox(type,data)
+     * @param box          box  MsgBox.create(type,data)
      */
-    void addExchange(String exchangeName, RabbitMessageBoxBo box);
+    void addExchange(String exchangeName, MsgBox box);
 }

@@ -39,23 +39,33 @@ public class RabbitFanoutConfig {
     }
 
     /**
-     * 通知服务交换器
+     * 用户通知服务交换器
      *
      * @return FanoutExchange
      */
     @Bean
-    FanoutExchange noticeFanoutExchange() {
-        return new FanoutExchange(FANOUT_NOTICE_NAME, true, false);
+    FanoutExchange userNoticeFanoutExchange() {
+        return new FanoutExchange(FANOUT_USER_NOTICE_NAME, true, false);
     }
 
+    /**
+     * 用户通知服务队列
+     *
+     * @return Queue
+     */
     @Bean
-    Queue userNoticeQueueMain() {
+    Queue userNoticeQueue() {
         return new Queue(USER_NOTICE_QUEUE);
     }
 
+    /**
+     * 用户通知服务队列与交换器绑定
+     *
+     * @return Binding
+     */
     @Bean
     Binding userNoticeBinding() {
-        return BindingBuilder.bind(userNoticeQueueMain()).to(noticeFanoutExchange());
+        return BindingBuilder.bind(userNoticeQueue()).to(userNoticeFanoutExchange());
     }
 
     /**

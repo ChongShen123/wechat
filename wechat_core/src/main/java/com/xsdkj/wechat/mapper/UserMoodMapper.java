@@ -1,13 +1,9 @@
 package com.xsdkj.wechat.mapper;
 
-<<<<<<< HEAD
-import com.xsdkj.wechat.entity.chat.UserComment;
-import com.xsdkj.wechat.entity.chat.UserMood;
-=======
+import com.xsdkj.wechat.entity.mood.UserComment;
 import com.xsdkj.wechat.entity.mood.UserMood;
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
 
-import com.xsdkj.wechat.entity.chat.UserThumbs;
+import com.xsdkj.wechat.entity.mood.UserThumbs;
 import com.xsdkj.wechat.vo.UserMoodVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,7 +21,6 @@ public interface UserMoodMapper {
     int updateByPrimaryKeySelective(UserMood record);
 
     int updateByPrimaryKey(UserMood record);
-<<<<<<< HEAD
 
     UserThumbs selectUserThumbsById(@Param("id") Integer id);
 
@@ -40,6 +35,3 @@ public interface UserMoodMapper {
     List<UserMoodVo> listUserMoodByUid(@Param("ids") List<Integer> ids);
 
 }
-=======
-}
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e

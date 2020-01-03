@@ -1,11 +1,10 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.entity.wallet.Wallet;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * @author tiankong
- * @date 2020/1/3 11:12
+ * @date 2020/1/3 12:43
  */
 public interface WalletMapper {
     int deleteByPrimaryKey(Integer id);
@@ -20,5 +19,5 @@ public interface WalletMapper {
 
     int updateByPrimaryKey(Wallet record);
 
-    Wallet getOneByUid(@Param("uid") Integer uid);
+    void updateUserWallet(Wallet wallet);
 }

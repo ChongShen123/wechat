@@ -2,7 +2,7 @@ package com.xsdkj.wechat.netty.cmd.friend;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
@@ -59,7 +59,7 @@ public class AddFriendCmd extends AbstractChatCmd {
             sendMessage(friendChannel, JsonResult.success(new FriendApplicationVo(application), Cmd.ADD_FRIEND));
         }
         // 放入消息队列
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_FRIEND_APPLICATION, application));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_FRIEND_APPLICATION, application));
         sendMessage(channel, JsonResult.success(ChatConstant.MSG_SUCCESS, cmd));
     }
 }

@@ -51,7 +51,8 @@ public interface UserService {
 
     /**
      * 用户注册
-     * @param param 参数
+     *
+     * @param param   参数
      * @param request 连接信息
      */
     void register(UserRegisterDto param, HttpServletRequest request);
@@ -163,9 +164,10 @@ public interface UserService {
      * 查询本地用户
      *
      * @param userId 用户iD
+     * @param type   是否更新用户redis缓存
      * @return User
      */
-    User getUserById(Integer userId);
+    User getUserById(Integer userId, boolean type);
 
     /**
      * 修改用户登录状态

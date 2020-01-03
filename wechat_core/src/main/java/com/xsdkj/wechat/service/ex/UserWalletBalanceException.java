@@ -7,11 +7,11 @@ import lombok.EqualsAndHashCode;
 
 /**
  * @author tiankong
- * @date 2019/12/15 14:36
+ * @date 2020/1/3 13:26
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ValidateException extends ServiceException {
-    private static final long serialVersionUID = -3480777004762284117L;
-    private IErrorCode code = ResultCodeEnum.VALIDATE_FAILED;
+public class UserWalletBalanceException extends ServiceException {
+    private static final long serialVersionUID = -617908345520378657L;
+    private IErrorCode code = ResultCodeEnum.USER_WALLET_BALANCE_EXCEPTION;
 }

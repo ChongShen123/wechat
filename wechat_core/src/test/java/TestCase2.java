@@ -25,10 +25,9 @@ class TestCase2 {
     void test1() {
         List<NicknameName> nicknameNames = nicknameNameMapper.getByAll(null);
         List<NicknameSurname> nicknameSurnames = nicknameSurnameMapper.getByAll(null);
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 100; i++) {
             NicknameName nicknameName = RandomUtil.randomEle(nicknameNames);
             NicknameSurname nicknameSurname = RandomUtil.randomEle(nicknameSurnames);
-            System.out.println(nicknameSurname.getSurname() + nicknameName.getSurname());
         }
     }
 }

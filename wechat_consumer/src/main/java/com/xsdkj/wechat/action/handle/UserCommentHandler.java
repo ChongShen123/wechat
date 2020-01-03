@@ -2,7 +2,7 @@ package com.xsdkj.wechat.action.handle;
 
 import com.xsdkj.wechat.action.MsgHandler;
 import com.xsdkj.wechat.action.SaveAnno;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.entity.mood.UserComment;
 import com.xsdkj.wechat.service.UserCommentService;
@@ -19,7 +19,7 @@ public class UserCommentHandler implements MsgHandler {
     @Resource
     UserCommentService userCommentService;
     @Override
-    public void execute(RabbitMessageBoxBo box){
+    public void execute(MsgBox box){
         UserComment userComment= (UserComment) box.getData();
         userCommentService.save(userComment);
 /*        userCommentService.delete(userComment);*/

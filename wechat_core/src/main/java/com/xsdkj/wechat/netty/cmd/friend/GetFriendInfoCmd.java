@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GetFriendInfoCmd extends AbstractChatCmd {
     @Override
-    protected void parseParam(JSONObject param) throws Exception {
+    protected void parseParam(JSONObject param) {
         requestParam.setUserId(Integer.parseInt(parseParam(param, ParamConstant.KEY_USER_ID)));
     }
 
@@ -32,7 +32,7 @@ public class GetFriendInfoCmd extends AbstractChatCmd {
         Integer userId = requestParam.getUserId();
         User user = userService.getRedisUserByUserId(userId);
         if (user == null) {
-            user = userService.getUserById(userId);
+            user = userService.getUserById(userId,true);
             if (user == null) {
                 throw new DataEmptyException();
             }

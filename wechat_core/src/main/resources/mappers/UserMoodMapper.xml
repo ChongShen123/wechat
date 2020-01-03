@@ -22,18 +22,18 @@
     <result column="file_type" property="fileType"/>
     <result column="comment_count" property="commentCount"/>
     <result column="create_times" property="createTimes"/>
-    <collection property="userThumbs" ofType="com.xsdkj.wechat.entity.chat.UserThumbs"  column="id" select="selectUserThumbsById"/>
-    <collection property="comments" ofType="com.xsdkj.wechat.entity.chat.UserComment"  column="id" select="selectUserCommentById" />
+    <collection property="userThumbs" ofType="com.xsdkj.wechat.entity.mood.UserThumbs"  column="id" select="selectUserThumbsById"/>
+    <collection property="comments" ofType="com.xsdkj.wechat.entity.mood.UserComment"  column="id" select="selectUserCommentById" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, `uid`, content, `file`, file_type, comment_count, create_times
   </sql>
 
-  <select id="selectUserThumbsById" resultType="com.xsdkj.wechat.entity.chat.UserThumbs">
+  <select id="selectUserThumbsById" resultType="com.xsdkj.wechat.entity.mood.UserThumbs">
     select id,uid,nickname from user_thumbs where mood_id = #{id};
   </select>
-  <select id="selectUserCommentById" resultType="com.xsdkj.wechat.entity.chat.UserComment">
+  <select id="selectUserCommentById" resultType="com.xsdkj.wechat.entity.mood.UserComment">
     select id,uid,nickname,content,create_times from user_comment where mood_id= #{id} order by create_times desc limit 3;
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

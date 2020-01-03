@@ -6,6 +6,10 @@ package com.xsdkj.wechat.common;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 用户余额不足
+     */
+    USER_WALLET_BALANCE_EXCEPTION(4045, "用户余额不足"),
+    /**
      * 平台不存在
      */
     PLATFORM_NOT_FOUND(4044, "注册失败!平台不存在"),

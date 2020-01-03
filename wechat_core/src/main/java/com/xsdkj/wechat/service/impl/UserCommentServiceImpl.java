@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.service.impl;
 
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.dto.UserCommentDto;
@@ -25,7 +25,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     @Override
     public void save(UserCommentDto userCommentDto) {
         UserComment userComment = createUserComment(userCommentDto);
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT, userComment));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(SystemConstant.BOX_TYPE_COMMENT, userComment));
     }
 
     private UserComment createUserComment(UserCommentDto userCommentDto) {
@@ -40,16 +40,10 @@ public class UserCommentServiceImpl implements UserCommentService {
 
     @Override
     public void delete(UserComment userComment) {
-<<<<<<< HEAD
-    if(userComment.getId()!=null){
-        userComment.setUid(userUtil.currentUser().getUser().getId());
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT,userComment));
-    }
-=======
+
         if (userComment.getId() != null) {
             userComment.setUid(userUtil.currentUser().getUser().getId());
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userComment));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(SystemConstant.BOX_TYPE_MOOD, userComment));
         }
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
     }
 }

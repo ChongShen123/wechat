@@ -4,7 +4,7 @@ import com.xsdkj.wechat.entity.user.UserOperationLog;
 
 /**
  * @author tiankong
- * @date 2020/1/3 12:50
+ * @date 2020/1/3 13:04
  */
 public interface UserOperationLogMapper {
     int deleteByPrimaryKey(Integer id);

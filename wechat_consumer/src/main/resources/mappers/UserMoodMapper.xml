@@ -1,128 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.UserMoodMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.mood.UserMood">
-    <!--@mbg.generated-->
-    <!--@Table user_mood-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
-    <result column="file" jdbcType="VARCHAR" property="file" />
-    <result column="file_type" jdbcType="TINYINT" property="fileType" />
-    <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
-    <result column="create_times" jdbcType="BIGINT" property="createTimes" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, `uid`, content, `file`, file_type, comment_count, create_times
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select
-    <include refid="Base_Column_List" />
-    from user_mood
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    <!--@mbg.generated-->
-    delete from user_mood
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into user_mood (`uid`, content, `file`,
-      file_type, comment_count, create_times
-      )
-    values (#{uid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{file,jdbcType=VARCHAR},
-      #{fileType,jdbcType=TINYINT}, #{commentCount,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT}
-      )
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into user_mood
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uid != null">
-        `uid`,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-      <if test="file != null">
-        `file`,
-      </if>
-      <if test="fileType != null">
-        file_type,
-      </if>
-      <if test="commentCount != null">
-        comment_count,
-      </if>
-      <if test="createTimes != null">
-        create_times,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uid != null">
-        #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="file != null">
-        #{file,jdbcType=VARCHAR},
-      </if>
-      <if test="fileType != null">
-        #{fileType,jdbcType=TINYINT},
-      </if>
-      <if test="commentCount != null">
-        #{commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="createTimes != null">
-        #{createTimes,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
-    <!--@mbg.generated-->
-    update user_mood
-    <set>
-      <if test="uid != null">
-        `uid` = #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
+    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.mood.UserMood">
+        <!--@mbg.generated-->
+        <!--@Table user_mood-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="file" jdbcType="VARCHAR" property="file"/>
+        <result column="file_type" jdbcType="TINYINT" property="fileType"/>
+        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
+        <result column="create_times" jdbcType="BIGINT" property="createTimes"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `uid`, content, `file`, file_type, comment_count, create_times
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from user_mood
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from user_mood
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into user_mood (`uid`, content, `file`,
+        file_type, comment_count, create_times
+        )
+        values (#{uid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{file,jdbcType=VARCHAR},
+        #{fileType,jdbcType=TINYINT}, #{commentCount,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into user_mood
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                `uid`,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="file != null">
+                `file`,
+            </if>
+            <if test="fileType != null">
+                file_type,
+            </if>
+            <if test="commentCount != null">
+                comment_count,
+            </if>
+            <if test="createTimes != null">
+                create_times,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="file != null">
+                #{file,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null">
+                #{fileType,jdbcType=TINYINT},
+            </if>
+            <if test="commentCount != null">
+                #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="createTimes != null">
+                #{createTimes,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
+        <!--@mbg.generated-->
+        update user_mood
+        <set>
+            <if test="uid != null">
+                `uid` = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="file != null">
+                `file` = #{file,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null">
+                file_type = #{fileType,jdbcType=TINYINT},
+            </if>
+            <if test="commentCount != null">
+                comment_count = #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="createTimes != null">
+                create_times = #{createTimes,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
+        <!--@mbg.generated-->
+        update user_mood
+        set `uid` = #{uid,jdbcType=INTEGER},
         content = #{content,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="file != null">
         `file` = #{file,jdbcType=VARCHAR},
-      </if>
-      <if test="fileType != null">
         file_type = #{fileType,jdbcType=TINYINT},
-      </if>
-      <if test="commentCount != null">
         comment_count = #{commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="createTimes != null">
-        create_times = #{createTimes,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
-    <!--@mbg.generated-->
-    update user_mood
-    set `uid` = #{uid,jdbcType=INTEGER},
-      content = #{content,jdbcType=LONGVARCHAR},
-      `file` = #{file,jdbcType=VARCHAR},
-      file_type = #{fileType,jdbcType=TINYINT},
-      comment_count = #{commentCount,jdbcType=INTEGER},
-      create_times = #{createTimes,jdbcType=BIGINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-
-
-
-<<<<<<< HEAD
+        create_times = #{createTimes,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>
-=======
 
-</mapper>
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
+
