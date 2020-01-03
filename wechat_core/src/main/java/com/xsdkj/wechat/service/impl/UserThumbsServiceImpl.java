@@ -3,7 +3,7 @@ package com.xsdkj.wechat.service.impl;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.dto.UserThumbsDto;
-import com.xsdkj.wechat.entity.chat.UserThumbs;
+import com.xsdkj.wechat.entity.mood.UserThumbs;
 import com.xsdkj.wechat.service.RabbitTemplateService;
 import com.xsdkj.wechat.service.UserThumbsService;
 import com.xsdkj.wechat.util.UserUtil;

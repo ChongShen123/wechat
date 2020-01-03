@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.bo.PermissionBo;
-import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import org.apache.ibatis.annotations.Param;
 

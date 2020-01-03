@@ -2,7 +2,7 @@ package com.xsdkj.wechat.controller;
 
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.UserCommentDto;
-import com.xsdkj.wechat.entity.chat.UserComment;
+import com.xsdkj.wechat.entity.mood.UserComment;
 import com.xsdkj.wechat.service.UserCommentService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;

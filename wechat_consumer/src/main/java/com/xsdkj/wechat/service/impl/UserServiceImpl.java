@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.service.impl;
 
-import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.mapper.UserMapper;
 import com.xsdkj.wechat.service.UserService;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.dto.UserCommentDto;
-import com.xsdkj.wechat.entity.chat.UserComment;
+import com.xsdkj.wechat.entity.mood.UserComment;
 
 /**
  * @author Administrator

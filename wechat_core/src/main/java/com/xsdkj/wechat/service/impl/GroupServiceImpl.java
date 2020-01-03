@@ -1,11 +1,10 @@
 package com.xsdkj.wechat.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.constant.RedisConstant;
 import com.xsdkj.wechat.entity.chat.GroupNoSay;
-import com.xsdkj.wechat.entity.chat.UserGroup;
+import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.mapper.UserGroupMapper;
 import com.xsdkj.wechat.mapper.GroupNoSayMapper;
 import com.xsdkj.wechat.service.UserGroupService;

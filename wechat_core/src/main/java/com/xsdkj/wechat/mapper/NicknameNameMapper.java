@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.chat.NicknameName;import java.util.List;
+import com.xsdkj.wechat.entity.other.NicknameName;import java.util.List;
 
 /**
  * @author tiankong

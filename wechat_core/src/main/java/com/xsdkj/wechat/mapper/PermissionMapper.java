@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 
-import com.xsdkj.wechat.entity.chat.Permission;
+import com.xsdkj.wechat.entity.user.Permission;
 
 /**
  * @author tiankong

@@ -13,7 +13,7 @@ import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.entity.chat.SingleChat;
-import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.service.ex.UnAuthorizedException;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;

@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.chat.UserMood;
+import com.xsdkj.wechat.entity.mood.UserMood;
 
 public interface UserMoodMapper {
     int deleteByPrimaryKey(Integer id);

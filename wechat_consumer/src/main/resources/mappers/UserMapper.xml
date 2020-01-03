@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.User">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.user.User">
     <!--@mbg.generated-->
     <!--@Table user-->
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -27,13 +27,13 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, platform_id, uno, username, nickname, `password`, icon, gender, qr, tel, qq, 
-    description, email, `type`, `state`, create_times, join_ip, last_login_times, last_login_ip, 
+    id, platform_id, uno, username, nickname, `password`, icon, gender, qr, tel, qq,
+    description, email, `type`, `state`, create_times, join_ip, last_login_times, last_login_ip,
     login_state
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
+    select
     <include refid="Base_Column_List" />
     from user
     where id = #{id,jdbcType=INTEGER}
@@ -43,24 +43,24 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.User" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.User" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into user (platform_id, uno, username, 
-      nickname, `password`, icon, 
-      gender, qr, tel, qq, 
-      description, email, `type`, 
-      `state`, create_times, join_ip, 
+    insert into user (platform_id, uno, username,
+      nickname, `password`, icon,
+      gender, qr, tel, qq,
+      description, email, `type`,
+      `state`, create_times, join_ip,
       last_login_times, last_login_ip, login_state
       )
-    values (#{platformId,jdbcType=INTEGER}, #{uno,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, 
-      #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
-      #{gender,jdbcType=TINYINT}, #{qr,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
-      #{state,jdbcType=TINYINT}, #{createTimes,jdbcType=BIGINT}, #{joinIp,jdbcType=VARCHAR}, 
+    values (#{platformId,jdbcType=INTEGER}, #{uno,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR},
+      #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR},
+      #{gender,jdbcType=TINYINT}, #{qr,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR},
+      #{description,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
+      #{state,jdbcType=TINYINT}, #{createTimes,jdbcType=BIGINT}, #{joinIp,jdbcType=VARCHAR},
       #{lastLoginTimes,jdbcType=BIGINT}, #{lastLoginIp,jdbcType=VARCHAR}, #{loginState,jdbcType=BOOLEAN}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.User" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.User" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -182,7 +182,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.user.User">
     <!--@mbg.generated-->
     update user
     <set>
@@ -246,7 +246,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.User">
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.user.User">
     <!--@mbg.generated-->
     update user
     set platform_id = #{platformId,jdbcType=INTEGER},

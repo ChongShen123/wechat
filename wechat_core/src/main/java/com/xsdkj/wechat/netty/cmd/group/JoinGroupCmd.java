@@ -3,7 +3,7 @@ package com.xsdkj.wechat.netty.cmd.group;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.entity.chat.UserGroup;
+import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.service.ex.GroupNotFoundException;
 import com.xsdkj.wechat.service.ex.UserJoinedException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;

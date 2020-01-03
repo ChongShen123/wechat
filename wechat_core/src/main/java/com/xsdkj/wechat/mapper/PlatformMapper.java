@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.chat.Platform;
+import com.xsdkj.wechat.entity.platform.Platform;
 
 /**
  * @author tiankong

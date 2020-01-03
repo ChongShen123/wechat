@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.constant.GroupConstant;
-import com.xsdkj.wechat.entity.chat.UserGroup;
+import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.DataEmptyException;

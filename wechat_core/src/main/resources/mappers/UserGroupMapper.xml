@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.UserGroupMapper">
-    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.UserGroup">
+    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.user.UserGroup">
         <!--@mbg.generated-->
         <!--@Table user_group-->
         <id column="id" jdbcType="INTEGER" property="id"/>
@@ -36,7 +36,7 @@
         delete from user_group
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserGroup"
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.UserGroup"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into user_group (`name`, icon, qr,
@@ -50,7 +50,7 @@
         #{type,jdbcType=TINYINT}, #{noSayType,jdbcType=TINYINT}, #{createTimes,jdbcType=BIGINT},
         #{modifiedTimes,jdbcType=BIGINT})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserGroup"
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.UserGroup"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into user_group
@@ -137,7 +137,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.UserGroup">
+    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.user.UserGroup">
         <!--@mbg.generated-->
         update user_group
         <set>
@@ -183,7 +183,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.UserGroup">
+    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.user.UserGroup">
         <!--@mbg.generated-->
         update user_group
         set `name` = #{name,jdbcType=VARCHAR},
@@ -201,7 +201,7 @@
         modified_times = #{modifiedTimes,jdbcType=BIGINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <resultMap id="UserGroupRelationMap" type="com.xsdkj.wechat.entity.chat.UserGroupRelation">
+    <resultMap id="UserGroupRelationMap" type="com.xsdkj.wechat.entity.user.UserGroupRelation">
         <result column="group_nickname" property="groupNickname"/>
     </resultMap>
     <resultMap id="ListGroupMembersMap" type="com.xsdkj.wechat.vo.ListMembersVo">
@@ -274,7 +274,7 @@
         =
         #{id}
     </update>
-    <select id="getById" resultType="com.xsdkj.wechat.entity.chat.UserGroup">
+    <select id="getById" resultType="com.xsdkj.wechat.entity.user.UserGroup">
         select id,name,icon,qr,notice,owner_id ownerId, admin_ids adminIds, members_count membersCount,
         state,is_save isSave,create_times createTimes,modified_times modifiedTimes
         from user_group where id = #{id}

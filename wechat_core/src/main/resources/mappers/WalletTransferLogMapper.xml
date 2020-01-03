@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsdkj.wechat.mapper.WalletTransferLogMapper">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.wallet.WalletTransferLog">
+    <!--@mbg.generated-->
+    <!--@Table wallet_transfer_log-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="to_user_id" jdbcType="INTEGER" property="toUserId" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="before_price" jdbcType="DECIMAL" property="beforePrice" />
+    <result column="after_price" jdbcType="DECIMAL" property="afterPrice" />
+    <result column="month" jdbcType="TINYINT" property="month" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="create_times" jdbcType="BIGINT" property="createTimes" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `uid`, to_user_id, price, before_price, after_price, `month`, `year`, create_times
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from wallet_transfer_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from wallet_transfer_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletTransferLog" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into wallet_transfer_log (`uid`, to_user_id, price, 
+      before_price, after_price, `month`, 
+      `year`, create_times)
+    values (#{uid,jdbcType=INTEGER}, #{toUserId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      #{beforePrice,jdbcType=DECIMAL}, #{afterPrice,jdbcType=DECIMAL}, #{month,jdbcType=TINYINT}, 
+      #{year,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletTransferLog" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into wallet_transfer_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="toUserId != null">
+        to_user_id,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="beforePrice != null">
+        before_price,
+      </if>
+      <if test="afterPrice != null">
+        after_price,
+      </if>
+      <if test="month != null">
+        `month`,
+      </if>
+      <if test="year != null">
+        `year`,
+      </if>
+      <if test="createTimes != null">
+        create_times,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="toUserId != null">
+        #{toUserId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="beforePrice != null">
+        #{beforePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="afterPrice != null">
+        #{afterPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=TINYINT},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="createTimes != null">
+        #{createTimes,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.wallet.WalletTransferLog">
+    <!--@mbg.generated-->
+    update wallet_transfer_log
+    <set>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="toUserId != null">
+        to_user_id = #{toUserId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="beforePrice != null">
+        before_price = #{beforePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="afterPrice != null">
+        after_price = #{afterPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="month != null">
+        `month` = #{month,jdbcType=TINYINT},
+      </if>
+      <if test="year != null">
+        `year` = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="createTimes != null">
+        create_times = #{createTimes,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.wallet.WalletTransferLog">
+    <!--@mbg.generated-->
+    update wallet_transfer_log
+    set `uid` = #{uid,jdbcType=INTEGER},
+      to_user_id = #{toUserId,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      before_price = #{beforePrice,jdbcType=DECIMAL},
+      after_price = #{afterPrice,jdbcType=DECIMAL},
+      `month` = #{month,jdbcType=TINYINT},
+      `year` = #{year,jdbcType=INTEGER},
+      create_times = #{createTimes,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

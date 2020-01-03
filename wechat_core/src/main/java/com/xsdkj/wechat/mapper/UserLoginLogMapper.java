@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 
-import com.xsdkj.wechat.entity.chat.UserLoginLog;
+import com.xsdkj.wechat.entity.user.UserLoginLog;
 
 /**
  * @author tiankong

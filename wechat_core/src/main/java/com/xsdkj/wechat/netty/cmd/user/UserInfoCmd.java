@@ -5,7 +5,7 @@ import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.constant.UserConstant;
-import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.ex.DataEmptyException;

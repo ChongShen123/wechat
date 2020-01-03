@@ -1,6 +1,5 @@
 package com.xsdkj.wechat.service.impl;
 
-import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -17,9 +16,9 @@ import com.xsdkj.wechat.dto.UserLoginDto;
 import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
 import com.xsdkj.wechat.dto.UserUpdatePassword;
-import com.xsdkj.wechat.entity.chat.Platform;
-import com.xsdkj.wechat.entity.chat.User;
-import com.xsdkj.wechat.entity.chat.UserLoginLog;
+import com.xsdkj.wechat.entity.platform.Platform;
+import com.xsdkj.wechat.entity.user.User;
+import com.xsdkj.wechat.entity.user.UserLoginLog;
 import com.xsdkj.wechat.mapper.UserLoginLogMapper;
 import com.xsdkj.wechat.mapper.UserMapper;
 import com.xsdkj.wechat.service.BaseService;

@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.chat.UserGroup;
+import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;
 import com.xsdkj.wechat.vo.GroupVo;

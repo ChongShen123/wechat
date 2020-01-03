@@ -3,7 +3,7 @@ package com.xsdkj.wechat.service.impl;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.dto.UserCommentDto;
-import com.xsdkj.wechat.entity.chat.UserComment;
+import com.xsdkj.wechat.entity.mood.UserComment;
 import com.xsdkj.wechat.service.RabbitTemplateService;
 import com.xsdkj.wechat.service.UserCommentService;
 import com.xsdkj.wechat.util.UserUtil;

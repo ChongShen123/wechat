@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.chat.UserComment;
+import com.xsdkj.wechat.entity.mood.UserComment;
 
 public interface UserCommentMapper {
     int deleteByPrimaryKey(Integer id);

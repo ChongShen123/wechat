@@ -1,4 +1,4 @@
-package com.xsdkj.wechat.entity.chat;
+package com.xsdkj.wechat.entity.platform;
 
 import java.io.Serializable;
 import lombok.Data;

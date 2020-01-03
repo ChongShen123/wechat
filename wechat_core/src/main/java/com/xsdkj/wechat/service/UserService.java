@@ -7,7 +7,7 @@ import com.xsdkj.wechat.dto.UserLoginDto;
 import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
 import com.xsdkj.wechat.dto.UserUpdatePassword;
-import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;

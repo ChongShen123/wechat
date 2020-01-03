@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.UserThumbsMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.UserThumbs">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.mood.UserThumbs">
     <!--@mbg.generated-->
     <!--@Table user_thumbs-->
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -15,7 +15,7 @@
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
+    select
     <include refid="Base_Column_List" />
     from user_thumbs
     where id = #{id,jdbcType=INTEGER}
@@ -25,14 +25,14 @@
     delete from user_thumbs
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserThumbs" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserThumbs" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into user_thumbs (`uid`, nickname, mood_id
       )
     values (#{uid,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{moodId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserThumbs" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserThumbs" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into user_thumbs
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -58,7 +58,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.UserThumbs">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.mood.UserThumbs">
     <!--@mbg.generated-->
     update user_thumbs
     <set>
@@ -74,7 +74,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.UserThumbs">
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.mood.UserThumbs">
     <!--@mbg.generated-->
     update user_thumbs
     set `uid` = #{uid,jdbcType=INTEGER},

@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.chat.Book;
+import com.xsdkj.wechat.entity.other.Book;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

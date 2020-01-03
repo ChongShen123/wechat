@@ -4,7 +4,7 @@ import com.xsdkj.wechat.action.MsgHandler;
 import com.xsdkj.wechat.action.SaveAnno;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.entity.chat.UserComment;
+import com.xsdkj.wechat.entity.mood.UserComment;
 import com.xsdkj.wechat.service.UserCommentService;
 import org.springframework.stereotype.Component;
 

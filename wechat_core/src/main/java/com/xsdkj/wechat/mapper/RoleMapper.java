@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 
-import com.xsdkj.wechat.entity.chat.Role;
+import com.xsdkj.wechat.entity.user.Role;
 
 /**
  * @author tiankong

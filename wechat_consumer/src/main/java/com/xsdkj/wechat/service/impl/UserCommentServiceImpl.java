@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.service.impl;
 
-import com.xsdkj.wechat.entity.chat.UserComment;
+import com.xsdkj.wechat.entity.mood.UserComment;
 import com.xsdkj.wechat.mapper.UserCommentMapper;
 import com.xsdkj.wechat.service.UserCommentService;
 import org.springframework.stereotype.Service;

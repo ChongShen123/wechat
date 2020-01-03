@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.NicknameSurnameMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.NicknameSurname">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.other.NicknameSurname">
     <!--@mbg.generated-->
     <!--@Table nickname_surname-->
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -14,7 +14,7 @@
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
+    select
     <include refid="Base_Column_List" />
     from nickname_surname
     where id = #{id,jdbcType=INTEGER}
@@ -24,12 +24,12 @@
     delete from nickname_surname
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.NicknameSurname" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.other.NicknameSurname" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into nickname_surname (surname, `type`)
     values (#{surname,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.NicknameSurname" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.other.NicknameSurname" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into nickname_surname
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -49,7 +49,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.NicknameSurname">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.other.NicknameSurname">
     <!--@mbg.generated-->
     update nickname_surname
     <set>
@@ -62,7 +62,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.NicknameSurname">
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.other.NicknameSurname">
     <!--@mbg.generated-->
     update nickname_surname
     set surname = #{surname,jdbcType=VARCHAR},

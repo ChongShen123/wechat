@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.service;
 
-import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.entity.user.User;
 
 /**
  * @author tiankong
