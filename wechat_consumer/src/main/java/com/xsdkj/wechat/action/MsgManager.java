@@ -12,8 +12,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * RabbitMQ 消息存储管理类
+ *
  * @author tiankong
  * @date 2019/12/10 13:26
  */
@@ -38,6 +40,7 @@ public class MsgManager implements ApplicationListener<ContextRefreshedEvent> {
         log.info("b:{}", b++);
 //        action(box);
     }
+
     @RabbitListener(queues = RabbitConstant.SERVICE_QUEUE_MAIN)
     public void handleServiceQueueMain(MsgBox box) {
         log.info("main");
@@ -49,6 +52,7 @@ public class MsgManager implements ApplicationListener<ContextRefreshedEvent> {
         log.info("assist");
 //        action(box);
     }
+
     private void action(MsgBox box) {
         MsgHandler messageHandler = messageManagerMap.get(box.getType());
         if (messageHandler == null) {
@@ -57,6 +61,7 @@ public class MsgManager implements ApplicationListener<ContextRefreshedEvent> {
         }
         messageHandler.execute(box);
     }
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(SaveAnno.class);

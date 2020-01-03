@@ -88,4 +88,8 @@ public interface ParamConstant {
      * 群是否可相互添加好友
      */
     String KEY_ADD_FRIEND = "add_friend";
+    /**
+     * 金额
+     */
+    String KEY_PRICE = "price";
 }

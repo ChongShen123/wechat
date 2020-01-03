@@ -138,4 +138,9 @@ public interface Cmd {
      * 查看用户金额
      */
     int USER_PRICE = 4001;
+
+    /**
+     * 用户转账
+     */
+    int TRANSFER_ACCOUNTS = 4002;
 }

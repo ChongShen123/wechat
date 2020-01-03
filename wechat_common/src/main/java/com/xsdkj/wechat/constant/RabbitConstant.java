@@ -92,10 +92,14 @@ public interface RabbitConstant {
     /**
      * 创建一个管理员操作记录
      */
-    int BOX_TYPE_USER_OPERATION_LOG = 33;
+    int BOX_TYPE_ADMIN_OPERATION_LOG = 33;
 
+    /**
+     * 用户账变记录
+     */
+    int BOX_TYPE_USER_PRICE_CHANGE_LOG = 34;
     /**
      * 用户金额操作通知
      */
-    int USER_PRICE_OPERATION_NOTICE = 34;
+    int USER_PRICE_OPERATION_NOTICE = 35;
 }

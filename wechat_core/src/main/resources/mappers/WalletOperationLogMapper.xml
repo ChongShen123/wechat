@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xsdkj.wechat.mapper.WalletPriceLogMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.wallet.WalletPriceLog">
+<mapper namespace="com.xsdkj.wechat.mapper.WalletOperationLogMapper">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.wallet.WalletOperationLog">
     <!--@mbg.generated-->
-    <!--@Table wallet_price_log-->
+    <!--@Table wallet_operation_log-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="operation_id" jdbcType="INTEGER" property="operationId" />
@@ -24,17 +24,17 @@
     <!--@mbg.generated-->
     select 
     <include refid="Base_Column_List" />
-    from wallet_price_log
+    from wallet_operation_log
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
-    delete from wallet_price_log
+    delete from wallet_operation_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceLog" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletOperationLog" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into wallet_price_log (`uid`, operation_id, price, 
+    insert into wallet_operation_log (`uid`, operation_id, price, 
       before_price, after_price, `type`, 
       `month`, `year`, create_times
       )
@@ -43,9 +43,9 @@
       #{month,jdbcType=TINYINT}, #{year,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceLog" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletOperationLog" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into wallet_price_log
+    insert into wallet_operation_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="uid != null">
         `uid`,
@@ -105,9 +105,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceLog">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.wallet.WalletOperationLog">
     <!--@mbg.generated-->
-    update wallet_price_log
+    update wallet_operation_log
     <set>
       <if test="uid != null">
         `uid` = #{uid,jdbcType=INTEGER},
@@ -139,9 +139,9 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceLog">
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.wallet.WalletOperationLog">
     <!--@mbg.generated-->
-    update wallet_price_log
+    update wallet_operation_log
     set `uid` = #{uid,jdbcType=INTEGER},
       operation_id = #{operationId,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},

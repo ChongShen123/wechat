@@ -1,4 +1,4 @@
-package com.xsdkj.wechat.netty.cmd.user;
+package com.xsdkj.wechat.netty.cmd.wallet;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.common.Cmd;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @CmdAnno(cmd = Cmd.USER_PRICE)
-public class UserPurseCmd extends AbstractChatCmd {
+public class FindUserPriceCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) throws Exception {
     }

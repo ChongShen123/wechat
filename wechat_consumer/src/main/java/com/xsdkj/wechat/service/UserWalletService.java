@@ -1,7 +1,8 @@
 package com.xsdkj.wechat.service;
 
+import com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog;
 import com.xsdkj.wechat.entity.wallet.Wallet;
-import com.xsdkj.wechat.entity.wallet.WalletPriceLog;
+import com.xsdkj.wechat.entity.wallet.WalletOperationLog;
 
 /**
  * @author tiankong
@@ -20,5 +21,12 @@ public interface UserWalletService {
      *
      * @param log 记录
      */
-    void saveWalletPriceLog(WalletPriceLog log);
+    void saveWalletOperationLog(WalletOperationLog log);
+
+    /**
+     * 保存用户账变记录
+     *
+     * @param walletPriceChangeLog 记录
+     */
+    void saveWalletPriceChangeLog(WalletPriceChangeLog walletPriceChangeLog);
 }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xsdkj.wechat.mapper.WalletPriceLogMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.wallet.WalletPriceLog">
+<mapper namespace="com.xsdkj.wechat.mapper.WalletPriceChangeLogMapper">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog">
     <!--@mbg.generated-->
-    <!--@Table wallet_price_log-->
+    <!--@Table wallet_price_change_log-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="operation_id" jdbcType="INTEGER" property="operationId" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="before_price" jdbcType="DECIMAL" property="beforePrice" />
     <result column="after_price" jdbcType="DECIMAL" property="afterPrice" />
+    <result column="add_type" jdbcType="BOOLEAN" property="addType" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="month" jdbcType="TINYINT" property="month" />
     <result column="year" jdbcType="INTEGER" property="year" />
@@ -17,41 +17,37 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `uid`, operation_id, price, before_price, after_price, `type`, `month`, `year`, 
-    create_times
+    id, `uid`, price, before_price, after_price, add_type, `type`, `month`, `year`, create_times
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 
     <include refid="Base_Column_List" />
-    from wallet_price_log
+    from wallet_price_change_log
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
-    delete from wallet_price_log
+    delete from wallet_price_change_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceLog" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into wallet_price_log (`uid`, operation_id, price, 
-      before_price, after_price, `type`, 
+    insert into wallet_price_change_log (`uid`, price, before_price, 
+      after_price, add_type, `type`, 
       `month`, `year`, create_times
       )
-    values (#{uid,jdbcType=INTEGER}, #{operationId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
-      #{beforePrice,jdbcType=DECIMAL}, #{afterPrice,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, 
+    values (#{uid,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{beforePrice,jdbcType=DECIMAL}, 
+      #{afterPrice,jdbcType=DECIMAL}, #{addType,jdbcType=BOOLEAN}, #{type,jdbcType=TINYINT}, 
       #{month,jdbcType=TINYINT}, #{year,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceLog" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into wallet_price_log
+    insert into wallet_price_change_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="uid != null">
         `uid`,
-      </if>
-      <if test="operationId != null">
-        operation_id,
       </if>
       <if test="price != null">
         price,
@@ -61,6 +57,9 @@
       </if>
       <if test="afterPrice != null">
         after_price,
+      </if>
+      <if test="addType != null">
+        add_type,
       </if>
       <if test="type != null">
         `type`,
@@ -79,9 +78,6 @@
       <if test="uid != null">
         #{uid,jdbcType=INTEGER},
       </if>
-      <if test="operationId != null">
-        #{operationId,jdbcType=INTEGER},
-      </if>
       <if test="price != null">
         #{price,jdbcType=DECIMAL},
       </if>
@@ -90,6 +86,9 @@
       </if>
       <if test="afterPrice != null">
         #{afterPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="addType != null">
+        #{addType,jdbcType=BOOLEAN},
       </if>
       <if test="type != null">
         #{type,jdbcType=TINYINT},
@@ -105,15 +104,12 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceLog">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog">
     <!--@mbg.generated-->
-    update wallet_price_log
+    update wallet_price_change_log
     <set>
       <if test="uid != null">
         `uid` = #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="operationId != null">
-        operation_id = #{operationId,jdbcType=INTEGER},
       </if>
       <if test="price != null">
         price = #{price,jdbcType=DECIMAL},
@@ -123,6 +119,9 @@
       </if>
       <if test="afterPrice != null">
         after_price = #{afterPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="addType != null">
+        add_type = #{addType,jdbcType=BOOLEAN},
       </if>
       <if test="type != null">
         `type` = #{type,jdbcType=TINYINT},
@@ -139,14 +138,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceLog">
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog">
     <!--@mbg.generated-->
-    update wallet_price_log
+    update wallet_price_change_log
     set `uid` = #{uid,jdbcType=INTEGER},
-      operation_id = #{operationId,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       before_price = #{beforePrice,jdbcType=DECIMAL},
       after_price = #{afterPrice,jdbcType=DECIMAL},
+      add_type = #{addType,jdbcType=BOOLEAN},
       `type` = #{type,jdbcType=TINYINT},
       `month` = #{month,jdbcType=TINYINT},
       `year` = #{year,jdbcType=INTEGER},

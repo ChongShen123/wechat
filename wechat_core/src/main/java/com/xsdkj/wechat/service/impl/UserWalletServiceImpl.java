@@ -1,8 +1,6 @@
 package com.xsdkj.wechat.service.impl;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.util.StrUtil;
 import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.constant.ChatConstant;
 import com.xsdkj.wechat.constant.RabbitConstant;
@@ -11,8 +9,9 @@ import com.xsdkj.wechat.dto.UserPriceOperationDto;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.user.UserOperationLog;
+import com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog;
 import com.xsdkj.wechat.entity.wallet.Wallet;
-import com.xsdkj.wechat.entity.wallet.WalletPriceLog;
+import com.xsdkj.wechat.entity.wallet.WalletOperationLog;
 import com.xsdkj.wechat.mapper.WalletMapper;
 import com.xsdkj.wechat.service.BaseService;
 import com.xsdkj.wechat.service.UserService;
@@ -124,26 +123,57 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         BigDecimal afterPrice;
         // 操作类型 1 充值 2 提现
         int operationType;
+        boolean addType;
         if (type) {
             afterPrice = beforePrice.add(price);
             BigDecimal totalPrice = wallet.getTotalPrice().add(price);
             // 总充值
             wallet.setTotalPrice(totalPrice);
             operationType = SystemConstant.TOP_UP;
+            addType = true;
         } else {
             afterPrice = beforePrice.subtract(price);
             operationType = SystemConstant.DRAW_MONEY;
+            addType = false;
         }
         wallet.setPrice(afterPrice);
         // 用户钱包添加
         rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_UPDATE_USER_WALLET, wallet));
-        // 创建一个金额操作流水记录
-        WalletPriceLog walletPriceLog = createNewWalletPriceLog(user.getId(), admin.getId(), price, beforePrice, afterPrice, operationType);
+        // 金额操作流水记录
+        WalletOperationLog walletPriceLog = createNewWalletOperationLog(user.getId(), admin.getId(), price, beforePrice, afterPrice, operationType);
         rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_PRICE_OPERATION_LOG, walletPriceLog));
-        // 创建管理员操作记录
+        // 管理员操作记录
         UserOperationLog userOperationLog = createNewUserOperationLog(admin.getId(), admin.getPlatformId(), operationType, String.format("管理员%s为用户%s充值%s元", admin.getId(), user.getId(), price));
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_OPERATION_LOG, userOperationLog));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_ADMIN_OPERATION_LOG, userOperationLog));
+        // 用户账变记录
+        WalletPriceChangeLog walletPriceChangeLog = createNewWalletPriceChangeLog(param.getUid(), param.getPrice(), beforePrice, afterPrice, addType, operationType);
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_PRICE_CHANGE_LOG, walletPriceChangeLog));
         return wallet;
+    }
+
+    /**
+     * 创建一条用户账变记录
+     *
+     * @param uid           用户id
+     * @param price         金额
+     * @param beforePrice   操作前金额
+     * @param afterPrice    操作后金额
+     * @param addType       添加类型 true 添加 false 减少
+     * @param operationType 类型类型 1充值 2 提现 3 转账 4 红包
+     * @return WalletPriceChangeLog
+     */
+    private WalletPriceChangeLog createNewWalletPriceChangeLog(Integer uid, BigDecimal price, BigDecimal beforePrice, BigDecimal afterPrice, boolean addType, int operationType) {
+        WalletPriceChangeLog walletPriceChangeLog = new WalletPriceChangeLog();
+        walletPriceChangeLog.setUid(uid);
+        walletPriceChangeLog.setPrice(price);
+        walletPriceChangeLog.setBeforePrice(beforePrice);
+        walletPriceChangeLog.setAfterPrice(afterPrice);
+        walletPriceChangeLog.setAddType(addType);
+        walletPriceChangeLog.setType((byte) operationType);
+        walletPriceChangeLog.setMonth((byte) (DateUtil.thisMonth() + 1));
+        walletPriceChangeLog.setYear(DateUtil.thisYear());
+        walletPriceChangeLog.setCreateTimes(System.currentTimeMillis());
+        return walletPriceChangeLog;
     }
 
 
@@ -177,8 +207,8 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
      * @param type        操作类型 1 充值 2 提现
      * @return WalletPriceLog
      */
-    private WalletPriceLog createNewWalletPriceLog(Integer uid, Integer adminId, BigDecimal price, BigDecimal beforePrice, BigDecimal afterPrice, int type) {
-        WalletPriceLog walletPriceLog = new WalletPriceLog();
+    private WalletOperationLog createNewWalletOperationLog(Integer uid, Integer adminId, BigDecimal price, BigDecimal beforePrice, BigDecimal afterPrice, int type) {
+        WalletOperationLog walletPriceLog = new WalletOperationLog();
         walletPriceLog.setUid(uid);
         walletPriceLog.setOperationId(adminId);
         walletPriceLog.setPrice(price);
