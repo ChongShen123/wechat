@@ -12,6 +12,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class SingleChat extends ChatInfo implements Serializable {
+    private static final long serialVersionUID = 9044991236644579027L;
     private Integer toUserId;
     private Boolean read;
 

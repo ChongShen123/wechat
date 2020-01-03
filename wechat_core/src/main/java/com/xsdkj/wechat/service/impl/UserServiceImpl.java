@@ -86,6 +86,11 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
+    public void updateLoginState(Integer uid, Boolean type) {
+        userMapper.updateLoginState(uid, type);
+    }
+
+    @Override
     public LoginVo login(UserLoginDto param, HttpServletRequest request, boolean check) {
         User user = userMapper.getOneByUsername(param.getUsername());
         if (check) {
@@ -96,7 +101,8 @@ public class UserServiceImpl extends BaseService implements UserService {
                 throw new ServiceException(ResultCodeEnum.PASSWORD_NOT_MATCH);
             }
         }
-        userMapper.updateLoginState(user.getId(), UserConstant.LOGGED);
+        updateLoginState(user.getId(), UserConstant.LOGGED);
+        user.setLoginState(UserConstant.LOGGED);
         UserDetailsBo currentUserDetails = createCurrentUserDetailsBo(user);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(currentUserDetails, null, null);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
@@ -189,7 +195,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public User getByUserId(Integer id) {
+    public User getRedisUserByUserId(Integer id) {
         UserDetailsBo bo;
         Object redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + id);
         if (redisData == null) {
@@ -291,6 +297,20 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
+    public UserDetailsBo updateRedisDataByUid(User user) {
+        UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
+        currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
+        List<GroupVo> groupInfoBos = groupService.listGroupByUid(user.getId());
+        for (GroupVo groupInfoBo : groupInfoBos) {
+            currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
+        }
+        currentUserDetailsBo.setGroupInfoBos(groupInfoBos);
+        currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(user.getId()));
+        redisUtil.set(RedisConstant.REDIS_USER_ID + user.getId(), JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
+        return currentUserDetailsBo;
+    }
+
+    @Override
     public UserDetailsBo getRedisDataByUid(Integer uid) {
         String redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + uid).toString();
         UserDetailsBo bo;
@@ -307,5 +327,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         Map<Integer, GroupVo> userGroupRelationMap = getRedisDataByUid(uid).getUserGroupRelationMap();
         System.out.println(userGroupRelationMap);
         return userGroupRelationMap.get(gid);
+    }
+
+    @Override
+    public User getUserById(Integer userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        updateRedisDataByUid(user);
+        return user;
     }
 }

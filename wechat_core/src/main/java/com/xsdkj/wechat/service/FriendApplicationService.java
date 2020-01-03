@@ -44,6 +44,15 @@ public interface FriendApplicationService {
     List<FriendApplication> listByUserId(Integer userId);
 
     /**
+     * 查询好友申请表
+     *
+     * @param isRead 阅读状态
+     * @param uid   用户id
+     * @return list
+     */
+    List<FriendApplication> listByReadAndUserId(boolean isRead, Integer uid);
+
+    /**
      * 修改好友申请
      *
      * @param application application

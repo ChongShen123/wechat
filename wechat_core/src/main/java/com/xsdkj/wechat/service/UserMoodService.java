@@ -26,8 +26,7 @@ public interface UserMoodService {
 
     /**
      * 查询朋友圈的所有好友动态
-     * @param uid
-     * @return
+     * @return list
      */
-    List<UserMoodVo> listUserMoodByUid(Integer uid);
+    List<UserMoodVo> listUserMoodByUid();
 }

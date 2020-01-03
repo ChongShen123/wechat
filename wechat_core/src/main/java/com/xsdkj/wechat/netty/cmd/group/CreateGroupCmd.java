@@ -8,7 +8,6 @@ import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.entity.chat.UserGroup;
@@ -99,7 +98,7 @@ public class CreateGroupCmd extends AbstractChatCmd {
      */
     private boolean checkUser(Set<Integer> ids) {
         for (Integer id : ids) {
-            User user = userService.getByUserId(id);
+            User user = userService.getRedisUserByUserId(id);
             if (user == null) {
                 return false;
             }

@@ -11,10 +11,12 @@ import com.xsdkj.wechat.service.RabbitTemplateService;
 import com.xsdkj.wechat.service.UserMoodService;
 import com.xsdkj.wechat.service.ex.FileNotFoundException;
 import com.xsdkj.wechat.util.UserUtil;
+import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.UserMoodVo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +38,6 @@ public class UserMoodServiceImpl implements UserMoodService {
     UserMoodMapper userMoodMapper;
     /**
      * 查询好友的动态
-     *
      */
     @Override
     public void selectAll( ) {
@@ -48,11 +49,13 @@ public class UserMoodServiceImpl implements UserMoodService {
     }
 
     @Override
-    public List<UserMoodVo> listUserMoodByUid(Integer uid) {
-
-        return userMoodMapper.listUserMoodByUid(uid);
+    public List<UserMoodVo> listUserMoodByUid() {
+        List<Integer> friendIds = new ArrayList<>();
+        friendIds.add(userUtil.currentUser().getUser().getId());
+        List<UserFriendVo> userFriendVos = userUtil.currentUser().getUserFriendVos();
+        userFriendVos.forEach(userFriendVo -> friendIds.add(userFriendVo.getUid()));
+        return userMoodMapper.listUserMoodByUid(friendIds);
     }
-
     @Override
     public void save(MoodParamDto moodDto) {
         String[] files = moodDto.getFile().split(",");

@@ -1,8 +1,11 @@
 package com.xsdkj.wechat.mapper;
 
+import com.xsdkj.wechat.entity.chat.UserComment;
 import com.xsdkj.wechat.entity.chat.UserMood;
 
+import com.xsdkj.wechat.entity.chat.UserThumbs;
 import com.xsdkj.wechat.vo.UserMoodVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,7 +22,16 @@ public interface UserMoodMapper {
 
     int updateByPrimaryKey(UserMood record);
 
+    UserThumbs selectUserThumbsById(@Param("id") Integer id);
 
-    List<UserMoodVo> listUserMoodByUid(Integer uid);
+    UserComment selectUserCommentById(@Param("id")Integer id);
+
+    /**
+     * 查询好友朋友圈
+     *
+     * @param ids 好友id （包含自身id）
+     * @return list
+     */
+    List<UserMoodVo> listUserMoodByUid(@Param("ids") List<Integer> ids);
 
 }

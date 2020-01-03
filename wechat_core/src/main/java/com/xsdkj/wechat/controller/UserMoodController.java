@@ -7,10 +7,12 @@ import com.xsdkj.wechat.entity.chat.UserComment;
 import com.xsdkj.wechat.entity.chat.UserMood;
 import com.xsdkj.wechat.entity.chat.UserThumbs;
 import com.xsdkj.wechat.service.UserMoodService;
+import com.xsdkj.wechat.vo.UserMoodVo;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -37,7 +39,8 @@ public class UserMoodController {
     @PostMapping("/selectAllMood")
     public JsonResult selectAllMood(){
         userMoodService.selectAll();
-        return  JsonResult.success();
+        List<UserMoodVo> userMoodVos = userMoodService.listUserMoodByUid();
+        return  JsonResult.success(userMoodVos);
 
     }
 

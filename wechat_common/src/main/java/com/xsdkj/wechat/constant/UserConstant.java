@@ -25,4 +25,18 @@ public interface UserConstant {
      */
     Boolean NOT_LOGIN = false;
 
+    // 好友申请
+    /**
+     * 未处理
+     */
+    Byte UNTREATED = 0;
+    /**
+     * 同意
+     */
+    Byte AGREE = 1;
+    /**
+     * 拒绝
+     */
+    Byte REFUSE = 2;
+
 }

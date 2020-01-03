@@ -7,8 +7,6 @@ import com.xsdkj.wechat.entity.chat.UserThumbs;
  * @author
  */
 public interface UserThumbsService {
-
     void save(UserThumbsDto userThumbsDto);
-
     void delete(UserThumbs userThumbs);
 }

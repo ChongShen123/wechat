@@ -2,12 +2,17 @@ package com.xsdkj.wechat.netty.cmd.base;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.Attributes;
 import com.xsdkj.wechat.constant.ParamConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
+import com.xsdkj.wechat.constant.UserConstant;
+import com.xsdkj.wechat.entity.chat.FriendApplication;
+import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.chat.User;
 import com.xsdkj.wechat.service.ex.UnAuthorizedException;
 import com.xsdkj.wechat.service.ex.ValidateException;
@@ -83,11 +88,11 @@ public class RegisterCmd extends AbstractChatCmd {
             remove(channel);
             return;
         }
-        User user = userService.getByUserId(userId);
+        User user = userService.getRedisUserByUserId(userId);
         if (user == null) {
             throw new UnAuthorizedException();
         }
-        channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon(), user.getPlatformId(),user.getType()));
+        channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon(), user.getPlatformId(), user.getType()));
         SessionUtil.registerUserChannel(userId, channel);
         sendMessage(channel, JsonResult.success("您已连接成功!", cmd));
         // 加入群聊
@@ -97,8 +102,20 @@ public class RegisterCmd extends AbstractChatCmd {
             log.info("用户{}已进入群聊,群房间名为{}", user.getUsername(), group.getGroupName());
         }
         log.info("用户{} 已登记到在线用户表,当前在线人数为:{}", user.getUsername(), SessionUtil.ONLINE_USER_MAP.size());
-        // TODO 查看有无好友申请消息
-        // TODO 查看有无离线单聊消息
+
+        //  查看有无好友申请消息
+        List<FriendApplication> friendApplications = friendApplicationService.listByReadAndUserId(false, userId);
+        if (friendApplications.size() > 0) {
+            sendMessage(channel, JsonResult.success(friendApplications, Cmd.ADD_FRIEND));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_FRIEND_APPLICATION_READ, friendApplications));
+        }
+        List<SingleChat> singleChats = singleChatService.listByReadAndToUserId(false, userId);
+        if (singleChats.size() > 0) {
+            singleChats.forEach(singleChat -> sendMessage(channel, JsonResult.success(singleChat, Cmd.SINGLE_CHAT)));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT_READ, singleChats));
+        }
+        user.setLoginState(UserConstant.LOGGED);
+        userService.updateRedisDataByUid(user);
     }
 
     /**

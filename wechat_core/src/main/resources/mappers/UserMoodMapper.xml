@@ -14,10 +14,28 @@
     <result column="create_times" jdbcType="BIGINT" property="createTimes" />
 <!--    <collection property=""-->
   </resultMap>
+  <resultMap id="UserMoodMap" type="com.xsdkj.wechat.vo.UserMoodVo">
+    <id column="id" property="id"/>
+    <result column="uid" property="uid"/>
+    <result column="content" property="content"/>
+    <result column="file" property="file"/>
+    <result column="file_type" property="fileType"/>
+    <result column="comment_count" property="commentCount"/>
+    <result column="create_times" property="createTimes"/>
+    <collection property="userThumbs" ofType="com.xsdkj.wechat.entity.chat.UserThumbs"  column="id" select="selectUserThumbsById"/>
+    <collection property="comments" ofType="com.xsdkj.wechat.entity.chat.UserComment"  column="id" select="selectUserCommentById" />
+  </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, `uid`, content, `file`, file_type, comment_count, create_times
   </sql>
+
+  <select id="selectUserThumbsById" resultType="com.xsdkj.wechat.entity.chat.UserThumbs">
+    select id,uid,nickname from user_thumbs where mood_id = #{id};
+  </select>
+  <select id="selectUserCommentById" resultType="com.xsdkj.wechat.entity.chat.UserComment">
+    select id,uid,nickname,content,create_times from user_comment where mood_id= #{id} order by create_times desc limit 3;
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 
@@ -25,21 +43,17 @@
     from user_mood
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="listUserMoodByUid" resultType="com.xsdkj.wechat.vo.UserMoodVo">
 
-
-
+  <select id="listUserMoodByUid" resultMap="UserMoodMap">
+    select
+    id,uid,content,file,comment_count,create_times
+    from user_mood where uid in (
+    <foreach collection="ids" separator="," index="id">
+      #{id}
+    </foreach>
+    );
   </select>
 
-
-<!--  <select id="selectAllMood" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    mood.content,mood.file,mood.comment_count,mood.create_times,thums.nickname,comment.nickname,comment.content,comment.create_times
-    from user_mood as mood join user_thumbs as thums join user_comment as comment
-    where mood.uid=thums.mood_id
-    and
-    mood.uid=comment.mood_id
-  </select>-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from user_mood
