@@ -48,6 +48,11 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
     private ChatUtil chatUtil;
 
     @Override
+    public Wallet getByUid(Integer uid) {
+        return walletMapper.getOneByUid(uid);
+    }
+
+    @Override
     public void priceOperation(UserPriceOperationDto param) {
         User user = userService.getUserById(param.getUid(), false);
         if (user == null) {

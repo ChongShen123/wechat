@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.bo;
 
 import com.xsdkj.wechat.entity.user.User;
+import com.xsdkj.wechat.entity.wallet.Wallet;
 import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import lombok.Data;
@@ -28,6 +29,10 @@ public class UserDetailsBo implements UserDetails, Serializable {
     }
 
     private User user;
+    /**
+     * 用户钱包
+     */
+    private Wallet wallet;
     /**
      * 用户的的菜单
      */

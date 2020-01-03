@@ -7,6 +7,7 @@ import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.netty.cmd.base.BaseHandler;
 import com.xsdkj.wechat.service.RabbitTemplateService;
+import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,8 @@ import javax.annotation.Resource;
 public class UserNotice extends BaseHandler {
     @Resource
     private RabbitTemplateService rabbitTemplateService;
+    @Resource
+    private UserService userService;
 
     @RabbitListener(queues = RabbitConstant.USER_NOTICE_QUEUE)
     public void userNoticeHandler(MsgBox box) {
@@ -48,6 +51,7 @@ public class UserNotice extends BaseHandler {
         if (userChannel != null) {
             sendMessage(userChannel, JsonResult.success(singleChat, Cmd.SINGLE_CHAT));
             singleChat.setRead(true);
+            userService.updateRedisDataByUid(toUserId);
         } else {
             singleChat.setRead(false);
         }

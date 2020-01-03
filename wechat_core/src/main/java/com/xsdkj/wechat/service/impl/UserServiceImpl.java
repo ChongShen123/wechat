@@ -19,11 +19,13 @@ import com.xsdkj.wechat.dto.UserUpdatePassword;
 import com.xsdkj.wechat.entity.platform.Platform;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.user.UserLoginLog;
+import com.xsdkj.wechat.entity.wallet.Wallet;
 import com.xsdkj.wechat.mapper.UserLoginLogMapper;
 import com.xsdkj.wechat.mapper.UserMapper;
 import com.xsdkj.wechat.service.BaseService;
 import com.xsdkj.wechat.service.PlatformService;
 import com.xsdkj.wechat.service.UserService;
+import com.xsdkj.wechat.service.UserWalletService;
 import com.xsdkj.wechat.service.ex.ServiceException;
 import com.xsdkj.wechat.util.*;
 import com.xsdkj.wechat.vo.GroupVo;
@@ -31,6 +33,7 @@ import com.xsdkj.wechat.vo.LoginVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.admin.LoginInfoVo;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,6 +67,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     private QrUtil qrUtil;
     @Resource
     private UserUtil userUtil;
+    @Resource
+    @Lazy
+    private UserWalletService userWalletService;
     @Resource
     private PlatformService platformService;
 
@@ -325,6 +331,10 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         currentUserDetailsBo.setGroupInfoBos(groupInfoBos);
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
+        Wallet wallet = userWalletService.getByUid(uid);
+        if (wallet != null) {
+            currentUserDetailsBo.setWallet(wallet);
+        }
         redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
         return currentUserDetailsBo;
     }

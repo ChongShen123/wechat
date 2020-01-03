@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.dto.UserPriceOperationDto;
+import com.xsdkj.wechat.entity.wallet.Wallet;
 
 /**
  * @author tiankong
@@ -13,4 +14,12 @@ public interface UserWalletService {
      * @param userPriceOperationDto 参数
      */
     void priceOperation(UserPriceOperationDto userPriceOperationDto);
+
+    /**
+     * 查询用户钱包
+     *
+     * @param uid 用户id
+     * @return Wallet
+     */
+    Wallet getByUid(Integer uid);
 }

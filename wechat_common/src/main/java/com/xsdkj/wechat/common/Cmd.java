@@ -134,4 +134,8 @@ public interface Cmd {
      * 查询用户详情
      */
     int USER_INFO = 4000;
+    /**
+     * 查看用户金额
+     */
+    int USER_PRICE = 4001;
 }
