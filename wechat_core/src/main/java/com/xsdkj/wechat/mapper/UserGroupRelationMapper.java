@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.chat.UserGroupRelation;
+import com.xsdkj.wechat.entity.user.UserGroupRelation;
 
 /**
  * @author tiankong

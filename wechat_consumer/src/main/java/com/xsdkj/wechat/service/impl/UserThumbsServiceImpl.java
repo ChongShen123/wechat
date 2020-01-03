@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.service.impl;
 
-import com.xsdkj.wechat.entity.chat.UserThumbs;
+import com.xsdkj.wechat.entity.mood.UserThumbs;
 import com.xsdkj.wechat.mapper.UserThumbsMapper;
 import com.xsdkj.wechat.service.UserThumbsService;
 import org.springframework.stereotype.Service;

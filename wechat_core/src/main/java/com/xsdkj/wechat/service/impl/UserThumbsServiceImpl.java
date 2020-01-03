@@ -2,8 +2,9 @@ package com.xsdkj.wechat.service.impl;
 
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.dto.UserThumbsDto;
-import com.xsdkj.wechat.entity.chat.UserThumbs;
+import com.xsdkj.wechat.entity.mood.UserThumbs;
 import com.xsdkj.wechat.service.RabbitTemplateService;
 import com.xsdkj.wechat.service.UserThumbsService;
 import com.xsdkj.wechat.util.UserUtil;
@@ -28,7 +29,7 @@ public class UserThumbsServiceImpl implements UserThumbsService {
     @Override
     public void save(UserThumbsDto userThumbsDto) {
         UserThumbs userThumbs=saveThums(userThumbsDto);
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));
     }
     private UserThumbs saveThums(UserThumbsDto userThumbsDto) {
         UserThumbs userThumbs=new UserThumbs();
@@ -45,7 +46,11 @@ public class UserThumbsServiceImpl implements UserThumbsService {
     public void delete(UserThumbs userThumbs) {
         if(userThumbs.getId()!=null){
             userThumbs.setUid(userUtil.currentUser().getUser().getId());
+<<<<<<< HEAD
             rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));
+=======
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userThumbs));
+>>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
         }
     }
 

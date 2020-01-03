@@ -14,6 +14,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class GroupChat extends ChatInfo implements Serializable {
+    private static final long serialVersionUID = -1560675766455409922L;
     private Integer toGroupId;
 
     @Override

@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.chat.UserGroup;
+import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;
 import com.xsdkj.wechat.vo.GroupVo;
@@ -64,5 +64,7 @@ public interface UserGroupMapper {
     void setGroupChat(@Param("groupId") Integer groupId, @Param("type") Integer type);
 
     void updateGroupInfo(@Param("groupId") Integer groupId, @Param("name") String name, @Param("icon") String icon, @Param("notice") String notice);
+
+    void updateAddFriend(@Param("groupId") Integer groupId, @Param("addFriend") Boolean addFriend);
 
 }

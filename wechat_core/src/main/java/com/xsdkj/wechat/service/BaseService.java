@@ -15,4 +15,7 @@ public abstract class BaseService {
     protected RedisUtil redisUtil;
     @Resource
     protected UserGroupService groupService;
+
+    @Resource
+    protected RabbitTemplateService rabbitTemplateService;
 }

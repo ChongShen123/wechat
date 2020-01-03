@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.RoleMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.Role">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.user.Role">
     <!--@mbg.generated-->
     <!--@Table role-->
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -28,7 +28,7 @@
     delete from role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Role" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.Role" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into role (`name`, description, `status`,
       sort, create_times, modified_times
@@ -37,7 +37,7 @@
       #{sort,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT}, #{modifiedTimes,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Role" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.Role" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -81,7 +81,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.Role">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.user.Role">
     <!--@mbg.generated-->
     update role
     <set>
@@ -106,7 +106,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.Role">
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.user.Role">
     <!--@mbg.generated-->
     update role
     set `name` = #{name,jdbcType=VARCHAR},

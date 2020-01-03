@@ -18,6 +18,14 @@ public interface RabbitConstant {
      */
     String FANOUT_SERVICE_NAME = "service-fanout";
     /**
+     * 通知服务交换器
+     */
+    String FANOUT_NOTICE_NAME = "notice-fanout";
+    /**
+     * 用户通知队列
+     */
+    String USER_NOTICE_QUEUE = "user_notice_queue";
+    /**
      * 直连模式
      */
     String DIRECT_PATTERN = "direct";
@@ -68,4 +76,9 @@ public interface RabbitConstant {
      * 更新单聊消息为已读
      */
     int BOX_TYPE_SINGLE_CHAT_READ = 20;
+
+    /**
+     * 用户注册
+     */
+    int BOX_TYPE_USER_REGISTER = 30;
 }

@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.dto;
 
 import lombok.Data;
+import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,8 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class UserRegisterDto {
+    @NotNull(message = "平台id不能为空")
+    private Integer platformId;
     @NotNull(message = "用户名不能为空")
     private String username;
     @NotNull(message = "密码不能为空")

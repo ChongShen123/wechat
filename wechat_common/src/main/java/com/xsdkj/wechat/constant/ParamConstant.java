@@ -83,4 +83,9 @@ public interface ParamConstant {
      * 群名称
      */
     String KEY_GROUP_NAME = "group_name";
+
+    /**
+     * 群是否可相互添加好友
+     */
+    String KEY_ADD_FRIEND = "add_friend";
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.PermissionMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.Permission">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.user.Permission">
     <!--@mbg.generated-->
     <!--@Table permission-->
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -35,7 +35,7 @@
     delete from permission
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Permission" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.Permission" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into permission (pid, `name`, `path`,
       component, title, icon,
@@ -48,7 +48,7 @@
       #{status,jdbcType=TINYINT}, #{sort,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.Permission" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.Permission" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -128,7 +128,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.Permission">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.user.Permission">
     <!--@mbg.generated-->
     update permission
     <set>
@@ -171,7 +171,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.Permission">
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.user.Permission">
     <!--@mbg.generated-->
     update permission
     set pid = #{pid,jdbcType=INTEGER},

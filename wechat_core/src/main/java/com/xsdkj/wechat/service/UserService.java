@@ -7,7 +7,7 @@ import com.xsdkj.wechat.dto.UserLoginDto;
 import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
 import com.xsdkj.wechat.dto.UserUpdatePassword;
-import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;
@@ -47,7 +47,14 @@ public interface UserService {
      * @param request 连接信息
      * @return 登录信息
      */
-    LoginVo register(UserRegisterDto param, HttpServletRequest request);
+//    LoginVo register(UserRegisterDto param, HttpServletRequest request);
+
+    /**
+     * 用户注册
+     * @param param 参数
+     * @param request 连接信息
+     */
+    void register(UserRegisterDto param, HttpServletRequest request);
 
     /**
      * 查询用户

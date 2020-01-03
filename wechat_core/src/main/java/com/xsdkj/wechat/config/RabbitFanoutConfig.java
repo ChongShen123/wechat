@@ -1,11 +1,13 @@
 package com.xsdkj.wechat.config;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.xsdkj.wechat.constant.RabbitConstant.FANOUT_CHAT_NAME;
-import static com.xsdkj.wechat.constant.RabbitConstant.FANOUT_SERVICE_NAME;
+import static com.xsdkj.wechat.constant.RabbitConstant.*;
 
 
 /**
@@ -34,6 +36,26 @@ public class RabbitFanoutConfig {
     @Bean
     FanoutExchange serviceFanoutExchange() {
         return new FanoutExchange(FANOUT_SERVICE_NAME, true, false);
+    }
+
+    /**
+     * 通知服务交换器
+     *
+     * @return FanoutExchange
+     */
+    @Bean
+    FanoutExchange noticeFanoutExchange() {
+        return new FanoutExchange(FANOUT_NOTICE_NAME, true, false);
+    }
+
+    @Bean
+    Queue userNoticeQueueMain() {
+        return new Queue(USER_NOTICE_QUEUE);
+    }
+
+    @Bean
+    Binding userNoticeBinding() {
+        return BindingBuilder.bind(userNoticeQueueMain()).to(noticeFanoutExchange());
     }
 
     /**

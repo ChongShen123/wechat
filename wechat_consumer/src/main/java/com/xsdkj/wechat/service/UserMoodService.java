@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.service;
 
-import com.xsdkj.wechat.entity.chat.UserMood;
+import com.xsdkj.wechat.entity.mood.UserMood;
 
 /**
  * @author Administrator

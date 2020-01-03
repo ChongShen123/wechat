@@ -2,8 +2,9 @@ package com.xsdkj.wechat.service.impl;
 
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.dto.UserCommentDto;
-import com.xsdkj.wechat.entity.chat.UserComment;
+import com.xsdkj.wechat.entity.mood.UserComment;
 import com.xsdkj.wechat.service.RabbitTemplateService;
 import com.xsdkj.wechat.service.UserCommentService;
 import com.xsdkj.wechat.util.UserUtil;
@@ -20,13 +21,15 @@ public class UserCommentServiceImpl implements UserCommentService {
     private UserUtil userUtil;
     @Resource
     private RabbitTemplateService rabbitTemplateService;
+
     @Override
     public void save(UserCommentDto userCommentDto) {
-        UserComment userComment=createUserComment(userCommentDto);
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT,userComment));
+        UserComment userComment = createUserComment(userCommentDto);
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT, userComment));
     }
+
     private UserComment createUserComment(UserCommentDto userCommentDto) {
-        UserComment userComment=new UserComment();
+        UserComment userComment = new UserComment();
         userComment.setUid(userUtil.currentUser().getUser().getId());
         userComment.setNickname(userCommentDto.getNickname());
         userComment.setContent(userCommentDto.getContent());
@@ -34,11 +37,19 @@ public class UserCommentServiceImpl implements UserCommentService {
         userComment.setMoodId(userCommentDto.getMoodId());
         return userComment;
     }
+
     @Override
     public void delete(UserComment userComment) {
+<<<<<<< HEAD
     if(userComment.getId()!=null){
         userComment.setUid(userUtil.currentUser().getUser().getId());
         rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT,userComment));
     }
+=======
+        if (userComment.getId() != null) {
+            userComment.setUid(userUtil.currentUser().getUser().getId());
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userComment));
+        }
+>>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
     }
 }

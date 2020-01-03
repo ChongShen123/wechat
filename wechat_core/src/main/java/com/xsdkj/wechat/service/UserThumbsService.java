@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.dto.UserThumbsDto;
-import com.xsdkj.wechat.entity.chat.UserThumbs;
+import com.xsdkj.wechat.entity.mood.UserThumbs;
 
 /**
  * @author

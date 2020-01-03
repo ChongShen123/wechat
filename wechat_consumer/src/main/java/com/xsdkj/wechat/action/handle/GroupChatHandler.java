@@ -21,13 +21,9 @@ import javax.annotation.Resource;
 @SaveAnno(type = RabbitConstant.BOX_TYPE_GROUP_CHAT)
 public class GroupChatHandler implements MsgHandler {
     @Resource
-    private MongoTemplate mongoTemplate;
     private GroupChatService groupChatService;
-
-
     @Override
     public void execute(RabbitMessageBoxBo box) {
-
         groupChatService.save((GroupChat) box.getData());
     }
 }

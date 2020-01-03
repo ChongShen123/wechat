@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.service.impl;
 
-import com.xsdkj.wechat.entity.chat.UserMood;
+import com.xsdkj.wechat.entity.mood.UserMood;
 import com.xsdkj.wechat.mapper.UserMoodMapper;
 import com.xsdkj.wechat.service.UserMoodService;
 import org.springframework.stereotype.Service;

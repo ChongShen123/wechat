@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.UserMapper">
-    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.User">
+    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.user.User">
         <!--@mbg.generated-->
         <!--@Table user-->
         <id column="id" jdbcType="INTEGER" property="id"/>
@@ -45,9 +45,13 @@
         delete from user
         where id = #{id,jdbcType=INTEGER}
     </delete>
+<<<<<<< HEAD
 
 
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.User"
+=======
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.User"
+>>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into user (platform_id, uno, username,
@@ -65,7 +69,7 @@
         #{lastLoginTimes,jdbcType=BIGINT}, #{lastLoginIp,jdbcType=VARCHAR}, #{loginState,jdbcType=BOOLEAN}
         )
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.User"
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.User"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into user
@@ -188,7 +192,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.User">
+    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.user.User">
         <!--@mbg.generated-->
         update user
         <set>
@@ -252,7 +256,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.User">
+    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.user.User">
         <!--@mbg.generated-->
         update user
         set platform_id = #{platformId,jdbcType=INTEGER},

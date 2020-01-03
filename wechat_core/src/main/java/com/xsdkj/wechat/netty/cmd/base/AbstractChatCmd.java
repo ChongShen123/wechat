@@ -15,7 +15,7 @@ import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.entity.chat.SingleChat;
-import com.xsdkj.wechat.entity.chat.UserGroup;
+import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.service.*;
 import com.xsdkj.wechat.service.ex.*;
 import com.xsdkj.wechat.util.SessionUtil;

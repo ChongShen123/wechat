@@ -5,29 +5,30 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.PermissionBo;
+import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.constant.RedisConstant;
+import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.dto.UserLoginDto;
 import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
 import com.xsdkj.wechat.dto.UserUpdatePassword;
-import com.xsdkj.wechat.entity.chat.User;
-import com.xsdkj.wechat.entity.chat.UserLoginLog;
+import com.xsdkj.wechat.entity.platform.Platform;
+import com.xsdkj.wechat.entity.user.User;
+import com.xsdkj.wechat.entity.user.UserLoginLog;
 import com.xsdkj.wechat.mapper.UserLoginLogMapper;
 import com.xsdkj.wechat.mapper.UserMapper;
 import com.xsdkj.wechat.service.BaseService;
+import com.xsdkj.wechat.service.PlatformService;
 import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.service.ex.ServiceException;
-import com.xsdkj.wechat.util.IpUtil;
-import com.xsdkj.wechat.util.JwtTokenUtil;
-import com.xsdkj.wechat.util.QrUtil;
-import com.xsdkj.wechat.util.UserUtil;
+import com.xsdkj.wechat.util.*;
 import com.xsdkj.wechat.vo.GroupVo;
-import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;
+import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.admin.LoginInfoVo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,6 +64,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     private QrUtil qrUtil;
     @Resource
     private UserUtil userUtil;
+    @Resource
+    private PlatformService platformService;
 
     @Override
     public void updatePassword(UserUpdatePassword password) {
@@ -88,6 +91,50 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public void updateLoginState(Integer uid, Boolean type) {
         userMapper.updateLoginState(uid, type);
+    }
+
+//    @Override
+//    public LoginVo register(UserRegisterDto param, HttpServletRequest request) {
+//        String passwordRegex = SystemConstant.PASSWORD_REGEX;
+//        User data = getByUsername(param.getUsername());
+//        if (data != null) {
+//            throw new ServiceException(ResultCodeEnum.USER_ALREADY_EXISTS);
+//        }
+//        Platform platform = platformService.getById(param.getPlatformId());
+//        if (platform == null) {
+//            throw new ServiceException(ResultCodeEnum.PLATFORM_NOT_FOUND);
+//        }
+//        if (!param.getPassword().matches(passwordRegex)) {
+//            throw new ServiceException(ResultCodeEnum.PASSWORD_FORMAT);
+//        }
+//        if (userMapper.countByEmail(param.getEmail()) > 0) {
+//            throw new ServiceException(ResultCodeEnum.EMAIL_ALREADY_EXISTS);
+//        }
+//        User user = getNewUser(param, request);
+//        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_USER_REGISTER, user));
+//        UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
+//        return login(userLoginParam, request, false);
+//    }
+
+    @Override
+    public void register(UserRegisterDto param, HttpServletRequest request) {
+        String passwordRegex = SystemConstant.PASSWORD_REGEX;
+        User data = getByUsername(param.getUsername());
+        if (data != null) {
+            throw new ServiceException(ResultCodeEnum.USER_ALREADY_EXISTS);
+        }
+        Platform platform = platformService.getById(param.getPlatformId());
+        if (platform == null) {
+            throw new ServiceException(ResultCodeEnum.PLATFORM_NOT_FOUND);
+        }
+        if (!param.getPassword().matches(passwordRegex)) {
+            throw new ServiceException(ResultCodeEnum.PASSWORD_FORMAT);
+        }
+        if (userMapper.countByEmail(param.getEmail()) > 0) {
+            throw new ServiceException(ResultCodeEnum.EMAIL_ALREADY_EXISTS);
+        }
+        User user = getNewUser(param, request);
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_USER_REGISTER, user));
     }
 
     @Override
@@ -162,11 +209,13 @@ public class UserServiceImpl extends BaseService implements UserService {
     private void insertLoginLog(User user, HttpServletRequest request) {
         String ipAddress = IpUtil.getIpAddress(request);
         UserLoginLog loginLog = new UserLoginLog(user, ipAddress);
+        // TODO 登录日志放入队列
         userLoginLogMapper.insert(loginLog);
         User update = new User();
         update.setId(user.getId());
         update.setLastLoginTimes(System.currentTimeMillis());
         update.setLastLoginIp(ipAddress);
+        // TODO 放入队列
         userMapper.updateByPrimaryKeySelective(update);
     }
 
@@ -175,24 +224,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         return userMapper.listUserByIds(ids);
     }
 
-    @Override
-    public LoginVo register(UserRegisterDto param, HttpServletRequest request) {
-        String passwordRegex = SystemConstant.PASSWORD_REGEX;
-        User data = getByUsername(param.getUsername());
-        if (data != null) {
-            throw new ServiceException(ResultCodeEnum.USER_ALREADY_EXISTS);
-        }
-        if (!param.getPassword().matches(passwordRegex)) {
-            throw new ServiceException(ResultCodeEnum.PASSWORD_FORMAT);
-        }
-        if (userMapper.countByEmail(param.getEmail()) > 0) {
-            throw new ServiceException(ResultCodeEnum.EMAIL_ALREADY_EXISTS);
-        }
-        User user = getNewUser(param, request);
-        userMapper.insert(user);
-        UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
-        return login(userLoginParam, request, false);
-    }
 
     @Override
     public User getRedisUserByUserId(Integer id) {
@@ -228,6 +259,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     private User getNewUser(UserRegisterDto param, HttpServletRequest request) {
         User user = new User();
         user.setUsername(param.getUsername());
+        user.setPlatformId(param.getPlatformId());
+        user.setNickname(param.getUsername());
         user.setPassword(encoder.encode(param.getPassword()));
         user.setIcon(imgPath + "default" + new Random().nextInt(8) + ".png");
         user.setGender((byte) 0);
@@ -334,5 +367,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         User user = userMapper.selectByPrimaryKey(userId);
         updateRedisDataByUid(user);
         return user;
+    }
+
+
+    public static void main(String[] args) {
     }
 }

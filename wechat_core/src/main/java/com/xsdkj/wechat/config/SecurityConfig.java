@@ -5,7 +5,7 @@ import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.component.JwtAuthenticationTokenFilter;
 import com.xsdkj.wechat.component.RestAuthenticationEntryPoint;
 import com.xsdkj.wechat.component.RestfulAccessDeniedHandler;
-import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

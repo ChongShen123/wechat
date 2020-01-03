@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xsdkj.wechat.mapper.UserMoodMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.chat.UserMood">
+  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.mood.UserMood">
     <!--@mbg.generated-->
     <!--@Table user_mood-->
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -38,7 +38,7 @@
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
+    select
     <include refid="Base_Column_List" />
     from user_mood
     where id = #{id,jdbcType=INTEGER}
@@ -59,16 +59,16 @@
     delete from user_mood
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserMood" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into user_mood (`uid`, content, `file`, 
+    insert into user_mood (`uid`, content, `file`,
       file_type, comment_count, create_times
       )
-    values (#{uid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{file,jdbcType=VARCHAR}, 
+    values (#{uid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{file,jdbcType=VARCHAR},
       #{fileType,jdbcType=TINYINT}, #{commentCount,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.UserMood" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into user_mood
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -112,7 +112,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.chat.UserMood">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
     <!--@mbg.generated-->
     update user_mood
     <set>
@@ -137,7 +137,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.chat.UserMood">
+  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
     <!--@mbg.generated-->
     update user_mood
     set `uid` = #{uid,jdbcType=INTEGER},

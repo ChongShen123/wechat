@@ -1,9 +1,10 @@
 package com.xsdkj.wechat.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.constant.RedisConstant;
 import com.xsdkj.wechat.entity.chat.GroupNoSay;
-import com.xsdkj.wechat.entity.chat.UserGroup;
+import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.mapper.UserGroupMapper;
 import com.xsdkj.wechat.mapper.GroupNoSayMapper;
 import com.xsdkj.wechat.service.UserGroupService;
@@ -17,10 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author tiankong
@@ -40,7 +38,11 @@ public class GroupServiceImpl implements UserGroupService {
         Object redisData = redisUtil.get(RedisConstant.REDIS_GROUP_NO_SAY);
         Long times;
         if (redisData == null) {
-            times = groupNoSayMapper.findOneByUidAndGroupId(uid, groupId).getTimes();
+            GroupNoSay oneByUidAndGroupId = groupNoSayMapper.findOneByUidAndGroupId(uid, groupId);
+            if (oneByUidAndGroupId == null) {
+                return null;
+            }
+            times = oneByUidAndGroupId.getTimes();
             if (times == null) {
                 return null;
             }
@@ -183,17 +185,16 @@ public class GroupServiceImpl implements UserGroupService {
     @Override
     public UserGroup getGroupById(Integer groupId) {
         Object redisData = redisUtil.get(RedisConstant.REDIS_GROUP_KEY + groupId);
+        UserGroup group;
         if (redisData == null) {
-            return null;
-        }
-        UserGroup group = JSONObject.toJavaObject(JSONObject.parseObject(redisData.toString()), UserGroup.class);
-        if (group == null) {
             group = groupMapper.selectByPrimaryKey(groupId);
             if (group == null) {
                 return null;
             }
-            redisUtil.set(RedisConstant.REDIS_GROUP_KEY + group.getId(), group);
+            redisUtil.set(RedisConstant.REDIS_GROUP_KEY + group.getId(), JSONObject.toJSONString(group));
+            return group;
         }
+        group = JSONObject.toJavaObject(JSONObject.parseObject(redisData.toString()), UserGroup.class);
         return group;
     }
 
@@ -204,8 +205,17 @@ public class GroupServiceImpl implements UserGroupService {
 
     @Override
     public List<ListMembersVo> listGroupMembersByGroupId(Integer groupId) {
-        String redisData = redisUtil.get(RedisConstant.REDIS_GROUP_MEMBERS + groupId).toString();
-        return JSONObject.parseArray(redisData, ListMembersVo.class);
+        Object redisData = redisUtil.get(RedisConstant.REDIS_GROUP_MEMBERS + groupId);
+        if (ObjectUtil.isEmpty(redisData)) {
+            List<ListMembersVo> listMembersVos = groupMapper.listGroupMembersByGroupId(groupId);
+            if (listMembersVos.size() == 0) {
+                throw new DataEmptyException();
+            }
+            redisUtil.set(RedisConstant.REDIS_GROUP_MEMBERS + groupId, JSONObject.toJSONString(listMembersVos));
+            return listMembersVos;
+        }
+        String strData = redisData.toString();
+        return JSONObject.parseArray(strData, ListMembersVo.class);
     }
 
     @Override
@@ -268,5 +278,10 @@ public class GroupServiceImpl implements UserGroupService {
     @Override
     public void updateGroupInfo(Integer groupId, String name, String icon, String notice) {
         groupMapper.updateGroupInfo(groupId, name, icon, notice);
+    }
+
+    @Override
+    public void updateAddFriend(Integer groupId, Boolean addFriend) {
+        groupMapper.updateAddFriend(groupId, addFriend);
     }
 }

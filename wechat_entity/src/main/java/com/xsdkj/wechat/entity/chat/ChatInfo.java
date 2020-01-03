@@ -11,6 +11,7 @@ import java.io.Serializable;
  */
 @Data
 public class ChatInfo implements Serializable {
+    private static final long serialVersionUID = 20376938522084436L;
     @Id
     protected String id;
     protected Integer fromUserId;

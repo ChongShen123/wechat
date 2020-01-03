@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.vo;
 
-import com.xsdkj.wechat.entity.chat.UserGroup;
+import com.xsdkj.wechat.entity.user.UserGroup;
 import lombok.Data;
 
 /**

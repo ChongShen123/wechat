@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.bo;
 
-import com.xsdkj.wechat.entity.chat.Permission;
+import com.xsdkj.wechat.entity.user.Permission;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

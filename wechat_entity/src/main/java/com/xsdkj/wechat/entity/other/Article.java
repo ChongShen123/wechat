@@ -1,4 +1,4 @@
-package com.xsdkj.wechat.entity.chat;
+package com.xsdkj.wechat.entity.other;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

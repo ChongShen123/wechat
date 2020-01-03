@@ -2,7 +2,7 @@ package com.xsdkj.wechat.netty;
 
 
 import com.xsdkj.wechat.bo.GroupInfoBo;
-import com.xsdkj.wechat.entity.chat.UserGroup;
+import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.netty.notice.SystemNotice;
 import com.xsdkj.wechat.service.UserGroupService;
 import com.xsdkj.wechat.util.SessionUtil;
