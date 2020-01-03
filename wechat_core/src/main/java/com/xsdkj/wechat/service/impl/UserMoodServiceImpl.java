@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.common.SystemConstant;
+import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.dto.MoodParamDto;
 import com.xsdkj.wechat.entity.mood.UserMood;
 import com.xsdkj.wechat.service.RabbitTemplateService;
@@ -42,14 +43,14 @@ public class UserMoodServiceImpl implements UserMoodService {
             }
         }
         UserMood userMood = createNewUserMood(moodDto);
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userMood));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userMood));
     }
 
     @Override
     public void delete(UserMood userMood) {
         if (userMood.getId() != null) {
             userMood.setUid(userUtil.currentUser().getUser().getId());
-            rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userMood));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userMood));
         }
     }
 
