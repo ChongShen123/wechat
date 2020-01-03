@@ -28,7 +28,8 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     public JsonResult register(@Validated @RequestBody UserRegisterDto param, HttpServletRequest request) {
-        return JsonResult.success(userService.register(param, request));
+        userService.register(param, request);
+        return JsonResult.success();
     }
 
     @PostMapping("/login")

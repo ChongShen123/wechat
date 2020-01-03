@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
+ * 好友申请类型
+ *
  * @author tiankong
  * @date 2019/12/27 19:31
  */
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 public class FriendApplicationHandler implements MsgHandler {
     @Resource
     private MongoTemplate mongoTemplate;
+
     @Override
     public void execute(RabbitMessageBoxBo box) {
         FriendApplication application = (FriendApplication) box.getData();

@@ -47,7 +47,14 @@ public interface UserService {
      * @param request 连接信息
      * @return 登录信息
      */
-    LoginVo register(UserRegisterDto param, HttpServletRequest request);
+//    LoginVo register(UserRegisterDto param, HttpServletRequest request);
+
+    /**
+     * 用户注册
+     * @param param 参数
+     * @param request 连接信息
+     */
+    void register(UserRegisterDto param, HttpServletRequest request);
 
     /**
      * 查询用户

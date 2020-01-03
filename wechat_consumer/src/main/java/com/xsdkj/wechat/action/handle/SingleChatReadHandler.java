@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+ * 更新单聊消息为已读
  * @author tiankong
  * @date 2019/12/31 11:28
  */

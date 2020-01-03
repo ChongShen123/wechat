@@ -236,10 +236,19 @@ public interface UserGroupService {
 
     /**
      * 修改群信息
-     *  @param groupId 群id
+     *
+     * @param groupId 群id
      * @param name
      * @param icon    头像
      * @param notice  公告
      */
     void updateGroupInfo(Integer groupId, String name, String icon, String notice);
+
+    /**
+     * 修改群是否可以相互添加好友
+     *
+     * @param groupId   群id
+     * @param addFriend 是否开启
+     */
+    void updateAddFriend(Integer groupId, Boolean addFriend);
 }

@@ -48,6 +48,6 @@ public class SingleChatCmd extends AbstractChatCmd {
             chat.setRead(false);
         }
         rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT, chat));
-        sendMessage(channel, JsonResult.success(cmd));
+        sendMessage(channel, JsonResult.success(chat,cmd));
     }
 }

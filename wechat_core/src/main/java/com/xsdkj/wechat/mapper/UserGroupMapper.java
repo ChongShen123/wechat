@@ -65,4 +65,6 @@ public interface UserGroupMapper {
 
     void updateGroupInfo(@Param("groupId") Integer groupId, @Param("name") String name, @Param("icon") String icon, @Param("notice") String notice);
 
+    void updateAddFriend(@Param("groupId") Integer groupId, @Param("addFriend") Boolean addFriend);
+
 }

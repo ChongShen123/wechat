@@ -352,4 +352,8 @@
         </set>
         where id = #{groupId}
     </update>
+    <update id="updateAddFriend">
+        update user_group set add_friend_type = #{addFriend,jdbcType=BOOLEAN},modified_times =
+        REPLACE(unix_timestamp(current_timestamp(3)),'.','') where id = #{groupId,jdbcType=INTEGER}
+    </update>
 </mapper>

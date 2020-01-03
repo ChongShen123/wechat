@@ -1,5 +1,6 @@
 package com.xsdkj.wechat.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2019/12/24 13:52
  */
 @Component
+@Slf4j
 public class RedisUtil {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
@@ -95,7 +97,7 @@ public class RedisUtil {
             redisTemplate.opsForValue().set(key, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("{}", e.getMessage());
             return false;
         }
     }

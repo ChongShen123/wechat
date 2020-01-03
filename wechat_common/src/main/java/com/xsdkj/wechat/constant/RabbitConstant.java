@@ -68,4 +68,9 @@ public interface RabbitConstant {
      * 更新单聊消息为已读
      */
     int BOX_TYPE_SINGLE_CHAT_READ = 20;
+
+    /**
+     * 用户注册
+     */
+    int BOX_TYPE_USER_REGISTER = 30;
 }

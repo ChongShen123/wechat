@@ -29,5 +29,6 @@ public class RequestParamBo {
     private String notice;
     private Byte byteType;
     private Byte state;
+    private Boolean addFriend;
     private Set<Integer> ids;
 }

@@ -16,7 +16,7 @@ spring:
   redis:
     host: 103.48.170.167
     port: 6379
-    timeout: 5000s
+    timeout: 20000s
     password: 123@456
 logging:
   config: classpath:log4j.xml

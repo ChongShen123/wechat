@@ -12,6 +12,7 @@ import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.chat.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
+import com.xsdkj.wechat.service.ex.PermissionDeniedException;
 import com.xsdkj.wechat.service.ex.ValidateException;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.RemoveChatVo;
@@ -44,6 +45,9 @@ public class RemoveChatGroupCmd extends AbstractChatCmd {
             throw new ValidateException();
         }
         UserGroup group = groupService.getGroupById(groupId);
+        if (!checkAdmin(groupId, session.getUid())) {
+            throw new PermissionDeniedException();
+        }
         // 通知该群所有在线用户
         RemoveChatVo removeChatVo = createNewRemoveChatVo(ids, groupId, SessionUtil.getSession(channel));
         sendGroupMessage(groupId, JsonResult.success(removeChatVo, cmd));

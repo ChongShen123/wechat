@@ -2,23 +2,60 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e22c9ae-2c56-4692-b2a3-1c5e0dad2ed6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/FriendApplicationReadHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/SingleChatReadHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/FriendApplicationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/FriendApplicationServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/UserRegisterHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/SetAddFriendCmd.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/PlatformService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/PlatformServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wechat_core/src/test/java/TestCase2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__jakarta_annotation_jakarta_annotation_api_1_3_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jakarta_annotation_jakarta_annotation_api_1_3_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_12_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_12_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_29.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_29.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_29.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_29.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_2_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_2_2_2_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_2_2_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_2_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_2_2_2_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_2_2_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_2_2_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_2_2_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_2_2_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_2_2_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_2_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_2_2_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_25.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_25.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/ResultCodeEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/ResultCodeEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/ParamConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/ParamConstant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/RabbitConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/RabbitConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/UserConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/UserConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/SingleChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/SingleChatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/SingleChatServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/SingleChatServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/FriendApplicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/FriendApplicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/RabbitTemplateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/RabbitTemplateService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/SingleChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/SingleChatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/FriendApplicationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/FriendApplicationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/SingleChatServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/SingleChatServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_entity/src/main/java/com/xsdkj/wechat/entity/chat/SingleChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_entity/src/main/java/com/xsdkj/wechat/entity/chat/SingleChat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/FriendApplicationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/FriendApplicationHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/GroupChatHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/GroupChatHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/SingleChatReadHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/SingleChatReadHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/bo/RequestParamBo.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/bo/RequestParamBo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/admin/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/admin/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/dto/UserRegisterDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/dto/UserRegisterDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/UserGroupMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/UserGroupMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/single/SingleChatCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/single/SingleChatCmd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/BaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/BaseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserGroupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserGroupService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/GroupServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/GroupServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/util/RedisUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/util/RedisUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/resources/mappers/UserGroupMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/resources/mappers/UserGroupMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/test/java/TestCase1.java" beforeDir="false" />
     </list>
+    <ignored path="$PROJECT_DIR$/wechat_entity/target/" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <ignored path="$PROJECT_DIR$/wechat_consumer/target/" />
+    <ignored path="$PROJECT_DIR$/wechat_common/target/" />
+    <ignored path="$PROJECT_DIR$/wechat_core/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,13 +91,6 @@
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="wechat-dev: schema" type="c314c289:MysqlImplModel$Schema" />
       </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="wechat-dev@103.48.170.167" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="wechat-dev: schema" type="c314c289:MysqlImplModel$Schema" />
-        <item name="user: table" type="98d5ac3d:MysqlImplModel$Table" />
-      </path>
     </expand>
     <select />
   </component>
@@ -68,37 +98,57 @@
     <session id="-319752265">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="99" />
+          <entry key="java" value="234" />
+          <entry key="md" value="1" />
           <entry key="url" value="1" />
-          <entry key="xml" value="3" />
+          <entry key="xml" value="13" />
+          <entry key="yml" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="99" />
+          <entry key="JAVA" value="234" />
+          <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="XML" value="3" />
+          <entry key="XML" value="13" />
+          <entry key="YAML" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="6293" />
+          <entry key="java" value="12851" />
+          <entry key="md" value="14" />
+          <entry key="txt" value="5" />
+          <entry key="xml" value="189" />
+          <entry key="yml" value="61" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="6293" />
+          <entry key="JAVA" value="12847" />
+          <entry key="Markdown" value="14" />
+          <entry key="PLAIN_TEXT" value="5" />
+          <entry key="RegExp" value="3" />
+          <entry key="SQL" value="1" />
+          <entry key="XML" value="189" />
+          <entry key="YAML" value="61" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.opened" value="1" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java">
+        <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/WechatApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="107" column="43" selection-start-line="107" selection-start-column="43" selection-end-line="107" selection-end-column="43" />
+            <state relative-caret-position="351">
+              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
         </entry>
@@ -124,19 +174,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserMoodServiceImpl.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/ex/FileNotFoundException.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/MyExceptionHandler.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/dto/MoodParamDto.java" />
-        <option value="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/friend/GetFriendInfoCmd.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/vo/GetFriendInfoVo.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/base/ChannelManager.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/base/WebSocketHandler.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/test/java/TestCase2.java" />
-        <option value="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/UserConstant.java" />
         <option value="$PROJECT_DIR$/wechat_entity/src/main/java/com/xsdkj/wechat/entity/chat/SingleChat.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/SingleChatServiceImpl.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/SingleChatService.java" />
@@ -146,13 +183,48 @@
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/FriendApplicationService.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/FriendApplicationServiceImpl.java" />
         <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/MsgManager.java" />
-        <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/SingleChatReadHandler.java" />
         <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/SingleChatServiceImpl.java" />
-        <option value="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/RabbitConstant.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java" />
         <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/FriendApplicationReadHandler.java" />
         <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/FriendApplicationService.java" />
         <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/FriendApplicationServiceImpl.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/dto/UserRegisterDto.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/PlatformService.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/PlatformServiceImpl.java" />
+        <option value="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/ResultCodeEnum.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/te.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/resources/mappers/NicknameNameMapper.xml" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/NicknameNameMapper.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/resources/mappers/NicknameSurnameMapper.xml" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/NicknameSurnameMapper.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/test/java/TestCase2.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/admin/AdminController.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/BaseService.java" />
+        <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/UserService.java" />
+        <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserController.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/single/SingleChatCmd.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java" />
+        <option value="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/bo/RequestParamBo.java" />
+        <option value="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/ParamConstant.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserGroupService.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/GroupServiceImpl.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/UserGroupMapper.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/resources/mappers/UserGroupMapper.xml" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/SetAddFriendCmd.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/resources/application-dev.yml" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/util/RedisUtil.java" />
+        <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/GroupChatHandler.java" />
+        <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/UserRegisterHandler.java" />
+        <option value="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/RabbitConstant.java" />
+        <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/SingleChatReadHandler.java" />
+        <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/FriendApplicationHandler.java" />
       </list>
     </option>
   </component>
@@ -164,6 +236,13 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
   </component>
   <component name="MavenProjectNavigator">
     <treeState>
@@ -186,7 +265,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -197,84 +275,68 @@
             <path>
               <item name="wechat" type="b2602c69:ProjectViewProjectNode" />
               <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat_core" type="462c0819:PsiDirectoryNode" />
+              <item name="wechat_consumer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="wechat" type="b2602c69:ProjectViewProjectNode" />
               <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat_core" type="462c0819:PsiDirectoryNode" />
+              <item name="wechat_consumer" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="wechat" type="b2602c69:ProjectViewProjectNode" />
               <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat_core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="wechat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat_core" type="462c0819:PsiDirectoryNode" />
+              <item name="wechat_consumer" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="wechat" type="b2602c69:ProjectViewProjectNode" />
               <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat_core" type="462c0819:PsiDirectoryNode" />
+              <item name="wechat_consumer" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="wechat" type="b2602c69:ProjectViewProjectNode" />
               <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat_core" type="462c0819:PsiDirectoryNode" />
+              <item name="wechat_consumer" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="netty" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="wechat" type="b2602c69:ProjectViewProjectNode" />
               <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat_core" type="462c0819:PsiDirectoryNode" />
+              <item name="wechat_consumer" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="netty" type="462c0819:PsiDirectoryNode" />
-              <item name="cmd" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="wechat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat_core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="netty" type="462c0819:PsiDirectoryNode" />
-              <item name="cmd" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="action" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="db2" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
-    <property name="SearchEverywhereHistoryKey" value="User&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_entity/src/main/java/com/xsdkj/wechat/entity/chat/User.java" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577767577059" />
+    <property name="SearchEverywhereHistoryKey" value="FriendApplication&#9;PSI&#9;JAVA://com.xsdkj.wechat.entity.chat.FriendApplication&#10;User&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_entity/src/main/java/com/xsdkj/wechat/entity/chat/User.java" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578014780342" />
+    <property name="extract.method.default.visibility" value="private" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/wechat_entity/src/main" />
+    <property name="settings.editor.selected.configurable" value="com.zeroturnaround.javarebel.idea.plugin.settings.JRebelSettingsComponent" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -293,7 +355,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.WechatApplication">
     <configuration name="TestCase2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TestCase2" />
       <module name="wechat_core" />
@@ -301,9 +363,62 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserServiceImpl" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.xsdkj.wechat.service.impl.UserServiceImpl" />
+      <module name="wechat_core" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.xsdkj.wechat.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestCase2.test1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="wechat_core" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestCase2" />
+      <option name="METHOD_NAME" value="test1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConsumerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="wechat_consumer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.xsdkj.wechat.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.xsdkj.wechat.ConsumerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WechatApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="wechat_core" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.xsdkj.wechat.WechatApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Spring Boot.WechatApplication" />
+      <item itemvalue="Application.TestCase2" />
+      <item itemvalue="Application.UserServiceImpl" />
+      <item itemvalue="JUnit.TestCase2.test1" />
+      <item itemvalue="Spring Boot.ConsumerApplication" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.ConsumerApplication" />
+        <item itemvalue="JUnit.TestCase2.test1" />
         <item itemvalue="Application.TestCase2" />
+        <item itemvalue="Application.UserServiceImpl" />
       </list>
     </recent_temporary>
   </component>
@@ -312,7 +427,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="509526e8-e71c-4cc0-9495-0d4f07e94d21" name="Default Changelist" comment="" />
+      <changelist id="2e22c9ae-2c56-4692-b2a3-1c5e0dad2ed6" name="Default Changelist" comment="" />
       <created>1577183268873</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -321,7 +436,8 @@
       <workItem from="1577192914798" duration="57043000" />
       <workItem from="1577412582355" duration="14944000" />
       <workItem from="1577434373632" duration="43709000" />
-      <workItem from="1577667225657" duration="39792000" />
+      <workItem from="1577667225657" duration="51483000" />
+      <workItem from="1577930973342" duration="13886000" />
     </task>
     <task id="LOCAL-00001" summary="系统常量细分">
       <created>1577679886979</created>
@@ -332,13 +448,46 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 24m 56s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 25m 14s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 25m 45s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 26m 24s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 27m 24s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 28m 12s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 28m 53s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 29m 20s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 34m 37s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestCase2_test1 - 2019.12.31 at 18h 36m 21s.xml">
+      <configuration name="TestCase2.test1" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14115000" />
+    <option name="totallyTimeSpent" value="39692000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49657536" visible="true" weight="0.22814499" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49657536" visible="true" weight="0.24200426" />
       <window_info id="Structure" order="1" sideWeight="0.50342464" side_tool="true" weight="0.13006397" />
       <window_info id="Designer" order="2" />
       <window_info id="JRebel" order="3" side_tool="true" />
@@ -350,7 +499,7 @@
       <window_info anchor="bottom" id="Database Console" order="0" weight="0.4082519" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32899022" />
-      <window_info anchor="bottom" id="Run" order="3" weight="0.19662364" />
+      <window_info anchor="bottom" id="Run" order="3" weight="0.24538545" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.29967427" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -362,8 +511,8 @@
       <window_info anchor="bottom" id="Database Changes" order="12" weight="0.32899022" />
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32899022" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.32899022" />
-      <window_info active="true" anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.4978678" visible="true" weight="0.39522257" />
-      <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.5021322" side_tool="true" weight="0.49294245" />
+      <window_info anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.2942454" />
+      <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.5026652" side_tool="true" weight="0.422367" />
       <window_info anchor="bottom" id="Messages" order="17" sideWeight="0.49946696" weight="0.16938111" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -371,7 +520,7 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Mongo Explorer" order="5" />
-      <window_info anchor="right" id="Database" order="6" weight="0.1977612" />
+      <window_info anchor="right" id="Database" order="6" weight="0.586887" />
       <window_info anchor="right" id="Mybatis datasource" order="7" show_stripe_button="false" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="8" weight="0.20948827" />
       <window_info anchor="right" id="Palette&#9;" order="9" />
@@ -420,369 +569,412 @@
       <window_info anchor="right" id="Bean Validation" order="11" />
     </layout-to-restore>
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="系统常量细分" />
     <option name="LAST_COMMIT_MESSAGE" value="系统常量细分" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserMoodController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserCommentController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="22" column="25" lean-forward="true" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/ex/FileNotFoundException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
-          <folding>
-            <element signature="e#448#449#0" expanded="true" />
-            <element signature="e#480#481#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/MyExceptionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserMoodServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserMoodService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/resources/mappers/UserMapper.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="337" column="12" selection-start-line="337" selection-start-column="12" selection-end-line="337" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/dto/MoodParamDto.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="56" column="31" lean-forward="true" selection-start-line="56" selection-start-column="31" selection-end-line="56" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_entity/src/main/java/com/xsdkj/wechat/entity/chat/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="87" column="6" selection-start-line="87" selection-start-column="6" selection-end-line="87" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/vo/GetFriendInfoVo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/friend/GetFriendInfoCmd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/netty/netty-all/4.1.42.Final/netty-all-4.1.42.Final-sources.jar!/io/netty/channel/ChannelHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="185" column="69" selection-start-line="185" selection-start-column="69" selection-end-line="185" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/netty/netty-all/4.1.42.Final/netty-all-4.1.42.Final-sources.jar!/io/netty/channel/ChannelHandlerAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="76" column="14" selection-start-line="76" selection-start-column="14" selection-end-line="76" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/netty/netty-all/4.1.42.Final/netty-all-4.1.42.Final-sources.jar!/io/netty/channel/ChannelInboundHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="30" column="6" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/netty/netty-all/4.1.42.Final/netty-all-4.1.42.Final-sources.jar!/io/netty/channel/ChannelInboundHandlerAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="53" column="8" selection-start-line="52" selection-start-column="7" selection-end-line="53" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/Netty中Channel的生命周期（SimpleChannelInboundHandler ...https---blog.csdn.net › article › details.url">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/UserMapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="55" selection-start-line="55" selection-end-line="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/base/WebSocketHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="754">
-          <caret line="129" column="12" selection-start-line="129" selection-start-column="12" selection-end-line="129" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/base/ChannelManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="27" column="42" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="198" column="24" selection-start-line="198" selection-start-column="24" selection-end-line="198" selection-end-column="24" />
-          <folding>
-            <element signature="method#updatePassword#0;class#UserServiceImpl#0" />
-            <element signature="e#3155#3156#0" expanded="true" />
-            <element signature="e#3209#3210#0" expanded="true" />
-            <element signature="method#getNewUser#0;class#UserServiceImpl#0" />
-            <element signature="method#getInfo#0;class#UserServiceImpl#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="65" column="9" selection-start-line="65" selection-start-column="9" selection-end-line="65" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="84" column="22" selection-start-line="84" selection-start-column="22" selection-end-line="84" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/test/java/TestCase2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1431">
-          <caret line="53" column="24" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/test/java/TestCase1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
-          <folding>
-            <element signature="e#123#124#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/BaseService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/UserConstant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="28" column="6" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
+        <state relative-caret-position="257">
+          <caret line="31" column="39" lean-forward="true" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_entity/src/main/java/com/xsdkj/wechat/entity/chat/FriendApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="32" column="14" selection-start-line="32" selection-start-column="14" selection-end-line="32" selection-end-column="14" />
+        <state relative-caret-position="567">
+          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_entity/src/main/java/com/xsdkj/wechat/entity/chat/ChatInfo.java">
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="18" column="17" lean-forward="true" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
+        <state relative-caret-position="216">
+          <caret line="30" column="26" lean-forward="true" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/SingleChatService.java">
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/single/SingleChatCmd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="33" column="6" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="6" />
+        <state relative-caret-position="513">
+          <caret line="50" column="52" selection-start-line="50" selection-start-column="52" selection-end-line="50" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/GroupInfoCmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/resources/mappers/GroupNoSayMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="111" column="24" selection-start-line="111" selection-start-column="24" selection-end-line="111" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/GroupChatCmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="53" column="8" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="129" column="12" selection-start-line="129" selection-start-column="12" selection-end-line="129" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/bo/RequestParamBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="621">
+          <caret line="31" column="29" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/AbstractChatCmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="73" column="34" selection-start-line="73" selection-start-column="34" selection-end-line="73" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/resources/mappers/UserGroupMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="587">
+          <caret line="359" lean-forward="true" selection-start-line="359" selection-end-line="359" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/UserGroupMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserGroupService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="587">
+          <caret line="251" column="6" selection-start-line="251" selection-start-column="6" selection-end-line="251" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/ParamConstant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="90" selection-start-line="90" selection-end-line="90" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="43" column="46" selection-start-line="43" selection-start-column="46" selection-end-line="43" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/GroupInfoBaseCmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="31" column="71" selection-start-line="31" selection-start-column="71" selection-end-line="31" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/GroupNoSayMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="13" column="15" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="135" column="6" selection-start-line="135" selection-start-column="6" selection-end-line="135" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="378">
+            <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/base/WebSocketHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="421">
+          <caret line="136" column="4" selection-start-line="136" selection-start-column="4" selection-end-line="136" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/PermissionMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/entity/chat/NicknameName.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/NicknameSurnameMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/RabbitTemplateService.java">
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/NicknameNameMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/mapper/PlatformMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="17" column="14" lean-forward="true" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/resources/application-dev.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+          <folding>
+            <element signature="e#2260#2326#1" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/UserThumbsServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
-          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+          <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
+          <folding>
+            <element signature="e#486#487#0" expanded="true" />
+            <element signature="e#538#539#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_entity/src/main/java/com/xsdkj/wechat/entity/chat/SingleChat.java">
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/util/RedisUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="23" column="21" lean-forward="true" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
+        <state relative-caret-position="80">
+          <caret line="99" column="24" selection-start-line="99" selection-start-column="24" selection-end-line="99" selection-end-column="24" />
+          <folding>
+            <element signature="e#1739#1740#0" expanded="true" />
+            <element signature="e#1819#1820#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/SingleChatServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/SetAddFriendCmd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="93" column="12" selection-start-line="93" selection-start-column="12" selection-end-line="93" selection-end-column="12" />
+        <state relative-caret-position="411">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/GroupServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="107" selection-start-line="107" selection-end-line="107" />
+          <folding>
+            <element signature="e#10173#10174#0" expanded="true" />
+            <element signature="e#10236#10237#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="328" selection-start-line="328" selection-end-line="328" />
+          <folding>
+            <element signature="e#2546#3122#0" />
+            <element signature="e#5612#6834#0" />
+            <element signature="e#6840#7288#0" />
+            <element signature="e#7294#7504#0" />
+            <element signature="e#7511#8240#0" />
+            <element signature="e#8431#8950#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/entity/chat/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/ConsumerApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/config/MybatisConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/config/RabbitFanoutConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="117" column="6" selection-start-line="117" selection-start-column="6" selection-end-line="117" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/GroupChatHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="26" column="15" selection-start-line="26" selection-start-column="15" selection-end-line="26" selection-end-column="15" />
+          <folding>
+            <element signature="e#771#772#0" expanded="true" />
+            <element signature="e#835#836#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/UserThumbsService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/MsgHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/SingleChatHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="13" column="8" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/UserRegisterHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/SingleChatReadHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/MsgManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="57" column="8" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/data/spring-data-mongodb/2.2.3.RELEASE/spring-data-mongodb-2.2.3.RELEASE-sources.jar!/org/springframework/data/mongodb/core/query/Criteria.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="332" column="31" selection-start-line="332" selection-start-column="31" selection-end-line="332" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/SingleChatService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/SingleChatServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="21" column="39" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
+        <state relative-caret-position="243">
+          <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/RabbitConstant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
+        <state relative-caret-position="246">
+          <caret line="58" column="7" selection-start-line="58" selection-start-column="7" selection-end-line="58" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/FriendApplicationHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
+        <state relative-caret-position="162">
+          <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/FriendApplicationReadHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="438">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/FriendApplicationService.java">
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/UserCommentHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
+        <state relative-caret-position="324">
+          <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/FriendApplicationServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/SystemConstant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="31" column="1" lean-forward="true" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="432">
+          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/FriendApplicationServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/MoodHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="71" column="40" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
+        <state relative-caret-position="378">
+          <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/FriendApplicationService.java">
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/UserThumbsHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/MsgManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/WechatApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
-          <caret line="54" column="6" selection-start-line="54" selection-start-column="6" selection-end-line="54" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="107" column="43" selection-start-line="107" selection-start-column="43" selection-end-line="107" selection-end-column="43" />
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>

@@ -4,26 +4,26 @@ import com.xsdkj.wechat.action.MsgHandler;
 import com.xsdkj.wechat.action.SaveAnno;
 import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
 import com.xsdkj.wechat.constant.RabbitConstant;
-import com.xsdkj.wechat.entity.chat.GroupChat;
-import com.xsdkj.wechat.service.GroupChatService;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import com.xsdkj.wechat.entity.chat.User;
+import com.xsdkj.wechat.service.UserService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 /**
- * 群组消息储存
- *
+ * 用户注册消息储存
  * @author tiankong
- * @date 2019/12/27 11:02
+ * @date 2020/1/2 10:28
  */
 @Component
-@SaveAnno(type = RabbitConstant.BOX_TYPE_GROUP_CHAT)
-public class GroupChatHandler implements MsgHandler {
+@SaveAnno(type = RabbitConstant.BOX_TYPE_USER_REGISTER)
+public class UserRegisterHandler implements MsgHandler {
     @Resource
-    private GroupChatService groupChatService;
+    private UserService userService;
+
     @Override
     public void execute(RabbitMessageBoxBo box) {
-        groupChatService.save((GroupChat) box.getData());
+        User user = (User) box.getData();
+        userService.save(user);
     }
 }
