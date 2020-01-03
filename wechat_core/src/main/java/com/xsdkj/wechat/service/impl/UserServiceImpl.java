@@ -340,6 +340,25 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
+    public UserDetailsBo updateRedisDataByUid(Integer uid, Wallet wallet) {
+        User user = userMapper.selectByPrimaryKey(uid);
+        if (ObjectUtil.isNull(user)) {
+            throw new NullPointerException();
+        }
+        UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
+        currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
+        List<GroupVo> groupInfoBos = groupService.listGroupByUid(user.getId());
+        for (GroupVo groupInfoBo : groupInfoBos) {
+            currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
+        }
+        currentUserDetailsBo.setGroupInfoBos(groupInfoBos);
+        currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
+        currentUserDetailsBo.setWallet(wallet);
+        redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
+        return currentUserDetailsBo;
+    }
+
+    @Override
     public UserDetailsBo updateRedisDataByUid(User user) {
         UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));

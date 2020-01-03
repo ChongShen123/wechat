@@ -25,8 +25,6 @@ import javax.annotation.Resource;
 public class UserNotice extends BaseHandler {
     @Resource
     private RabbitTemplateService rabbitTemplateService;
-    @Resource
-    private UserService userService;
 
     @RabbitListener(queues = RabbitConstant.USER_NOTICE_QUEUE)
     public void userNoticeHandler(MsgBox box) {
@@ -51,7 +49,6 @@ public class UserNotice extends BaseHandler {
         if (userChannel != null) {
             sendMessage(userChannel, JsonResult.success(singleChat, Cmd.SINGLE_CHAT));
             singleChat.setRead(true);
-            userService.updateRedisDataByUid(toUserId);
         } else {
             singleChat.setRead(false);
         }

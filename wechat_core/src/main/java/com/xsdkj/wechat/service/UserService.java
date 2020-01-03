@@ -8,6 +8,7 @@ import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
 import com.xsdkj.wechat.dto.UserUpdatePassword;
 import com.xsdkj.wechat.entity.user.User;
+import com.xsdkj.wechat.entity.wallet.Wallet;
 import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;
@@ -133,6 +134,16 @@ public interface UserService {
      * @return List
      */
     UserDetailsBo updateRedisDataByUid(Integer uid);
+
+    /**
+     * 更新用户Redis 数据
+     * 更新用户菜单,用户群组,用户信息
+     *
+     * @param uid    用户id
+     * @param wallet 用户钱包
+     * @return List
+     */
+    UserDetailsBo updateRedisDataByUid(Integer uid, Wallet wallet);
 
     /**
      * 更新用户Redis 数据

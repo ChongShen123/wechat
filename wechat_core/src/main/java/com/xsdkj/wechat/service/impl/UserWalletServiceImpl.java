@@ -70,9 +70,10 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         Integer type = param.getType();
         byte operationType;
         StringBuilder sb = new StringBuilder();
+        Wallet redisWallet;
         switch (type) {
             case SystemConstant.TOP_UP:
-                handleUserPriceOperation(param, userWallet, user, admin, true);
+                redisWallet = handleUserPriceOperation(param, userWallet, user, admin, true);
                 operationType = ChatConstant.TOP_UP;
                 sb.append(String.format("系统已为您充值%s元,请注意查看钱包余额!", param.getPrice()));
                 break;
@@ -82,11 +83,12 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
                 }
                 sb.append(String.format("您已提现%s元,请注意查收!", param.getPrice()));
                 operationType = ChatConstant.WITHDRAW;
-                handleUserPriceOperation(param, userWallet, user, admin, false);
+                redisWallet = handleUserPriceOperation(param, userWallet, user, admin, false);
                 break;
             default:
                 throw new ValidateException();
         }
+        userService.updateRedisDataByUid(param.getUid(), redisWallet);
         SingleChat singleChat = chatUtil.createNewSingleChat(param.getUid(), SystemConstant.SYSTEM_USER_ID, sb.toString(), operationType);
         rabbitTemplateService.addExchange(RabbitConstant.FANOUT_USER_NOTICE_NAME, MsgBox.create(RabbitConstant.USER_PRICE_OPERATION_NOTICE, singleChat));
     }
@@ -112,7 +114,7 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
      * @param admin  管理员
      * @param type   true为充值 false为提现
      */
-    private void handleUserPriceOperation(UserPriceOperationDto param, Wallet wallet, User user, User admin, Boolean type) {
+    private Wallet handleUserPriceOperation(UserPriceOperationDto param, Wallet wallet, User user, User admin, Boolean type) {
         // 本次充值金额
         BigDecimal price = param.getPrice();
 
@@ -141,6 +143,7 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         // 创建管理员操作记录
         UserOperationLog userOperationLog = createNewUserOperationLog(admin.getId(), admin.getPlatformId(), operationType, String.format("管理员%s为用户%s充值%s元", admin.getId(), user.getId(), price));
         rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_OPERATION_LOG, userOperationLog));
+        return wallet;
     }
 
 

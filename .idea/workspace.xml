@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7bffed3-a3d5-499e-96f4-db2d90aed7e4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/user/UserPurseCmd.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/bo/UserDetailsBo.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/bo/UserDetailsBo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/notice/UserNotice.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/notice/UserNotice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserWalletService.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserWalletService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java" afterDir="false" />
     </list>
@@ -54,27 +50,27 @@
     <session id="-319752265">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="216" />
+          <entry key="java" value="225" />
           <entry key="xml" value="20" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="216" />
+          <entry key="JAVA" value="225" />
           <entry key="XML" value="20" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="4" />
-          <entry key="java" value="9249" />
+          <entry key="java" value="9653" />
           <entry key="sql" value="9" />
           <entry key="xml" value="681" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="9249" />
+          <entry key="JAVA" value="9653" />
           <entry key="PLAIN_TEXT" value="4" />
           <entry key="SQL" value="9" />
           <entry key="XML" value="681" />
@@ -88,7 +84,19 @@
         <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserWalletController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="449">
-              <caret line="25" column="34" lean-forward="true" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
+              <caret line="25" column="35" lean-forward="true" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserWalletService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -97,10 +105,17 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/notice/UserNotice.java">
+        <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="398">
-              <caret line="54" column="16" lean-forward="true" selection-start-line="54" selection-start-column="16" selection-end-line="54" selection-end-column="16" />
+            <state relative-caret-position="243">
+              <caret line="74" column="21" lean-forward="true" selection-start-line="74" selection-start-column="21" selection-end-line="74" selection-end-column="21" />
+              <folding>
+                <element signature="e#1757#1758#0" expanded="true" />
+                <element signature="e#1809#1810#0" expanded="true" />
+                <element signature="method#createNewWallet#0;class#UserWalletServiceImpl#0" />
+                <element signature="method#createNewUserOperationLog#0;class#UserWalletServiceImpl#0" />
+                <element signature="method#createNewWalletPriceLog#0;class#UserWalletServiceImpl#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -139,7 +154,6 @@
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/dto/UserPriceOperationDto.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/WalletService.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserWalletController.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/ex/UserNotFountException.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/ex/PermissionDeniedException.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/ex/ValidateException.java" />
@@ -172,12 +186,13 @@
         <option value="$PROJECT_DIR$/wechat_core/src/test/java/TestCase2.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/bo/UserDetailsBo.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserWalletService.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/user/UserInfoCmd.java" />
         <option value="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/user/UserPurseCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/notice/UserNotice.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java" />
       </list>
     </option>
   </component>
@@ -252,18 +267,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="netty" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="wechat" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat_core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="wechat" type="462c0819:PsiDirectoryNode" />
-              <item name="netty" type="462c0819:PsiDirectoryNode" />
-              <item name="notice" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -278,7 +282,7 @@
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="SearchEverywhereHistoryKey" value="userWalletServiceImpl&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java&#10;UserMoodMapper.xml&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_consumer/src/main/resources/mappers/UserMoodMapper.xml&#10;UserMapper.xml&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserMapper.xml" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578035030280" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578036013228" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/wechat_entity/src/main/java" />
   </component>
   <component name="RecentsManager">
@@ -314,7 +318,7 @@
       <workItem from="1577412582355" duration="14944000" />
       <workItem from="1577434373632" duration="43709000" />
       <workItem from="1577667225657" duration="51483000" />
-      <workItem from="1577930973342" duration="31382000" />
+      <workItem from="1577930973342" duration="32202000" />
     </task>
     <task id="LOCAL-00001" summary="系统常量细分">
       <created>1577679886979</created>
@@ -326,7 +330,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14759000" />
+    <option name="totallyTimeSpent" value="15579000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
@@ -356,7 +360,7 @@
       <window_info anchor="bottom" id="Database Changes" order="12" weight="0.32899022" />
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32899022" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.32899022" />
-      <window_info anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.19109663" />
+      <window_info anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.043431055" />
       <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.5026652" side_tool="true" weight="0.422367" />
       <window_info anchor="bottom" id="Messages" order="17" sideWeight="0.49946696" weight="0.16938111" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -565,30 +569,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/wallet/UpdateUserWallet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="492">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/MsgManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
           <caret line="62" column="38" selection-start-line="62" selection-start-column="38" selection-end-line="62" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/wallet/WalletPriceLogHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="511">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -771,30 +755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="86" column="19" selection-start-line="86" selection-start-column="19" selection-end-line="86" selection-end-column="19" />
-          <folding>
-            <element signature="e#1757#1758#0" expanded="true" />
-            <element signature="e#1809#1810#0" expanded="true" />
-            <element signature="method#createNewWallet#0;class#UserWalletServiceImpl#0" />
-            <element signature="method#createNewUserOperationLog#0;class#UserWalletServiceImpl#0" />
-            <element signature="method#createNewWalletPriceLog#0;class#UserWalletServiceImpl#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserWalletService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/notice/SystemNotice.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
@@ -802,10 +762,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/notice/UserNotice.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/wallet/WalletPriceLogHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="457">
+          <caret line="28" column="27" lean-forward="true" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/wallet/UpdateUserWallet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="28" column="50" selection-start-line="28" selection-start-column="50" selection-end-line="28" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/controller/UserWalletController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="449">
-          <caret line="25" column="34" lean-forward="true" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
+          <caret line="25" column="35" lean-forward="true" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserWalletService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -814,22 +811,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="336" column="8" selection-start-line="336" selection-start-column="8" selection-end-line="336" selection-end-column="8" />
+        <state relative-caret-position="378">
+          <caret line="344" column="37" selection-start-line="344" selection-start-column="37" selection-end-line="344" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="137" column="18" selection-start-line="137" selection-start-column="18" selection-end-line="137" selection-end-column="18" />
+        <state relative-caret-position="518">
+          <caret line="140" column="5" selection-start-line="140" selection-start-column="5" selection-end-line="140" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/notice/UserNotice.java">
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="54" column="16" lean-forward="true" selection-start-line="54" selection-start-column="16" selection-end-line="54" selection-end-column="16" />
+        <state relative-caret-position="243">
+          <caret line="74" column="21" lean-forward="true" selection-start-line="74" selection-start-column="21" selection-end-line="74" selection-end-column="21" />
+          <folding>
+            <element signature="e#1757#1758#0" expanded="true" />
+            <element signature="e#1809#1810#0" expanded="true" />
+            <element signature="method#createNewWallet#0;class#UserWalletServiceImpl#0" />
+            <element signature="method#createNewUserOperationLog#0;class#UserWalletServiceImpl#0" />
+            <element signature="method#createNewWalletPriceLog#0;class#UserWalletServiceImpl#0" />
+          </folding>
         </state>
       </provider>
     </entry>
