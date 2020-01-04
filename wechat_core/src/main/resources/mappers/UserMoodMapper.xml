@@ -2,224 +2,203 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xsdkj.wechat.mapper.UserMoodMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.mood.UserMood">
-    <!--@mbg.generated-->
-    <!--@Table user_mood-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
-    <result column="file" jdbcType="VARCHAR" property="file" />
-    <result column="file_type" jdbcType="TINYINT" property="fileType" />
-    <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
-    <result column="create_times" jdbcType="BIGINT" property="createTimes" />
-<!--    <collection property=""-->
-  </resultMap>
-<!--  <resultMap id="OneSelfMap" type="com.xsdkj.wechat.vo.UserMoodVo">
-    <id column="mood_id" property="id" />
-    <result column="mood_uid" property="uid"/>
-    <result column="mood_content" property="content"/>
-    <result column="mood_file" property="file"/>
-    <result column="mood_comment_count" property="commentCount"/>
-    <result column="mood_create_times" property="createTimes"/>
-    &lt;!&ndash;    column="id" select="selectUserThumbsById
-        column="id" select="selectUserCommentById"&ndash;&gt;
-    <collection property="userThumbs" ofType="com.xsdkj.wechat.entity.mood.UserThumbs"  >
-      <id column="thumbs_id" property="id"/>
-      <result column="thumbs_uid" property="uid"/>
-      <result column="thumbs_nickname" property="nickname"/>
-      <result column="thumbs_moodId" property="moodId"/>
-    </collection>
-    <collection property="comments" ofType="com.xsdkj.wechat.entity.mood.UserComment"   >
-      <id column="comments_id" property="id"/>
-      <result column="comments_uid" property="uid"/>
-      <result column="comments_nickname" property="nickname"/>
-      <result column="comments_moodId" property="moodId"/>
-      <result column="comments_content" property="content"/>
-      <result column="comments_create_times" property="createTimes"/>
-    </collection>
-  </resultMap>-->
-  <resultMap id="UserMoodMap" type="com.xsdkj.wechat.vo.UserMoodVo">
-<<<<<<< HEAD
-    <id column="mood_id" property="id" />
-    <result column="mood_uid" property="uid"/>
-    <result column="mood_content" property="content"/>
-    <result column="mood_file" property="file"/>
-    <result column="mood_comment_count" property="commentCount"/>
-    <result column="mood_create_times" property="createTimes"/>
-<!--    column="id" select="selectUserThumbsById
-    column="id" select="selectUserCommentById"-->
-    <collection property="userThumbs" ofType="com.xsdkj.wechat.entity.mood.UserThumbs"  >
-      <id column="thumbs_id" property="id"/>
-      <result column="thumbs_uid" property="uid"/>
-      <result column="thumbs_nickname" property="nickname"/>
-      <result column="thumbs_moodId" property="moodId"/>
-    </collection>
-    <collection property="comments" ofType="com.xsdkj.wechat.entity.mood.UserComment"   >
-      <id column="comments_id" property="id"/>
-      <result column="comments_uid" property="uid"/>
-      <result column="comments_nickname" property="nickname"/>
-      <result column="comments_moodId" property="moodId"/>
-      <result column="comments_content" property="content"/>
-      <result column="comments_create_times" property="createTimes"/>
-    </collection>
-=======
-    <id column="id" property="id"/>
-    <result column="uid" property="uid"/>
-    <result column="content" property="content"/>
-    <result column="file" property="file"/>
-    <result column="file_type" property="fileType"/>
-    <result column="comment_count" property="commentCount"/>
-    <result column="create_times" property="createTimes"/>
-    <collection property="userThumbs" ofType="com.xsdkj.wechat.entity.mood.UserThumbs"  column="id" select="selectUserThumbsById"/>
-    <collection property="comments" ofType="com.xsdkj.wechat.entity.mood.UserComment"  column="id" select="selectUserCommentById" />
->>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, `uid`, content, `file`, file_type, comment_count, create_times
-  </sql>
+    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.mood.UserMood">
+        <!--@mbg.generated-->
+        <!--@Table user_mood-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="file" jdbcType="VARCHAR" property="file"/>
+        <result column="file_type" jdbcType="TINYINT" property="fileType"/>
+        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
+        <result column="create_times" jdbcType="BIGINT" property="createTimes"/>
+        <!--    <collection property=""-->
+    </resultMap>
+    <!--  <resultMap id="OneSelfMap" type="com.xsdkj.wechat.vo.UserMoodVo">
+        <id column="mood_id" property="id" />
+        <result column="mood_uid" property="uid"/>
+        <result column="mood_content" property="content"/>
+        <result column="mood_file" property="file"/>
+        <result column="mood_comment_count" property="commentCount"/>
+        <result column="mood_create_times" property="createTimes"/>
+        &lt;!&ndash;    column="id" select="selectUserThumbsById
+            column="id" select="selectUserCommentById"&ndash;&gt;
+        <collection property="userThumbs" ofType="com.xsdkj.wechat.entity.mood.UserThumbs"  >
+          <id column="thumbs_id" property="id"/>
+          <result column="thumbs_uid" property="uid"/>
+          <result column="thumbs_nickname" property="nickname"/>
+          <result column="thumbs_moodId" property="moodId"/>
+        </collection>
+        <collection property="comments" ofType="com.xsdkj.wechat.entity.mood.UserComment"   >
+          <id column="comments_id" property="id"/>
+          <result column="comments_uid" property="uid"/>
+          <result column="comments_nickname" property="nickname"/>
+          <result column="comments_moodId" property="moodId"/>
+          <result column="comments_content" property="content"/>
+          <result column="comments_create_times" property="createTimes"/>
+        </collection>
+      </resultMap>-->
+    <resultMap id="UserMoodMap" type="com.xsdkj.wechat.vo.UserMoodVo">
+        <id column="mood_id" property="id"/>
+        <result column="mood_uid" property="uid"/>
+        <result column="mood_content" property="content"/>
+        <result column="mood_file" property="file"/>
+        <result column="mood_comment_count" property="commentCount"/>
+        <result column="mood_create_times" property="createTimes"/>
+        <!--    column="id" select="selectUserThumbsById
+            column="id" select="selectUserCommentById"-->
+        <collection property="userThumbs" ofType="com.xsdkj.wechat.entity.mood.UserThumbs">
+            <id column="thumbs_id" property="id"/>
+            <result column="thumbs_uid" property="uid"/>
+            <result column="thumbs_nickname" property="nickname"/>
+            <result column="thumbs_moodId" property="moodId"/>
+        </collection>
+        <collection property="comments" ofType="com.xsdkj.wechat.entity.mood.UserComment">
+            <id column="comments_id" property="id"/>
+            <result column="comments_uid" property="uid"/>
+            <result column="comments_nickname" property="nickname"/>
+            <result column="comments_moodId" property="moodId"/>
+            <result column="comments_content" property="content"/>
+            <result column="comments_create_times" property="createTimes"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `uid`, content, `file`, file_type, comment_count, create_times
+    </sql>
 
-<<<<<<< HEAD
+    <select id="listUserMoodByUid" resultMap="UserMoodMap">
+        select
+        um.id mood_id,
+        um.uid mood_uid,
+        um.content mood_content,
+        um.file mood_file,
+        um.comment_count mood_comment_count,
+        um.create_times mood_create_times,
 
-  <select id="listUserMoodByUid" resultMap="UserMoodMap">
-select
-um.id mood_id,
-um.uid mood_uid,
-um.content mood_content,
-um.file mood_file,
-um.comment_count mood_comment_count,
-um.create_times mood_create_times,
+        ut.nickname thumbs_nickname,
 
-ut.nickname thumbs_nickname,
+        uc.nickname comments_nickname,
+        uc.content comments_content,
+        uc.create_times comments_create_times
+        FROM user_mood um LEFT JOIN user_comment uc ON um.id = uc.mood_id LEFT JOIN user_thumbs ut ON um.id = ut.mood_id
+        WHERE
+        um.uid in (SELECT fid from friend WHERE uid = #{id,jdbcType=INTEGER})
+        and
+        um.uid = #{id,jdbcType=INTEGER} where um.uid not null
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from user_mood
+        where id = #{id,jdbcType=INTEGER}
+    </select>
 
-uc.nickname comments_nickname,
-uc.content comments_content,
-uc.create_times comments_create_times
-FROM user_mood um LEFT JOIN user_comment uc ON um.id = uc.mood_id LEFT JOIN user_thumbs ut ON um.id = ut.mood_id
-WHERE
-um.uid in (SELECT fid from friend WHERE uid = #{id,jdbcType=INTEGER})
-and
-um.uid = #{id,jdbcType=INTEGER} where um.uid not null
-  </select>
-<!--  <select id="selectUserThumbsById" resultType="com.xsdkj.wechat.entity.mood.UserThumbs">
-=======
-  <select id="selectUserThumbsById" resultType="com.xsdkj.wechat.entity.mood.UserThumbs">
->>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
-    select id,uid,nickname from user_thumbs where mood_id = #{id};
-  </select>
-  <select id="selectUserCommentById" resultType="com.xsdkj.wechat.entity.mood.UserComment">
-    select id,uid,nickname,content,create_times from user_comment where mood_id= #{id} order by create_times desc limit 3;
-  </select>-->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select
-    <include refid="Base_Column_List" />
-    from user_mood
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-
-<!--  select
-  id,uid,content,file,comment_count,create_times
-  from user_mood where uid in (
-  <foreach collection="ids" separator="," index="id">
-    #{id}
-  </foreach>
-  );-->
+    <!--  select
+      id,uid,content,file,comment_count,create_times
+      from user_mood where uid in (
+      <foreach collection="ids" separator="," index="id">
+        #{id}
+      </foreach>
+      );-->
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    <!--@mbg.generated-->
-    delete from user_mood
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into user_mood (`uid`, content, `file`,
-      file_type, comment_count, create_times
-      )
-    values (#{uid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{file,jdbcType=VARCHAR},
-      #{fileType,jdbcType=TINYINT}, #{commentCount,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT}
-      )
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into user_mood
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uid != null">
-        `uid`,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-      <if test="file != null">
-        `file`,
-      </if>
-      <if test="fileType != null">
-        file_type,
-      </if>
-      <if test="commentCount != null">
-        comment_count,
-      </if>
-      <if test="createTimes != null">
-        create_times,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uid != null">
-        #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="file != null">
-        #{file,jdbcType=VARCHAR},
-      </if>
-      <if test="fileType != null">
-        #{fileType,jdbcType=TINYINT},
-      </if>
-      <if test="commentCount != null">
-        #{commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="createTimes != null">
-        #{createTimes,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
-    <!--@mbg.generated-->
-    update user_mood
-    <set>
-      <if test="uid != null">
-        `uid` = #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="content != null">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from user_mood
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into user_mood (`uid`, content, `file`,
+        file_type, comment_count, create_times
+        )
+        values (#{uid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{file,jdbcType=VARCHAR},
+        #{fileType,jdbcType=TINYINT}, #{commentCount,jdbcType=INTEGER}, #{createTimes,jdbcType=BIGINT}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.mood.UserMood"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into user_mood
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                `uid`,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="file != null">
+                `file`,
+            </if>
+            <if test="fileType != null">
+                file_type,
+            </if>
+            <if test="commentCount != null">
+                comment_count,
+            </if>
+            <if test="createTimes != null">
+                create_times,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="file != null">
+                #{file,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null">
+                #{fileType,jdbcType=TINYINT},
+            </if>
+            <if test="commentCount != null">
+                #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="createTimes != null">
+                #{createTimes,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
+        <!--@mbg.generated-->
+        update user_mood
+        <set>
+            <if test="uid != null">
+                `uid` = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="file != null">
+                `file` = #{file,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null">
+                file_type = #{fileType,jdbcType=TINYINT},
+            </if>
+            <if test="commentCount != null">
+                comment_count = #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="createTimes != null">
+                create_times = #{createTimes,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
+        <!--@mbg.generated-->
+        update user_mood
+        set `uid` = #{uid,jdbcType=INTEGER},
         content = #{content,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="file != null">
         `file` = #{file,jdbcType=VARCHAR},
-      </if>
-      <if test="fileType != null">
         file_type = #{fileType,jdbcType=TINYINT},
-      </if>
-      <if test="commentCount != null">
         comment_count = #{commentCount,jdbcType=INTEGER},
-      </if>
-      <if test="createTimes != null">
-        create_times = #{createTimes,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.mood.UserMood">
-    <!--@mbg.generated-->
-    update user_mood
-    set `uid` = #{uid,jdbcType=INTEGER},
-      content = #{content,jdbcType=LONGVARCHAR},
-      `file` = #{file,jdbcType=VARCHAR},
-      file_type = #{fileType,jdbcType=TINYINT},
-      comment_count = #{commentCount,jdbcType=INTEGER},
-      create_times = #{createTimes,jdbcType=BIGINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        create_times = #{createTimes,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 
 </mapper>
