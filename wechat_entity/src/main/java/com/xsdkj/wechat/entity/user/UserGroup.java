@@ -44,7 +44,7 @@ public class UserGroup implements Serializable {
     private Boolean state;
 
     /**
-     * 是否开启添加好友 0关闭 1开启(关闭则该群成员不能相互加好友)
+     * 是否开启添加好友 0关闭 1开启(关闭则该群成员不能相互加好友
      */
     private Boolean addFriendType;
 

@@ -45,13 +45,13 @@
         delete from user
         where id = #{id,jdbcType=INTEGER}
     </delete>
-<<<<<<< HEAD
 
 
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.chat.User"
-=======
+
+
+
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.User"
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
+
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into user (platform_id, uno, username,

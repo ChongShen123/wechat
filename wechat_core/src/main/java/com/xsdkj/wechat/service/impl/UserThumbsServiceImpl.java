@@ -5,9 +5,11 @@ import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.dto.UserThumbsDto;
 import com.xsdkj.wechat.entity.mood.UserThumbs;
+import com.xsdkj.wechat.mapper.UserThumbsMapper;
 import com.xsdkj.wechat.service.RabbitTemplateService;
 import com.xsdkj.wechat.service.UserThumbsService;
 import com.xsdkj.wechat.util.UserUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,7 +22,7 @@ public class UserThumbsServiceImpl implements UserThumbsService {
     @Resource
     private UserUtil userUtil;
     @Resource
-    private RabbitTemplateService rabbitTemplateService;
+    UserThumbsMapper userThumbsMapper;
 
     /**
      * 保存用户点赞
@@ -29,13 +31,17 @@ public class UserThumbsServiceImpl implements UserThumbsService {
     @Override
     public void save(UserThumbsDto userThumbsDto) {
         UserThumbs userThumbs=saveThums(userThumbsDto);
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));
+        userThumbsMapper.insert(userThumbs);
+        /*rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));*/
     }
     private UserThumbs saveThums(UserThumbsDto userThumbsDto) {
         UserThumbs userThumbs=new UserThumbs();
         userThumbs.setUid(userUtil.currentUser().getUser().getId());
         userThumbs.setNickname(userThumbsDto.getNickname());
-        userThumbs.setMoodId(userThumbsDto.getMoodId());
+        if(userThumbsDto.getMoodId()!=null){
+            userThumbs.setMoodId(userThumbsDto.getMoodId());
+        }
+
         return  userThumbs;
     }
     /**
@@ -46,11 +52,8 @@ public class UserThumbsServiceImpl implements UserThumbsService {
     public void delete(UserThumbs userThumbs) {
         if(userThumbs.getId()!=null){
             userThumbs.setUid(userUtil.currentUser().getUser().getId());
-<<<<<<< HEAD
-            rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));
-=======
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD,userThumbs));
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
+            userThumbsMapper.deleteByPrimaryKey(userThumbs.getId());
+         /*   rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));*/
         }
     }
 

@@ -1,13 +1,13 @@
 package com.xsdkj.wechat.mapper;
 
-<<<<<<< HEAD
-import com.xsdkj.wechat.entity.chat.UserComment;
-import com.xsdkj.wechat.entity.chat.UserMood;
-=======
-import com.xsdkj.wechat.entity.mood.UserMood;
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
 
-import com.xsdkj.wechat.entity.chat.UserThumbs;
+
+
+import com.xsdkj.wechat.entity.mood.UserComment;
+import com.xsdkj.wechat.entity.mood.UserMood;
+
+
+import com.xsdkj.wechat.entity.mood.UserThumbs;
 import com.xsdkj.wechat.vo.UserMoodVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,21 +25,30 @@ public interface UserMoodMapper {
     int updateByPrimaryKeySelective(UserMood record);
 
     int updateByPrimaryKey(UserMood record);
-<<<<<<< HEAD
 
-    UserThumbs selectUserThumbsById(@Param("id") Integer id);
 
-    UserComment selectUserCommentById(@Param("id")Integer id);
+/*    UserThumbs selectUserThumbsById(@Param("id") Integer id);
 
+    UserComment selectUserCommentById(@Param("id")Integer id);*/
+
+/*    *//**
+     * 查询自己的动态
+     * @param id
+     * @return
+     *//*
+        List<UserMoodVo>  selectOneSelf(@Param("id") Integer id);*/
     /**
      * 查询好友朋友圈
      *
-     * @param ids 好友id （包含自身id）
+     * @param id 好友id （包含自身id）
      * @return list
      */
-    List<UserMoodVo> listUserMoodByUid(@Param("ids") List<Integer> ids);
+    List<UserMoodVo> listUserMoodByUid(@Param("id") Integer id);
+
+
+
 
 }
-=======
-}
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
+
+
+

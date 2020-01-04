@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-
 /**
  * @author tiankong
  * @date 2019/12/21 15:29
@@ -20,12 +19,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
-
     @Resource
     private UserService userService;
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
-
     @PostMapping("/login")
     public JsonResult login(@RequestBody UserLoginDto userLoginDto, HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();

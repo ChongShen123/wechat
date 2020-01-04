@@ -1,11 +1,10 @@
 package com.xsdkj.wechat.service.impl;
 
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
-import com.xsdkj.wechat.common.SystemConstant;
-import com.xsdkj.wechat.constant.RabbitConstant;
+
+
 import com.xsdkj.wechat.dto.UserCommentDto;
 import com.xsdkj.wechat.entity.mood.UserComment;
-import com.xsdkj.wechat.service.RabbitTemplateService;
+import com.xsdkj.wechat.mapper.UserCommentMapper;
 import com.xsdkj.wechat.service.UserCommentService;
 import com.xsdkj.wechat.util.UserUtil;
 import org.springframework.stereotype.Service;
@@ -20,12 +19,12 @@ public class UserCommentServiceImpl implements UserCommentService {
     @Resource
     private UserUtil userUtil;
     @Resource
-    private RabbitTemplateService rabbitTemplateService;
-
+    UserCommentMapper userCommentMapper;
     @Override
     public void save(UserCommentDto userCommentDto) {
         UserComment userComment = createUserComment(userCommentDto);
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT, userComment));
+        userCommentMapper.insert(userComment);
+        /*rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT, userComment));*/
     }
 
     private UserComment createUserComment(UserCommentDto userCommentDto) {
@@ -34,22 +33,20 @@ public class UserCommentServiceImpl implements UserCommentService {
         userComment.setNickname(userCommentDto.getNickname());
         userComment.setContent(userCommentDto.getContent());
         userComment.setCreateTimes(System.currentTimeMillis());
-        userComment.setMoodId(userCommentDto.getMoodId());
+        if (userCommentDto.getMoodId()!=null){
+            userComment.setMoodId(userCommentDto.getMoodId());
+        }
         return userComment;
     }
 
     @Override
     public void delete(UserComment userComment) {
-<<<<<<< HEAD
     if(userComment.getId()!=null){
         userComment.setUid(userUtil.currentUser().getUser().getId());
-        rabbitTemplateService.addExchange(SystemConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT,userComment));
+        userCommentMapper.deleteByPrimaryKey(userComment.getId());
+       /* rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_COMMENT,userComment));*/
     }
-=======
-        if (userComment.getId() != null) {
-            userComment.setUid(userUtil.currentUser().getUser().getId());
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userComment));
-        }
->>>>>>> 2457c7cfbf2c68f4bcd4b4310eb99e636d2bfa9e
+
+
     }
 }

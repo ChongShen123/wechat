@@ -1,7 +1,8 @@
 package com.xsdkj.wechat.vo;
 
-import com.xsdkj.wechat.entity.chat.UserComment;
-import com.xsdkj.wechat.entity.chat.UserThumbs;
+
+import com.xsdkj.wechat.entity.mood.UserComment;
+import com.xsdkj.wechat.entity.mood.UserThumbs;
 import lombok.Data;
 
 import java.util.List;
