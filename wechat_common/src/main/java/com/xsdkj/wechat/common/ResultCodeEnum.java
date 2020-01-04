@@ -6,6 +6,10 @@ package com.xsdkj.wechat.common;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 支付密码为空
+     */
+    PAY_PASSWORD_IS_EMPTY(4048, "操作失败,请先设置支付密码!"),
+    /**
      * 支付密码已被设置
      */
     PAY_PASSWORD_HAS_BEEN_SET(4047, "操作失败,支付密码已被设置!"),

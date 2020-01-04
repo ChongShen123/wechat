@@ -9,15 +9,14 @@ import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.wallet.Wallet;
+import com.xsdkj.wechat.ex.*;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.UserWalletService;
-import com.xsdkj.wechat.ex.DataEmptyException;
-import com.xsdkj.wechat.ex.SystemException;
-import com.xsdkj.wechat.ex.UserBalancePriceException;
 import com.xsdkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -33,6 +32,8 @@ import java.math.BigDecimal;
 public class TransferUserPriceCmd extends AbstractChatCmd {
     @Resource
     private UserWalletService userWalletService;
+    @Resource
+    private PasswordEncoder encoder;
 
     @Override
     protected void parseParam(JSONObject param) {
@@ -51,8 +52,13 @@ public class TransferUserPriceCmd extends AbstractChatCmd {
         BigDecimal price = requestParam.getPrice();
         String content = requestParam.getContent();
         String password = requestParam.getPassword();
-        // TODO 需要验证用户的支付密码是否正确
-
+        Wallet wallet = userWalletService.getByUid(session.getUid(), false);
+        if (StrUtil.isBlank(wallet.getPassword())) {
+            throw new PayPasswordIsEmptyException();
+        }
+        if (!encoder.matches(password, wallet.getPassword())) {
+            throw new PasswordNotMatchException();
+        }
         // 判断用户余额是否足够
         Wallet userWallet = userWalletService.getByUid(session.getUid(), true);
         if (userWallet.getPrice().subtract(price).doubleValue() < 0) {
