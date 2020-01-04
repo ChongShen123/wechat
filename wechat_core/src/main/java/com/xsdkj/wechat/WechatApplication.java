@@ -8,6 +8,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/**
+ * @author tiankong
+ */
 @EnableCaching
 @EnableScheduling
 @SpringBootApplication
