@@ -46,7 +46,16 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
+<<<<<<< HEAD
+
+
+
+
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.User"
+
+=======
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.user.User"
+>>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into user (platform_id, uno, username,

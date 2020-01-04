@@ -190,7 +190,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     /**
      * 递归获取菜单权限树
-     *
      * @param pid         权限父ID
      * @param permissions 子菜单
      * @return 返回所有子菜单父ID 为 pid的列表
@@ -212,7 +211,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     /**
      * 根据 sort进行排序
-     *
      * @return Comparator
      */
     private Comparator<PermissionBo> order() {
@@ -236,7 +234,6 @@ public class UserServiceImpl extends BaseService implements UserService {
     public List<User> listUserByIds(Set<Integer> ids) {
         return userMapper.listUserByIds(ids);
     }
-
 
     @Override
     public User getRedisUserByUserId(Integer id) {
@@ -293,7 +290,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     /**
      * 生成Uno
-     *
      * @return Long
      */
     private Long generateUno() {

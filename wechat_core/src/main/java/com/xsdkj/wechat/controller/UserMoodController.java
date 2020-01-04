@@ -2,9 +2,11 @@ package com.xsdkj.wechat.controller;
 
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.MoodParamDto;
-import com.xsdkj.wechat.dto.UserThumbsDto;
+
 
 import com.xsdkj.wechat.entity.mood.UserMood;
+
+
 import com.xsdkj.wechat.service.UserMoodService;
 import com.xsdkj.wechat.vo.UserMoodVo;
 import org.springframework.validation.annotation.Validated;
@@ -35,9 +37,9 @@ public class UserMoodController {
      * 查询所有好友的动态，点赞，评论
      * @return
      */
-    @PostMapping("/selectAllMood")
+   @PostMapping("/selectAllMood")
     public JsonResult selectAllMood(){
-        userMoodService.selectAll();
+/*        List<UserMoodVo> userMoodVo= userMoodService.selectOneSelf();*/
         List<UserMoodVo> userMoodVos = userMoodService.listUserMoodByUid();
         return  JsonResult.success(userMoodVos);
 
