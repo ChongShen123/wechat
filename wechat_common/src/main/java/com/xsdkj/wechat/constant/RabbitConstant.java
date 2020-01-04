@@ -77,27 +77,7 @@ public interface RabbitConstant {
      */
     int BOX_TYPE_SINGLE_CHAT_READ = 20;
 
-    /**
-     * 用户注册
-     */
-    int BOX_TYPE_USER_REGISTER = 30;
-    /**
-     * 更新用户钱包余额
-     */
-    int BOX_TYPE_UPDATE_USER_WALLET = 31;
-    /**
-     * 创建一个金额操作流水记录
-     */
-    int BOX_TYPE_USER_PRICE_OPERATION_LOG = 32;
-    /**
-     * 创建一个管理员操作记录
-     */
-    int BOX_TYPE_ADMIN_OPERATION_LOG = 33;
 
-    /**
-     * 用户账变记录
-     */
-    int BOX_TYPE_USER_PRICE_CHANGE_LOG = 34;
     /**
      * 用户金额操作通知
      */

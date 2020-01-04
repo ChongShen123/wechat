@@ -2,9 +2,11 @@ package com.xsdkj.wechat.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.xsdkj.wechat.bo.MsgBox;
+import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.constant.ChatConstant;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.WalletConstant;
 import com.xsdkj.wechat.dto.UserPriceOperationDto;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.User;
@@ -12,14 +14,12 @@ import com.xsdkj.wechat.entity.user.UserOperationLog;
 import com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog;
 import com.xsdkj.wechat.entity.wallet.Wallet;
 import com.xsdkj.wechat.entity.wallet.WalletOperationLog;
-import com.xsdkj.wechat.mapper.WalletMapper;
+import com.xsdkj.wechat.entity.wallet.WalletTransferLog;
+import com.xsdkj.wechat.mapper.*;
 import com.xsdkj.wechat.service.BaseService;
 import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.service.UserWalletService;
-import com.xsdkj.wechat.service.ex.PermissionDeniedException;
-import com.xsdkj.wechat.service.ex.UserNotFountException;
-import com.xsdkj.wechat.service.ex.UserWalletBalanceException;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.service.ex.*;
 import com.xsdkj.wechat.util.ChatUtil;
 import com.xsdkj.wechat.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -43,12 +43,50 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
     private UserUtil userUtil;
     @Resource
     private WalletMapper walletMapper;
+    /**
+     * 充值提现记录
+     */
+    @Resource
+    private WalletOperationLogMapper walletOperationLogMapper;
+    /**
+     * 管理员操作记录
+     */
+    @Resource
+    private UserOperationLogMapper userOperationLogMapper;
+    /**
+     * 用户账变记录
+     */
+    @Resource
+    private WalletPriceChangeLogMapper walletPriceChangeLogMapper;
+    /**
+     * 用户转账记录
+     */
+    @Resource
+    private WalletTransferLogMapper walletTransferLogMapper;
     @Resource
     private ChatUtil chatUtil;
 
     @Override
-    public Wallet getByUid(Integer uid) {
-        return walletMapper.getOneByUid(uid);
+    public Wallet getByUid(Integer uid, boolean type) {
+        if (!type) {
+            return walletMapper.getOneByUid(uid);
+        }
+        UserDetailsBo userDetailsBo = userService.getRedisDataByUid(uid);
+        Wallet wallet;
+        if (userDetailsBo != null) {
+            wallet = userDetailsBo.getWallet();
+            if (wallet == null) {
+                wallet = walletMapper.getOneByUid(uid);
+                if (wallet == null) {
+                    log.error("业务异常>>>用户{}钱包不存在", uid);
+                    throw new DataEmptyException();
+                }
+                userService.updateRedisDataByUid(uid);
+            }
+            return wallet;
+        }
+        wallet = walletMapper.getOneByUid(uid);
+        return wallet;
     }
 
     @Override
@@ -92,7 +130,8 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         rabbitTemplateService.addExchange(RabbitConstant.FANOUT_USER_NOTICE_NAME, MsgBox.create(RabbitConstant.USER_PRICE_OPERATION_NOTICE, singleChat));
     }
 
-    private Wallet createNewWallet(Integer uid) {
+    @Override
+    public Wallet createNewWallet(Integer uid) {
         Wallet wallet = new Wallet();
         BigDecimal price = new BigDecimal(0);
         long createTimes = System.currentTimeMillis();
@@ -102,6 +141,11 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         wallet.setTotalPrice(price);
         wallet.setUid(uid);
         return wallet;
+    }
+
+    @Override
+    public void save(Wallet wallet) {
+        walletMapper.insert(wallet);
     }
 
     /**
@@ -137,17 +181,19 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
             addType = false;
         }
         wallet.setPrice(afterPrice);
-        // 用户钱包添加
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_UPDATE_USER_WALLET, wallet));
+        // 用户钱包更新
+        walletMapper.updateUserWallet(wallet);
         // 金额操作流水记录
+        // 分表路由
+        int tableNum = user.getId() % SystemConstant.LOG_TABLE_COUNT;
         WalletOperationLog walletPriceLog = createNewWalletOperationLog(user.getId(), admin.getId(), price, beforePrice, afterPrice, operationType);
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_PRICE_OPERATION_LOG, walletPriceLog));
+        walletOperationLogMapper.insert(walletPriceLog, tableNum);
         // 管理员操作记录
         UserOperationLog userOperationLog = createNewUserOperationLog(admin.getId(), admin.getPlatformId(), operationType, String.format("管理员%s为用户%s充值%s元", admin.getId(), user.getId(), price));
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_ADMIN_OPERATION_LOG, userOperationLog));
+        userOperationLogMapper.insert(userOperationLog);
         // 用户账变记录
         WalletPriceChangeLog walletPriceChangeLog = createNewWalletPriceChangeLog(param.getUid(), param.getPrice(), beforePrice, afterPrice, addType, operationType);
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_PRICE_CHANGE_LOG, walletPriceChangeLog));
+        walletPriceChangeLogMapper.insert(walletPriceChangeLog, tableNum);
         return wallet;
     }
 
@@ -221,4 +267,67 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         return walletPriceLog;
     }
 
+    @Override
+    public boolean transferAccounts(Wallet userWallet, Wallet toUserWallet, BigDecimal price) {
+        Integer uid = userWallet.getUid();
+        Integer toUserId = toUserWallet.getUid();
+        BigDecimal userBeforePrice = userWallet.getPrice();
+        BigDecimal userAfterPrice = userBeforePrice.subtract(price);
+        BigDecimal toUserBeforePrice = toUserWallet.getPrice();
+        BigDecimal toUserAfterPrice = toUserBeforePrice.add(price);
+        // 修改用户钱包
+        int userCount = walletMapper.updateWalletPrice(uid, userAfterPrice);
+        int toUserCont = walletMapper.updateWalletPrice(toUserId, toUserAfterPrice);
+        // 创建账变记录
+        WalletPriceChangeLog userPriceChangeLog = createNewWalletPriceChangeLog(uid, price, userBeforePrice, userAfterPrice, false, WalletConstant.TRANSFER);
+        WalletPriceChangeLog toUserPriceChangeLog = createNewWalletPriceChangeLog(toUserId, price, toUserBeforePrice, toUserAfterPrice, true, WalletConstant.TRANSFER);
+        int userWalletPriceCount = walletPriceChangeLogMapper.insert(userPriceChangeLog, uid % SystemConstant.LOG_TABLE_COUNT);
+        int toUserWalletPriceCount = walletPriceChangeLogMapper.insert(toUserPriceChangeLog, toUserId % SystemConstant.LOG_TABLE_COUNT);
+        // 创建转账记录
+        WalletTransferLog userTransFerLog = createNewWalletTransferLog(uid, toUserId, price, userBeforePrice, userAfterPrice, WalletConstant.SHIFT_OUT);
+        WalletTransferLog toUserTransFerLog = createNewWalletTransferLog(toUserId, uid, price, toUserBeforePrice, toUserAfterPrice, WalletConstant.SHIFT_IN);
+        int userWalletTransferCount = walletTransferLogMapper.insert(userTransFerLog, uid % SystemConstant.LOG_TABLE_COUNT);
+        int toUserWalletTransferCount = walletTransferLogMapper.insert(toUserTransFerLog, toUserId % SystemConstant.LOG_TABLE_COUNT);
+        return userCount + toUserCont + userWalletPriceCount + toUserWalletPriceCount + userWalletTransferCount + toUserWalletTransferCount == 6;
+    }
+
+    /**
+     * 创建转账记录
+     *
+     * @param uid             用户id
+     * @param effectId        受影响用户id
+     * @param price           金额
+     * @param userBeforePrice 操作前用户金额
+     * @param userAfterPrice  操作后用户金额
+     * @param shiftType       操作类型: 0转出 1转入
+     * @return WalletTransferLog
+     */
+    private WalletTransferLog createNewWalletTransferLog(Integer uid, Integer effectId, BigDecimal price, BigDecimal userBeforePrice, BigDecimal userAfterPrice, byte shiftType) {
+        WalletTransferLog transferLog = new WalletTransferLog();
+        transferLog.setUid(uid);
+        switch (shiftType) {
+            case WalletConstant.SHIFT_IN:
+                transferLog.setFromUserId(effectId);
+                break;
+            case WalletConstant.SHIFT_OUT:
+                transferLog.setToUserId(effectId);
+                break;
+            default:
+                log.error("业务异常>>>创建转账记录出错!");
+        }
+        transferLog.setPrice(price);
+        transferLog.setBeforePrice(userBeforePrice);
+        transferLog.setAfterPrice(userAfterPrice);
+        transferLog.setType(shiftType);
+        transferLog.setMonth((byte) (DateUtil.thisMonth() + 1));
+        transferLog.setYear(DateUtil.thisYear());
+        transferLog.setCreateTimes(System.currentTimeMillis());
+        return transferLog;
+    }
+
+    public static void main(String[] args) {
+        long currentTimeMillis = System.currentTimeMillis();
+        System.out.println(DateUtil.thisYear());
+        System.out.println((System.currentTimeMillis() - currentTimeMillis));
+    }
 }

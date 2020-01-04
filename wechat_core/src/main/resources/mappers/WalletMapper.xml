@@ -114,5 +114,18 @@
         from wallet
         where `uid`=#{uid,jdbcType=INTEGER}
     </select>
-
+    <update id="updateWalletPrice">
+        update wallet
+        set price = #{price,jdbcType=DECIMAL},modified_times =
+        REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+        where uid = #{uid,jdbcType=INTEGER};
+    </update>
+    <update id="updateUserWallet">
+        update wallet
+        set `uid` = #{uid,jdbcType=INTEGER},
+        price = #{price,jdbcType=DECIMAL},
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+        modified_times = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

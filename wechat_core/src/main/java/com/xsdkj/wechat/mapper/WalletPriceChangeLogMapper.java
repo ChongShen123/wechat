@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author tiankong
@@ -9,7 +10,7 @@ import com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog;
 public interface WalletPriceChangeLogMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(WalletPriceChangeLog record);
+    int insert(@Param("log") WalletPriceChangeLog log, @Param("tableNum") int tableNum);
 
     int insertSelective(WalletPriceChangeLog record);
 

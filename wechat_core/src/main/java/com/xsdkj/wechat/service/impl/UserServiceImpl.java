@@ -32,6 +32,7 @@ import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.LoginVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.admin.LoginInfoVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,6 +51,7 @@ import java.util.*;
  */
 @Service
 @Transactional
+@Slf4j
 public class UserServiceImpl extends BaseService implements UserService {
     @Resource
     private UserMapper userMapper;
@@ -72,6 +74,9 @@ public class UserServiceImpl extends BaseService implements UserService {
     private UserWalletService userWalletService;
     @Resource
     private PlatformService platformService;
+    @Resource
+    @Lazy
+    private UserWalletService walletService;
 
     @Override
     public void updatePassword(UserUpdatePassword password) {
@@ -99,31 +104,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         userMapper.updateLoginState(uid, type);
     }
 
-//    @Override
-//    public LoginVo register(UserRegisterDto param, HttpServletRequest request) {
-//        String passwordRegex = SystemConstant.PASSWORD_REGEX;
-//        User data = getByUsername(param.getUsername());
-//        if (data != null) {
-//            throw new ServiceException(ResultCodeEnum.USER_ALREADY_EXISTS);
-//        }
-//        Platform platform = platformService.getById(param.getPlatformId());
-//        if (platform == null) {
-//            throw new ServiceException(ResultCodeEnum.PLATFORM_NOT_FOUND);
-//        }
-//        if (!param.getPassword().matches(passwordRegex)) {
-//            throw new ServiceException(ResultCodeEnum.PASSWORD_FORMAT);
-//        }
-//        if (userMapper.countByEmail(param.getEmail()) > 0) {
-//            throw new ServiceException(ResultCodeEnum.EMAIL_ALREADY_EXISTS);
-//        }
-//        User user = getNewUser(param, request);
-//        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_REGISTER, user));
-//        UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
-//        return login(userLoginParam, request, false);
-//    }
-
     @Override
-    public void register(UserRegisterDto param, HttpServletRequest request) {
+    public LoginVo register(UserRegisterDto param, HttpServletRequest request) {
         String passwordRegex = SystemConstant.PASSWORD_REGEX;
         User data = getByUsername(param.getUsername());
         if (data != null) {
@@ -140,8 +122,35 @@ public class UserServiceImpl extends BaseService implements UserService {
             throw new ServiceException(ResultCodeEnum.EMAIL_ALREADY_EXISTS);
         }
         User user = getNewUser(param, request);
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_USER_REGISTER, user));
+        userMapper.insert(user);
+        Wallet newWallet = walletService.createNewWallet(user.getId());
+        walletService.save(newWallet);
+        UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
+        return login(userLoginParam, request, false);
     }
+
+//    @Override
+//    public void register(UserRegisterDto param, HttpServletRequest request) {
+//        String passwordRegex = SystemConstant.PASSWORD_REGEX;
+//        User data = getByUsername(param.getUsername());
+//        if (data != null) {
+//            throw new ServiceException(ResultCodeEnum.USER_ALREADY_EXISTS);
+//        }
+//        Platform platform = platformService.getById(param.getPlatformId());
+//        if (platform == null) {
+//            throw new ServiceException(ResultCodeEnum.PLATFORM_NOT_FOUND);
+//        }
+//        if (!param.getPassword().matches(passwordRegex)) {
+//            throw new ServiceException(ResultCodeEnum.PASSWORD_FORMAT);
+//        }
+//        if (userMapper.countByEmail(param.getEmail()) > 0) {
+//            throw new ServiceException(ResultCodeEnum.EMAIL_ALREADY_EXISTS);
+//        }
+//        User user = getNewUser(param, request);
+//        userMapper.insert(user);
+//        Wallet newWallet = walletService.createNewWallet(user.getId());
+//        walletService.save(newWallet);
+//    }
 
     @Override
     public LoginVo login(UserLoginDto param, HttpServletRequest request, boolean check) {
@@ -169,7 +178,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     public UserDetailsBo createCurrentUserDetailsBo(User user) {
         UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
-        currentUserDetailsBo.setGroupInfoBos(groupService.listGroupByUid(user.getId()));
+        initUserGroup(user.getId(), currentUserDetailsBo);
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(user.getId()));
         return currentUserDetailsBo;
     }
@@ -236,7 +245,11 @@ public class UserServiceImpl extends BaseService implements UserService {
         UserDetailsBo bo;
         Object redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + id);
         if (redisData == null) {
-            return null;
+            User user = userMapper.selectByPrimaryKey(id);
+            if (user == null) {
+                return null;
+            }
+            return user;
         }
         if (StrUtil.isBlank(redisData.toString())) {
             bo = updateRedisDataByUid(id);
@@ -325,18 +338,27 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
-        List<GroupVo> groupInfoBos = groupService.listGroupByUid(user.getId());
-        for (GroupVo groupInfoBo : groupInfoBos) {
-            currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
-        }
-        currentUserDetailsBo.setGroupInfoBos(groupInfoBos);
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
-        Wallet wallet = userWalletService.getByUid(uid);
+        initUserGroup(uid, currentUserDetailsBo);
+        Wallet wallet = userWalletService.getByUid(uid, false);
         if (wallet != null) {
             currentUserDetailsBo.setWallet(wallet);
         }
         redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
         return currentUserDetailsBo;
+    }
+
+    /**
+     * 初始化用户群组
+     *
+     * @param uid                  用户id
+     * @param currentUserDetailsBo currentUserDetailsBo
+     */
+    private void initUserGroup(Integer uid, UserDetailsBo currentUserDetailsBo) {
+        List<GroupVo> groupInfoBos = groupService.listGroupByUid(uid);
+        for (GroupVo groupInfoBo : groupInfoBos) {
+            currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
+        }
     }
 
     @Override
@@ -347,11 +369,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
-        List<GroupVo> groupInfoBos = groupService.listGroupByUid(user.getId());
-        for (GroupVo groupInfoBo : groupInfoBos) {
-            currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
-        }
-        currentUserDetailsBo.setGroupInfoBos(groupInfoBos);
+        initUserGroup(uid, currentUserDetailsBo);
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
         currentUserDetailsBo.setWallet(wallet);
         redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
@@ -362,24 +380,21 @@ public class UserServiceImpl extends BaseService implements UserService {
     public UserDetailsBo updateRedisDataByUid(User user) {
         UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
-        List<GroupVo> groupInfoBos = groupService.listGroupByUid(user.getId());
-        for (GroupVo groupInfoBo : groupInfoBos) {
-            currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
-        }
-        currentUserDetailsBo.setGroupInfoBos(groupInfoBos);
+        initUserGroup(user.getId(), currentUserDetailsBo);
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(user.getId()));
+        initUserGroup(user.getId(), currentUserDetailsBo);
         redisUtil.set(RedisConstant.REDIS_USER_ID + user.getId(), JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
         return currentUserDetailsBo;
     }
 
     @Override
     public UserDetailsBo getRedisDataByUid(Integer uid) {
-        String redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + uid).toString();
+        Object redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + uid);
         UserDetailsBo bo;
-        if (StrUtil.isBlank(redisData)) {
+        if (redisData == null) {
             bo = updateRedisDataByUid(uid);
         } else {
-            bo = JSONObject.toJavaObject(JSONObject.parseObject(redisData), UserDetailsBo.class);
+            bo = JSONObject.toJavaObject(JSONObject.parseObject(redisData.toString()), UserDetailsBo.class);
         }
         return bo;
     }

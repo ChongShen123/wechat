@@ -94,6 +94,10 @@ public abstract class AbstractChatCmd extends AbstractCmd {
                 parseParam(param);
                 //具体执行
                 concreteAction(channel);
+            } catch (UserBalancePriceException e) {
+                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
+            } catch (SystemException e) {
+                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
             } catch (FileNotFoundException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.FILE_NOT_FUND, cmd));
             } catch (BannedChatException e) {

@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.entity.user.UserOperationLog;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author tiankong
@@ -9,7 +10,7 @@ import com.xsdkj.wechat.entity.user.UserOperationLog;
 public interface UserOperationLogMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(UserOperationLog record);
+    int insert(@Param("log") UserOperationLog log);
 
     int insertSelective(UserOperationLog record);
 

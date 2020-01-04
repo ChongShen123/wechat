@@ -1,15 +1,16 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.entity.wallet.WalletTransferLog;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author tiankong
- * @date 2020/1/3 9:42
+ * @date 2020/1/4 14:37
  */
 public interface WalletTransferLogMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(WalletTransferLog record);
+    int insert(@Param("log") WalletTransferLog log, @Param("tableNum") int tableNum);
 
     int insertSelective(WalletTransferLog record);
 

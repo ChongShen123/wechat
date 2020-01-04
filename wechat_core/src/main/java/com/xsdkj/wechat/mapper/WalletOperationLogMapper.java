@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.entity.wallet.WalletOperationLog;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author tiankong
@@ -9,7 +10,14 @@ import com.xsdkj.wechat.entity.wallet.WalletOperationLog;
 public interface WalletOperationLogMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(WalletOperationLog record);
+    /**
+     * 保存用户充值或提现记录
+     *
+     * @param log      记录
+     * @param tableNum 表id 用户id取模10获得
+     * @return count
+     */
+    int insert(@Param("log") WalletOperationLog log, @Param("tableNum") int tableNum);
 
     int insertSelective(WalletOperationLog record);
 

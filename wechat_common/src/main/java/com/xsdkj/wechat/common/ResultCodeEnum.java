@@ -6,6 +6,10 @@ package com.xsdkj.wechat.common;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 系统异常
+     */
+    SYSTEM_EXCEPTION(4046, "系统异常,请连接管理员!"),
+    /**
      * 用户余额不足
      */
     USER_WALLET_BALANCE_EXCEPTION(4045, "用户余额不足"),

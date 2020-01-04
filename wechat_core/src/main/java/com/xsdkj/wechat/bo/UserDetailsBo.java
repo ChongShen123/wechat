@@ -9,10 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author tiankong
@@ -38,11 +36,6 @@ public class UserDetailsBo implements UserDetails, Serializable {
      */
     private List<PermissionBo> permissionBos;
     /**
-     * 用户的所有群组
-     * TODO 这里可以去掉.与下面的Map重复了
-     */
-    private List<GroupVo> groupInfoBos;
-    /**
      * 用户所有好友
      */
     private List<UserFriendVo> userFriendVos;
@@ -50,6 +43,15 @@ public class UserDetailsBo implements UserDetails, Serializable {
      * 用户所有群组
      */
     private Map<Integer, GroupVo> userGroupRelationMap = new HashMap<>();
+
+    /**
+     * 获取用户群组
+     *
+     * @return List
+     */
+    public List<GroupVo> getUserGroupList() {
+        return new ArrayList<>(userGroupRelationMap.values());
+    }
 
     public UserDetailsBo(User user) {
         this.user = user;

@@ -51,6 +51,11 @@ public interface ChatConstant {
      * 撤销
      */
     byte CHAT_TYPE_REVOCATION = 3;
+
+    /**
+     * 转账消息
+     */
+    byte CHAT_TYPE_TRANSFER = 7;
     /**
      * 加入群聊
      */

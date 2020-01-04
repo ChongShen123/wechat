@@ -1008,6 +1008,71 @@
 
 > data:为用户金额
 
+### 4002 用户转账
+
+请求
+
+```
+{
+    "cmd":4002,
+    "toUserId":42,
+    "price":100,
+    "content":"这是给你的礼物"
+}
+```
+
+> content : 为转账消息,可以不传.
+
+响应
+
+```
+{
+  "code":2000,
+  "message":"ok"
+}
+```
+
+**接收用户**
+
+响应--- 1
+
+```
+{
+  "code":2000,
+  "data":{
+    "content":"这是给你的礼物!",
+    "createTimes":1578124153843,
+    "fromUserId":7,
+    "id":"1213366761418276864",
+    "read":true,
+    "toUserId":42,
+    "type":7
+  },
+  "message":"ok",
+  "type":4002
+}
+```
+
+响应 --- 2
+
+```
+{
+  "code":2000,
+  "data":{
+    "content":"来自sky的转账信息,
+    请注册查收!",
+    "createTimes":1578123799624,
+    "fromUserId":7,
+    "id":"1213365275716108288",
+    "read":true,
+    "toUserId":42,
+    "type":7
+  },
+  "message":"ok",
+  "type":4002
+}
+```
+
 # 系统通知
 
 ## 用户充值通知
