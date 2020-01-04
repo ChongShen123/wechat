@@ -13,6 +13,8 @@ import java.util.Set;
  */
 @Data
 public class RequestParamBo {
+    private String oldPassword;
+    private String password;
     private BigDecimal price;
     private Integer groupId;
     private Integer userId;

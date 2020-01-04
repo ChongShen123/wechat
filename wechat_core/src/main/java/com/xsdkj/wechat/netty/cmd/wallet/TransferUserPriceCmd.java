@@ -2,7 +2,6 @@ package com.xsdkj.wechat.netty.cmd.wallet;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.constant.ChatConstant;
@@ -13,9 +12,9 @@ import com.xsdkj.wechat.entity.wallet.Wallet;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.service.UserWalletService;
-import com.xsdkj.wechat.service.ex.DataEmptyException;
-import com.xsdkj.wechat.service.ex.SystemException;
-import com.xsdkj.wechat.service.ex.UserBalancePriceException;
+import com.xsdkj.wechat.ex.DataEmptyException;
+import com.xsdkj.wechat.ex.SystemException;
+import com.xsdkj.wechat.ex.UserBalancePriceException;
 import com.xsdkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +38,7 @@ public class TransferUserPriceCmd extends AbstractChatCmd {
     protected void parseParam(JSONObject param) {
         requestParam.setToUserId(Integer.parseInt(parseParam(param, ParamConstant.KEY_TO_USER_ID)));
         requestParam.setPrice(new BigDecimal(parseParam(param, ParamConstant.KEY_PRICE)));
+        requestParam.setPassword(parseParam(param, ParamConstant.KEY_PASSWORD));
         String content = param.getString(ParamConstant.KEY_CONTENT);
         if (StrUtil.isNotBlank(content)) {
             requestParam.setContent(content);
@@ -50,6 +50,9 @@ public class TransferUserPriceCmd extends AbstractChatCmd {
         Integer toUserId = requestParam.getToUserId();
         BigDecimal price = requestParam.getPrice();
         String content = requestParam.getContent();
+        String password = requestParam.getPassword();
+        // TODO 需要验证用户的支付密码是否正确
+
         // 判断用户余额是否足够
         Wallet userWallet = userWalletService.getByUid(session.getUid(), true);
         if (userWallet.getPrice().subtract(price).doubleValue() < 0) {

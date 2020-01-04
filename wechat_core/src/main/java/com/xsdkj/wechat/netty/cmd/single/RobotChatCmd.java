@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.ex.ValidateException;
 import io.netty.channel.Channel;
 
 /**

@@ -1,8 +1,7 @@
-package com.xsdkj.wechat.service.ex;
+package com.xsdkj.wechat.ex;
 
 import com.xsdkj.wechat.common.IErrorCode;
 import com.xsdkj.wechat.common.ResultCodeEnum;
-import com.xsdkj.wechat.service.ex.ServiceException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -46,8 +46,24 @@ public interface UserWalletService {
 
     /**
      * 保存一个钱包
+     *
      * @param wallet 钱包
      */
     void save(Wallet wallet);
 
+    /**
+     * 更新支付密码
+     *
+     * @param uid      用户id
+     * @param password 密码
+     */
+    void updatePayPassword(Integer uid, String password);
+
+    /**
+     * 修改支付密码
+     * @param uid 用户id
+     * @param password 新密码
+     * @param oldPassword 旧密码
+     */
+    void resetPayPassword(Integer uid, String password, String oldPassword);
 }

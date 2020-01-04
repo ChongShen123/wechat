@@ -8,12 +8,14 @@
         <result column="uid" jdbcType="INTEGER" property="uid"/>
         <result column="price" jdbcType="DECIMAL" property="price"/>
         <result column="total_price" jdbcType="DECIMAL" property="totalPrice"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="create_times" jdbcType="BIGINT" property="createTimes"/>
         <result column="modified_times" jdbcType="BIGINT" property="modifiedTimes"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `uid`, price, total_price, create_times, modified_times
+        id, `uid`, price, total_price, `password`, create_times, modified_times, `state`
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -31,9 +33,11 @@
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into wallet (`uid`, price, total_price,
-        create_times, modified_times)
+        `password`, create_times, modified_times,
+        `state`)
         values (#{uid,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL},
-        #{createTimes,jdbcType=BIGINT}, #{modifiedTimes,jdbcType=BIGINT})
+        #{password,jdbcType=VARCHAR}, #{createTimes,jdbcType=BIGINT}, #{modifiedTimes,jdbcType=BIGINT},
+        #{state,jdbcType=TINYINT})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.Wallet"
             useGeneratedKeys="true">
@@ -49,11 +53,17 @@
             <if test="totalPrice != null">
                 total_price,
             </if>
+            <if test="password != null">
+                `password`,
+            </if>
             <if test="createTimes != null">
                 create_times,
             </if>
             <if test="modifiedTimes != null">
                 modified_times,
+            </if>
+            <if test="state != null">
+                `state`,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -66,11 +76,17 @@
             <if test="totalPrice != null">
                 #{totalPrice,jdbcType=DECIMAL},
             </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
             <if test="createTimes != null">
                 #{createTimes,jdbcType=BIGINT},
             </if>
             <if test="modifiedTimes != null">
                 #{modifiedTimes,jdbcType=BIGINT},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=TINYINT},
             </if>
         </trim>
     </insert>
@@ -87,11 +103,17 @@
             <if test="totalPrice != null">
                 total_price = #{totalPrice,jdbcType=DECIMAL},
             </if>
+            <if test="password != null">
+                `password` = #{password,jdbcType=VARCHAR},
+            </if>
             <if test="createTimes != null">
                 create_times = #{createTimes,jdbcType=BIGINT},
             </if>
             <if test="modifiedTimes != null">
                 modified_times = #{modifiedTimes,jdbcType=BIGINT},
+            </if>
+            <if test="state != null">
+                `state` = #{state,jdbcType=TINYINT},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -102,8 +124,10 @@
         set `uid` = #{uid,jdbcType=INTEGER},
         price = #{price,jdbcType=DECIMAL},
         total_price = #{totalPrice,jdbcType=DECIMAL},
+        `password` = #{password,jdbcType=VARCHAR},
         create_times = #{createTimes,jdbcType=BIGINT},
-        modified_times = #{modifiedTimes,jdbcType=BIGINT}
+        modified_times = #{modifiedTimes,jdbcType=BIGINT},
+        `state` = #{state,jdbcType=TINYINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -127,5 +151,9 @@
         total_price = #{totalPrice,jdbcType=DECIMAL},
         modified_times = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
         where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updatePayPassword">
+        update wallet set password = #{password,jdbcType=VARCHAR},state = 1,modified_times =
+        REPLACE(unix_timestamp(current_timestamp(3)),'.','') where uid = #{uid,jdbcType=INTEGER} ;
     </update>
 </mapper>

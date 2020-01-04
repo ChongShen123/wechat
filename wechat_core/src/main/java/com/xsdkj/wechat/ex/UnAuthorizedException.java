@@ -1,4 +1,4 @@
-package com.xsdkj.wechat.service.ex;
+package com.xsdkj.wechat.ex;
 
 /**
  * 暂未登录或token已过期

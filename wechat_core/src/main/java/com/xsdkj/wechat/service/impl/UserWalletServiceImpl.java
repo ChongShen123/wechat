@@ -19,10 +19,11 @@ import com.xsdkj.wechat.mapper.*;
 import com.xsdkj.wechat.service.BaseService;
 import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.service.UserWalletService;
-import com.xsdkj.wechat.service.ex.*;
+import com.xsdkj.wechat.ex.*;
 import com.xsdkj.wechat.util.ChatUtil;
 import com.xsdkj.wechat.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,8 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
     private UserUtil userUtil;
     @Resource
     private WalletMapper walletMapper;
+    @Resource
+    private PasswordEncoder encoder;
     /**
      * 充值提现记录
      */
@@ -146,6 +149,20 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
     @Override
     public void save(Wallet wallet) {
         walletMapper.insert(wallet);
+    }
+
+    @Override
+    public void updatePayPassword(Integer uid, String password) {
+        walletMapper.updatePayPassword(uid, encoder.encode(password));
+    }
+
+    @Override
+    public void resetPayPassword(Integer uid, String password, String oldPassword) {
+        Wallet wallet = walletMapper.getOneByUid(uid);
+        if (!encoder.matches(oldPassword, wallet.getPassword())) {
+            throw new PasswordNotMatchException();
+        }
+        updatePayPassword(uid, password);
     }
 
     /**
@@ -323,11 +340,5 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         transferLog.setYear(DateUtil.thisYear());
         transferLog.setCreateTimes(System.currentTimeMillis());
         return transferLog;
-    }
-
-    public static void main(String[] args) {
-        long currentTimeMillis = System.currentTimeMillis();
-        System.out.println(DateUtil.thisYear());
-        System.out.println((System.currentTimeMillis() - currentTimeMillis));
     }
 }

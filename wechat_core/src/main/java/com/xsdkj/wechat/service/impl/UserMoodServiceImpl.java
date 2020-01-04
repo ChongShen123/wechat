@@ -10,7 +10,7 @@ import com.xsdkj.wechat.mapper.UserMoodMapper;
 import com.xsdkj.wechat.entity.mood.UserMood;
 import com.xsdkj.wechat.service.RabbitTemplateService;
 import com.xsdkj.wechat.service.UserMoodService;
-import com.xsdkj.wechat.service.ex.FileNotFoundException;
+import com.xsdkj.wechat.ex.FileNotFoundException;
 import com.xsdkj.wechat.util.UserUtil;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.UserMoodVo;

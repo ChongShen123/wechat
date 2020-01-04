@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2020/1/3 12:43
+ * @date 2020/1/4 18:08
  */
 @Data
 public class Wallet implements Serializable {
@@ -21,12 +21,22 @@ public class Wallet implements Serializable {
      */
     private BigDecimal totalPrice;
 
+    /**
+     * 支付密码
+     */
+    private String password;
+
     private Long createTimes;
 
     /**
      * 更新时间
      */
     private Long modifiedTimes;
+
+    /**
+     * 0未设置支付密码 1已设置支付密码
+     */
+    private Byte state;
 
     private static final long serialVersionUID = 1L;
 }

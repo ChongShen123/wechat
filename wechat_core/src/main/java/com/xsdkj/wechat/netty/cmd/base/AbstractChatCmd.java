@@ -17,7 +17,7 @@ import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.service.*;
-import com.xsdkj.wechat.service.ex.*;
+import com.xsdkj.wechat.ex.*;
 import com.xsdkj.wechat.util.ChatUtil;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.util.ThreadUtil;
@@ -94,16 +94,21 @@ public abstract class AbstractChatCmd extends AbstractCmd {
                 parseParam(param);
                 //具体执行
                 concreteAction(channel);
+                // TODO 把异常处理优化下 try catch 太多了
+            } catch (PayPasswordHasBeenSetException e) {
+                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
             } catch (UserBalancePriceException e) {
                 sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
             } catch (SystemException e) {
                 sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
             } catch (FileNotFoundException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.FILE_NOT_FUND, cmd));
+                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
             } catch (BannedChatException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.BANNED_CHAT, cmd));
-            } catch (ValidateException | ParseParamException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.VALIDATE_FAILED, cmd));
+            } catch (ValidateException e) {
+                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
+            } catch (ParseParamException e) {
+                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
             } catch (DataEmptyException | UserNotFountException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
             } catch (DataIntegrityViolationException e) {
@@ -122,6 +127,8 @@ public abstract class AbstractChatCmd extends AbstractCmd {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION, cmd));
             } catch (UnAuthorizedException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.UNAUTHORIZED, cmd));
+            } catch (ServiceException e) {
+                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
             } catch (NullPointerException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
                 e.printStackTrace();

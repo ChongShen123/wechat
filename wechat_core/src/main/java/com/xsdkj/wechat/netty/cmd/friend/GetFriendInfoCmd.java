@@ -7,7 +7,7 @@ import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
-import com.xsdkj.wechat.service.ex.DataEmptyException;
+import com.xsdkj.wechat.ex.DataEmptyException;
 import com.xsdkj.wechat.vo.GetFriendInfoVo;
 import io.netty.channel.Channel;
 import org.springframework.beans.BeanUtils;

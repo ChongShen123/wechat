@@ -92,4 +92,13 @@ public interface ParamConstant {
      * 金额
      */
     String KEY_PRICE = "price";
+    /**
+     * 密码
+     */
+    String KEY_PASSWORD = "password";
+
+    /**
+     * 旧密码
+     */
+    String KEY_OLD_PASSWORD = "old_password";
 }

@@ -6,6 +6,10 @@ package com.xsdkj.wechat.common;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 支付密码已被设置
+     */
+    PAY_PASSWORD_HAS_BEEN_SET(4047, "操作失败,支付密码已被设置!"),
+    /**
      * 系统异常
      */
     SYSTEM_EXCEPTION(4046, "系统异常,请连接管理员!"),

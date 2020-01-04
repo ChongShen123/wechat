@@ -13,7 +13,7 @@ import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.ex.ValidateException;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.FriendApplicationVo;
 import io.netty.channel.Channel;

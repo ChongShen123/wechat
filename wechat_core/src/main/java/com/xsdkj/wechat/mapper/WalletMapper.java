@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 /**
  * @author tiankong
- * @date 2020/1/3 11:12
+ * @date 2020/1/4 18:08
  */
 public interface WalletMapper {
     int deleteByPrimaryKey(Integer id);
@@ -26,7 +26,8 @@ public interface WalletMapper {
 
     /**
      * 修改用户钱包余额
-     * @param uid 用户id
+     *
+     * @param uid   用户id
      * @param price 金额
      * @return count
      */
@@ -34,4 +35,11 @@ public interface WalletMapper {
 
     void updateUserWallet(Wallet wallet);
 
+    /**
+     * 设置用户支付密码
+     *
+     * @param uid      用户id
+     * @param password 密码
+     */
+    void updatePayPassword(@Param("uid") Integer uid, @Param("password") String password);
 }

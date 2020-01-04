@@ -13,8 +13,8 @@ import com.xsdkj.wechat.entity.chat.GroupChat;
 import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
-import com.xsdkj.wechat.service.ex.BannedChatException;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.ex.BannedChatException;
+import com.xsdkj.wechat.ex.ValidateException;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 

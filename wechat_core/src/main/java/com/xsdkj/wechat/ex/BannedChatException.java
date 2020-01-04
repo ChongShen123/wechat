@@ -1,4 +1,4 @@
-package com.xsdkj.wechat.service.ex;
+package com.xsdkj.wechat.ex;
 
 /**
  * 禁止聊天异常

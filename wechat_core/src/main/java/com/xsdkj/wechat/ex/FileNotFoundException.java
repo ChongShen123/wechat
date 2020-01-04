@@ -1,6 +1,7 @@
-package com.xsdkj.wechat.service.ex;
+package com.xsdkj.wechat.ex;
 
 import com.xsdkj.wechat.common.IErrorCode;
+import com.xsdkj.wechat.common.ResultCodeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Data
 public class FileNotFoundException extends ServiceException implements Serializable {
     private static final long serialVersionUID = -2146716503601972045L;
-    private IErrorCode code;
+    private IErrorCode code = ResultCodeEnum.FILE_NOT_FUND;
 
     public FileNotFoundException() {
     }
