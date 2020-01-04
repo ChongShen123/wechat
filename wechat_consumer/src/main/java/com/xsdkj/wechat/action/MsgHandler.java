@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.action;
 
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 
 /**
  * 消息处理者抽象接口
@@ -12,6 +12,6 @@ public interface MsgHandler {
      * 执行方法
      * @param box 消息
      */
-    void execute(RabbitMessageBoxBo box);
+    void execute(MsgBox box);
 
 }

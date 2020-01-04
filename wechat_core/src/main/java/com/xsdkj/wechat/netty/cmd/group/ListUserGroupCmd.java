@@ -30,7 +30,7 @@ public class ListUserGroupCmd extends AbstractChatCmd {
     @Override
     protected void concreteAction(Channel channel) {
         ThreadUtil.getSingleton().submit(() -> {
-            List<GroupVo> list = userService.getRedisDataByUid(SessionUtil.getSession(channel).getUid()).getGroupInfoBos();
+            List<GroupVo> list = userService.getRedisDataByUid(SessionUtil.getSession(channel).getUid()).getUserGroupList();
             Map<String, Object> map = new HashMap<>(2);
             map.put("groupList", list);
             map.put("count", list.size());

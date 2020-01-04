@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2020/1/3 9:42
+ * @date 2020/1/4 14:37
  */
 @Data
 public class WalletTransferLog implements Serializable {
@@ -16,6 +16,11 @@ public class WalletTransferLog implements Serializable {
 
     private Integer toUserId;
 
+    /**
+     * 谁转的
+     */
+    private Integer fromUserId;
+
     private BigDecimal price;
 
     private BigDecimal beforePrice;
@@ -23,13 +28,18 @@ public class WalletTransferLog implements Serializable {
     private BigDecimal afterPrice;
 
     /**
-    * 月份
-    */
+     * 0转出 1转入
+     */
+    private Byte type;
+
+    /**
+     * 月份
+     */
     private Byte month;
 
     /**
-    * 年
-    */
+     * 年
+     */
     private Integer year;
 
     private Long createTimes;

@@ -2,7 +2,7 @@ package com.xsdkj.wechat.netty.cmd.base;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
@@ -14,8 +14,8 @@ import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.User;
-import com.xsdkj.wechat.service.ex.UnAuthorizedException;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.ex.UnAuthorizedException;
+import com.xsdkj.wechat.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.util.JwtTokenUtil;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -107,12 +107,12 @@ public class RegisterCmd extends AbstractChatCmd {
         List<FriendApplication> friendApplications = friendApplicationService.listByReadAndUserId(false, userId);
         if (friendApplications.size() > 0) {
             sendMessage(channel, JsonResult.success(friendApplications, Cmd.ADD_FRIEND));
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_FRIEND_APPLICATION_READ, friendApplications));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_FRIEND_APPLICATION_READ, friendApplications));
         }
         List<SingleChat> singleChats = singleChatService.listByReadAndToUserId(false, userId);
         if (singleChats.size() > 0) {
             singleChats.forEach(singleChat -> sendMessage(channel, JsonResult.success(singleChat, Cmd.SINGLE_CHAT)));
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT_READ, singleChats));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT_READ, singleChats));
         }
         user.setLoginState(UserConstant.LOGGED);
         userService.updateRedisDataByUid(user);

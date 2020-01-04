@@ -1,6 +1,6 @@
 package com.xsdkj.wechat.service.impl;
 
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.service.RabbitTemplateService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class RabbitTemplateServiceImpl implements RabbitTemplateService {
     private RabbitTemplate rabbitTemplate;
 
     @Override
-    public void addExchange(String exchangeName, RabbitMessageBoxBo box) {
+    public void addExchange(String exchangeName, MsgBox box) {
         rabbitTemplate.convertAndSend(exchangeName, null, box);
     }
 }

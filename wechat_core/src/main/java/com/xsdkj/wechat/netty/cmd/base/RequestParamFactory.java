@@ -7,8 +7,8 @@ import com.xsdkj.wechat.bo.RequestParamBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.constant.ChatConstant;
 import com.xsdkj.wechat.constant.ParamConstant;
-import com.xsdkj.wechat.service.ex.ParseParamException;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.ex.ParseParamException;
+import com.xsdkj.wechat.ex.ValidateException;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Arrays;

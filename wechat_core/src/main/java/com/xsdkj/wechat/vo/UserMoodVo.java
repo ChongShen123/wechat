@@ -1,6 +1,9 @@
 package com.xsdkj.wechat.vo;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
 import com.xsdkj.wechat.entity.mood.UserComment;
 import com.xsdkj.wechat.entity.mood.UserThumbs;
 import lombok.Data;

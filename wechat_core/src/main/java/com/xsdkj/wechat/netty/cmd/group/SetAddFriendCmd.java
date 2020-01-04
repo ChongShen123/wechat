@@ -6,7 +6,7 @@ import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
-import com.xsdkj.wechat.service.ex.PermissionDeniedException;
+import com.xsdkj.wechat.ex.PermissionDeniedException;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Component;
 

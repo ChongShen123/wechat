@@ -8,7 +8,7 @@ import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.mapper.UserGroupMapper;
 import com.xsdkj.wechat.mapper.GroupNoSayMapper;
 import com.xsdkj.wechat.service.UserGroupService;
-import com.xsdkj.wechat.service.ex.DataEmptyException;
+import com.xsdkj.wechat.ex.DataEmptyException;
 import com.xsdkj.wechat.util.RedisUtil;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;

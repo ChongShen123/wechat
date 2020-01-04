@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2020/1/3 9:45
+ * @date 2020/1/3 13:04
  */
 @Data
 public class UserOperationLog implements Serializable {
@@ -14,18 +14,18 @@ public class UserOperationLog implements Serializable {
     private Integer uid;
 
     /**
-    * 平台id
-    */
+     * 平台id
+     */
     private Integer platfromId;
 
     /**
-    * 1 上分,2 下分,3 禁言,4 设置群可加好友 5 加签到次数,6 减签到次数 ...
-    */
+     * 1 上分,2 下分,3 禁言,4 设置群可加好友 5 加签到次数,6 减签到次数 ...
+     */
     private Byte operationType;
 
     /**
-    * 描述操作内容
-    */
+     * 描述操作内容
+     */
     private String content;
 
     private Long createTimes;

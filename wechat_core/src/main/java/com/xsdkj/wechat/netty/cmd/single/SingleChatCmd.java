@@ -2,13 +2,13 @@ package com.xsdkj.wechat.netty.cmd.single;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;
@@ -38,7 +38,7 @@ public class SingleChatCmd extends AbstractChatCmd {
 
     @Override
     protected void concreteAction(Channel channel) {
-        SingleChat chat = createNewSingleChat(requestParam.getToUserId(), session.getUid(), requestParam.getContent(), requestParam.getByteType());
+        SingleChat chat = chatUtil.createNewSingleChat(requestParam.getToUserId(), session.getUid(), requestParam.getContent(), requestParam.getByteType());
         // 获取一条消息
         Channel toUserChannel = SessionUtil.ONLINE_USER_MAP.get(requestParam.getToUserId());
         if (toUserChannel != null) {
@@ -47,7 +47,7 @@ public class SingleChatCmd extends AbstractChatCmd {
         } else {
             chat.setRead(false);
         }
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT, chat));
-        sendMessage(channel, JsonResult.success(chat,cmd));
+        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT, chat));
+        sendMessage(channel, JsonResult.success(chat, cmd));
     }
 }

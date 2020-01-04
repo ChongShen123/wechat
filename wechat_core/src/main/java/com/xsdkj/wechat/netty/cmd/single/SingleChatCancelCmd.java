@@ -7,7 +7,7 @@ import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.ex.ValidateException;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
 import com.xsdkj.wechat.util.SessionUtil;

@@ -62,4 +62,18 @@ public interface SystemConstant {
      * 关闭
      */
     Integer OFF = 0;
+    /**
+     * 充值
+     */
+    int TOP_UP = 1;
+
+    /**
+     * 提现
+     */
+    int DRAW_MONEY = 2;
+
+    /**
+     * 记录表分表个数
+     */
+    Integer LOG_TABLE_COUNT = 10;
 }

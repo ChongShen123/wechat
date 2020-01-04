@@ -2,7 +2,7 @@ package com.xsdkj.wechat.action.handle;
 
 import com.xsdkj.wechat.action.MsgHandler;
 import com.xsdkj.wechat.action.SaveAnno;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.SingleChatService;
@@ -23,7 +23,7 @@ public class SingleChatReadHandler implements MsgHandler {
     private SingleChatService singleChatService;
 
     @Override
-    public void execute(RabbitMessageBoxBo box) {
+    public void execute(MsgBox box) {
         List<SingleChat> singleChats = (List<SingleChat>) box.getData();
         singleChatService.updateRead(true, singleChats);
     }

@@ -41,15 +41,7 @@ public class SingleChatServiceImpl implements SingleChatService {
 
     @Override
     public void save(SingleChat singleChat) {
-        SingleChat single = new SingleChat();
-        single.setId(singleChat.getId());
-        single.setCreateTimes(singleChat.getCreateTimes());
-        single.setType(singleChat.getType());
-        single.setRead(singleChat.getRead());
-        single.setFromUserId(singleChat.getFromUserId());
-        single.setContent(singleChat.getContent());
-        single.setToUserId(singleChat.getToUserId());
-        mongoTemplate.save(single);
+        mongoTemplate.save(singleChat);
     }
     /*
     定时器删除数据库存储时间超过7天的数据

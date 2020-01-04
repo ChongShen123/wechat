@@ -8,6 +8,7 @@ import com.xsdkj.wechat.dto.UserRegisterDto;
 import com.xsdkj.wechat.dto.UserUpdateInfoParam;
 import com.xsdkj.wechat.dto.UserUpdatePassword;
 import com.xsdkj.wechat.entity.user.User;
+import com.xsdkj.wechat.entity.wallet.Wallet;
 import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;
@@ -47,14 +48,15 @@ public interface UserService {
      * @param request 连接信息
      * @return 登录信息
      */
-//    LoginVo register(UserRegisterDto param, HttpServletRequest request);
+    LoginVo register(UserRegisterDto param, HttpServletRequest request);
 
     /**
      * 用户注册
-     * @param param 参数
+     *
+     * @param param   参数
      * @param request 连接信息
      */
-    void register(UserRegisterDto param, HttpServletRequest request);
+//    void register(UserRegisterDto param, HttpServletRequest request);
 
     /**
      * 查询用户
@@ -137,6 +139,16 @@ public interface UserService {
      * 更新用户Redis 数据
      * 更新用户菜单,用户群组,用户信息
      *
+     * @param uid    用户id
+     * @param wallet 用户钱包
+     * @return List
+     */
+    UserDetailsBo updateRedisDataByUid(Integer uid, Wallet wallet);
+
+    /**
+     * 更新用户Redis 数据
+     * 更新用户菜单,用户群组,用户信息
+     *
      * @param user 用户
      * @return UserDetailsBo
      */
@@ -163,9 +175,10 @@ public interface UserService {
      * 查询本地用户
      *
      * @param userId 用户iD
+     * @param type   是否更新用户redis缓存
      * @return User
      */
-    User getUserById(Integer userId);
+    User getUserById(Integer userId, boolean type);
 
     /**
      * 修改用户登录状态

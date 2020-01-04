@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.entity.user.UserGroup;
-import com.xsdkj.wechat.service.ex.DataEmptyException;
+import com.xsdkj.wechat.ex.DataEmptyException;
 import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;
 import com.xsdkj.wechat.vo.GroupVo;

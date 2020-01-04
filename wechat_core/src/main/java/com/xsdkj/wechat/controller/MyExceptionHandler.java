@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.controller;
 
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.service.ex.ServiceException;
+import com.xsdkj.wechat.ex.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,7 +1,7 @@
 package com.xsdkj.wechat.netty.cmd.group;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xsdkj.wechat.bo.RabbitMessageBoxBo;
+import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
@@ -12,8 +12,8 @@ import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
-import com.xsdkj.wechat.service.ex.PermissionDeniedException;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.ex.PermissionDeniedException;
+import com.xsdkj.wechat.ex.ValidateException;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.RemoveChatVo;
 import io.netty.channel.Channel;
@@ -56,7 +56,7 @@ public class RemoveChatGroupCmd extends AbstractChatCmd {
         groupService.updateGroupCount(-ids.size(), groupId);
         // 通知被移除用户
         ids.forEach(uid -> {
-            SingleChat newSingleChat = createNewSingleChat(uid, SystemConstant.SYSTEM_USER_ID, "您已退出【" + group.getName() + "】群聊", ChatConstant.QUIT_GROUP);
+            SingleChat newSingleChat = chatUtil.createNewSingleChat(uid, SystemConstant.SYSTEM_USER_ID, "您已退出【" + group.getName() + "】群聊", ChatConstant.QUIT_GROUP);
             Channel userChannel = SessionUtil.ONLINE_USER_MAP.get(uid);
             if (userChannel != null) {
                 sendMessage(userChannel, JsonResult.success(newSingleChat));
@@ -67,7 +67,7 @@ public class RemoveChatGroupCmd extends AbstractChatCmd {
             }
             // 更新被移除用户的redis数据
             userService.updateRedisDataByUid(uid);
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_SINGLE_CHAT, newSingleChat));
+            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT, newSingleChat));
         });
         // 更新群组redis数据
         groupService.updateRedisGroupById(groupId);

@@ -134,4 +134,22 @@ public interface Cmd {
      * 查询用户详情
      */
     int USER_INFO = 4000;
+    /**
+     * 查看用户金额
+     */
+    int USER_PRICE = 4001;
+
+    /**
+     * 用户转账
+     */
+    int TRANSFER_ACCOUNTS = 4002;
+
+    /**
+     * 设置支付密码
+     */
+    int SET_PAY_PASSWORD = 4003;
+    /**
+     * 修改支付密码
+     */
+    int UPDATE_PAY_PASSWORD = 4004;
 }

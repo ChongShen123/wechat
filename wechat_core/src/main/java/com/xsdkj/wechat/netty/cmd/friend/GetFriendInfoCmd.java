@@ -7,7 +7,7 @@ import com.xsdkj.wechat.constant.ParamConstant;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
-import com.xsdkj.wechat.service.ex.DataEmptyException;
+import com.xsdkj.wechat.ex.DataEmptyException;
 import com.xsdkj.wechat.vo.GetFriendInfoVo;
 import io.netty.channel.Channel;
 import org.springframework.beans.BeanUtils;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GetFriendInfoCmd extends AbstractChatCmd {
     @Override
-    protected void parseParam(JSONObject param) throws Exception {
+    protected void parseParam(JSONObject param) {
         requestParam.setUserId(Integer.parseInt(parseParam(param, ParamConstant.KEY_USER_ID)));
     }
 
@@ -32,7 +32,7 @@ public class GetFriendInfoCmd extends AbstractChatCmd {
         Integer userId = requestParam.getUserId();
         User user = userService.getRedisUserByUserId(userId);
         if (user == null) {
-            user = userService.getUserById(userId);
+            user = userService.getUserById(userId,true);
             if (user == null) {
                 throw new DataEmptyException();
             }

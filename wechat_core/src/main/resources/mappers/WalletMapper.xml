@@ -1,85 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsdkj.wechat.mapper.WalletMapper">
-  <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.wallet.Wallet">
-    <!--@mbg.generated-->
-    <!--@Table wallet-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="price" jdbcType="DECIMAL" property="price" />
-    <result column="create_times" jdbcType="BIGINT" property="createTimes" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, `uid`, price, create_times
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select
-    <include refid="Base_Column_List" />
-    from wallet
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    <!--@mbg.generated-->
-    delete from wallet
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.Wallet" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into wallet (`uid`, price, create_times
-      )
-    values (#{uid,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{createTimes,jdbcType=BIGINT}
-      )
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.Wallet" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into wallet
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uid != null">
-        `uid`,
-      </if>
-      <if test="price != null">
-        price,
-      </if>
-      <if test="createTimes != null">
-        create_times,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uid != null">
-        #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="price != null">
-        #{price,jdbcType=DECIMAL},
-      </if>
-      <if test="createTimes != null">
-        #{createTimes,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.wallet.Wallet">
-    <!--@mbg.generated-->
-    update wallet
-    <set>
-      <if test="uid != null">
-        `uid` = #{uid,jdbcType=INTEGER},
-      </if>
-      <if test="price != null">
+    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.wallet.Wallet">
+        <!--@mbg.generated-->
+        <!--@Table wallet-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="total_price" jdbcType="DECIMAL" property="totalPrice"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="create_times" jdbcType="BIGINT" property="createTimes"/>
+        <result column="modified_times" jdbcType="BIGINT" property="modifiedTimes"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `uid`, price, total_price, `password`, create_times, modified_times, `state`
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from wallet
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from wallet
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.Wallet"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into wallet (`uid`, price, total_price,
+        `password`, create_times, modified_times,
+        `state`)
+        values (#{uid,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL},
+        #{password,jdbcType=VARCHAR}, #{createTimes,jdbcType=BIGINT}, #{modifiedTimes,jdbcType=BIGINT},
+        #{state,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.Wallet"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                `uid`,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="totalPrice != null">
+                total_price,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="createTimes != null">
+                create_times,
+            </if>
+            <if test="modifiedTimes != null">
+                modified_times,
+            </if>
+            <if test="state != null">
+                `state`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="totalPrice != null">
+                #{totalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="createTimes != null">
+                #{createTimes,jdbcType=BIGINT},
+            </if>
+            <if test="modifiedTimes != null">
+                #{modifiedTimes,jdbcType=BIGINT},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.wallet.Wallet">
+        <!--@mbg.generated-->
+        update wallet
+        <set>
+            <if test="uid != null">
+                `uid` = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="totalPrice != null">
+                total_price = #{totalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="password != null">
+                `password` = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="createTimes != null">
+                create_times = #{createTimes,jdbcType=BIGINT},
+            </if>
+            <if test="modifiedTimes != null">
+                modified_times = #{modifiedTimes,jdbcType=BIGINT},
+            </if>
+            <if test="state != null">
+                `state` = #{state,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.wallet.Wallet">
+        <!--@mbg.generated-->
+        update wallet
+        set `uid` = #{uid,jdbcType=INTEGER},
         price = #{price,jdbcType=DECIMAL},
-      </if>
-      <if test="createTimes != null">
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+        `password` = #{password,jdbcType=VARCHAR},
         create_times = #{createTimes,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.wallet.Wallet">
-    <!--@mbg.generated-->
-    update wallet
-    set `uid` = #{uid,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL},
-      create_times = #{createTimes,jdbcType=BIGINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        modified_times = #{modifiedTimes,jdbcType=BIGINT},
+        `state` = #{state,jdbcType=TINYINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--auto generated by MybatisCodeHelper on 2020-01-03-->
+    <select id="getOneByUid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wallet
+        where `uid`=#{uid,jdbcType=INTEGER}
+    </select>
+    <update id="updateWalletPrice">
+        update wallet
+        set price = #{price,jdbcType=DECIMAL},modified_times =
+        REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+        where uid = #{uid,jdbcType=INTEGER};
+    </update>
+    <update id="updateUserWallet">
+        update wallet
+        set `uid` = #{uid,jdbcType=INTEGER},
+        price = #{price,jdbcType=DECIMAL},
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+        modified_times = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updatePayPassword">
+        update wallet set password = #{password,jdbcType=VARCHAR},state = 1,modified_times =
+        REPLACE(unix_timestamp(current_timestamp(3)),'.','') where uid = #{uid,jdbcType=INTEGER} ;
+    </update>
 </mapper>

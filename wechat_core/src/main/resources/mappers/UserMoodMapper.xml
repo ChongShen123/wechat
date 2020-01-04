@@ -39,6 +39,7 @@
     </collection>
   </resultMap>-->
   <resultMap id="UserMoodMap" type="com.xsdkj.wechat.vo.UserMoodVo">
+<<<<<<< HEAD
     <id column="mood_id" property="id" />
     <result column="mood_uid" property="uid"/>
     <result column="mood_content" property="content"/>
@@ -61,12 +62,24 @@
       <result column="comments_content" property="content"/>
       <result column="comments_create_times" property="createTimes"/>
     </collection>
+=======
+    <id column="id" property="id"/>
+    <result column="uid" property="uid"/>
+    <result column="content" property="content"/>
+    <result column="file" property="file"/>
+    <result column="file_type" property="fileType"/>
+    <result column="comment_count" property="commentCount"/>
+    <result column="create_times" property="createTimes"/>
+    <collection property="userThumbs" ofType="com.xsdkj.wechat.entity.mood.UserThumbs"  column="id" select="selectUserThumbsById"/>
+    <collection property="comments" ofType="com.xsdkj.wechat.entity.mood.UserComment"  column="id" select="selectUserCommentById" />
+>>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, `uid`, content, `file`, file_type, comment_count, create_times
   </sql>
 
+<<<<<<< HEAD
 
   <select id="listUserMoodByUid" resultMap="UserMoodMap">
 select
@@ -89,6 +102,9 @@ and
 um.uid = #{id,jdbcType=INTEGER} where um.uid not null
   </select>
 <!--  <select id="selectUserThumbsById" resultType="com.xsdkj.wechat.entity.mood.UserThumbs">
+=======
+  <select id="selectUserThumbsById" resultType="com.xsdkj.wechat.entity.mood.UserThumbs">
+>>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
     select id,uid,nickname from user_thumbs where mood_id = #{id};
   </select>
   <select id="selectUserCommentById" resultType="com.xsdkj.wechat.entity.mood.UserComment">

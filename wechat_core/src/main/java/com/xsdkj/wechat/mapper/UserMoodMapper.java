@@ -1,5 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
+<<<<<<< HEAD
 
 
 
@@ -7,6 +8,11 @@ import com.xsdkj.wechat.entity.mood.UserComment;
 import com.xsdkj.wechat.entity.mood.UserMood;
 
 
+=======
+import com.xsdkj.wechat.entity.mood.UserComment;
+import com.xsdkj.wechat.entity.mood.UserMood;
+
+>>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
 import com.xsdkj.wechat.entity.mood.UserThumbs;
 import com.xsdkj.wechat.vo.UserMoodVo;
 import org.apache.ibatis.annotations.Param;
@@ -49,6 +55,9 @@ public interface UserMoodMapper {
 
 
 }
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c

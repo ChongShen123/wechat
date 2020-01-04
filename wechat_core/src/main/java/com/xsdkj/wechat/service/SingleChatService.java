@@ -9,6 +9,11 @@ import java.util.List;
  * @author tiankong
  */
 public interface SingleChatService {
+    /**
+     * 保存单聊消息
+     *
+     * @param singleChat 单聊消息
+     */
     void save(SingleChat singleChat);
 
     void deleteSingleChat();

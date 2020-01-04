@@ -2,10 +2,16 @@ package com.xsdkj.wechat.controller;
 
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.MoodParamDto;
+<<<<<<< HEAD
 
 
 import com.xsdkj.wechat.entity.mood.UserMood;
 
+=======
+import com.xsdkj.wechat.dto.UserThumbsDto;
+
+import com.xsdkj.wechat.entity.mood.UserMood;
+>>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
 import com.xsdkj.wechat.service.UserMoodService;
 import com.xsdkj.wechat.vo.UserMoodVo;
 import org.springframework.validation.annotation.Validated;

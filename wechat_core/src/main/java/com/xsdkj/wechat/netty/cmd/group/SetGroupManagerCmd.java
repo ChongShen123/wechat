@@ -7,10 +7,10 @@ import com.xsdkj.wechat.constant.GroupConstant;
 import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.netty.cmd.base.AbstractChatCmd;
-import com.xsdkj.wechat.service.ex.DataEmptyException;
-import com.xsdkj.wechat.service.ex.PermissionDeniedException;
-import com.xsdkj.wechat.service.ex.RepetitionException;
-import com.xsdkj.wechat.service.ex.ValidateException;
+import com.xsdkj.wechat.ex.DataEmptyException;
+import com.xsdkj.wechat.ex.PermissionDeniedException;
+import com.xsdkj.wechat.ex.RepetitionException;
+import com.xsdkj.wechat.ex.ValidateException;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 
