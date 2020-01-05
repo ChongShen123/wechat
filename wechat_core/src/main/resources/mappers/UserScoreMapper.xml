@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsdkj.wechat.mapper.UserScoreMapper">
+    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.wallet.UserScore">
+        <!--@mbg.generated-->
+        <!--@Table user_score-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="score" jdbcType="INTEGER" property="score"/>
+        <result column="retroactive_count" jdbcType="INTEGER" property="retroactiveCount"/>
+        <result column="succession_count" jdbcType="INTEGER" property="successionCount"/>
+        <result column="last_sign_date_times" jdbcType="BIGINT" property="lastSignDateTimes"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `uid`, score, retroactive_count, succession_count, last_sign_date_times
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from user_score
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from user_score
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.UserScore"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into user_score (`uid`, score, retroactive_count,
+        succession_count, last_sign_date_times)
+        values (#{uid,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, #{retroactiveCount,jdbcType=INTEGER},
+        #{successionCount,jdbcType=INTEGER}, #{lastSignDateTimes,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.xsdkj.wechat.entity.wallet.UserScore" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into user_score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                `uid`,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="retroactiveCount != null">
+                retroactive_count,
+            </if>
+            <if test="successionCount != null">
+                succession_count,
+            </if>
+            <if test="lastSignDateTimes != null">
+                last_sign_date_times,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                #{score,jdbcType=INTEGER},
+            </if>
+            <if test="retroactiveCount != null">
+                #{retroactiveCount,jdbcType=INTEGER},
+            </if>
+            <if test="successionCount != null">
+                #{successionCount,jdbcType=INTEGER},
+            </if>
+            <if test="lastSignDateTimes != null">
+                #{lastSignDateTimes,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.wallet.UserScore">
+        <!--@mbg.generated-->
+        update user_score
+        <set>
+            <if test="uid != null">
+                `uid` = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                score = #{score,jdbcType=INTEGER},
+            </if>
+            <if test="retroactiveCount != null">
+                retroactive_count = #{retroactiveCount,jdbcType=INTEGER},
+            </if>
+            <if test="successionCount != null">
+                succession_count = #{successionCount,jdbcType=INTEGER},
+            </if>
+            <if test="lastSignDateTimes != null">
+                last_sign_date_times = #{lastSignDateTimes,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.wallet.UserScore">
+        <!--@mbg.generated-->
+        update user_score
+        set `uid` = #{uid,jdbcType=INTEGER},
+        score = #{score,jdbcType=INTEGER},
+        retroactive_count = #{retroactiveCount,jdbcType=INTEGER},
+        succession_count = #{successionCount,jdbcType=INTEGER},
+        last_sign_date_times = #{lastSignDateTimes,jdbcType=BIGINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateUserScore">
+        update user_score set score = score+#{score},
+        succession_count =#{successionCount},
+        retroactive_count = #{retroactiveCount},
+        last_sign_date_times = REPLACE(unix_timestamp(current_timestamp(3)),'.','')
+        where uid = #{userId};
+    </update>
+    <update id="updateMemberCount">
+        update sign_date set count = count+#{count} where platform_id = #{platformId};
+    </update>
+</mapper>

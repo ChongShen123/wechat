@@ -18,11 +18,11 @@ import org.springframework.stereotype.Component;
 public class HearBeatCmd extends AbstractChatCmd {
     @Override
     protected void parseParam(JSONObject param) throws Exception {
-
     }
 
     @Override
     protected void concreteAction(Channel channel) {
+//        System.out.println(DateUtil.formatDateTime(new Date()));
         sendMessage(channel, JsonResult.success(cmd));
     }
 }

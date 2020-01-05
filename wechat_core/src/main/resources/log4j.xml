@@ -26,7 +26,8 @@
             <Filters>
                 <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
                 <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="DEBUG" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <!--<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>-->
             </Filters>
             <PatternLayout pattern="${log_pattern}"/>
             <Policies>
@@ -82,6 +83,11 @@
     <loggers>
         <logger name="org.springframework" level="INFO"/>
         <logger name="org.mybatis" level="INFO"/>
+        <!--关闭mongodb 日志打印-->
+        <logger name="org.mongodb.driver" level="ERROR"/>
+        <!--关闭 数据查询打印日志-->
+        <logger name="com.xsdkj.wechat.mapper" level="ERROR"/>
+        <logger name="com.xsdkj.wechat" level="DEBUG"/>
         <root level="info">
             <appender-ref ref="Console"/>
             <appender-ref ref="debugLog"/>

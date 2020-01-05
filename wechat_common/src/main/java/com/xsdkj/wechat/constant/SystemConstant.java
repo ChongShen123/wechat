@@ -76,4 +76,8 @@ public interface SystemConstant {
      * 记录表分表个数
      */
     Integer LOG_TABLE_COUNT = 10;
+    /**
+     * 用户补签奖励的最大次数
+     */
+    Integer RETROACTIVE_COUNT = 3;
 }
