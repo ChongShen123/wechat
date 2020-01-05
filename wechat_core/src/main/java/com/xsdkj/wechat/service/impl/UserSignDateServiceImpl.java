@@ -2,15 +2,24 @@ package com.xsdkj.wechat.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.xsdkj.wechat.constant.SystemConstant;
+import com.xsdkj.wechat.constant.UserConstant;
+import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
 import com.xsdkj.wechat.entity.user.User;
+import com.xsdkj.wechat.entity.user.UserOperationLog;
 import com.xsdkj.wechat.entity.wallet.SignAward;
 import com.xsdkj.wechat.entity.wallet.SignDate;
 import com.xsdkj.wechat.entity.wallet.UserScore;
 import com.xsdkj.wechat.ex.AlreadySignedInException;
+import com.xsdkj.wechat.ex.DataEmptyException;
+import com.xsdkj.wechat.ex.PermissionDeniedException;
+import com.xsdkj.wechat.ex.UserNotFountException;
 import com.xsdkj.wechat.mapper.SignAwardMapper;
 import com.xsdkj.wechat.mapper.SignDateMapper;
+import com.xsdkj.wechat.mapper.UserOperationLogMapper;
 import com.xsdkj.wechat.mapper.UserScoreMapper;
+import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.service.UserSignDateService;
+import com.xsdkj.wechat.util.LogUtil;
 import com.xsdkj.wechat.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +45,10 @@ public class UserSignDateServiceImpl implements UserSignDateService {
     private SignAwardMapper signAwardMapper;
     @Resource
     private UserUtil userUtil;
+    @Resource
+    private UserService userService;
+    @Resource
+    private UserOperationLogMapper userOperationLogMapper;
 
     @Override
     public void singDate() {
@@ -65,7 +78,7 @@ public class UserSignDateServiceImpl implements UserSignDateService {
             }
             Integer retroactiveCount = userScore.getRetroactiveCount();
             // 如果补签次数小于3则补签次数添加
-            if (retroactiveCount < SystemConstant.RETROACTIVE_COUNT) {
+            if (retroactiveCount < SystemConstant.MAX_RETROACTIVE_COUNT) {
                 userScore.setRetroactiveCount(++retroactiveCount);
             }
             // 上次签到时间
@@ -85,6 +98,33 @@ public class UserSignDateServiceImpl implements UserSignDateService {
             return;
         }
         throw new AlreadySignedInException();
+    }
+
+    @Override
+    public void giveRetroactiveCount(GiveRetroactiveCountDto giveRetroactiveCountDto) {
+        Integer uid = giveRetroactiveCountDto.getUid();
+        Integer count = giveRetroactiveCountDto.getCount();
+        User admin = userUtil.currentUser().getUser();
+        User user = userService.getUserById(uid, false);
+        if (admin.getType().equals(UserConstant.TYPE_ADMIN)) {
+            if (user != null) {
+                if (user.getPlatformId().equals(admin.getPlatformId())) {
+                    UserScore userScore = userScoreMapper.getOneByUid(uid);
+                    if (userScore != null) {
+                        userScoreMapper.updateUserRetroactiveCount(uid, count);
+                        UserOperationLog newUserOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), SystemConstant.LOG_TYPE_RETROACTIVE_COUNT, String.format("管理员%s为用户%s添加补签次数:%s", admin.getId(), user.getId(), count));
+                        userOperationLogMapper.insert(newUserOperationLog);
+                        return;
+                    }
+                    throw new DataEmptyException();
+                }
+                throw new PermissionDeniedException();
+            }
+            log.error("用户数据不存在:{}", uid);
+            throw new UserNotFountException();
+        }
+        log.warn("用户{} 异常操作", admin.getId());
+        throw new PermissionDeniedException();
     }
 
     /**

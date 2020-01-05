@@ -73,11 +73,24 @@ public interface SystemConstant {
     int DRAW_MONEY = 2;
 
     /**
+     * 禁言
+     */
+    int NO_SAY = 3;
+    /**
+     * 设置群可加好友
+     */
+    int ADD_FRIEND = 4;
+    /**
+     * 最大赠送补签次数
+     */
+    int MAX_RETROACTIVE_COUNT = 3;
+
+    /**
      * 记录表分表个数
      */
     Integer LOG_TABLE_COUNT = 10;
     /**
-     * 用户补签奖励的最大次数
+     * 管理员操作日志类型_赠送补签次数
      */
-    Integer RETROACTIVE_COUNT = 3;
+    int LOG_TYPE_RETROACTIVE_COUNT = 7;
 }

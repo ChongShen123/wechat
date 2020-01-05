@@ -17,24 +17,4 @@ public class PermissionDeniedException extends ServiceException {
 
     public PermissionDeniedException() {
     }
-
-    public PermissionDeniedException(IErrorCode code) {
-        super(code);
-    }
-
-    public PermissionDeniedException(String message, IErrorCode code) {
-        super(message, code);
-    }
-
-    public PermissionDeniedException(String message, Throwable cause, IErrorCode code) {
-        super(message, cause, code);
-    }
-
-    public PermissionDeniedException(Throwable cause, IErrorCode code) {
-        super(cause, code);
-    }
-
-    public PermissionDeniedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, IErrorCode code) {
-        super(message, cause, enableSuppression, writableStackTrace, code);
-    }
 }

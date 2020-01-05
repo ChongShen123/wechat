@@ -83,10 +83,8 @@
     <loggers>
         <logger name="org.springframework" level="INFO"/>
         <logger name="org.mybatis" level="INFO"/>
-        <!--关闭mongodb 日志打印-->
-        <logger name="org.mongodb.driver" level="ERROR"/>
-        <!--关闭 数据查询打印日志-->
-        <logger name="com.xsdkj.wechat.mapper" level="ERROR"/>
+        <logger name="org.mongodb.driver" level="INFO"/>
+        <logger name="com.xsdkj.wechat.mapper" level="INFO"/>
         <logger name="com.xsdkj.wechat" level="DEBUG"/>
         <root level="info">
             <appender-ref ref="Console"/>

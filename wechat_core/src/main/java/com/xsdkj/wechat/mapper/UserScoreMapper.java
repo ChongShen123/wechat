@@ -38,4 +38,21 @@ public interface UserScoreMapper {
      * @return 计数
      */
     int updateMemberCount(@Param("count") int count, @Param("platformId") Integer platformId);
+
+    /**
+     * 查询用户积分
+     *
+     * @param uid 用户id
+     * @return UserScore
+     */
+    UserScore getOneByUid(@Param("uid") Integer uid);
+
+
+    /**
+     * 修改用户补签数
+     *
+     * @param uid   用户id
+     * @param count 补签次数:在原有基础上进行加减
+     */
+    void updateUserRetroactiveCount(@Param("uid") Integer uid, @Param("count") Integer count);
 }

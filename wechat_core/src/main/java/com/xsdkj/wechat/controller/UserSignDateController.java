@@ -1,10 +1,10 @@
 package com.xsdkj.wechat.controller;
 
 import com.xsdkj.wechat.common.JsonResult;
+import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
 import com.xsdkj.wechat.service.UserSignDateService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -23,6 +23,12 @@ public class UserSignDateController {
     @GetMapping
     public JsonResult singDate() {
         userSignDateService.singDate();
+        return JsonResult.success();
+    }
+
+    @PostMapping("/give_retroactive_count")
+    public JsonResult giveRetroactiveCount(@Validated @RequestBody GiveRetroactiveCountDto giveRetroactiveCountDto) {
+        userSignDateService.giveRetroactiveCount(giveRetroactiveCountDto);
         return JsonResult.success();
     }
 }

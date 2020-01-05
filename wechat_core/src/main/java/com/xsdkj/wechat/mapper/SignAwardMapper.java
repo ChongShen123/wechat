@@ -23,6 +23,7 @@ public interface SignAwardMapper {
 
     int updateByPrimaryKey(SignAward record);
 
+
     List<SignAward> listAll();
 
 }
