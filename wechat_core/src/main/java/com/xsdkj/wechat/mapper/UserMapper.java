@@ -60,4 +60,12 @@ public interface UserMapper {
      * @param type 登录状态
      */
     void updateLoginState(@Param("uid") Integer uid, @Param("type") Boolean type);
+
+    /**
+     * 检查用户是否存在
+     *
+     * @param userIds 用户ids
+     * @return count
+     */
+    int countUserIds(@Param("userIds") Set<Integer> userIds);
 }

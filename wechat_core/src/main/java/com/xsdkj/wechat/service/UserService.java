@@ -187,4 +187,11 @@ public interface UserService {
      * @param type 登录状态
      */
     void updateLoginState(Integer uid, Boolean type);
+
+    /**
+     * 检查用户是否存在
+     * @param userIds 用户id
+     * @return 计数
+     */
+    int countUserIds(Set<Integer> userIds);
 }

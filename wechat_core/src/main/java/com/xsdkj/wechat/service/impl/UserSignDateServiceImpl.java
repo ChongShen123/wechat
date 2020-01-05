@@ -1,18 +1,19 @@
 package com.xsdkj.wechat.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
+import com.xsdkj.wechat.dto.GiveScoreDto;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.user.UserOperationLog;
 import com.xsdkj.wechat.entity.wallet.SignAward;
 import com.xsdkj.wechat.entity.wallet.SignDate;
 import com.xsdkj.wechat.entity.wallet.UserScore;
-import com.xsdkj.wechat.ex.AlreadySignedInException;
-import com.xsdkj.wechat.ex.DataEmptyException;
-import com.xsdkj.wechat.ex.PermissionDeniedException;
-import com.xsdkj.wechat.ex.UserNotFountException;
+import com.xsdkj.wechat.ex.*;
 import com.xsdkj.wechat.mapper.SignAwardMapper;
 import com.xsdkj.wechat.mapper.SignDateMapper;
 import com.xsdkj.wechat.mapper.UserOperationLogMapper;
@@ -22,20 +23,22 @@ import com.xsdkj.wechat.service.UserSignDateService;
 import com.xsdkj.wechat.util.LogUtil;
 import com.xsdkj.wechat.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.PersistenceException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author tiankong
  * @date 2020/1/5 11:29
  */
+@Slf4j
 @Service
 @Transactional
-@Slf4j
 public class UserSignDateServiceImpl implements UserSignDateService {
     @Resource
     private SignDateMapper signDateMapper;
@@ -125,6 +128,71 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         }
         log.warn("用户{} 异常操作", admin.getId());
         throw new PermissionDeniedException();
+    }
+
+    @Override
+    public void giveScore(GiveScoreDto giveScoreDto) {
+        log.debug("-------------------------");
+        log.debug("开始批量修改用户积分...");
+        long begin = System.currentTimeMillis();
+        User user = userUtil.currentUser().getUser();
+        if (user.getType().equals(UserConstant.TYPE_ADMIN)) {
+            Set<Integer> userIds;
+            Integer score;
+            try {
+                userIds = Arrays.stream(StrUtil.splitToInt(giveScoreDto.getUserIds(), ",")).boxed().collect(Collectors.toSet());
+                score = giveScoreDto.getScore();
+            } catch (Exception e) {
+                log.error("参数解析出错");
+                throw new ValidateException();
+            }
+            int userIdsCount = userService.countUserIds(userIds);
+            if (userIdsCount == userIds.size()) {
+                checkUserScore(userIds);
+                int count = 0;
+                try {
+                    count = userScoreMapper.updateMultipleUserScore(score, userIds);
+                } catch (DataIntegrityViolationException e) {
+                    log.error("非法的操作!用户积分操作后出现负数!{}", userIds);
+                    throw new IllegalOperationException();
+                }
+                if (count == userIds.size()) {
+                    userOperationLogMapper.insert(LogUtil.createNewUserOperationLog(user.getId(),
+                            user.getPlatformId(),
+                            SystemConstant.LOG_TYPE_RETROACTIVE_COUNT,
+                            String.format("管理员%s为用户:%s添加积分%s", user.getId(), userIds, score)));
+                    log.debug("批量修改用户积分完成!用时{}ms", System.currentTimeMillis() - begin);
+                    return;
+                }
+                log.error("传入的用户id与更新的数据条数不一至!");
+                throw new UpdateDataException();
+            }
+            log.error("数据错误!部分用户不存在!请检查传入的uid包含的用户是否都存在:{}", userIds);
+            throw new UserNotFountException();
+        }
+        log.error("{}不是管理员", user.getUsername());
+        throw new PersistenceException();
+    }
+
+    /**
+     * 检查用户积分是否有记录,没有则创建一个
+     *
+     * @param userIds 用户ids
+     */
+    private void checkUserScore(Set<Integer> userIds) {
+        log.debug("检查用户是否都有积分记录...");
+        long begin = System.currentTimeMillis();
+        List<UserScore> userScores = userScoreMapper.listUserScore(userIds);
+        if (userScores.size() < userIds.size()) {
+            List<Integer> existUserIds = new ArrayList<>();
+            userScores.forEach(userScore -> existUserIds.add(userScore.getUid()));
+            List<Integer> missUserIds = new ArrayList<>(CollUtil.disjunction(userIds, existUserIds));
+            missUserIds.forEach(uid -> {
+                userScoreMapper.insert(createNewUserScore(uid));
+                log.debug("为用户{}创建了一个积分记录", uid);
+            });
+        }
+        log.debug("检查用户是否都有积分记录完成!用时:{}ms", System.currentTimeMillis() - begin);
     }
 
     /**

@@ -338,4 +338,11 @@
     <update id="updateLoginState">
         update user set login_state = #{type,jdbcType=BOOLEAN} where id = #{uid};
     </update>
+    <select id="countUserIds" resultType="int">
+        select count(*) from user where id in (
+        <foreach collection="userIds" item="userId" separator=",">
+            #{userId}
+        </foreach>
+        );
+    </select>
 </mapper>

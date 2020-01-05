@@ -3,6 +3,9 @@ package com.xsdkj.wechat.mapper;
 import com.xsdkj.wechat.entity.wallet.UserScore;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author tiankong
  * @date 2020/1/5 12:45
@@ -55,4 +58,21 @@ public interface UserScoreMapper {
      * @param count 补签次数:在原有基础上进行加减
      */
     void updateUserRetroactiveCount(@Param("uid") Integer uid, @Param("count") Integer count);
+
+    /**
+     * 修改用户积分
+     *
+     * @param score   积分
+     * @param userIds 用户id
+     * @return 计数
+     */
+    int updateMultipleUserScore(@Param("score") Integer score, @Param("userIds") Set<Integer> userIds);
+
+    /**
+     * 查询用户积分
+     *
+     * @param userIds 用户ids
+     * @return List
+     */
+    List<UserScore> listUserScore(@Param("userIds") Set<Integer> userIds);
 }

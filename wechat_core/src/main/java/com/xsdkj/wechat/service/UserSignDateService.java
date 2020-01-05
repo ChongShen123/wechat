@@ -2,6 +2,7 @@ package com.xsdkj.wechat.service;
 
 
 import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
+import com.xsdkj.wechat.dto.GiveScoreDto;
 
 /**
  * @author tiankong
@@ -19,4 +20,11 @@ public interface UserSignDateService {
      * @param giveRetroactiveCountDto 参数
      */
     void giveRetroactiveCount(GiveRetroactiveCountDto giveRetroactiveCountDto);
+
+    /**
+     * 赠送用户积分
+     *
+     * @param giveScoreDto 参数
+     */
+    void giveScore(GiveScoreDto giveScoreDto);
 }
