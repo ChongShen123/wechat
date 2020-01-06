@@ -5,6 +5,7 @@ import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
 import com.xsdkj.wechat.dto.GiveScoreDto;
 import com.xsdkj.wechat.dto.RetroactiveDto;
+import com.xsdkj.wechat.dto.UserSignDateDto;
 import com.xsdkj.wechat.service.UserSignDateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +34,7 @@ public class UserSignDateController {
     @GetMapping
     public JsonResult singDate() {
         long currentTimeMillis = System.currentTimeMillis();
-        userSignDateService.singDate();
+        userSignDateService.handleSignDate();
         JsonResult success = JsonResult.success();
         log.debug(DateUtil.spendMs(currentTimeMillis) + "");
         return success;
@@ -47,7 +48,7 @@ public class UserSignDateController {
      */
     @PostMapping("/give_retroactive_count")
     public JsonResult adminGiveRetroactiveCount(@Validated @RequestBody GiveRetroactiveCountDto giveRetroactiveCountDto) {
-        userSignDateService.giveRetroactiveCount(giveRetroactiveCountDto);
+        userSignDateService.handleGiveRetroactiveCount(giveRetroactiveCountDto);
         return JsonResult.success();
     }
 
@@ -60,7 +61,7 @@ public class UserSignDateController {
     @PostMapping("/give_score")
     public JsonResult adminGiveScore(@Validated @RequestBody GiveScoreDto giveScoreDto) {
         long begin = System.currentTimeMillis();
-        userSignDateService.giveScore(giveScoreDto);
+        userSignDateService.handleGiveScore(giveScoreDto);
         JsonResult success = JsonResult.success();
         log.debug(DateUtil.spendMs(begin) + "");
         return success;
@@ -74,9 +75,19 @@ public class UserSignDateController {
     @PostMapping("/retroactive")
     public JsonResult retroactive(@Validated @RequestBody RetroactiveDto retroactiveDto) {
         long begin = System.currentTimeMillis();
-        userSignDateService.retroactive(retroactiveDto);
+        userSignDateService.handleRetroactive(retroactiveDto);
         JsonResult success = JsonResult.success();
         log.debug(DateUtil.spendMs(begin) + "");
         return success;
+    }
+
+    /**
+     * 查询用户签到情况
+     *
+     * @return JsonResult
+     */
+    @PostMapping("/list_user_sign_date")
+    public JsonResult userSignDate(@Validated @RequestBody UserSignDateDto userSignDateDto) {
+        return JsonResult.success(userSignDateService.listUserSignDate(userSignDateDto));
     }
 }

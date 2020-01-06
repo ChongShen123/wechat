@@ -11,6 +11,10 @@
         <result column="succession_count" jdbcType="INTEGER" property="successionCount"/>
         <result column="last_sign_date_times" jdbcType="BIGINT" property="lastSignDateTimes"/>
     </resultMap>
+    <resultMap id="UserSignDateMap" type="com.xsdkj.wechat.vo.UserSignDateVo">
+        <result column="day" property="day"/>
+        <result column="count" property="count"/>
+    </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         id, `uid`, score, retroactive_count, succession_count, last_sign_date_times
@@ -141,5 +145,15 @@
         <foreach collection="userIds" separator="," item="uid" open="(" close=")">
             #{uid,jdbcType=INTEGER}
         </foreach>
+    </select>
+
+    <select id="listUserSignDate" resultMap="UserSignDateMap">
+        select sd.day, sd.count
+        from sign_date sd
+        left join user_sign_date_relation usdr on sd.id = usdr.sign_date_id
+        where usdr.uid = #{uid,jdbcType=INTEGER}
+        and sd.year = #{year,jdbcType=INTEGER}
+        and sd.month = #{month,jdbcType=INTEGER}
+        order by sd.day desc;
     </select>
 </mapper>

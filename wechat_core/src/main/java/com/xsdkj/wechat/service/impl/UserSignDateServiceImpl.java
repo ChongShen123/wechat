@@ -11,6 +11,7 @@ import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
 import com.xsdkj.wechat.dto.GiveScoreDto;
 import com.xsdkj.wechat.dto.RetroactiveDto;
+import com.xsdkj.wechat.dto.UserSignDateDto;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.user.UserOperationLog;
 import com.xsdkj.wechat.entity.wallet.SignAward;
@@ -27,6 +28,7 @@ import com.xsdkj.wechat.service.UserSignDateService;
 import com.xsdkj.wechat.util.LogUtil;
 import com.xsdkj.wechat.util.RedisUtil;
 import com.xsdkj.wechat.util.UserUtil;
+import com.xsdkj.wechat.vo.UserSignDateVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.persistence.PersistenceException;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,7 +64,7 @@ public class UserSignDateServiceImpl implements UserSignDateService {
     private UserOperationLogMapper userOperationLogMapper;
 
     @Override
-    public void singDate() {
+    public void handleSignDate() {
         log.debug(LogUtil.INTERVAL);
 
         User user = userUtil.currentUser().getUser();
@@ -80,9 +83,8 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         log.debug("用户{}签到完成,用时:{}", user.getUsername(), (System.currentTimeMillis() - begin));
     }
 
-
     @Override
-    public void retroactive(RetroactiveDto retroactiveDto) {
+    public void handleRetroactive(RetroactiveDto retroactiveDto) {
         log.debug(LogUtil.INTERVAL);
         User currentUser = userUtil.currentUser().getUser();
         log.debug("开始处理用户{}({})补签业务...", currentUser.getUsername(), currentUser.getId());
@@ -183,21 +185,9 @@ public class UserSignDateServiceImpl implements UserSignDateService {
 
     }
 
-    /**
-     * 处理用户补签业务
-     *
-     * @param currentUser 用户
-     * @param signDate    日期
-     */
-    private void handleRetroactiveCount(User currentUser, SignDate signDate) {
-        handleSignDate(currentUser, signDate, false);
-        int count = userScoreMapper.updateUserRetroactiveCount(currentUser.getId(), -1);
-        log.debug("扣除用户补签次数,数据库执行响应:{}", count);
-    }
-
 
     @Override
-    public void giveRetroactiveCount(GiveRetroactiveCountDto giveRetroactiveCountDto) {
+    public void handleGiveRetroactiveCount(GiveRetroactiveCountDto giveRetroactiveCountDto) {
         Integer uid = giveRetroactiveCountDto.getUid();
         Integer count = giveRetroactiveCountDto.getCount();
         User admin = userUtil.currentUser().getUser();
@@ -223,9 +213,8 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         throw new PermissionDeniedException();
     }
 
-
     @Override
-    public void giveScore(GiveScoreDto giveScoreDto) {
+    public void handleGiveScore(GiveScoreDto giveScoreDto) {
         log.debug("-------------------------");
         log.debug("开始批量修改用户积分...");
         long begin = System.currentTimeMillis();
@@ -268,6 +257,14 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         throw new PersistenceException();
     }
 
+    @Override
+    public List<UserSignDateVo> listUserSignDate(UserSignDateDto userSignDateDto) {
+        Integer uid = userSignDateDto.getUid();
+        Integer year = userSignDateDto.getYear();
+        Integer month = userSignDateDto.getMonth();
+        return userScoreMapper.listUserSignDate(uid, year, month);
+    }
+
     /**
      * 检查用户积分是否有记录,没有则创建一个
      *
@@ -287,6 +284,18 @@ public class UserSignDateServiceImpl implements UserSignDateService {
             });
         }
         log.debug("检查用户是否都有积分记录完成!用时:{}ms", System.currentTimeMillis() - begin);
+    }
+
+    /**
+     * 处理用户补签业务
+     *
+     * @param currentUser 用户
+     * @param signDate    日期
+     */
+    private void handleRetroactiveCount(User currentUser, SignDate signDate) {
+        handleSignDate(currentUser, signDate, false);
+        int count = userScoreMapper.updateUserRetroactiveCount(currentUser.getId(), -1);
+        log.debug("扣除用户补签次数,数据库执行响应:{}", count);
     }
 
     /**
@@ -320,6 +329,8 @@ public class UserSignDateServiceImpl implements UserSignDateService {
     private SignDate createNewSignDate(Date date, Integer platformId) {
         SignDate signDate = new SignDate();
         signDate.setDay(date);
+        signDate.setYear(DateUtil.year(date));
+        signDate.setMonth(DateUtil.month(date) + 1);
         signDate.setPlatformId(platformId);
         signDate.setCount(0);
         return signDate;

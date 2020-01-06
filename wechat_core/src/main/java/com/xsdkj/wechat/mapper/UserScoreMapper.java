@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.entity.wallet.UserScore;
+import com.xsdkj.wechat.vo.UserSignDateVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -76,4 +77,14 @@ public interface UserScoreMapper {
      * @return List
      */
     List<UserScore> listUserScore(@Param("userIds") Set<Integer> userIds);
+
+    /**
+     * 查询用户签到情况
+     *
+     * @param uid   用户id
+     * @param year  年
+     * @param month 月
+     * @return list
+     */
+    List<UserSignDateVo> listUserSignDate(@Param("uid") Integer uid, @Param("year") Integer year, @Param("month") Integer month);
 }
