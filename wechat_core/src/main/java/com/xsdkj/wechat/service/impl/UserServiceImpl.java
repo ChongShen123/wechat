@@ -102,7 +102,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         userMapper.updateLoginState(uid, type);
     }
 
-<<<<<<< HEAD
+
 //    @Override
 //    public LoginVo register(UserRegisterDto param, HttpServletRequest request){
 //        String passwordRegex = SystemConstant.PASSWORD_REGEX;
@@ -126,8 +126,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 //        return login(userLoginParam, request, false);
 //    }
 
-=======
->>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
+
     @Override
     public LoginVo register(UserRegisterDto param, HttpServletRequest request) {
         String passwordRegex = SystemConstant.PASSWORD_REGEX;

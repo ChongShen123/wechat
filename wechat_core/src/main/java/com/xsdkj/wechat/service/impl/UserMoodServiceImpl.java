@@ -6,18 +6,14 @@ import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.common.SystemConstant;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.dto.MoodParamDto;
-<<<<<<< HEAD
+
 
 
 import com.xsdkj.wechat.mapper.UserMoodMapper;
 
 import com.xsdkj.wechat.entity.mood.UserMood;
 
-=======
-import com.xsdkj.wechat.mapper.UserMoodMapper;
-import com.xsdkj.wechat.entity.mood.UserMood;
->>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
-import com.xsdkj.wechat.service.RabbitTemplateService;
+
 import com.xsdkj.wechat.service.UserMoodService;
 import com.xsdkj.wechat.ex.FileNotFoundException;
 import com.xsdkj.wechat.util.UserUtil;
@@ -73,23 +69,23 @@ public class UserMoodServiceImpl implements UserMoodService {
             }
         }
         UserMood userMood = createNewUserMood(moodDto);
-<<<<<<< HEAD
+
         userMoodMapper.insert(userMood);
         /*rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userMood));*/
-=======
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(SystemConstant.BOX_TYPE_MOOD, userMood));
->>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
+
+
+
     }
     @Override
     public void delete(UserMood userMood) {
         if (userMood.getId() != null) {
             userMood.setUid(userUtil.currentUser().getUser().getId());
-<<<<<<< HEAD
+
             userMoodMapper.deleteByPrimaryKey(userMood.getId());
           /*  rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_MOOD, userMood));*/
-=======
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(SystemConstant.BOX_TYPE_MOOD, userMood));
->>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
+
+
+
         }
     }
 

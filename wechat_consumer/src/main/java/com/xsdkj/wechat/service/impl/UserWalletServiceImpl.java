@@ -3,10 +3,7 @@ package com.xsdkj.wechat.service.impl;
 import com.xsdkj.wechat.entity.wallet.WalletPriceChangeLog;
 import com.xsdkj.wechat.entity.wallet.Wallet;
 import com.xsdkj.wechat.entity.wallet.WalletOperationLog;
-import com.xsdkj.wechat.mapper.WalletMapper;
-import com.xsdkj.wechat.mapper.WalletOperationLogMapper;
-import com.xsdkj.wechat.mapper.WalletPriceChangeLogMapper;
-import com.xsdkj.wechat.service.UserWalletService;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
