@@ -8,6 +8,11 @@ import com.xsdkj.wechat.entity.user.UserOperationLog;
  */
 public class LogUtil {
     /**
+     * 间隔
+     */
+    public static final String INTERVAL = "---------------------------------------------------";
+
+    /**
      * 创建管理员操作记录
      *
      * @param uid        用户id

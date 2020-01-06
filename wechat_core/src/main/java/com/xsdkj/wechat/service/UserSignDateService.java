@@ -3,6 +3,8 @@ package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
 import com.xsdkj.wechat.dto.GiveScoreDto;
+import com.xsdkj.wechat.dto.RetroactiveDto;
+import com.xsdkj.wechat.entity.wallet.UserScore;
 
 /**
  * @author tiankong
@@ -27,4 +29,12 @@ public interface UserSignDateService {
      * @param giveScoreDto 参数
      */
     void giveScore(GiveScoreDto giveScoreDto);
+
+    /**
+     * 用户补签
+     *
+     * @param retroactiveDto 参数
+     */
+    void retroactive(RetroactiveDto retroactiveDto);
+
 }
