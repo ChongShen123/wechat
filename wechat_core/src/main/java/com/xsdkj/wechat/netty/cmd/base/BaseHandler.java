@@ -51,13 +51,13 @@ public class BaseHandler {
      * @param channel channel
      */
     public static void remove(Channel channel) {
-        ThreadUtil.getSingleton().submit(() -> {
-            SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.remove(channel.id().asLongText());
-            SessionBo session = channel.attr(Attributes.SESSION).get();
+        SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.remove(channel.id().asLongText());
+        SessionBo session = channel.attr(Attributes.SESSION).get();
+        if (session != null) {
             SessionUtil.ONLINE_USER_MAP.remove(session.getUid());
-            log.info("已移除握手实例,当前握手实例总数为:{}", SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.size());
-            log.info("userId为{}的用户已经退出聊天,当前在线人数为{}", channel.attr(Attributes.SESSION).get().getUid(), SessionUtil.ONLINE_USER_MAP.size());
-            channel.close();
-        });
+            log.debug("userId为{}的用户已经退出聊天,当前在线人数为{}", channel.attr(Attributes.SESSION).get().getUid(), SessionUtil.ONLINE_USER_MAP.size());
+        }
+        log.debug("已移除握手实例,当前握手实例总数为:{}", SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.size());
+        channel.close();
     }
 }

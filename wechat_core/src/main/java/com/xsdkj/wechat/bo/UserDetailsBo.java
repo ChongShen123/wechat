@@ -39,19 +39,13 @@ public class UserDetailsBo implements UserDetails, Serializable {
      * 用户所有好友
      */
     private List<UserFriendVo> userFriendVos;
+    private List<GroupVo> userGroupList;
     /**
      * 用户所有群组
      */
     private Map<Integer, GroupVo> userGroupRelationMap = new HashMap<>();
 
-    /**
-     * 获取用户群组
-     *
-     * @return List
-     */
-    public List<GroupVo> getUserGroupList() {
-        return new ArrayList<>(userGroupRelationMap.values());
-    }
+
 
     public UserDetailsBo(User user) {
         this.user = user;

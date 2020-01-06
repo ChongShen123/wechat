@@ -147,6 +147,14 @@ public interface UserService {
 
     /**
      * 更新用户Redis 数据
+     * @param uid 用户id
+     * @param userDetailsBo 用户数据
+     * @return UserDetailsBo
+     */
+    UserDetailsBo updateRedisDataByUid(Integer uid, UserDetailsBo userDetailsBo);
+
+    /**
+     * 更新用户Redis 数据
      * 更新用户菜单,用户群组,用户信息
      *
      * @param user 用户
@@ -190,6 +198,7 @@ public interface UserService {
 
     /**
      * 检查用户是否存在
+     *
      * @param userIds 用户id
      * @return 计数
      */

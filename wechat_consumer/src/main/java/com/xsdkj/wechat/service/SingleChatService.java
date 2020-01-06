@@ -10,11 +10,4 @@ import java.util.List;
  */
 public interface SingleChatService {
     void save(SingleChat singleChat);
-
-    /**
-     * 更新单聊阅读状态
-     * @param read 阅读状态
-     * @param singleChats list
-     */
-    void updateRead(boolean read, List<SingleChat> singleChats);
 }

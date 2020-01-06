@@ -76,6 +76,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         } catch (Exception e) {
             BaseHandler.sendMessage(ctx.channel(), JsonResult.failed(ResultCodeEnum.STRING_CONVERSION_ERROR));
             e.printStackTrace();
+            ctx.channel().close();
             return;
         }
         Integer command = param.getInteger(ParamConstant.KEY_CMD);

@@ -68,14 +68,6 @@ public interface RabbitConstant {
      */
     int BOX_TYPE_FRIEND_APPLICATION = 10;
 
-    /**
-     * 更新好友申请消息为已读
-     */
-    int BOX_TYPE_FRIEND_APPLICATION_READ = 11;
-    /**
-     * 更新单聊消息为已读
-     */
-    int BOX_TYPE_SINGLE_CHAT_READ = 20;
 
 
     /**

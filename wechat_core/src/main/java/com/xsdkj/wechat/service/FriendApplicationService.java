@@ -47,7 +47,7 @@ public interface FriendApplicationService {
      * 查询好友申请表
      *
      * @param isRead 阅读状态
-     * @param uid   用户id
+     * @param uid    用户id
      * @return list
      */
     List<FriendApplication> listByReadAndUserId(boolean isRead, Integer uid);
@@ -65,4 +65,12 @@ public interface FriendApplicationService {
      * @param id id
      */
     void deleteById(String id);
+
+    /**
+     * 更新好友申请消息为已读状态
+     *
+     * @param read 状态
+     * @param ids  ids
+     */
+    void updateFriendApplicationRead(boolean read, List<String> ids);
 }

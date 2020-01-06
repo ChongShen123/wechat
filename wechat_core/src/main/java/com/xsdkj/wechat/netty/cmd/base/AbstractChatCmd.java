@@ -94,41 +94,13 @@ public abstract class AbstractChatCmd extends AbstractCmd {
                 parseParam(param);
                 //具体执行
                 concreteAction(channel);
-                // TODO 把异常处理优化下 try catch 太多了
-            } catch (PayPasswordHasBeenSetException e) {
+            } catch (UserAlreadyRegister e) {
                 sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (UserBalancePriceException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (SystemException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (FileNotFoundException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (BannedChatException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.BANNED_CHAT, cmd));
-            } catch (ValidateException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (ParseParamException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (DataEmptyException | UserNotFountException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
-            } catch (DataIntegrityViolationException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, cmd));
-            } catch (GroupNotFoundException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.GROUP_NOT_FOUND, cmd));
-            } catch (UserJoinedException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_JOINED_EXCEPTION, cmd));
-            } catch (UserNotInGroupException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_IN_GROUP, cmd));
-            } catch (PermissionDeniedException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.FORBIDDEN, cmd));
-            } catch (NoSayException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.NO_SAY_EXCEPTION, cmd));
-            } catch (RepetitionException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION, cmd));
-            } catch (UnAuthorizedException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.UNAUTHORIZED, cmd));
+                remove(channel);
             } catch (ServiceException e) {
                 sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
+            } catch (DataIntegrityViolationException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, cmd));
             } catch (NullPointerException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
                 e.printStackTrace();

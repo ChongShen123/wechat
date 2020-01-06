@@ -64,6 +64,15 @@ public class FriendApplicationServiceImpl implements FriendApplicationService {
         return mongoTemplate.find(query, FriendApplication.class);
     }
 
+    @Override
+    public void updateFriendApplicationRead(boolean read, List<String> ids) {
+        Criteria criteria = new Criteria();
+        criteria.and("id").in(ids);
+        Query query = Query.query(criteria);
+        Update update = new Update();
+        update.set("isRead", read);
+        mongoTemplate.updateMulti(query, update, FriendApplication.class);
+    }
 
     @Override
     public List<FriendApplication> listByReadAndUserId(boolean isRead, Integer uid) {

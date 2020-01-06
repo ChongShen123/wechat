@@ -26,15 +26,4 @@ public class SingleChatServiceImpl implements SingleChatService {
         mongoTemplate.save(singleChat);
     }
 
-    @Override
-    public void updateRead(boolean read, List<SingleChat> singleChats) {
-        List<String> ids = new ArrayList<>();
-        singleChats.forEach(item -> ids.add(item.getId()));
-        Criteria criteria = new Criteria();
-        criteria.and("id").in(ids);
-        Query query = Query.query(criteria);
-        Update update = new Update();
-        update.set("read", true);
-        mongoTemplate.updateMulti(query, update, SingleChat.class);
-    }
 }

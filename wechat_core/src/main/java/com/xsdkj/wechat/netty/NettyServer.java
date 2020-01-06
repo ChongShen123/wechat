@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.netty;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.xsdkj.wechat.bo.GroupInfoBo;
 import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.netty.notice.SystemNotice;
@@ -62,19 +63,21 @@ public class NettyServer implements Runnable {
                     .childOption(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(592048))
                     // 绑定I/O事件的处理类
                     .childHandler(channelManager);
-            long end = System.currentTimeMillis();
             channelFuture = serverBootstrap.bind(port).addListener(future -> {
                 boolean success = future.isSuccess();
                 if (success) {
-                    log.info("Netty服务器启动完成,耗时{}ms,已绑定端口{}阻塞式等候客户端连接", end - begin, port);
-                    // 启动通知线程
                     ThreadUtil.getSingleton().submit(imNotice);
+                    log.info("通知线程启动完毕!{}ms", DateUtil.spendMs(begin));
                     // 初始化群组
                     List<UserGroup> groups = groupService.listAllChatGroup();
                     if (groups.size() > 0) {
                         groups.forEach(group -> SessionUtil.GROUP_MAP.put(group.getId(), new GroupInfoBo(group, new DefaultChannelGroup(GlobalEventExecutor.INSTANCE))));
                     }
+
+                    log.info("群组初始化完毕!已启动{}个群组.{}ms", groups.size(), DateUtil.spendMs(begin));
                     groupService.updateRedisNoSayData();
+                    log.info("禁言黑名单缓存完毕!{}ms", DateUtil.spendMs(begin));
+                    log.info("NETTY服务器已在[{}]端口启动完毕!阻塞式等候客户端连接.耗时{}ms,", port, DateUtil.spendMs(begin));
                 }
             }).sync();
         } catch (Exception e) {

@@ -1,11 +1,13 @@
 package com.xsdkj.wechat.util;
 
+import cn.hutool.core.date.DateUtil;
 import com.xsdkj.wechat.bo.GroupInfoBo;
 import com.xsdkj.wechat.bo.SessionBo;
 import com.xsdkj.wechat.constant.Attributes;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author tiankong
  * @date 2019/11/17 19:22
  */
+@Slf4j
 @Component
 public class SessionUtil {
     /**
@@ -47,7 +50,10 @@ public class SessionUtil {
      * 注册用户channel
      */
     public static void registerUserChannel(Integer uid, Channel channel) {
+        long begin = System.currentTimeMillis();
+        log.debug("注册channel用户ID:{} ", uid);
         ONLINE_USER_MAP.put(uid, channel);
+        log.debug("用户channel注册完毕,当前在线用户人数{}用时{}ms", ONLINE_USER_MAP.size(), DateUtil.spendMs(begin));
     }
 
     public static SessionBo getSession(Channel channel) {

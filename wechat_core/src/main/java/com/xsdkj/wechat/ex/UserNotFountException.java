@@ -1,7 +1,6 @@
 package com.xsdkj.wechat.ex;
 
 
-import com.xsdkj.wechat.common.IErrorCode;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class UserNotFountException extends ServiceException {
     private static final long serialVersionUID = -2705620325851599542L;
-    private IErrorCode code = ResultCodeEnum.USER_NOT_FOND;
     public UserNotFountException() {
+         code = ResultCodeEnum.USER_NOT_FOND;
     }
 }

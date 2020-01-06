@@ -22,7 +22,6 @@ import java.util.Map;
 public class SystemNotice extends BaseHandler implements Runnable {
     @Override
     public void run() {
-        log.info("已启动通知线程!");
         for (; ; ) {
             if (SessionUtil.ONLINE_USER_MAP.size() > 0) {
                 for (Map.Entry<Integer, Channel> integerChannelEntry : SessionUtil.ONLINE_USER_MAP.entrySet()) {

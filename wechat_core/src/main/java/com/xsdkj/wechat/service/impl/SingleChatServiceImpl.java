@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,6 +87,17 @@ public class SingleChatServiceImpl implements SingleChatService {
         mongoTemplate.remove(query, SingleChat.class);
     }
 
+    @Override
+    public void updateRead(boolean read, List<SingleChat> singleChats) {
+        List<String> ids = new ArrayList<>();
+        singleChats.forEach(item -> ids.add(item.getId()));
+        Criteria criteria = new Criteria();
+        criteria.and("id").in(ids);
+        Query query = Query.query(criteria);
+        Update update = new Update();
+        update.set("read", true);
+        mongoTemplate.updateMulti(query, update, SingleChat.class);
+    }
 
     @Override
     public List<SingleChat> listByReadAndToUserId(boolean read, Integer toUserId) {

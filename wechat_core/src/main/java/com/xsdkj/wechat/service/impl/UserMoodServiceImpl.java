@@ -56,7 +56,7 @@ public class UserMoodServiceImpl implements UserMoodService {
                 for (String file : files) {
                     boolean exist = FileUtil.exist(rootPath + imgPath + file);
                     if (!exist) {
-                        throw new FileNotFoundException(ResultCodeEnum.FILE_NOT_FUND);
+                        throw new FileNotFoundException();
                     }
                 }
             }

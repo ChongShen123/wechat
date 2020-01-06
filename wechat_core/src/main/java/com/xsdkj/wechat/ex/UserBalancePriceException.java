@@ -1,6 +1,5 @@
 package com.xsdkj.wechat.ex;
 
-import com.xsdkj.wechat.common.IErrorCode;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,5 +12,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class UserBalancePriceException extends ServiceException {
     private static final long serialVersionUID = 613954332968981856L;
-    private IErrorCode code = ResultCodeEnum.USER_WALLET_BALANCE_EXCEPTION;
+
+    public UserBalancePriceException() {
+        code = ResultCodeEnum.USER_WALLET_BALANCE_EXCEPTION;
+    }
 }
