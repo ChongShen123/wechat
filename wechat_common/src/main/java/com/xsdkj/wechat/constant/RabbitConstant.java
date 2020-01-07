@@ -56,10 +56,6 @@ public interface RabbitConstant {
     String GROUP_CHAT_QUEUE_ASSIST = "group-chat-assist";
 
     /**
-     * 单聊类型
-     */
-    int BOX_TYPE_SINGLE_CHAT = 1;
-    /**
      * 群聊类型
      */
     int BOX_TYPE_GROUP_CHAT = 2;

@@ -362,15 +362,12 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public UserDetailsBo updateRedisDataByUid(Integer uid, String methodName) {
-        long begin = System.currentTimeMillis();
         log.debug("更新用户缓存updateRedisDataByUid(Integer uid, String methodName) 调用方:{}", methodName);
         User user = userMapper.selectByPrimaryKey(uid);
         if (ObjectUtil.isNull(user)) {
             throw new NullPointerException();
         }
-        UserDetailsBo userDetailsBo = updateRedisDataByUid(user, "updateRedisDataByUid(Integer uid)");
-        log.debug("用户缓存更新完成:{}ms", DateUtil.spendMs(begin));
-        return userDetailsBo;
+        return updateRedisDataByUid(user, "updateRedisDataByUid(Integer uid)");
     }
 
     @Override

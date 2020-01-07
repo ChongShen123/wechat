@@ -68,7 +68,7 @@ public class RemoveChatGroupCmd extends AbstractChatCmd {
             }
             // 更新被移除用户的redis数据
             userService.updateRedisDataByUid(uid,"RemoveChatGroupCmd.concreteAction()");
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT, newSingleChat));
+            singleChatService.save(newSingleChat);
         });
         // 更新群组redis数据
         groupService.updateRedisGroupById(groupId);
