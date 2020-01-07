@@ -15,6 +15,7 @@ import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.User;
+import com.xsdkj.wechat.ex.IllegalOperationException;
 import com.xsdkj.wechat.ex.UnAuthorizedException;
 import com.xsdkj.wechat.ex.UserAlreadyRegister;
 import com.xsdkj.wechat.ex.ValidateException;
@@ -55,8 +56,6 @@ public class RegisterCmd extends AbstractChatCmd {
     @Resource
     private UserDetailsService userDetailsService;
     @Resource
-    private UserGroupService userGroupService;
-    @Resource
     private FriendApplicationService friendApplicationService;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
@@ -86,6 +85,11 @@ public class RegisterCmd extends AbstractChatCmd {
             String token = requestParam.getToken().substring(tokenHead.length() + 1);
             Integer userId = requestParam.getUserId();
             boolean tokenState = jwtTokenUtil.validateToken(token, userDetailsService.loadUserByUsername(jwtTokenUtil.getUserNameFormToken(token)));
+            String userNameFormToken = jwtTokenUtil.getUserNameFormToken(token);
+            User checkUser = userService.getByUsername(userNameFormToken);
+            if (!checkUser.getId().equals(userId)) {
+                throw new IllegalOperationException();
+            }
             log.debug("token验证状态:{} {}ms", tokenState, DateUtil.spendMs(begin));
             if (tokenState) {
                 if (!checkUserOnline(userId, channel)) {

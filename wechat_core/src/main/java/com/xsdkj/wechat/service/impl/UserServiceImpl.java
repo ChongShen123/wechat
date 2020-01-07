@@ -94,7 +94,10 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public User getByUsername(String username) {
-        return userMapper.getOneByUsername(username);
+        long begin = System.currentTimeMillis();
+        User user = userMapper.getOneByUsername(username);
+        log.debug("本地查询用户完成{} {}ms", user, DateUtil.spendMs(begin));
+        return user;
     }
 
     @Override

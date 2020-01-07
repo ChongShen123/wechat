@@ -1,7 +1,9 @@
 package com.xsdkj.wechat.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.xsdkj.wechat.entity.chat.FriendApplication;
 import com.xsdkj.wechat.service.FriendApplicationService;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,6 +19,7 @@ import java.util.Queue;
  * @author tiankong
  * @date 2019/12/12 13:56
  */
+@Slf4j
 @Service
 public class FriendApplicationServiceImpl implements FriendApplicationService {
     @Resource
@@ -29,12 +32,16 @@ public class FriendApplicationServiceImpl implements FriendApplicationService {
 
     @Override
     public Long countByToUserIdAndFromUserId(Integer toUserId, Integer formUserId) {
+        long begin = System.currentTimeMillis();
+        log.debug("检查{},{} 是否存在好友信息消息", toUserId, formUserId);
         Criteria criteria = new Criteria();
         criteria.and("toUserId").is(toUserId);
         criteria.and("fromUserId").is(formUserId);
         criteria.and("state").is(0);
         Query query = Query.query(criteria);
-        return mongoTemplate.count(query, FriendApplication.class);
+        long count = mongoTemplate.count(query, FriendApplication.class);
+        log.debug("检查完毕:{} {}ms", count, DateUtil.spendMs(begin));
+        return count;
     }
 
     @Override

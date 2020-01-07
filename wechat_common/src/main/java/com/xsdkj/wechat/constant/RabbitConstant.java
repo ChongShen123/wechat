@@ -63,10 +63,6 @@ public interface RabbitConstant {
      * 群聊类型
      */
     int BOX_TYPE_GROUP_CHAT = 2;
-    /**
-     * 好友申请类型
-     */
-    int BOX_TYPE_FRIEND_APPLICATION = 10;
 
 
 

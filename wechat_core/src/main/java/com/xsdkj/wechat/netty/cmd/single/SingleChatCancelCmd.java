@@ -68,7 +68,7 @@ public class SingleChatCancelCmd extends AbstractChatCmd {
             sendMessage(channel, JsonResult.failed(ResultCodeEnum.UNDO_TIME_EXCEEDED));
             return;
         }
-        log.debug("单聊消息{}不存在 {}ms", singleChatId,DateUtil.spendMs(begin));
+        log.debug("单聊消息{}不存在 {}ms", singleChatId, DateUtil.spendMs(begin));
         log.debug("撤销工作完毕 {}ms", DateUtil.spendMs(begin));
         throw new DataEmptyException();
     }
