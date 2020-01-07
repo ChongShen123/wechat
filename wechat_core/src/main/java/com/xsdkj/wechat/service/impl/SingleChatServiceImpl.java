@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.service.impl;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.xsdkj.wechat.constant.ChatConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.SingleChatService;
@@ -83,8 +84,10 @@ public class SingleChatServiceImpl implements SingleChatService {
 
     @Override
     public void deleteById(String id) {
+        long begin = System.currentTimeMillis();
         Query query = Query.query(Criteria.where("id").is(id));
         mongoTemplate.remove(query, SingleChat.class);
+        log.debug("已删除ID:{}的单聊消息 {}ms", id, DateUtil.spendMs(begin));
     }
 
     @Override
