@@ -110,7 +110,7 @@ public class GroupServiceImpl implements UserGroupService {
         List<ListMembersVo> listMembersVos = groupMapper.listGroupMembersByGroupId(group.getId());
         redisUtil.set(RedisConstant.REDIS_GROUP_KEY + group.getId(), JSONObject.toJSONString(group));
         redisUtil.set(RedisConstant.REDIS_GROUP_MEMBERS + group.getId(), JSONObject.toJSONString(listMembersVos));
-        log.debug("群缓存更新完毕 {}ms", DateUtil.spendMs(begin));
+        log.debug("群{}缓存更新完毕 {}ms",groupId, DateUtil.spendMs(begin));
     }
 
     @Override

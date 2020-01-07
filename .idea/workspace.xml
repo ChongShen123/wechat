@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4e5f6dc-c4fb-4e46-a356-1b93ec1107ce" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/RabbitConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/RabbitConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/action/handle/GroupChatHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/GroupChatService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/GroupChatServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/GroupChatCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/GroupChatCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/JoinGroupCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/JoinGroupCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/ListMembersCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/ListMembersCmd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/wechat_entity/target/" />
     <ignored path="$PROJECT_DIR$/wechat_common/target/" />
@@ -70,14 +63,14 @@
         <counts>
           <entry key="cell" value="20" />
           <entry key="dummy" value="13" />
-          <entry key="java" value="48984" />
+          <entry key="java" value="50195" />
           <entry key="xml" value="2723" />
           <entry key="yml" value="198" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="48984" />
+          <entry key="JAVA" value="50195" />
           <entry key="MybatisParam" value="1" />
           <entry key="PLAIN_TEXT" value="13" />
           <entry key="Scratch" value="20" />
@@ -89,7 +82,7 @@
         <counts>
           <entry key="class" value="8" />
           <entry key="dtd" value="2" />
-          <entry key="java" value="638" />
+          <entry key="java" value="642" />
           <entry key="md" value="1" />
           <entry key="sign_award" value="4" />
           <entry key="sign_date" value="1" />
@@ -105,7 +98,7 @@
           <entry key="CLASS" value="8" />
           <entry key="DTD" value="2" />
           <entry key="Database Element" value="10" />
-          <entry key="JAVA" value="638" />
+          <entry key="JAVA" value="642" />
           <entry key="Markdown" value="1" />
           <entry key="SQL" value="5" />
           <entry key="XML" value="46" />
@@ -124,14 +117,21 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="79" column="30" selection-start-line="79" selection-start-column="30" selection-end-line="79" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/GroupChatCmd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="79" column="9" lean-forward="true" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+            <state relative-caret-position="1485">
+              <caret line="80" column="40" selection-start-line="80" selection-start-column="40" selection-end-line="80" selection-end-column="40" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="method#checkUserNoSay#0;class#GroupChatCmd#0" />
-                <element signature="method#createNewGroupChat#0;class#GroupChatCmd#0" />
               </folding>
             </state>
           </provider>
@@ -204,7 +204,6 @@
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/friend/AgreeFriendCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/friend/GetFriendInfoCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/notice/UserNotice.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/AbstractChatCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/CreateGroupCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" />
@@ -219,6 +218,7 @@
         <option value="$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/constant/RabbitConstant.java" />
         <option value="$PROJECT_DIR$/wechat_consumer/src/main/java/com/xsdkj/wechat/service/impl/GroupChatServiceImpl.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/GroupChatCmd.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java" />
       </list>
     </option>
   </component>
@@ -379,7 +379,7 @@
     <property name="SearchEverywhereHistoryKey" value="RegisterCmd&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java&#10;UserServiceImpl&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java&#10;HttpRequestHandler&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/netty/base/HttpRequestHandler.java&#10;SecurityConfig&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/config/SecurityConfig.java&#10;userGroupRelationMap&#9;PSI&#9;JAVA://com.xsdkj.wechat.bo.UserDetailsBo#userGroupRelationMap&#10;BannedChatException&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/ex/BannedChatException.java&#10;RedisC&#9;PSI&#9;JAVA://com.xsdkj.wechat.constant.RedisConstant&#10;userScore&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserScoreMapper.xml&#10;UserS&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/mapper/UserScoreMapper.java&#10;ResultC&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_common/src/main/java/com/xsdkj/wechat/common/ResultCodeEnum.java&#10;用户类型&#9;null&#9;null&#10;UserMoodMapper.xml&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserMoodMapper.xml&#10;UserMapper.xml&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserMapper.xml" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578395441691" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578396524083" />
     <property name="database.console.LAST_STATE" value="true" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="full.screen.before.presentation.mode" value="false" />
@@ -480,7 +480,7 @@
       <workItem from="1577930973342" duration="39060000" />
       <workItem from="1578046955352" duration="35992000" />
       <workItem from="1578194204208" duration="63368000" />
-      <workItem from="1578316349913" duration="29554000" />
+      <workItem from="1578316349913" duration="30537000" />
     </task>
     <task id="LOCAL-00001" summary="系统常量细分">
       <created>1577679886979</created>
@@ -492,7 +492,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95990000" />
+    <option name="totallyTimeSpent" value="96973000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -515,7 +515,7 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Web" order="7" side_tool="true" weight="0.32992464" />
-      <window_info content_ui="combo" x="0" y="0" width="1920" height="1040" id="Project" order="8" sideWeight="0.49657536" visible="true" weight="0.20362474" />
+      <window_info content_ui="combo" x="0" y="0" width="1920" height="1040" id="Project" order="8" sideWeight="0.49657536" weight="0.20362474" />
       <window_info anchor="bottom" id="Database Console" order="0" weight="0.21172638" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32899022" />
@@ -531,7 +531,7 @@
       <window_info anchor="bottom" id="Database Changes" order="12" weight="0.32899022" />
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32899022" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.32899022" />
-      <window_info active="true" anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.6004343" />
+      <window_info active="true" anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.48751357" />
       <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.5026652" side_tool="true" weight="0.27470142" />
       <window_info anchor="bottom" id="Messages" order="17" sideWeight="0.49946696" weight="0.2790445" />
       <window_info anchor="bottom" id="Inspection Results" order="18" weight="0.32899022" />
@@ -558,7 +558,7 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Web" order="7" side_tool="true" weight="0.32992464" />
-      <window_info content_ui="combo" x="0" y="0" width="1920" height="1040" id="Project" order="8" sideWeight="0.49657536" weight="0.29530916" />
+      <window_info active="true" content_ui="combo" x="0" y="0" width="1920" height="1040" id="Project" order="8" sideWeight="0.49657536" visible="true" weight="0.20362474" />
       <window_info anchor="bottom" id="Database Console" order="0" weight="0.21172638" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32899022" />
@@ -574,9 +574,9 @@
       <window_info anchor="bottom" id="Database Changes" order="12" weight="0.32899022" />
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32899022" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.32899022" />
-      <window_info anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" weight="0.36807817" />
+      <window_info anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.43648207" />
       <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.5026652" side_tool="true" weight="0.27470142" />
-      <window_info active="true" anchor="bottom" id="Messages" order="17" sideWeight="0.49946696" visible="true" weight="0.27962962" />
+      <window_info anchor="bottom" id="Messages" order="17" sideWeight="0.49946696" weight="0.2790445" />
       <window_info anchor="bottom" id="Inspection Results" order="18" weight="0.32899022" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -849,13 +849,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="599">
-          <caret line="65" column="19" selection-start-line="65" selection-start-column="19" selection-end-line="65" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/AbstractChatCmd.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -1006,13 +999,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/GroupChatCmd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="79" column="9" lean-forward="true" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+        <state relative-caret-position="1485">
+          <caret line="80" column="40" selection-start-line="80" selection-start-column="40" selection-end-line="80" selection-end-column="40" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="method#checkUserNoSay#0;class#GroupChatCmd#0" />
-            <element signature="method#createNewGroupChat#0;class#GroupChatCmd#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/RemoveChatGroupCmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="79" column="30" selection-start-line="79" selection-start-column="30" selection-end-line="79" selection-end-column="30" />
         </state>
       </provider>
     </entry>
