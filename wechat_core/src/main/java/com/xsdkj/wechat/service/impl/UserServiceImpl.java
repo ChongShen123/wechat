@@ -425,6 +425,10 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public User getUserById(Integer userId, boolean fromRedis) {
         User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            log.error("本地查询用户数据不存在:{}",userId);
+            return null;
+        }
         if (fromRedis) {
             updateRedisDataByUid(user, "getUserById(Integer userId, boolean fromRedis)");
         }

@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class DeleteFriendCmd extends AbstractChatCmd {
     @Override
-    protected void parseParam(JSONObject param) throws Exception {
+    protected void parseParam(JSONObject param) {
         Integer fid = param.getInteger(ParamConstant.KEY_FRIEND_ID);
         if (ObjectUtil.isEmpty(fid)) {
             throw new UserNotFountException();
