@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * 移出群聊
  * @author tiankong
  * @date 2019/12/17 14:09
  */
@@ -66,7 +67,7 @@ public class RemoveChatGroupCmd extends AbstractChatCmd {
                 newSingleChat.setRead(false);
             }
             // 更新被移除用户的redis数据
-            userService.updateRedisDataByUid(uid);
+            userService.updateRedisDataByUid(uid,"RemoveChatGroupCmd.concreteAction()");
             rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT, newSingleChat));
         });
         // 更新群组redis数据

@@ -130,10 +130,11 @@ public interface UserService {
      * 更新用户Redis 数据
      * 更新用户菜单,用户群组,用户信息
      *
-     * @param uid 用户id
+     * @param uid        用户id
+     * @param methodName 调用方
      * @return List
      */
-    UserDetailsBo updateRedisDataByUid(Integer uid);
+    UserDetailsBo updateRedisDataByUid(Integer uid, String methodName);
 
     /**
      * 更新用户Redis 数据
@@ -147,7 +148,8 @@ public interface UserService {
 
     /**
      * 更新用户Redis 数据
-     * @param uid 用户id
+     *
+     * @param uid           用户id
      * @param userDetailsBo 用户数据
      * @return UserDetailsBo
      */
@@ -157,10 +159,11 @@ public interface UserService {
      * 更新用户Redis 数据
      * 更新用户菜单,用户群组,用户信息
      *
-     * @param user 用户
+     * @param user       用户
+     * @param methodName 调用方方法名
      * @return UserDetailsBo
      */
-    UserDetailsBo updateRedisDataByUid(User user);
+    UserDetailsBo updateRedisDataByUid(User user, String methodName);
 
     /**
      * 获取用户缓存信息

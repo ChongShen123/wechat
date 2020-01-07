@@ -47,7 +47,7 @@ public class QuitGroupCmd extends AbstractChatCmd {
         // 更新群组redis数据
         groupService.updateRedisGroupById(groupId);
         //更新群组用户redis数据
-        userService.updateRedisDataByUid(session.getUid());
+        userService.updateRedisDataByUid(session.getUid(),"QuitGroupCmd.concreteAction() 用户退群更新缓存");
     }
 
     private RemoveChatVo createNewRemoveChatVo(Integer groupId, SessionBo session) {

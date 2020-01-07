@@ -103,7 +103,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected UserDetailsService userDetailsService() {
         log.debug("SpringSecurity 框架现在检查用户信息");
         return username -> {
-            log.debug(username);
             User user = userService.getByUsername(username);
             if (user != null) {
                 return new UserDetailsBo(user);

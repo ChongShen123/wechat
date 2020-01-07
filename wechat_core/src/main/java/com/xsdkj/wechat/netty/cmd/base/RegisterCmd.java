@@ -22,6 +22,7 @@ import com.xsdkj.wechat.netty.cmd.CmdAnno;
 import com.xsdkj.wechat.service.FriendApplicationService;
 import com.xsdkj.wechat.service.UserGroupService;
 import com.xsdkj.wechat.util.JwtTokenUtil;
+import com.xsdkj.wechat.util.LogUtil;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.vo.GroupVo;
 import io.netty.channel.Channel;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.xsdkj.wechat.constant.ParamConstant.KEY_USER_ID;
 
@@ -70,7 +72,7 @@ public class RegisterCmd extends AbstractChatCmd {
         if (ObjectUtil.isNotEmpty(token) && ObjectUtil.isNotEmpty(userId)) {
             requestParam.setToken(token);
             requestParam.setUserId(userId);
-            log.debug("参数解析完成{}ms", DateUtil.spendMs(begin));
+            log.debug("参数解析完成 {}ms", DateUtil.spendMs(begin));
             return;
         }
         throw new ValidateException();
@@ -88,27 +90,25 @@ public class RegisterCmd extends AbstractChatCmd {
             if (tokenState) {
                 if (!checkUserOnline(userId, channel)) {
                     UserDetailsBo userDetailsBo = userService.getRedisDataByUid(userId);
-                    // TODO 在redis 缓存的用户群组不能使用
                     User user = userDetailsBo.getUser();
                     if (user == null) {
                         log.error("暂未登录或token已过期");
                         throw new UnAuthorizedException();
                     }
                     channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon(), user.getPlatformId(), user.getType()));
-                    log.debug("绑定Channel属性完毕{}ms", DateUtil.spendMs(begin));
+                    log.debug("绑定Channel属性完毕 {}ms", DateUtil.spendMs(begin));
                     SessionUtil.registerUserChannel(userId, channel);
                     sendMessage(channel, JsonResult.success("您已连接成功!", cmd));
                     // 加入群聊
-                    List<GroupVo> userGroupList = userGroupService.listGroupByUid(userId);
+                    List<GroupVo> userGroupList = new ArrayList<>(userDetailsBo.getUserGroupRelationMap().values());
                     log.debug("用户群组个数:{} {}ms", userGroupList.size(), DateUtil.spendMs(begin));
                     if (userGroupList.size() > 0) {
                         for (GroupVo group : userGroupList) {
-                            System.out.println(group);
                             SessionUtil.getChannelGroup(group.getGid()).add(channel);
                             log.debug("用户{}已进入群聊,群房间名为{}", user.getUsername(), group.getGroupName());
                         }
                     }
-                    log.debug("查看有无好友申请消息");
+                    log.debug("查看有无好友申请消息...");
                     List<FriendApplication> friendApplications = friendApplicationService.listByReadAndUserId(false, userId);
                     if (friendApplications.size() > 0) {
                         log.debug("好友申请条数:{}", friendApplications.size());
@@ -116,19 +116,19 @@ public class RegisterCmd extends AbstractChatCmd {
                         List<String> ids = new ArrayList<>();
                         friendApplications.forEach(friendApplication -> ids.add(friendApplication.getId()));
                         friendApplicationService.updateFriendApplicationRead(true, ids);
-                        log.debug("修改好友申请消息为已读{}ms", DateUtil.spendMs(begin));
+                        log.debug("修改好友申请消息为已读 {}ms", DateUtil.spendMs(begin));
                     }
                     List<SingleChat> singleChats = singleChatService.listByReadAndToUserId(false, userId);
                     if (singleChats.size() > 0) {
                         log.debug("单聊条数:{}", friendApplications.size());
                         singleChats.forEach(singleChat -> sendMessage(channel, JsonResult.success(singleChat, Cmd.SINGLE_CHAT)));
                         singleChatService.updateRead(true, singleChats);
-                        log.debug("修改单聊消息为已读{}ms", DateUtil.spendMs(begin));
+                        log.debug("修改单聊消息为已读 {}ms", DateUtil.spendMs(begin));
                     }
                     user.setLoginState(UserConstant.LOGGED);
-                    userService.updateRedisDataByUid(user);
-                    log.debug("更新用户redis缓存完毕");
-                    log.debug("用户注册完成{}ms", DateUtil.spendMs(begin));
+                    userService.updateRedisDataByUid(user, "RegisterCmd 注册用户Channel");
+                    log.debug("用户注册完毕 {}ms", DateUtil.spendMs(begin));
+                    log.debug(LogUtil.INTERVAL);
                     return;
                 }
                 log.debug("用户重复注册");

@@ -86,7 +86,7 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
                     log.error("业务异常>>>用户{}钱包不存在", uid);
                     throw new DataEmptyException();
                 }
-                userService.updateRedisDataByUid(uid);
+                userService.updateRedisDataByUid(uid,"UserWalletServiceImpl.getByUid(Integer uid, boolean type)");
             }
             return wallet;
         }

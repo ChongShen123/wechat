@@ -47,6 +47,6 @@ public class DissolveGroupCmd extends AbstractChatCmd {
         // 缓存删除
         groupService.deleteRedisData(groupId);
         // 更新用户缓存
-        listMembersVos.forEach(member -> userService.updateRedisDataByUid(member.getUid()));
+        listMembersVos.forEach(member -> userService.updateRedisDataByUid(member.getUid(),"DissolveGroupCmd.解散群组"));
     }
 }

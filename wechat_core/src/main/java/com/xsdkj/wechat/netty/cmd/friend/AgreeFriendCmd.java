@@ -63,7 +63,7 @@ public class AgreeFriendCmd extends AbstractChatCmd {
                 List<Friend> friends = createFriend(application);
                 friendService.saveList(friends);
                 msg = ChatConstant.RETURN_MESSAGE_SUCCESS;
-                friends.forEach(friend -> userService.updateRedisDataByUid(friend.getUid()));
+                friends.forEach(friend -> userService.updateRedisDataByUid(friend.getUid(),"AgreeFriendCmd.concreteAction()添加好友通过更新缓存"));
                 break;
             // 回复好友
             case ChatConstant.REFUSE:

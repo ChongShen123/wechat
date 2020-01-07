@@ -39,7 +39,6 @@ public class UserDetailsBo implements UserDetails, Serializable {
      * 用户所有好友
      */
     private List<UserFriendVo> userFriendVos;
-    private List<GroupVo> userGroupList;
     /**
      * 用户所有群组
      */

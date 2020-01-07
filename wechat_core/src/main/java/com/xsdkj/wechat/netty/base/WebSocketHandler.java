@@ -133,7 +133,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         SessionBo session = SessionUtil.getSession(ctx.channel());
         if (session != null) {
             userService.updateLoginState(session.getUid(), UserConstant.NOT_LOGIN);
-            userService.updateRedisDataByUid(session.getUid());
+            userService.updateRedisDataByUid(session.getUid(),"WebSocketHandler.channelUnregistered() 用户离线更新用户缓存(这里应该是删除缓存吧)");
         }
     }
 

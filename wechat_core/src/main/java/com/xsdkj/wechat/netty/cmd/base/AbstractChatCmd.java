@@ -154,7 +154,7 @@ public abstract class AbstractChatCmd extends AbstractCmd {
                 // 通知群里在线的用户XXX已经进入群聊
                 sendGroupMessage(group.getId(), JsonResult.success(String.format("%s已加入群聊", SessionUtil.getSession(toUserChannel).getUsername()), cmd));
                 // 更新用户redis缓存
-                userService.updateRedisDataByUid(singleChat.getToUserId());
+                userService.updateRedisDataByUid(singleChat.getToUserId(),"AbstractChatCmd.sendCreateGroupMessageToUsers()");
             }
             singleChat.setRead(toUserChannel != null);
             rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT, singleChat));

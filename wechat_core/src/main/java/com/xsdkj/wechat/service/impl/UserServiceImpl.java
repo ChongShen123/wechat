@@ -3,7 +3,6 @@ package com.xsdkj.wechat.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.PermissionBo;
 import com.xsdkj.wechat.bo.UserDetailsBo;
@@ -167,8 +166,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         List<PermissionBo> userPermission = getUserPermission(user.getId());
         log.debug("获取用户权限{}", userPermission);
         currentUserDetailsBo.setPermissionBos(userPermission);
-        currentUserDetailsBo.setUserGroupList(groupService.listGroupByUid(user.getId()));
-        initUserGroup(user.getId(), currentUserDetailsBo);
+        initUserGroup(user.getId(), currentUserDetailsBo, "createCurrentUserDetailsBo(User user) ");
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(user.getId()));
         return currentUserDetailsBo;
     }
@@ -328,15 +326,16 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param uid                  用户id
      * @param currentUserDetailsBo currentUserDetailsBo
      */
-    private void initUserGroup(Integer uid, UserDetailsBo currentUserDetailsBo) {
-        log.debug("初始化用户群组");
+    private void initUserGroup(Integer uid, UserDetailsBo currentUserDetailsBo, String methodName) {
+        long begin = System.currentTimeMillis();
+        log.debug("初始化用户群组:{}", methodName);
         List<GroupVo> groupInfoBos = groupService.listGroupByUid(uid);
         if (groupInfoBos.size() > 0) {
             log.debug("用户群组:{}", groupInfoBos);
             for (GroupVo groupInfoBo : groupInfoBos) {
                 currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
             }
-            log.debug("用户群组初始化完毕,用户群组Map元素个数为:{}", currentUserDetailsBo.getUserGroupRelationMap().size());
+            log.debug("用户群组初始化完毕,用户群组Map元素个数为:{} {}ms", currentUserDetailsBo.getUserGroupRelationMap().size(), DateUtil.spendMs(begin));
             return;
         }
         log.debug("用户群组为空");
@@ -344,13 +343,14 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public UserDetailsBo updateRedisDataByUid(Integer uid, Wallet wallet) {
+        log.debug("更新用户缓存 updateRedisDataByUid(Integer uid, Wallet wallet)  调用方:{}", Thread.currentThread().getStackTrace()[2].getMethodName());
         User user = userMapper.selectByPrimaryKey(uid);
         if (ObjectUtil.isNull(user)) {
             throw new NullPointerException();
         }
         UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
-        initUserGroup(uid, currentUserDetailsBo);
+        initUserGroup(uid, currentUserDetailsBo, "updateRedisDataByUid(Integer uid, Wallet wallet)");
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
         currentUserDetailsBo.setWallet(wallet);
         redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
@@ -358,21 +358,28 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public UserDetailsBo updateRedisDataByUid(Integer uid) {
+    public UserDetailsBo updateRedisDataByUid(Integer uid, String methodName) {
+        long begin = System.currentTimeMillis();
+        log.debug("更新用户缓存updateRedisDataByUid(Integer uid, String methodName) 调用方:{}", methodName);
         User user = userMapper.selectByPrimaryKey(uid);
         if (ObjectUtil.isNull(user)) {
             throw new NullPointerException();
         }
-        return updateRedisDataByUid(user);
+        UserDetailsBo userDetailsBo = updateRedisDataByUid(user, "updateRedisDataByUid(Integer uid)");
+        log.debug("用户缓存更新完成:{}ms", DateUtil.spendMs(begin));
+        return userDetailsBo;
     }
 
     @Override
-    public UserDetailsBo updateRedisDataByUid(User user) {
+    public UserDetailsBo updateRedisDataByUid(User user, String methodName) {
+        long begin = System.currentTimeMillis();
+        log.debug("更新用户缓存 updateRedisDataByUid(User user, String methodName) 调用方:{}", methodName);
         UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(user.getId()));
-        initUserGroup(user.getId(), currentUserDetailsBo);
+        initUserGroup(user.getId(), currentUserDetailsBo, "updateRedisDataByUid(User user) ");
         redisUtil.set(RedisConstant.REDIS_USER_ID + user.getId(), JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
+        log.debug("更新用户缓存完毕 {}ms", DateUtil.spendMs(begin));
         return currentUserDetailsBo;
     }
 
@@ -386,23 +393,23 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public UserDetailsBo getRedisDataByUid(Integer uid) {
         Object redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + uid);
-        log.debug("从redis获取的用户{}缓存信息为:{}", uid, redisData);
+        log.debug("用户{}缓存信息:{}", uid, redisData);
         UserDetailsBo bo;
         if (redisData != null) {
             JSONObject json = JSONObject.parseObject(redisData.toString());
             bo = JSONObject.toJavaObject(json, UserDetailsBo.class);
             return bo;
         }
-        log.debug("用户{}redis缓存信息为空,准备从本地获取用户信息");
+        log.debug("用户{}缓存信息为空,准备从本地获取用户信息");
         User user = userMapper.selectByPrimaryKey(uid);
         if (user != null) {
             log.debug("用户信息为:{}", user);
             UserDetailsBo currentUserDetailsBo = createCurrentUserDetailsBo(user);
             boolean updateRedisStatus = redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(uid), RedisConstant.REDIS_USER_TIMEOUT);
-            log.debug("是否更新redis用户缓存:{}", updateRedisStatus);
+            log.debug("已更新用户缓存:{}", updateRedisStatus);
             return currentUserDetailsBo;
         }
-        log.error("本地数据库未找到用户{}的相关信息,返回null", uid);
+        log.error("本地未找到用户{}相关信息,返回null", uid);
         return null;
     }
 
@@ -416,7 +423,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     public User getUserById(Integer userId, boolean fromRedis) {
         User user = userMapper.selectByPrimaryKey(userId);
         if (fromRedis) {
-            updateRedisDataByUid(user);
+            updateRedisDataByUid(user, "getUserById(Integer userId, boolean fromRedis)");
         }
         return user;
     }

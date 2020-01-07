@@ -1,5 +1,6 @@
 package com.xsdkj.wechat.netty.base;
 
+import cn.hutool.core.date.DateUtil;
 import com.xsdkj.wechat.util.LogUtil;
 import com.xsdkj.wechat.util.SessionUtil;
 import io.netty.buffer.ByteBuf;
@@ -31,6 +32,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<Object> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+        long begin = System.currentTimeMillis();
         log.debug(LogUtil.INTERVAL);
         log.debug("收到客户端{}发送的请求", ctx.channel().remoteAddress());
         if (msg instanceof FullHttpRequest) {
@@ -40,11 +42,11 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<Object> {
             handlerHttpRequest(ctx, fullHttpRequest);
         } else if (msg instanceof WebSocketFrame) {
             WebSocketFrame webSocketFrame = (WebSocketFrame) msg;
-            log.debug("信息类型为{}", webSocketFrame.getClass().getName());
             ctx.fireChannelRead(webSocketFrame.retain());
             return;
         }
         log.debug("其他请求:{}", msg.getClass().getName());
+        log.debug("客户端[{}]已建立一个连接 {}ms", ctx.channel().remoteAddress(),DateUtil.spendMs(begin));
     }
 
     /**

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
+ * 修改用户支付密码
  * @author tiankong
  * @date 2020/1/4 16:14
  */
@@ -47,6 +48,6 @@ public class UpdatePayPasswordCmd extends AbstractChatCmd {
         }
         userWalletService.resetPayPassword(session.getUid(), password, oldPassword);
         sendMessage(channel, JsonResult.success(cmd));
-        userService.updateRedisDataByUid(session.getUid());
+        userService.updateRedisDataByUid(session.getUid(),"UpdatePayPasswordCmd.concreteAction() 这里是否可以不用更新?");
     }
 }
