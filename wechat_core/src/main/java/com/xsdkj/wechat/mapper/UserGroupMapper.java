@@ -1,10 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.entity.user.UserGroup;
-import com.xsdkj.wechat.vo.GroupBaseInfoVo;
-import com.xsdkj.wechat.vo.GroupInfoVo;
-import com.xsdkj.wechat.vo.GroupVo;
-import com.xsdkj.wechat.vo.ListMembersVo;
+import com.xsdkj.wechat.vo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -66,5 +63,7 @@ public interface UserGroupMapper {
     void updateGroupInfo(@Param("groupId") Integer groupId, @Param("name") String name, @Param("icon") String icon, @Param("notice") String notice);
 
     void updateAddFriend(@Param("groupId") Integer groupId, @Param("addFriend") Boolean addFriend);
+
+    List<GroupAdminVo> listGroupAdmins(@Param("groupId") Integer groupId);
 
 }

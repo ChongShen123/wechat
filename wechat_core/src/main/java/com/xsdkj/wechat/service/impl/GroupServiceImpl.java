@@ -11,10 +11,7 @@ import com.xsdkj.wechat.mapper.GroupNoSayMapper;
 import com.xsdkj.wechat.service.UserGroupService;
 import com.xsdkj.wechat.ex.DataEmptyException;
 import com.xsdkj.wechat.util.RedisUtil;
-import com.xsdkj.wechat.vo.GroupBaseInfoVo;
-import com.xsdkj.wechat.vo.GroupInfoVo;
-import com.xsdkj.wechat.vo.GroupVo;
-import com.xsdkj.wechat.vo.ListMembersVo;
+import com.xsdkj.wechat.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -110,7 +107,7 @@ public class GroupServiceImpl implements UserGroupService {
         List<ListMembersVo> listMembersVos = groupMapper.listGroupMembersByGroupId(group.getId());
         redisUtil.set(RedisConstant.REDIS_GROUP_KEY + group.getId(), JSONObject.toJSONString(group));
         redisUtil.set(RedisConstant.REDIS_GROUP_MEMBERS + group.getId(), JSONObject.toJSONString(listMembersVos));
-        log.debug("群{}缓存更新完毕 {}ms",groupId, DateUtil.spendMs(begin));
+        log.debug("群{}缓存更新完毕 {}ms", groupId, DateUtil.spendMs(begin));
     }
 
     @Override
@@ -288,5 +285,10 @@ public class GroupServiceImpl implements UserGroupService {
     @Override
     public void updateAddFriend(Integer groupId, Boolean addFriend) {
         groupMapper.updateAddFriend(groupId, addFriend);
+    }
+
+    @Override
+    public List<GroupAdminVo> listGroupAdmins(Integer groupId) {
+        return groupMapper.listGroupAdmins(groupId);
     }
 }

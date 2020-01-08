@@ -49,10 +49,6 @@ public class GroupChatCmd extends AbstractChatCmd {
             requestParam.setContent(content);
             Byte type = param.getByte(ParamConstant.KEY_TYPE);
             requestParam.setByteType(type);
-            log.debug("groupId:{}", groupId);
-            log.debug("content:{}", content);
-            log.debug("type:{}", type);
-            log.debug("参数解析完毕");
         } catch (Exception e) {
             throw new ValidateException();
         }
