@@ -103,6 +103,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
 
+
 //    @Override
 //    public LoginVo register(UserRegisterDto param, HttpServletRequest request){
 //        String passwordRegex = SystemConstant.PASSWORD_REGEX;
@@ -125,6 +126,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 //        UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
 //        return login(userLoginParam, request, false);
 //    }
+
 
 
     @Override
@@ -212,9 +214,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         return getPermissionTree(0, permissionList);
     }
 
-
     /**
      * 递归获取菜单权限树
+     *
      * @param pid         权限父ID
      * @param permissions 子菜单
      * @return 返回所有子菜单父ID 为 pid的列表
@@ -233,9 +235,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         return childList;
     }
-
     /**
      * 根据 sort进行排序
+     *
      * @return Comparator
      */
     private Comparator<PermissionBo> order() {
@@ -254,7 +256,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         // TODO 放入队列
         userMapper.updateByPrimaryKeySelective(update);
     }
-
     @Override
     public List<User> listUserByIds(Set<Integer> ids) {
         return userMapper.listUserByIds(ids);
@@ -278,7 +279,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         return bo.getUser();
     }
-
     @Override
     public void updateUserInfo(UserUpdateInfoParam param) {
         // TODO 需要更新Redis缓存 修改用户信息之前要判断该用户是否存在.
@@ -294,7 +294,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         user.setQq(param.getQq());
         userMapper.updateByPrimaryKeySelective(user);
     }
-
     private User getNewUser(UserRegisterDto param, HttpServletRequest request) {
         User user = new User();
         user.setUsername(param.getUsername());
@@ -312,9 +311,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         user.setUno(generateUno());
         return user;
     }
-
     /**
      * 生成Uno
+     *
      * @return Long
      */
     private Long generateUno() {
@@ -334,21 +333,17 @@ public class UserServiceImpl extends BaseService implements UserService {
         loginInfoVo.setMenus(user.getPermissionBos());
         return loginInfoVo;
     }
-
     @Override
     public List<UserFriendVo> listFriendByUid(Integer uid) {
         UserDetailsBo redisDataByUid = getRedisDataByUid(uid);
         return redisDataByUid.getUserFriendVos();
     }
-
-
     @Override
     public void deleteFriend(Integer uid, Integer friendId) {
         userMapper.deleteFriend(uid, friendId);
         userMapper.deleteFriend(friendId, uid);
         // TODO 更新下redis好友列表
     }
-
     @Override
     public UserDetailsBo updateRedisDataByUid(Integer uid) {
         User user = userMapper.selectByPrimaryKey(uid);
@@ -379,7 +374,6 @@ public class UserServiceImpl extends BaseService implements UserService {
             currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
         }
     }
-
     @Override
     public UserDetailsBo updateRedisDataByUid(Integer uid, Wallet wallet) {
         User user = userMapper.selectByPrimaryKey(uid);
@@ -431,5 +425,10 @@ public class UserServiceImpl extends BaseService implements UserService {
             updateRedisDataByUid(user);
         }
         return user;
+    }
+
+    @Override
+    public int countUserIds(Set<Integer> userIds) {
+        return userMapper.countUserIds(userIds);
     }
 }

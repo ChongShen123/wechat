@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsdkj.wechat.mapper.SignAwardMapper">
+    <resultMap id="BaseResultMap" type="com.xsdkj.wechat.entity.wallet.SignAward">
+        <!--@mbg.generated-->
+        <!--@Table sign_award-->
+        <id column="id" jdbcType="SMALLINT" property="id"/>
+        <result column="award_score" jdbcType="INTEGER" property="awardScore"/>
+        <result column="succession_count" jdbcType="INTEGER" property="successionCount"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, award_score, succession_count
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Short" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from sign_award
+        where id = #{id,jdbcType=SMALLINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+        <!--@mbg.generated-->
+        delete from sign_award
+        where id = #{id,jdbcType=SMALLINT}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.SignAward"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into sign_award (award_score, succession_count)
+        values (#{awardScore,jdbcType=INTEGER}, #{successionCount,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.xsdkj.wechat.entity.wallet.SignAward" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into sign_award
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="awardScore != null">
+                award_score,
+            </if>
+            <if test="successionCount != null">
+                succession_count,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="awardScore != null">
+                #{awardScore,jdbcType=INTEGER},
+            </if>
+            <if test="successionCount != null">
+                #{successionCount,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xsdkj.wechat.entity.wallet.SignAward">
+        <!--@mbg.generated-->
+        update sign_award
+        <set>
+            <if test="awardScore != null">
+                award_score = #{awardScore,jdbcType=INTEGER},
+            </if>
+            <if test="successionCount != null">
+                succession_count = #{successionCount,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xsdkj.wechat.entity.wallet.SignAward">
+        <!--@mbg.generated-->
+        update sign_award
+        set award_score = #{awardScore,jdbcType=INTEGER},
+        succession_count = #{successionCount,jdbcType=INTEGER}
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
+
+    <select id="listAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sign_award order by succession_count
+    </select>
+</mapper>

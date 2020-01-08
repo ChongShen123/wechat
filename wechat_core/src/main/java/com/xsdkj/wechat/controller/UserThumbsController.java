@@ -24,8 +24,8 @@ public class UserThumbsController {
     }
 
     @RequestMapping("/delete")
-    public void thumbsDelete(@RequestBody UserThumbs userThumbs){
-        userThumbsService.delete(userThumbs);
+    public void thumbsDelete(){
+        userThumbsService.delete();
 
     }
 }

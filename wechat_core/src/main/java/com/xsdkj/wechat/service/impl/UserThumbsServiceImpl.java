@@ -26,42 +26,38 @@ public class UserThumbsServiceImpl implements UserThumbsService {
 
     /**
      * 保存用户点赞
+     *
      * @param userThumbsDto
      */
     @Override
     public void save(UserThumbsDto userThumbsDto) {
-        UserThumbs userThumbs=saveThums(userThumbsDto);
-<<<<<<< HEAD
+        UserThumbs userThumbs = saveThums(userThumbsDto);
         userThumbsMapper.insert(userThumbs);
-        /*rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));*/
-=======
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(SystemConstant.BOX_TYPE_THUMS,userThumbs));
->>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
     }
+
     private UserThumbs saveThums(UserThumbsDto userThumbsDto) {
-        UserThumbs userThumbs=new UserThumbs();
+        UserThumbs userThumbs = new UserThumbs();
         userThumbs.setUid(userUtil.currentUser().getUser().getId());
         userThumbs.setNickname(userThumbsDto.getNickname());
-        if(userThumbsDto.getMoodId()!=null){
+        if (userThumbsDto.getMoodId() != null) {
             userThumbs.setMoodId(userThumbsDto.getMoodId());
         }
 
-        return  userThumbs;
+        return userThumbs;
     }
+
     /**
      * 删除用户的点赞
-     * @param userThumbs
+     *
+     * @param
      */
     @Override
-    public void delete(UserThumbs userThumbs) {
-        if(userThumbs.getId()!=null){
-            userThumbs.setUid(userUtil.currentUser().getUser().getId());
-<<<<<<< HEAD
-            userThumbsMapper.deleteByPrimaryKey(userThumbs.getId());
-         /*   rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));*/
-=======
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, MsgBox.create(SystemConstant.BOX_TYPE_MOOD,userThumbs));
->>>>>>> 27edae3208a992a05a995390701c4070e0a6af6c
+    public void delete() {
+        int id=userUtil.currentUser().getUser().getId();
+        UserThumbs userThumbs=new UserThumbs();
+        if (id==userThumbs.getId()) {
+            userThumbsMapper.deleteByPrimaryKey(id);
+            /*   rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME,RabbitMessageBoxBo.createBox(SystemConstant.BOX_TYPE_THUMS,userThumbs));*/
         }
     }
 

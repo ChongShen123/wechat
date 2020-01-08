@@ -1,11 +1,7 @@
 package com.xsdkj.wechat.service.impl;
 
 
-import com.sun.xml.internal.bind.v2.TODO;
-import com.xsdkj.wechat.common.SystemConstant;
-
 import com.xsdkj.wechat.constant.ChatConstant;
-
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.SingleChatService;
 import lombok.extern.slf4j.Slf4j;

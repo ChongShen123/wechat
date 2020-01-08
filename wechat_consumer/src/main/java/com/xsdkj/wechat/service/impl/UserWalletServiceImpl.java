@@ -13,8 +13,8 @@ import javax.annotation.Resource;
  * @date 2020/1/3 12:41
  */
 @Service
-public class UserWalletServiceImpl implements UserWalletService {
-    @Resource
+public class UserWalletServiceImpl /*implements UserWalletService */{
+/*    @Resource
     private WalletMapper walletMapper;
     @Resource
     private WalletOperationLogMapper walletOperationLogMapper;
@@ -34,5 +34,5 @@ public class UserWalletServiceImpl implements UserWalletService {
     @Override
     public void saveWalletPriceChangeLog(WalletPriceChangeLog walletPriceChangeLog) {
         walletPriceChangeLogMapper.insert(walletPriceChangeLog);
-    }
+    }*/
 }

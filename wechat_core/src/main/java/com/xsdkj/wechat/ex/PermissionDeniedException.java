@@ -14,27 +14,6 @@ import lombok.EqualsAndHashCode;
 public class PermissionDeniedException extends ServiceException {
     private static final long serialVersionUID = 2032976030274369402L;
     private IErrorCode code = ResultCodeEnum.FORBIDDEN;
-
     public PermissionDeniedException() {
-    }
-
-    public PermissionDeniedException(IErrorCode code) {
-        super(code);
-    }
-
-    public PermissionDeniedException(String message, IErrorCode code) {
-        super(message, code);
-    }
-
-    public PermissionDeniedException(String message, Throwable cause, IErrorCode code) {
-        super(message, cause, code);
-    }
-
-    public PermissionDeniedException(Throwable cause, IErrorCode code) {
-        super(cause, code);
-    }
-
-    public PermissionDeniedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, IErrorCode code) {
-        super(message, cause, enableSuppression, writableStackTrace, code);
     }
 }

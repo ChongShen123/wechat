@@ -21,6 +21,7 @@ import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.service.UserWalletService;
 import com.xsdkj.wechat.ex.*;
 import com.xsdkj.wechat.util.ChatUtil;
+import com.xsdkj.wechat.util.LogUtil;
 import com.xsdkj.wechat.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+
 
 /**
  * @author tiankong
@@ -206,7 +208,7 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         WalletOperationLog walletPriceLog = createNewWalletOperationLog(user.getId(), admin.getId(), price, beforePrice, afterPrice, operationType);
         walletOperationLogMapper.insert(walletPriceLog, tableNum);
         // 管理员操作记录
-        UserOperationLog userOperationLog = createNewUserOperationLog(admin.getId(), admin.getPlatformId(), operationType, String.format("管理员%s为用户%s充值%s元", admin.getId(), user.getId(), price));
+        UserOperationLog userOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), operationType, String.format("管理员%s为用户%s充值%s元", admin.getId(), user.getId(), price));
         userOperationLogMapper.insert(userOperationLog);
         // 用户账变记录
         WalletPriceChangeLog walletPriceChangeLog = createNewWalletPriceChangeLog(param.getUid(), param.getPrice(), beforePrice, afterPrice, addType, operationType);
@@ -239,25 +241,6 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         return walletPriceChangeLog;
     }
 
-
-    /**
-     * 创建管理员操作记录
-     *
-     * @param uid        用户id
-     * @param platformId 平台id
-     * @param type       操作类型 1 上分,2 下分,3 禁言,4 设置群可加好友 5 加签到次数,6 减签到次数 ...
-     * @param content    操作内容
-     * @return UserOperationLog
-     */
-    private UserOperationLog createNewUserOperationLog(Integer uid, Integer platformId, int type, String content) {
-        UserOperationLog log = new UserOperationLog();
-        log.setUid(uid);
-        log.setPlatfromId(platformId);
-        log.setOperationType((byte) type);
-        log.setContent(content);
-        log.setCreateTimes(System.currentTimeMillis());
-        return log;
-    }
 
     /**
      * 创建一个金额操作流水记录

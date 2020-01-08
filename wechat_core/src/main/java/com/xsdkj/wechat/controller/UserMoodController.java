@@ -3,14 +3,8 @@ package com.xsdkj.wechat.controller;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.MoodParamDto;
 
-
-
 import com.xsdkj.wechat.entity.mood.UserMood;
 
-
-import com.xsdkj.wechat.dto.UserThumbsDto;
-
-import com.xsdkj.wechat.entity.mood.UserMood;
 
 import com.xsdkj.wechat.service.UserMoodService;
 import com.xsdkj.wechat.vo.UserMoodVo;

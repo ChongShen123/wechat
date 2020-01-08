@@ -55,9 +55,9 @@ spring:
     password: opxotzqvtesebgid
     default-encoding: UTF-8
     properties:
-       mail:
+      mail:
         smtp:
-           socketFactoryClass: javax.net.ssl.SSLSocketFactory
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
         debug: true
 server:
   port: 9001
@@ -86,6 +86,4 @@ logging:
     com:
       cxkj:
         wechat:
-          mapper: info
-
-
+          mapper: error

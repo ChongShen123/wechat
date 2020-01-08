@@ -6,6 +6,22 @@ package com.xsdkj.wechat.common;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 非法操作
+     */
+    ILLEGAL_OPERATION_EXCEPTION(4052, "操作失败!非法操作"),
+    /**
+     * 操作数据库异常
+     */
+    UPDATE_DATE_EXCEPTION(4051, "操作失败!操作数据库异常"),
+    /**
+     * 用户已签到
+     */
+    ALREADY_SIGNED_IN(4050, "签到失败,用户已签到!"),
+    /**
+     * 平台不匹配
+     */
+    PLATFORM_NOT_MATCH(4049, "签到失败,用户平台不匹配!"),
+    /**
      * 支付密码为空
      */
     PAY_PASSWORD_IS_EMPTY(4048, "操作失败,请先设置支付密码!"),

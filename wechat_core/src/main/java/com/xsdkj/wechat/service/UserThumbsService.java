@@ -8,5 +8,5 @@ import com.xsdkj.wechat.entity.mood.UserThumbs;
  */
 public interface UserThumbsService {
     void save(UserThumbsDto userThumbsDto);
-    void delete(UserThumbs userThumbs);
+    void delete();
 }
