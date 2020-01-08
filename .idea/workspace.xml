@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4e5f6dc-c4fb-4e46-a356-1b93ec1107ce" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/SetGroupChatCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/SetGroupChatCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/UpdateGroupInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/UpdateGroupInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/user/UserInfoCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/user/UserInfoCmd.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/wechat_entity/target/" />
     <ignored path="$PROJECT_DIR$/wechat_common/target/" />
@@ -65,14 +63,14 @@
         <counts>
           <entry key="cell" value="20" />
           <entry key="dummy" value="13" />
-          <entry key="java" value="55581" />
+          <entry key="java" value="56362" />
           <entry key="xml" value="2834" />
           <entry key="yml" value="198" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="55581" />
+          <entry key="JAVA" value="56362" />
           <entry key="MybatisParam" value="1" />
           <entry key="PLAIN_TEXT" value="13" />
           <entry key="Scratch" value="20" />
@@ -84,7 +82,7 @@
         <counts>
           <entry key="class" value="8" />
           <entry key="dtd" value="2" />
-          <entry key="java" value="713" />
+          <entry key="java" value="715" />
           <entry key="md" value="4" />
           <entry key="sign_award" value="4" />
           <entry key="sign_date" value="1" />
@@ -100,7 +98,7 @@
           <entry key="CLASS" value="8" />
           <entry key="DTD" value="2" />
           <entry key="Database Element" value="10" />
-          <entry key="JAVA" value="713" />
+          <entry key="JAVA" value="715" />
           <entry key="Markdown" value="4" />
           <entry key="SQL" value="5" />
           <entry key="XML" value="49" />
@@ -119,20 +117,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3213">
-              <caret line="119" column="13" selection-start-line="119" selection-start-column="13" selection-end-line="119" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/UpdateGroupInfo.java">
+        <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/user/UserInfoCmd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="38" column="66" selection-start-line="38" selection-start-column="66" selection-end-line="38" selection-end-column="66" />
+            <state relative-caret-position="962">
+              <caret line="54" column="34" selection-start-line="54" selection-start-column="34" selection-end-line="54" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -165,6 +154,7 @@
       <find>开始处理群聊业务.</find>
       <find>3011</find>
       <find>3012</find>
+      <find>4000</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -173,7 +163,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/ListUserGroupCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/UserService.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/util/UserUtil.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java" />
@@ -224,6 +213,7 @@
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/ListAdminCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/SetGroupChatCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/UpdateGroupInfo.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/user/UserInfoCmd.java" />
       </list>
     </option>
   </component>
@@ -376,7 +366,7 @@
     <property name="SearchEverywhereHistoryKey" value="RegisterCmd&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java&#10;UserServiceImpl&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java&#10;HttpRequestHandler&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/netty/base/HttpRequestHandler.java&#10;SecurityConfig&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/config/SecurityConfig.java&#10;userGroupRelationMap&#9;PSI&#9;JAVA://com.xsdkj.wechat.bo.UserDetailsBo#userGroupRelationMap&#10;BannedChatException&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/ex/BannedChatException.java&#10;RedisC&#9;PSI&#9;JAVA://com.xsdkj.wechat.constant.RedisConstant&#10;userScore&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserScoreMapper.xml&#10;UserS&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/mapper/UserScoreMapper.java&#10;ResultC&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_common/src/main/java/com/xsdkj/wechat/common/ResultCodeEnum.java&#10;用户类型&#9;null&#9;null&#10;UserMoodMapper.xml&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserMoodMapper.xml&#10;UserMapper.xml&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserMapper.xml" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578461999329" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578462452274" />
     <property name="database.console.LAST_STATE" value="true" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="full.screen.before.presentation.mode" value="false" />
@@ -479,7 +469,7 @@
       <workItem from="1578046955352" duration="35992000" />
       <workItem from="1578194204208" duration="63368000" />
       <workItem from="1578316349913" duration="43215000" />
-      <workItem from="1578459404566" duration="2546000" />
+      <workItem from="1578459404566" duration="2989000" />
     </task>
     <task id="LOCAL-00001" summary="系统常量细分">
       <created>1577679886979</created>
@@ -491,7 +481,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112197000" />
+    <option name="totallyTimeSpent" value="112640000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -503,7 +493,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="0" width="1920" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" sideWeight="0.50342464" side_tool="true" weight="0.376211" />
@@ -530,7 +520,7 @@
       <window_info anchor="bottom" id="Database Changes" order="12" weight="0.32899022" />
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32899022" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.32899022" />
-      <window_info active="true" anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.38110748" />
+      <window_info anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" weight="0.39196527" />
       <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.5026652" side_tool="true" weight="0.27470142" />
       <window_info anchor="bottom" id="Messages" order="17" sideWeight="0.49946696" weight="0.2790445" />
       <window_info anchor="bottom" id="Inspection Results" order="18" weight="0.32899022" />
@@ -557,7 +547,7 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Web" order="7" side_tool="true" weight="0.32992464" />
-      <window_info content_ui="combo" x="0" y="0" width="1920" height="1040" id="Project" order="8" sideWeight="0.49657536" visible="true" weight="0.20309168" />
+      <window_info content_ui="combo" x="0" y="0" width="1920" height="1040" id="Project" order="8" sideWeight="0.49657536" weight="0.20309168" />
       <window_info anchor="bottom" id="Database Console" order="0" weight="0.21172638" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32899022" />
@@ -573,7 +563,7 @@
       <window_info anchor="bottom" id="Database Changes" order="12" weight="0.32899022" />
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32899022" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.32899022" />
-      <window_info active="true" anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.39087948" />
+      <window_info active="true" anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.39196527" />
       <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.5026652" side_tool="true" weight="0.27470142" />
       <window_info anchor="bottom" id="Messages" order="17" sideWeight="0.49946696" weight="0.2790445" />
       <window_info anchor="bottom" id="Inspection Results" order="18" weight="0.32899022" />
@@ -603,13 +593,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="系统常量细分" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/ex/IllegalOperationException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="16" column="43" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="404">
@@ -924,13 +907,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3213">
-          <caret line="119" column="13" selection-start-line="119" selection-start-column="13" selection-end-line="119" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/AbstractChatCmd.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -948,8 +924,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/UpdateGroupInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="38" column="66" selection-start-line="38" selection-start-column="66" selection-end-line="38" selection-end-column="66" />
+        <state relative-caret-position="335">
+          <caret line="42" column="75" selection-start-line="42" selection-start-column="75" selection-end-line="42" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="139" column="15" selection-start-line="139" selection-start-column="15" selection-end-line="139" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/user/UserInfoCmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="962">
+          <caret line="54" column="34" selection-start-line="54" selection-start-column="34" selection-end-line="54" selection-end-column="34" />
         </state>
       </provider>
     </entry>
