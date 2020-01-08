@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4e5f6dc-c4fb-4e46-a356-1b93ec1107ce" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/TransferUserPriceCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/TransferUserPriceCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/SetPayPasswordCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/SetPayPasswordCmd.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/wechat_entity/target/" />
     <ignored path="$PROJECT_DIR$/wechat_common/target/" />
@@ -65,14 +63,14 @@
         <counts>
           <entry key="cell" value="20" />
           <entry key="dummy" value="13" />
-          <entry key="java" value="59334" />
+          <entry key="java" value="59645" />
           <entry key="xml" value="2834" />
           <entry key="yml" value="198" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="59334" />
+          <entry key="JAVA" value="59645" />
           <entry key="MybatisParam" value="1" />
           <entry key="PLAIN_TEXT" value="13" />
           <entry key="Scratch" value="20" />
@@ -84,8 +82,8 @@
         <counts>
           <entry key="class" value="8" />
           <entry key="dtd" value="2" />
-          <entry key="java" value="766" />
-          <entry key="md" value="4" />
+          <entry key="java" value="780" />
+          <entry key="md" value="5" />
           <entry key="sign_award" value="4" />
           <entry key="sign_date" value="1" />
           <entry key="sql" value="5" />
@@ -100,8 +98,8 @@
           <entry key="CLASS" value="8" />
           <entry key="DTD" value="2" />
           <entry key="Database Element" value="10" />
-          <entry key="JAVA" value="766" />
-          <entry key="Markdown" value="4" />
+          <entry key="JAVA" value="780" />
+          <entry key="Markdown" value="5" />
           <entry key="SQL" value="5" />
           <entry key="XML" value="49" />
           <entry key="YAML" value="12" />
@@ -122,17 +120,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3996">
-              <caret line="148" column="20" selection-start-line="148" selection-start-column="20" selection-end-line="148" selection-end-column="20" />
+            <state relative-caret-position="4131">
+              <caret line="153" column="19" selection-start-line="153" selection-start-column="19" selection-end-line="153" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/SetPayPasswordCmd.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="674">
+              <caret line="56" column="8" selection-start-line="56" selection-start-column="8" selection-end-line="56" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/TransferUserPriceCmd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
+            <state relative-caret-position="837">
+              <caret line="52" column="44" selection-start-line="52" selection-start-column="44" selection-end-line="52" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -203,6 +210,7 @@
       <find>3012</find>
       <find>4000</find>
       <find>4002</find>
+      <find>4003</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -212,7 +220,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/util/UserUtil.java" />
-        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/SetPayPasswordCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/base/WebSocketHandler.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/UpdatePayPasswordCmd.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/config/SecurityConfig.java" />
@@ -262,6 +269,7 @@
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserServiceImpl.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java" />
         <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/TransferUserPriceCmd.java" />
+        <option value="$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/SetPayPasswordCmd.java" />
       </list>
     </option>
   </component>
@@ -414,7 +422,7 @@
     <property name="SearchEverywhereHistoryKey" value="RegisterCmd&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/base/RegisterCmd.java&#10;UserServiceImpl&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/service/impl/UserWalletServiceImpl.java&#10;HttpRequestHandler&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/netty/base/HttpRequestHandler.java&#10;SecurityConfig&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/config/SecurityConfig.java&#10;userGroupRelationMap&#9;PSI&#9;JAVA://com.xsdkj.wechat.bo.UserDetailsBo#userGroupRelationMap&#10;BannedChatException&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/ex/BannedChatException.java&#10;RedisC&#9;PSI&#9;JAVA://com.xsdkj.wechat.constant.RedisConstant&#10;userScore&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserScoreMapper.xml&#10;UserS&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/java/com/xsdkj/wechat/mapper/UserScoreMapper.java&#10;ResultC&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_common/src/main/java/com/xsdkj/wechat/common/ResultCodeEnum.java&#10;用户类型&#9;null&#9;null&#10;UserMoodMapper.xml&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserMoodMapper.xml&#10;UserMapper.xml&#9;FILE&#9;file://E:/workspace/github/wechat/wechat_core/src/main/resources/mappers/UserMapper.xml" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578464905961" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1578465567648" />
     <property name="database.console.LAST_STATE" value="true" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="full.screen.before.presentation.mode" value="false" />
@@ -517,7 +525,7 @@
       <workItem from="1578046955352" duration="35992000" />
       <workItem from="1578194204208" duration="63368000" />
       <workItem from="1578316349913" duration="43215000" />
-      <workItem from="1578459404566" duration="5626000" />
+      <workItem from="1578459404566" duration="6032000" />
     </task>
     <task id="LOCAL-00001" summary="系统常量细分">
       <created>1577679886979</created>
@@ -529,7 +537,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="115277000" />
+    <option name="totallyTimeSpent" value="115683000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -542,6 +550,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" sideWeight="0.50342464" side_tool="true" weight="0.376211" />
       <window_info id="Designer" order="1" />
@@ -567,7 +576,7 @@
       <window_info anchor="bottom" id="Database Changes" order="12" weight="0.32899022" />
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32899022" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.32899022" />
-      <window_info active="true" anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.69163954" />
+      <window_info anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" weight="0.4408252" />
       <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.5026652" side_tool="true" weight="0.27470142" />
       <window_info anchor="bottom" id="Messages" order="17" sideWeight="0.49946696" weight="0.2790445" />
       <window_info anchor="bottom" id="Inspection Results" order="18" weight="0.32899022" />
@@ -610,7 +619,7 @@
       <window_info anchor="bottom" id="Database Changes" order="12" weight="0.32899022" />
       <window_info anchor="bottom" id="Java Enterprise" order="13" weight="0.32899022" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.32899022" />
-      <window_info active="true" anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.40716612" />
+      <window_info active="true" anchor="bottom" id="JRebel Executor" order="15" sideWeight="0.49733475" visible="true" weight="0.4408252" />
       <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.5026652" side_tool="true" weight="0.27470142" />
       <window_info anchor="bottom" id="Messages" order="17" sideWeight="0.49946696" weight="0.2790445" />
       <window_info anchor="bottom" id="Inspection Results" order="18" weight="0.32899022" />
@@ -640,48 +649,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="系统常量细分" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/ex/RepeatException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/friend/DeleteFriendCmd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="method#parseParam#0;class#DeleteFriendCmd#0" />
-            <element signature="method#concreteAction#0;class#DeleteFriendCmd#0" />
-            <element signature="method#checkIsFriend#0;class#DeleteFriendCmd#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/friend/ListUserFriendCmd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
-          <folding>
-            <element signature="method#concreteAction#0;class#ListUserFriendCmd#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/friend/AgreeFriendCmd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="123" lean-forward="true" selection-start-line="123" selection-end-line="123" />
-          <folding>
-            <element signature="method#parseParam#0;class#AgreeFriendCmd#0" />
-            <element signature="method#concreteAction#0;class#AgreeFriendCmd#0" />
-            <element signature="method#createFriend#0;class#AgreeFriendCmd#0" />
-            <element signature="method#createFriend#1;class#AgreeFriendCmd#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/friend/GetFriendInfoCmd.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="376">
@@ -828,16 +795,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="243">
-            <caret line="830" column="2" selection-start-line="830" selection-start-column="2" selection-end-line="830" selection-end-column="2" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/ListAdminCmd.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="295">
@@ -959,6 +916,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="243">
+            <caret line="333" column="9" selection-start-line="333" selection-start-column="9" selection-end-line="333" selection-end-column="9" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_entity/src/main/java/com/xsdkj/wechat/entity/wallet/Wallet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="756">
+          <caret line="38" column="22" selection-start-line="38" selection-start-column="22" selection-end-line="38" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/ex/ValidateException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="16" column="37" lean-forward="true" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
+          <folding>
+            <element signature="e#390#391#0" expanded="true" />
+            <element signature="e#443#444#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/ResultCodeEnum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="146" column="25" selection-start-line="146" selection-start-column="25" selection-end-line="146" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/group/UpdateGroupInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1296">
@@ -987,17 +979,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java">
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/TransferUserPriceCmd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3996">
-          <caret line="148" column="20" selection-start-line="148" selection-start-column="20" selection-end-line="148" selection-end-column="20" />
+        <state relative-caret-position="837">
+          <caret line="52" column="44" selection-start-line="52" selection-start-column="44" selection-end-line="52" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/TransferUserPriceCmd.java">
+    <entry file="file://$PROJECT_DIR$/wechat_common/src/main/java/com/xsdkj/wechat/common/Cmd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
+        <state relative-caret-position="4131">
+          <caret line="153" column="19" selection-start-line="153" selection-start-column="19" selection-end-line="153" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_core/src/main/java/com/xsdkj/wechat/netty/cmd/wallet/SetPayPasswordCmd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="674">
+          <caret line="56" column="8" selection-start-line="56" selection-start-column="8" selection-end-line="56" selection-end-column="8" />
         </state>
       </provider>
     </entry>

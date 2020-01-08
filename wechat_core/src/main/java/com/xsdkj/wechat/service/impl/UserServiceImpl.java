@@ -330,18 +330,12 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param currentUserDetailsBo currentUserDetailsBo
      */
     private void initUserGroup(Integer uid, UserDetailsBo currentUserDetailsBo, String methodName) {
-        long begin = System.currentTimeMillis();
-        log.debug("初始化用户群组:{}", methodName);
         List<GroupVo> groupInfoBos = groupService.listGroupByUid(uid);
         if (groupInfoBos.size() > 0) {
-            log.debug("用户群组:{}", groupInfoBos);
             for (GroupVo groupInfoBo : groupInfoBos) {
                 currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
             }
-            log.debug("用户群组初始化完毕,用户群组Map元素个数为:{} {}ms", currentUserDetailsBo.getUserGroupRelationMap().size(), DateUtil.spendMs(begin));
-            return;
         }
-        log.debug("用户群组为空");
     }
 
     @Override
