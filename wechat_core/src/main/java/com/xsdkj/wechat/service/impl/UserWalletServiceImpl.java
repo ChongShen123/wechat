@@ -166,10 +166,12 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
     @Override
     public void resetPayPassword(Integer uid, String password, String oldPassword) {
         Wallet wallet = walletMapper.getOneByUid(uid);
-        if (!encoder.matches(oldPassword, wallet.getPassword())) {
-            throw new PasswordNotMatchException();
+        if (encoder.matches(oldPassword, wallet.getPassword())) {
+            updatePayPassword(uid, password);
+            return;
         }
-        updatePayPassword(uid, password);
+        log.error("旧密码不匹配");
+        throw new PasswordNotMatchException();
     }
 
     /**
