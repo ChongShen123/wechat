@@ -274,26 +274,37 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
 
     @Override
     public boolean transferAccounts(Wallet userWallet, Wallet toUserWallet, BigDecimal price) {
+        long begin = System.currentTimeMillis();
+        log.debug("开始处理转账数据保存工作...");
         Integer uid = userWallet.getUid();
         Integer toUserId = toUserWallet.getUid();
         BigDecimal userBeforePrice = userWallet.getPrice();
         BigDecimal userAfterPrice = userBeforePrice.subtract(price);
+        log.debug("用户id:{} 转账金额:{} 转账前金额:{} 转账后金额:{}", uid, price, userBeforePrice, userAfterPrice);
         BigDecimal toUserBeforePrice = toUserWallet.getPrice();
         BigDecimal toUserAfterPrice = toUserBeforePrice.add(price);
-        // 修改用户钱包
+        log.debug("接收方用户id:{} 转账金额:{} 转账前金额:{} 转账后金额:{}", toUserId, price, toUserBeforePrice, toUserAfterPrice);
         int userCount = walletMapper.updateWalletPrice(uid, userAfterPrice);
-        int toUserCont = walletMapper.updateWalletPrice(toUserId, toUserAfterPrice);
-        // 创建账变记录
+        log.debug("修改用户钱包完成{} {}ms", userCount, DateUtil.spendMs(begin));
+        int toUserCount = walletMapper.updateWalletPrice(toUserId, toUserAfterPrice);
+        log.debug("修改接收方用户钱包完成{} {}ms", toUserCount, DateUtil.spendMs(begin));
+        log.debug("创建账变记录");
         WalletPriceChangeLog userPriceChangeLog = createNewWalletPriceChangeLog(uid, price, userBeforePrice, userAfterPrice, false, WalletConstant.TRANSFER);
         WalletPriceChangeLog toUserPriceChangeLog = createNewWalletPriceChangeLog(toUserId, price, toUserBeforePrice, toUserAfterPrice, true, WalletConstant.TRANSFER);
         int userWalletPriceCount = walletPriceChangeLogMapper.insert(userPriceChangeLog, uid % SystemConstant.LOG_TABLE_COUNT);
+        log.debug("用户账变记录完成{} {}ms", userPriceChangeLog, DateUtil.spendMs(begin));
         int toUserWalletPriceCount = walletPriceChangeLogMapper.insert(toUserPriceChangeLog, toUserId % SystemConstant.LOG_TABLE_COUNT);
-        // 创建转账记录
+        log.debug("接收方用户账变记录完成{} {}ms", toUserPriceChangeLog, DateUtil.spendMs(begin));
+        log.debug("创建转账记录");
         WalletTransferLog userTransFerLog = createNewWalletTransferLog(uid, toUserId, price, userBeforePrice, userAfterPrice, WalletConstant.SHIFT_OUT);
         WalletTransferLog toUserTransFerLog = createNewWalletTransferLog(toUserId, uid, price, toUserBeforePrice, toUserAfterPrice, WalletConstant.SHIFT_IN);
         int userWalletTransferCount = walletTransferLogMapper.insert(userTransFerLog, uid % SystemConstant.LOG_TABLE_COUNT);
+        log.debug("用户转账记录保存完成{} {}ms", userTransFerLog, DateUtil.spendMs(begin));
         int toUserWalletTransferCount = walletTransferLogMapper.insert(toUserTransFerLog, toUserId % SystemConstant.LOG_TABLE_COUNT);
-        return userCount + toUserCont + userWalletPriceCount + toUserWalletPriceCount + userWalletTransferCount + toUserWalletTransferCount == 6;
+        log.debug("接收方用户转账记录保存完成{} {}ms", toUserTransFerLog, DateUtil.spendMs(begin));
+        boolean flag = userCount + toUserCount + userWalletPriceCount + toUserWalletPriceCount + userWalletTransferCount + toUserWalletTransferCount == 6;
+        log.debug("数据保存工作处理完成 {}ms", DateUtil.spendMs(begin));
+        return flag;
     }
 
     /**

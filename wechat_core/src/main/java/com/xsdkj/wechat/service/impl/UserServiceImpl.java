@@ -247,7 +247,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             log.debug("是否更新redis用户缓存:{}", updateRedisStatus);
             return user;
         }
-        log.error("本地数据库未找到用户{}的相关信息,返回null", uid);
+        log.error("本地数据库未找到用户{}的相关信息", uid);
         return null;
     }
 
