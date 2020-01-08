@@ -941,6 +941,32 @@
 }
 ```
 
+### 3015 查看群所有管理员
+
+请求
+
+```
+{ "cmd":3015,"group_id":78 }
+```
+
+响应
+
+```
+  "code":2000,
+  "data":[
+    {
+      "icon":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm7O1QZxOj38DFs9pFHwX3it2CiCMXiVMUPOXI337CKfRhFaYVaw&s",
+      "nickname":"sky",
+      "uid":7
+    }
+  ],
+  "message":"ok",
+  "type":3015
+}
+```
+
+
+
 ## 用户与金额
 
 ### 4000 查询用户详情
