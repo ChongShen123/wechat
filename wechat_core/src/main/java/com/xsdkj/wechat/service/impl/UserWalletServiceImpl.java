@@ -73,25 +73,30 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
 
     @Override
     public Wallet getByUid(Integer uid, boolean type) {
-        if (!type) {
-            return walletMapper.getOneByUid(uid);
-        }
-        UserDetailsBo userDetailsBo = userService.getRedisDataByUid(uid);
-        Wallet wallet;
-        if (userDetailsBo != null) {
-            wallet = userDetailsBo.getWallet();
-            if (wallet == null) {
-                wallet = walletMapper.getOneByUid(uid);
-                if (wallet == null) {
-                    log.error("业务异常>>>用户{}钱包不存在", uid);
-                    throw new DataEmptyException();
+        long begin = System.currentTimeMillis();
+        try {
+            if (type) {
+                UserDetailsBo userDetailsBo = userService.getRedisDataByUid(uid);
+                Wallet wallet;
+                if (userDetailsBo != null) {
+                    wallet = userDetailsBo.getWallet();
+                    if (wallet == null) {
+                        wallet = walletMapper.getOneByUid(uid);
+                        if (wallet == null) {
+                            log.error("业务异常>>>用户{}钱包不存在", uid);
+                            throw new DataEmptyException();
+                        }
+                        userService.updateRedisDataByUid(uid, wallet);
+                    }
+                    return wallet;
                 }
-                userService.updateRedisDataByUid(uid,"UserWalletServiceImpl.getByUid(Integer uid, boolean type)");
+                wallet = walletMapper.getOneByUid(uid);
+                return wallet;
             }
-            return wallet;
+            return walletMapper.getOneByUid(uid);
+        } finally {
+            log.debug("获取用户钱包完成 {}ms", DateUtil.spendMs(begin));
         }
-        wallet = walletMapper.getOneByUid(uid);
-        return wallet;
     }
 
     @Override
