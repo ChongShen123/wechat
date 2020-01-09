@@ -60,22 +60,20 @@ public class GroupChatCmd extends AbstractChatCmd {
         log.debug("开始处理群聊业务...");
         Integer groupId = requestParam.getGroupId();
         UserGroup group = groupService.getGroupById(groupId);
-        if (!group.getNoSayType().equals(GroupConstant.GROUP_NO_SAY)) {
-            // 检查用户是否被禁言
-            checkUserNoSay(channel, groupId, begin);
-            // 构建一个群聊消息
-            GroupChat groupChat = createNewGroupChat(requestParam.getByteType(), groupId, requestParam.getContent(), session);
-            log.debug("创建一个群聊消息{} {}ms", groupChat, DateUtil.spendMs(begin));
-            // 将消息发送给群在线所有用户
-            sendGroupMessage(groupId, JsonResult.success(groupChat, cmd));
-            log.debug("已将消息发送给本群在线用户 {}ms", DateUtil.spendMs(begin));
-            groupChatService.save(groupChat);
-            log.debug("已将消息保存到数据库,群聊处理完成 {}ms", DateUtil.spendMs(begin));
-            log.debug(LogUtil.INTERVAL);
-            return;
+        if (group.getNoSayType().equals(GroupConstant.GROUP_NO_SAY)) {
+            throw new BannedChatException();
         }
-        throw new BannedChatException();
-
+        // 检查用户是否被禁言
+        checkUserNoSay(channel, groupId, begin);
+        // 构建一个群聊消息
+        GroupChat groupChat = createNewGroupChat(requestParam.getByteType(), groupId, requestParam.getContent(), session);
+        log.debug("创建一个群聊消息{} {}ms", groupChat, DateUtil.spendMs(begin));
+        // 将消息发送给群在线所有用户
+        sendGroupMessage(groupId, JsonResult.success(groupChat, cmd));
+        log.debug("已将消息发送给本群在线用户 {}ms", DateUtil.spendMs(begin));
+        groupChatService.save(groupChat);
+        log.debug("已将消息保存到数据库,群聊处理完成 {}ms", DateUtil.spendMs(begin));
+        log.debug(LogUtil.INTERVAL);
     }
 
     /**

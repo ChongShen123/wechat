@@ -44,18 +44,17 @@ public class SetPayPasswordCmd extends AbstractChatCmd {
         String password = requestParam.getPassword();
         Wallet wallet = userWalletService.getByUid(session.getUid(), true);
         Byte state = wallet.getState();
-        if (state == null) {
-            if (password.matches(SystemConstant.PASSWORD_REGEX)) {
-                userWalletService.updatePayPassword(session.getUid(), password);
-                sendMessage(channel, JsonResult.success());
-                userService.updateRedisDataByUid(session.getUid(), "SetPayPasswordCmd.concreteAction()");
-                log.debug("设置支付密码完成 {}ms", DateUtil.spendMs(begin));
-                return;
-            }
+        if (state != null) {
+            log.error("支付密码已被设置");
+            throw new PayPasswordHasBeenSetException();
+        }
+        if (!password.matches(SystemConstant.PASSWORD_REGEX)) {
             log.error("密码格式不正确");
             throw new ValidateException();
         }
-        log.error("支付密码已被设置");
-        throw new PayPasswordHasBeenSetException();
+        userWalletService.updatePayPassword(session.getUid(), password);
+        sendMessage(channel, JsonResult.success());
+        userService.updateRedisDataByUid(session.getUid(), "SetPayPasswordCmd.concreteAction()");
+        log.debug("设置支付密码完成 {}ms", DateUtil.spendMs(begin));
     }
 }

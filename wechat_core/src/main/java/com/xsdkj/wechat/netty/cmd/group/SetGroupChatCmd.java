@@ -38,18 +38,18 @@ public class SetGroupChatCmd extends AbstractChatCmd {
         Integer type = requestParam.getIntType();
         UserGroup group = groupService.getGroupById(groupId);
         try {
-            if (group != null) {
-                if (checkAdmin(groupId, session.getUid())) {
-                    groupService.setGroupChat(groupId, type);
-                    groupService.updateRedisGroupById(groupId);
-                    sendMessage(channel, JsonResult.success(cmd));
-                    return;
-                }
+            if (group == null) {
+                log.error("群{}数据不存在", groupId);
+                throw new DataEmptyException();
+            }
+            if (!checkAdmin(groupId, session.getUid())) {
                 log.error("用户{}没有相关权限", session.getUid());
                 throw new PermissionDeniedException();
+
             }
-            log.error("群{}数据不存在", groupId);
-            throw new DataEmptyException();
+            groupService.setGroupChat(groupId, type);
+            groupService.updateRedisGroupById(groupId);
+            sendMessage(channel, JsonResult.success(cmd));
         } finally {
             log.debug("群{}聊天功能已{} {}ms", groupId, Byte.parseByte(type + "") == GroupConstant.GROUP_NO_SAY ? "关闭" : "开启", DateUtil.spendMs(begin));
         }

@@ -52,21 +52,20 @@ public class UpdateGroupInfo extends AbstractChatCmd {
             String icon = requestParam.getIcon();
             String notice = requestParam.getNotice();
             String name = requestParam.getName();
-            if (checkAdmin(groupId, session.getUid())) {
-                if (StrUtil.isNotBlank(icon)) {
-                    String path = root + imgPath + icon;
-                    if (!FileUtil.exist(path)) {
-                        log.error("文件{}不存在", path);
-                        throw new FileNotFoundException();
-                    }
-                }
-                groupService.updateGroupInfo(groupId, name, icon, notice);
-                groupService.updateRedisGroupById(groupId);
-                sendMessage(channel, JsonResult.success(cmd));
-                return;
+            if (!checkAdmin(groupId, session.getUid())) {
+                log.error("用户{}没有相关权限", session.getUid());
+                throw new PermissionDeniedException();
             }
-            log.error("用户{}没有相关权限", session.getUid());
-            throw new PermissionDeniedException();
+            if (StrUtil.isNotBlank(icon)) {
+                String path = root + imgPath + icon;
+                if (!FileUtil.exist(path)) {
+                    log.error("文件{}不存在", path);
+                    throw new FileNotFoundException();
+                }
+            }
+            groupService.updateGroupInfo(groupId, name, icon, notice);
+            groupService.updateRedisGroupById(groupId);
+            sendMessage(channel, JsonResult.success(cmd));
         } finally {
             log.debug("业务处理完成 {}ms", DateUtil.spendMs(begin));
         }

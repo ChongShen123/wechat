@@ -131,15 +131,6 @@ public class GroupServiceImpl implements UserGroupService {
         return createNewGroupBaseInfoVo(group);
     }
 
-    private GroupBaseInfoVo createNewGroupBaseInfoVo(UserGroup group) {
-        GroupBaseInfoVo groupBaseInfoVo = new GroupBaseInfoVo();
-        groupBaseInfoVo.setAddFriendType(group.getAddFriendType());
-        groupBaseInfoVo.setId(group.getId());
-        groupBaseInfoVo.setMembersCount(group.getMembersCount());
-        groupBaseInfoVo.setName(group.getName());
-        groupBaseInfoVo.setNoSayType(group.getNoSayType());
-        return groupBaseInfoVo;
-    }
 
     @Override
     public GroupInfoVo getGroupInfo(Integer groupId) throws DataEmptyException {
@@ -150,19 +141,6 @@ public class GroupServiceImpl implements UserGroupService {
         return createNewGroupInfo(group);
     }
 
-    private GroupInfoVo createNewGroupInfo(UserGroup group) {
-        GroupInfoVo result = new GroupInfoVo();
-        result.setCreateTimes(group.getCreateTimes());
-        result.setIcon(group.getIcon());
-        result.setId(group.getId());
-        result.setName(group.getName());
-        result.setMembersCount(group.getMembersCount());
-        result.setQr(group.getQr());
-        result.setNotice(group.getNotice());
-        result.setAddFriendType(group.getAddFriendType());
-        result.setNoSayType(group.getNoSayType());
-        return result;
-    }
 
     @Override
     public void save(UserGroup group) {
@@ -290,5 +268,29 @@ public class GroupServiceImpl implements UserGroupService {
     @Override
     public List<GroupAdminVo> listGroupAdmins(Integer groupId) {
         return groupMapper.listGroupAdmins(groupId);
+    }
+
+    private GroupBaseInfoVo createNewGroupBaseInfoVo(UserGroup group) {
+        GroupBaseInfoVo groupBaseInfoVo = new GroupBaseInfoVo();
+        groupBaseInfoVo.setAddFriendType(group.getAddFriendType());
+        groupBaseInfoVo.setId(group.getId());
+        groupBaseInfoVo.setMembersCount(group.getMembersCount());
+        groupBaseInfoVo.setName(group.getName());
+        groupBaseInfoVo.setNoSayType(group.getNoSayType());
+        return groupBaseInfoVo;
+    }
+
+    private GroupInfoVo createNewGroupInfo(UserGroup group) {
+        GroupInfoVo result = new GroupInfoVo();
+        result.setCreateTimes(group.getCreateTimes());
+        result.setIcon(group.getIcon());
+        result.setId(group.getId());
+        result.setName(group.getName());
+        result.setMembersCount(group.getMembersCount());
+        result.setQr(group.getQr());
+        result.setNotice(group.getNotice());
+        result.setAddFriendType(group.getAddFriendType());
+        result.setNoSayType(group.getNoSayType());
+        return result;
     }
 }

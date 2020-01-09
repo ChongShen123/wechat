@@ -36,14 +36,13 @@ public class SetNoSayCmd extends AbstractChatCmd {
             Integer groupId = requestParam.getGroupId();
             Integer userId = requestParam.getUserId();
             Long times = requestParam.getTimes();
-            if (checkAdmin(groupId, session.getUid())) {
-                groupService.saveNoSay(userId, groupId, times);
-                groupService.updateRedisNoSayData();
-                sendMessage(channel, JsonResult.success(cmd));
-                return;
+            if (!checkAdmin(groupId, session.getUid())) {
+                log.debug("用户权限不足");
+                throw new PermissionDeniedException();
             }
-            log.debug("用户权限不足");
-            throw new PermissionDeniedException();
+            groupService.saveNoSay(userId, groupId, times);
+            groupService.updateRedisNoSayData();
+            sendMessage(channel, JsonResult.success(cmd));
         } finally {
             log.debug("用户禁言处理完成 {}ms", DateUtil.spendMs(begin));
         }

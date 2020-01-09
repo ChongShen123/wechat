@@ -91,55 +91,54 @@ public class RegisterCmd extends AbstractChatCmd {
                 throw new IllegalOperationException();
             }
             log.debug("token验证状态:{} {}ms", tokenState, DateUtil.spendMs(begin));
-            if (tokenState) {
-                if (!checkUserOnline(userId, channel)) {
-                    UserDetailsBo userDetailsBo = userService.getRedisDataByUid(userId);
-                    User user = userDetailsBo.getUser();
-                    if (user == null) {
-                        log.error("暂未登录或token已过期");
-                        throw new UnAuthorizedException();
-                    }
-                    channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon(), user.getPlatformId(), user.getType()));
-                    log.debug("绑定Channel属性完毕 {}ms", DateUtil.spendMs(begin));
-                    SessionUtil.registerUserChannel(userId, channel);
-                    sendMessage(channel, JsonResult.success("您已连接成功!", cmd));
-                    // 加入群聊
-                    List<GroupVo> userGroupList = new ArrayList<>(userDetailsBo.getUserGroupRelationMap().values());
-                    log.debug("用户群组个数:{} {}ms", userGroupList.size(), DateUtil.spendMs(begin));
-                    if (userGroupList.size() > 0) {
-                        for (GroupVo group : userGroupList) {
-                            SessionUtil.getChannelGroup(group.getGid()).add(channel);
-                            log.debug("用户{}已进入群聊,群房间名为{}", user.getUsername(), group.getGroupName());
-                        }
-                    }
-                    log.debug("查看有无好友申请消息...");
-                    List<FriendApplication> friendApplications = friendApplicationService.listByReadAndUserId(false, userId);
-                    if (friendApplications.size() > 0) {
-                        log.debug("好友申请条数:{}", friendApplications.size());
-                        sendMessage(channel, JsonResult.success(friendApplications, Cmd.ADD_FRIEND));
-                        List<String> ids = new ArrayList<>();
-                        friendApplications.forEach(friendApplication -> ids.add(friendApplication.getId()));
-                        friendApplicationService.updateFriendApplicationRead(true, ids);
-                        log.debug("修改好友申请消息为已读 {}ms", DateUtil.spendMs(begin));
-                    }
-                    List<SingleChat> singleChats = singleChatService.listByReadAndToUserId(false, userId);
-                    if (singleChats.size() > 0) {
-                        log.debug("单聊条数:{}", friendApplications.size());
-                        singleChats.forEach(singleChat -> sendMessage(channel, JsonResult.success(singleChat, Cmd.SINGLE_CHAT)));
-                        singleChatService.updateRead(true, singleChats);
-                        log.debug("修改单聊消息为已读 {}ms", DateUtil.spendMs(begin));
-                    }
-                    user.setLoginState(UserConstant.LOGGED);
-                    userService.updateRedisDataByUid(user, "RegisterCmd 注册用户Channel");
-                    log.debug("用户注册完毕 {}ms", DateUtil.spendMs(begin));
-                    log.debug(LogUtil.INTERVAL);
-                    return;
-                }
+            if (!tokenState) {
+                log.error("token验证失败!");
+                throw new UnAuthorizedException();
+            }
+            if (checkUserOnline(userId, channel)) {
                 log.debug("用户重复注册");
                 throw new UserAlreadyRegister();
             }
-            log.error("token验证失败!");
-            throw new UnAuthorizedException();
+            UserDetailsBo userDetailsBo = userService.getRedisDataByUid(userId);
+            User user = userDetailsBo.getUser();
+            if (user == null) {
+                log.error("暂未登录或token已过期");
+                throw new UnAuthorizedException();
+            }
+            channel.attr(Attributes.SESSION).set(new SessionBo(user.getId(), user.getUsername(), user.getIcon(), user.getPlatformId(), user.getType()));
+            log.debug("绑定Channel属性完毕 {}ms", DateUtil.spendMs(begin));
+            SessionUtil.registerUserChannel(userId, channel);
+            sendMessage(channel, JsonResult.success("您已连接成功!", cmd));
+            // 加入群聊
+            List<GroupVo> userGroupList = new ArrayList<>(userDetailsBo.getUserGroupRelationMap().values());
+            log.debug("用户群组个数:{} {}ms", userGroupList.size(), DateUtil.spendMs(begin));
+            if (userGroupList.size() > 0) {
+                for (GroupVo group : userGroupList) {
+                    SessionUtil.getChannelGroup(group.getGid()).add(channel);
+                    log.debug("用户{}已进入群聊,群房间名为{}", user.getUsername(), group.getGroupName());
+                }
+            }
+            log.debug("查看有无好友申请消息...");
+            List<FriendApplication> friendApplications = friendApplicationService.listByReadAndUserId(false, userId);
+            if (friendApplications.size() > 0) {
+                log.debug("好友申请条数:{}", friendApplications.size());
+                sendMessage(channel, JsonResult.success(friendApplications, Cmd.ADD_FRIEND));
+                List<String> ids = new ArrayList<>();
+                friendApplications.forEach(friendApplication -> ids.add(friendApplication.getId()));
+                friendApplicationService.updateFriendApplicationRead(true, ids);
+                log.debug("修改好友申请消息为已读 {}ms", DateUtil.spendMs(begin));
+            }
+            List<SingleChat> singleChats = singleChatService.listByReadAndToUserId(false, userId);
+            if (singleChats.size() > 0) {
+                log.debug("单聊条数:{}", friendApplications.size());
+                singleChats.forEach(singleChat -> sendMessage(channel, JsonResult.success(singleChat, Cmd.SINGLE_CHAT)));
+                singleChatService.updateRead(true, singleChats);
+                log.debug("修改单聊消息为已读 {}ms", DateUtil.spendMs(begin));
+            }
+            user.setLoginState(UserConstant.LOGGED);
+            userService.updateRedisDataByUid(user, "RegisterCmd 注册用户Channel");
+            log.debug("用户注册完毕 {}ms", DateUtil.spendMs(begin));
+            log.debug(LogUtil.INTERVAL);
         } catch (UsernameNotFoundException e) {
             e.printStackTrace();
             log.error("token解析失败!");

@@ -40,43 +40,40 @@ public class SetGroupManagerCmd extends AbstractChatCmd {
             // 管理员id
             Integer userId = requestParam.getUserId();
             UserGroup group = groupService.getGroupById(groupId);
-            if (group != null) {
-                // 只有群主可以管理员
-                if (group.getOwnerId().equals(session.getUid())) {
-                    Integer type = requestParam.getIntType();
-                    switch (type) {
-                        // 添加管理员
-                        case GroupConstant.ADD_MANAGER:
-                            Integer count = groupService.countGroupManger(group.getId(), userId);
-                            if (count == 0) {
-                                groupService.addGroupManager(group.getId(), userId);
-                                log.debug("用户{}已被设置为{}群管理员", userId, group.getId());
-                                break;
-                            }
-                            throw new RepetitionException();
-                            // 删除管理员
-                        case GroupConstant.DELETE_MANAGER:
-                            count = groupService.countGroupManger(group.getId(), userId);
-                            if (count == 1) {
-                                groupService.deleteGroupManager(group.getId(), userId);
-                                log.debug("用户{}已在{}群管理员已被取消", userId, group.getId());
-                                break;
-                            } else if (count > 1) {
-                                log.error("查询出了多少数据 {}", count);
-                                throw new ServiceException();
-                            }
-                            throw new DataEmptyException();
-                        default:
-                            throw new ValidateException();
-                    }
-                    sendMessage(channel, JsonResult.success(cmd));
-                    return;
-                }
+            if (group == null) {
+                log.error("{}群不存在", groupId);
+                throw new DataEmptyException();
+            }
+            // 只有群主可以管理员
+            if (!group.getOwnerId().equals(session.getUid())) {
                 log.error("只有群主{}拥有此权限", group.getOwnerId());
                 throw new PermissionDeniedException();
             }
-            log.error("{}群不存在", groupId);
-            throw new DataEmptyException();
+            Integer type = requestParam.getIntType();
+            switch (type) {
+                // 添加管理员
+                case GroupConstant.ADD_MANAGER:
+                    Integer count = groupService.countGroupManger(group.getId(), userId);
+                    if (count == 0) {
+                        groupService.addGroupManager(group.getId(), userId);
+                        log.debug("用户{}已被设置为{}群管理员", userId, group.getId());
+                        break;
+                    }
+                    throw new RepetitionException();
+                    // 删除管理员
+                case GroupConstant.DELETE_MANAGER:
+                    count = groupService.countGroupManger(group.getId(), userId);
+                    if (count != 1) {
+                        log.error("查询出了{}条数据", count);
+                        throw new ServiceException();
+                    }
+                    groupService.deleteGroupManager(group.getId(), userId);
+                    log.debug("用户{}已在{}群管理员已被取消", userId, group.getId());
+                    break;
+                default:
+                    throw new ValidateException();
+            }
+            sendMessage(channel, JsonResult.success(cmd));
         } finally {
             log.debug("本次业务操作完成用时 {}ms", DateUtil.spendMs(begin));
         }

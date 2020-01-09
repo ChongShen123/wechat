@@ -94,9 +94,10 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public User getByUsername(String username) {
+        log.debug("{}",Thread.currentThread().getStackTrace()[1].getMethodName());
         long begin = System.currentTimeMillis();
         User user = userMapper.getOneByUsername(username);
-        log.debug("本地查询用户完成{} {}ms", user, DateUtil.spendMs(begin));
+        log.debug("本地查询用户完成 {}ms", DateUtil.spendMs(begin));
         return user;
     }
 
@@ -215,13 +216,11 @@ public class UserServiceImpl extends BaseService implements UserService {
     private void insertLoginLog(User user, HttpServletRequest request) {
         String ipAddress = IpUtil.getIpAddress(request);
         UserLoginLog loginLog = new UserLoginLog(user, ipAddress);
-        // TODO 登录日志放入队列
         userLoginLogMapper.insert(loginLog);
         User update = new User();
         update.setId(user.getId());
         update.setLastLoginTimes(System.currentTimeMillis());
         update.setLastLoginIp(ipAddress);
-        // TODO 放入队列
         userMapper.updateByPrimaryKeySelective(update);
     }
 
@@ -416,7 +415,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     public User getUserById(Integer userId, boolean fromRedis) {
         User user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
-            log.error("本地查询用户数据不存在:{}",userId);
+            log.error("本地查询用户数据不存在:{}", userId);
             return null;
         }
         if (fromRedis) {

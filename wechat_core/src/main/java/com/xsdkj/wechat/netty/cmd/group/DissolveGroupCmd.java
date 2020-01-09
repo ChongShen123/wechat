@@ -39,23 +39,21 @@ public class DissolveGroupCmd extends AbstractChatCmd {
         Integer groupId = requestParam.getGroupId();
         UserGroup group = groupService.getGroupById(groupId);
         log.debug("只有群主可以解散该群");
-        if (session.getUid().equals(group.getOwnerId())) {
-            List<ListMembersVo> listMembersVos = groupService.listGroupMembersByGroupId(groupId);
-            log.debug("查询该群组的所有成员{} {}ms", listMembersVos.size(), DateUtil.spendMs(begin));
-            sendGroupMessage(groupId, JsonResult.success(String.format("%s群组已解散.", groupService.getGroupById(groupId).getName())));
-            log.debug("通知该群所有群成员解散群组消息 {}ms", DateUtil.spendMs(begin));
-            SessionUtil.GROUP_MAP.remove(groupId);
-            log.debug("内存删除 {}ms", DateUtil.spendMs(begin));
-            groupService.deleteById(groupId);
-            log.debug("物理删除 {}ms", DateUtil.spendMs(begin));
-            groupService.deleteRedisData(groupId);
-            log.debug("缓存删除 {}ms", DateUtil.spendMs(begin));
-            listMembersVos.forEach(member -> userService.updateRedisDataByUid(member.getUid(), "DissolveGroupCmd.解散群组"));
-            log.debug("解散群组完毕 {}ms", DateUtil.spendMs(begin));
-            log.debug(LogUtil.INTERVAL);
-            return;
+        if (!session.getUid().equals(group.getOwnerId())) {
+            throw new PermissionDeniedException();
         }
-        throw new PermissionDeniedException();
-
+        List<ListMembersVo> listMembersVos = groupService.listGroupMembersByGroupId(groupId);
+        log.debug("查询该群组的所有成员{} {}ms", listMembersVos.size(), DateUtil.spendMs(begin));
+        sendGroupMessage(groupId, JsonResult.success(String.format("%s群组已解散.", groupService.getGroupById(groupId).getName())));
+        log.debug("通知该群所有群成员解散群组消息 {}ms", DateUtil.spendMs(begin));
+        SessionUtil.GROUP_MAP.remove(groupId);
+        log.debug("内存删除 {}ms", DateUtil.spendMs(begin));
+        groupService.deleteById(groupId);
+        log.debug("物理删除 {}ms", DateUtil.spendMs(begin));
+        groupService.deleteRedisData(groupId);
+        log.debug("缓存删除 {}ms", DateUtil.spendMs(begin));
+        listMembersVos.forEach(member -> userService.updateRedisDataByUid(member.getUid(), "DissolveGroupCmd.解散群组"));
+        log.debug("解散群组完毕 {}ms", DateUtil.spendMs(begin));
+        log.debug(LogUtil.INTERVAL);
     }
 }

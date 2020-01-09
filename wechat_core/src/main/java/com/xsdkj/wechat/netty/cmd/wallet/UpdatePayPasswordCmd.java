@@ -49,14 +49,13 @@ public class UpdatePayPasswordCmd extends AbstractChatCmd {
         String password = requestParam.getPassword();
         String oldPassword = requestParam.getOldPassword();
         Wallet wallet = userWalletService.getByUid(session.getUid(), true);
-        if (wallet != null) {
-            userWalletService.resetPayPassword(session.getUid(), password, oldPassword);
-            sendMessage(channel, JsonResult.success(cmd));
-            userService.updateRedisDataByUid(session.getUid(), "UpdatePayPasswordCmd.concreteAction() 这里是否可以不用更新?");
-            log.debug("业务处理完成 {}ms", DateUtil.spendMs(begin));
-            return;
+        if (wallet == null) {
+            log.error("用户{}钱包为空", session.getUid());
+            throw new DataEmptyException();
         }
-        log.error("用户{}钱包为空", session.getUid());
-        throw new DataEmptyException();
+        userWalletService.resetPayPassword(session.getUid(), password, oldPassword);
+        sendMessage(channel, JsonResult.success(cmd));
+        userService.updateRedisDataByUid(session.getUid(), "UpdatePayPasswordCmd.concreteAction() 这里是否可以不用更新?");
+        log.debug("业务处理完成 {}ms", DateUtil.spendMs(begin));
     }
 }

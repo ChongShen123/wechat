@@ -39,19 +39,19 @@ public class UserInfoCmd extends AbstractChatCmd {
         Integer userId = requestParam.getUserId();
         User user = userService.getRedisUserByUserId(userId);
         try {
-            if (user != null) {
-                if (user.getPlatformId().equals(session.getPlatformId()) && session.getType().equals(UserConstant.TYPE_ADMIN)) {
-                    UserVo userVo = new UserVo();
-                    BeanUtils.copyProperties(user, userVo);
-                    sendMessage(channel, JsonResult.success(userVo, cmd));
-                    return;
-                }
-                log.error("用户{}没有相关权限", session.getUid());
-                throw new PermissionDeniedException();
+            if (user == null) {
+                throw new DataEmptyException();
             }
-            throw new DataEmptyException();
+            if (user.getPlatformId().equals(session.getPlatformId()) && session.getType().equals(UserConstant.TYPE_ADMIN)) {
+                UserVo userVo = new UserVo();
+                BeanUtils.copyProperties(user, userVo);
+                sendMessage(channel, JsonResult.success(userVo, cmd));
+                return;
+            }
+            log.error("用户{}没有相关权限", session.getUid());
+            throw new PermissionDeniedException();
         } finally {
-            log.debug("查询用户{}业务处理完成 {}ms",userId, DateUtil.spendMs(begin));
+            log.debug("查询用户{}业务处理完成 {}ms", userId, DateUtil.spendMs(begin));
         }
     }
 }

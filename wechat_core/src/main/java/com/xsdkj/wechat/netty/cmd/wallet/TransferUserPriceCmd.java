@@ -59,58 +59,54 @@ public class TransferUserPriceCmd extends AbstractChatCmd {
         long begin = System.currentTimeMillis();
         log.debug("开始处理转账业务...");
         Integer toUserId = requestParam.getToUserId();
-
         BigDecimal price = requestParam.getPrice();
         String content = requestParam.getContent();
         String password = requestParam.getPassword();
-        try {
-            Wallet wallet = userWalletService.getByUid(session.getUid(), false);
-            if (StrUtil.isNotBlank(wallet.getPassword())) {
-                if (encoder.matches(password, wallet.getPassword())) {
-                    log.debug("判断用户余额是否足够");
-                    Wallet userWallet = userWalletService.getByUid(session.getUid(), true);
-                    if (userWallet.getPrice().subtract(price).doubleValue() >= 0) {
-                        log.debug("判断对方是否存在");
-                        User toUser = userService.getRedisUserByUserId(toUserId);
-                        if (toUser != null) {
-                            Wallet toUserWallet = userWalletService.getByUid(toUserId, true);
-                            boolean flag = userWalletService.transferAccounts(userWallet, toUserWallet, price);
-                            if (flag) {
-                                SingleChat newSingleChat = chatUtil.createNewSingleChat(
-                                        toUserId, session.getUid(),
-                                        StrUtil.isBlank(content) ? String.format("来自%s的转账信息,请注册查收!", session.getUsername()) : content,
-                                        ChatConstant.CHAT_TYPE_TRANSFER);
-                                log.debug("通知对方转账消息{} {}ms", newSingleChat, DateUtil.spendMs(begin));
-                                Channel toUserChannel = SessionUtil.getUserChannel(toUserId);
-                                if (toUserChannel != null) {
-                                    newSingleChat.setRead(true);
-                                    sendMessage(toUserChannel, JsonResult.success(newSingleChat, cmd));
-                                } else {
-                                    newSingleChat.setRead(false);
-                                }
-                                sendMessage(channel, JsonResult.success());
-                                log.debug("已通知用户{} {}ms", session.getUid(), DateUtil.spendMs(begin));
-                                userService.updateRedisDataByUid(session.getUid(), "TransferUserPriceCmd.concreteAction() 用户转账更新缓存");
-                                userService.updateRedisDataByUid(toUserId, "TransferUserPriceCmd.concreteAction() 转账更新对方缓存");
-                                singleChatService.save(newSingleChat);
-                                return;
-                            }
-                            log.error("系统异常>>>保存用户转账数据出错");
-                            throw new SystemException();
-                        }
-                        log.error("用户数据为空");
-                        throw new DataEmptyException();
-                    }
-                    log.error("用户余额不足");
-                    throw new UserBalancePriceException();
-                }
-                log.error("支付密码不正确");
-                throw new PasswordNotMatchException();
-            }
+        Wallet wallet = userWalletService.getByUid(session.getUid(), false);
+        if (StrUtil.isBlank(wallet.getPassword())) {
             log.error("支付密码为空");
             throw new PayPasswordIsEmptyException();
-        } finally {
-            log.debug("转账业务处理完成 {}ms", DateUtil.spendMs(begin));
         }
+        if (!encoder.matches(password, wallet.getPassword())) {
+            log.error("支付密码不正确");
+            throw new PasswordNotMatchException();
+        }
+        log.debug("判断用户余额是否足够");
+        Wallet userWallet = userWalletService.getByUid(session.getUid(), true);
+        if (userWallet.getPrice().subtract(price).doubleValue() < 0) {
+            log.error("用户余额不足");
+            throw new UserBalancePriceException();
+        }
+        log.debug("判断对方是否存在");
+        User toUser = userService.getRedisUserByUserId(toUserId);
+        if (toUser == null) {
+            log.error("用户数据为空");
+            throw new DataEmptyException();
+        }
+        Wallet toUserWallet = userWalletService.getByUid(toUserId, true);
+        boolean flag = userWalletService.transferAccounts(userWallet, toUserWallet, price);
+        if (!flag) {
+            log.error("系统异常>>>保存用户转账数据出错");
+            throw new SystemException();
+        }
+        SingleChat newSingleChat = chatUtil.createNewSingleChat(
+                toUserId, session.getUid(),
+                StrUtil.isBlank(content) ? String.format("来自%s的转账信息,请注册查收!", session.getUsername()) : content,
+                ChatConstant.CHAT_TYPE_TRANSFER);
+        log.debug("通知对方转账消息{} {}ms", newSingleChat, DateUtil.spendMs(begin));
+        Channel toUserChannel = SessionUtil.getUserChannel(toUserId);
+        if (toUserChannel != null) {
+            newSingleChat.setRead(true);
+            sendMessage(toUserChannel, JsonResult.success(newSingleChat, cmd));
+        } else {
+            newSingleChat.setRead(false);
+        }
+        sendMessage(channel, JsonResult.success());
+        log.debug("已通知用户{} {}ms", session.getUid(), DateUtil.spendMs(begin));
+        userService.updateRedisDataByUid(session.getUid(), "TransferUserPriceCmd.concreteAction() 用户转账更新缓存");
+        userService.updateRedisDataByUid(toUserId, "TransferUserPriceCmd.concreteAction() 转账更新对方缓存");
+        singleChatService.save(newSingleChat);
+        log.debug("转账业务处理完成 {}ms", DateUtil.spendMs(begin));
+
     }
 }

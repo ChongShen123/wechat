@@ -49,47 +49,46 @@ public class RemoveChatGroupCmd extends AbstractChatCmd {
         Set<Integer> ids = requestParam.getIds();
         Integer groupId = requestParam.getGroupId();
         log.debug("检查要移除的用户是否在该群");
-        if (checkGroupUserJoined(ids, groupId)) {
-            UserGroup group = groupService.getGroupById(groupId);
-            if (checkAdmin(groupId, session.getUid())) {
-                // 通知该群所有在线用户
-                RemoveChatVo removeChatVo = createNewRemoveChatVo(ids, groupId, SessionUtil.getSession(channel));
-                log.debug("通知该群在线用户被移除用户信息 {}ms", DateUtil.spendMs(begin));
-                sendGroupMessage(groupId, JsonResult.success(removeChatVo, cmd));
-                log.debug("删除用户与群关系 {}ms", DateUtil.spendMs(begin));
-                groupService.quitGroup(ids, groupId);
-                log.debug("修改群成员人数 {}ms", DateUtil.spendMs(begin));
-                groupService.updateGroupCount(-ids.size(), groupId);
-                //
-                log.debug("通知被移除用户...");
-                ids.forEach(uid -> {
-                    SingleChat newSingleChat = chatUtil.createNewSingleChat(uid, SystemConstant.SYSTEM_USER_ID, "您已退出【" + group.getName() + "】群聊", ChatConstant.QUIT_GROUP);
-                    Channel userChannel = SessionUtil.ONLINE_USER_MAP.get(uid);
-                    if (userChannel != null) {
-                        sendMessage(userChannel, JsonResult.success(newSingleChat));
-                        SessionUtil.quitGroup(groupId, userChannel);
-                        newSingleChat.setRead(true);
-                    } else {
-                        newSingleChat.setRead(false);
-                    }
-                    userService.updateRedisDataByUid(uid, "RemoveChatGroupCmd.concreteAction()");
-                    log.debug("更新被移除用户{}缓存数据 {}ms", uid, DateUtil.spendMs(begin));
-                    singleChatService.save(newSingleChat);
-                    log.debug("保存被移除用户{}退群消息到数据库 {}ms", uid, DateUtil.spendMs(begin));
-                });
-                groupService.updateRedisGroupById(groupId);
-                sendMessage(channel, JsonResult.success(cmd));
-                log.debug("移除群组处理完成 {}ms", DateUtil.spendMs(begin));
-                log.debug(LogUtil.INTERVAL);
-                return;
-            }
+        if (!checkGroupUserJoined(ids, groupId)) {
+            log.error("部分用户不在该群组");
+            log.debug(LogUtil.INTERVAL);
+            throw new ValidateException();
+        }
+        UserGroup group = groupService.getGroupById(groupId);
+        if (!checkAdmin(groupId, session.getUid())) {
             log.error("用户无相关权限");
             log.debug(LogUtil.INTERVAL);
             throw new PermissionDeniedException();
         }
-        log.error("部分用户不在该群组");
+        // 通知该群所有在线用户
+        RemoveChatVo removeChatVo = createNewRemoveChatVo(ids, groupId, SessionUtil.getSession(channel));
+        log.debug("通知该群在线用户被移除用户信息 {}ms", DateUtil.spendMs(begin));
+        sendGroupMessage(groupId, JsonResult.success(removeChatVo, cmd));
+        log.debug("删除用户与群关系 {}ms", DateUtil.spendMs(begin));
+        groupService.quitGroup(ids, groupId);
+        log.debug("修改群成员人数 {}ms", DateUtil.spendMs(begin));
+        groupService.updateGroupCount(-ids.size(), groupId);
+        //
+        log.debug("通知被移除用户...");
+        ids.forEach(uid -> {
+            SingleChat newSingleChat = chatUtil.createNewSingleChat(uid, SystemConstant.SYSTEM_USER_ID, "您已退出【" + group.getName() + "】群聊", ChatConstant.QUIT_GROUP);
+            Channel userChannel = SessionUtil.ONLINE_USER_MAP.get(uid);
+            if (userChannel != null) {
+                sendMessage(userChannel, JsonResult.success(newSingleChat));
+                SessionUtil.quitGroup(groupId, userChannel);
+                newSingleChat.setRead(true);
+            } else {
+                newSingleChat.setRead(false);
+            }
+            userService.updateRedisDataByUid(uid, "RemoveChatGroupCmd.concreteAction()");
+            log.debug("更新被移除用户{}缓存数据 {}ms", uid, DateUtil.spendMs(begin));
+            singleChatService.save(newSingleChat);
+            log.debug("保存被移除用户{}退群消息到数据库 {}ms", uid, DateUtil.spendMs(begin));
+        });
+        groupService.updateRedisGroupById(groupId);
+        sendMessage(channel, JsonResult.success(cmd));
+        log.debug("移除群组处理完成 {}ms", DateUtil.spendMs(begin));
         log.debug(LogUtil.INTERVAL);
-        throw new ValidateException();
     }
 
     private RemoveChatVo createNewRemoveChatVo(Set<Integer> ids, Integer groupId, SessionBo session) {
