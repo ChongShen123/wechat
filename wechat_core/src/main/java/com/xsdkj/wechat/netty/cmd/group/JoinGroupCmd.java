@@ -64,7 +64,7 @@ public class JoinGroupCmd extends AbstractChatCmd {
                 log.debug(LogUtil.INTERVAL);
                 return;
             }
-            log.error("有用户已加入群组 {}ms", DateUtil.spendMs(begin));
+            log.error("用户已加入群组 {}ms", DateUtil.spendMs(begin));
             throw new UserJoinedException();
         }
         log.error("{}群不存在 {}ms", groupId, DateUtil.spendMs(begin));

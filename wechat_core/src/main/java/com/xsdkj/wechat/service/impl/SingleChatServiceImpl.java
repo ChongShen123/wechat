@@ -34,7 +34,7 @@ public class SingleChatServiceImpl implements SingleChatService {
     private MongoTemplate mongoTemplate;
 
     /**
-     * //获取当前时间的前15天的时间戳
+     * //获取当前时间的前15天的时间戳 TODO 修改需要下不能这样写
      */
     Long time = System.currentTimeMillis() - 1296000000;
 

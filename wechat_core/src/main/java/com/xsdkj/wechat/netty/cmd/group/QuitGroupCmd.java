@@ -37,29 +37,27 @@ public class QuitGroupCmd extends AbstractChatCmd {
         long begin = System.currentTimeMillis();
         log.debug("开始处理退群业务...");
         Integer groupId = requestParam.getGroupId();
-        if (SessionUtil.GROUP_MAP.get(groupId).getChannelGroup().contains(channel)) {
-            RemoveChatVo removeChatVo = createNewRemoveChatVo(groupId, session);
-            SessionUtil.quitGroup(groupId, channel);
-            log.debug("用户在内存中退出群聊 {}ms", DateUtil.spendMs(begin));
-            sendGroupMessage(groupId, JsonResult.success(removeChatVo, cmd));
-            log.debug("用户退群广播 {}ms", DateUtil.spendMs(begin));
-            sendMessage(channel, JsonResult.success(cmd));
-            log.debug("通知用户退群成功 {}ms", DateUtil.spendMs(begin));
-            Set<Integer> ids = new HashSet<>();
-            ids.add(session.getUid());
-            groupService.quitGroup(ids, groupId);
-            log.debug("数据库删除用户与群组关系 {}ms", DateUtil.spendMs(begin));
-            groupService.updateGroupCount(-ids.size(), groupId);
-            log.debug("群组人数减少 {}ms", DateUtil.spendMs(begin));
-            groupService.updateRedisGroupById(groupId);
-            log.debug("更新群组缓存 {}ms", DateUtil.spendMs(begin));
-            userService.updateRedisDataByUid(session.getUid(), "QuitGroupCmd.concreteAction() 用户退群更新缓存");
-            log.debug("更新群组用户数据,退群处理完毕 {}ms",DateUtil.spendMs(begin));
-            log.debug(LogUtil.INTERVAL);
-            return;
+        if (!SessionUtil.GROUP_MAP.get(groupId).getChannelGroup().contains(channel)) {
+            throw new UserNotInGroupException();
         }
-        throw new UserNotInGroupException();
-
+        RemoveChatVo removeChatVo = createNewRemoveChatVo(groupId, session);
+        SessionUtil.quitGroup(groupId, channel);
+        log.debug("用户在内存中退出群聊 {}ms", DateUtil.spendMs(begin));
+        sendGroupMessage(groupId, JsonResult.success(removeChatVo, cmd));
+        log.debug("用户退群广播 {}ms", DateUtil.spendMs(begin));
+        sendMessage(channel, JsonResult.success(cmd));
+        log.debug("通知用户退群成功 {}ms", DateUtil.spendMs(begin));
+        Set<Integer> ids = new HashSet<>();
+        ids.add(session.getUid());
+        groupService.quitGroup(ids, groupId);
+        log.debug("数据库删除用户与群组关系 {}ms", DateUtil.spendMs(begin));
+        groupService.updateGroupCount(-ids.size(), groupId);
+        log.debug("群组人数减少 {}ms", DateUtil.spendMs(begin));
+        groupService.updateRedisGroupById(groupId);
+        log.debug("更新群组缓存 {}ms", DateUtil.spendMs(begin));
+        userService.updateRedisDataByUid(session.getUid(), "QuitGroupCmd.concreteAction() 用户退群更新缓存");
+        log.debug("更新群组用户数据,退群处理完毕 {}ms", DateUtil.spendMs(begin));
+        log.debug(LogUtil.INTERVAL);
     }
 
     private RemoveChatVo createNewRemoveChatVo(Integer groupId, SessionBo session) {

@@ -2,10 +2,7 @@ package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.ex.DataEmptyException;
-import com.xsdkj.wechat.vo.GroupBaseInfoVo;
-import com.xsdkj.wechat.vo.GroupInfoVo;
-import com.xsdkj.wechat.vo.GroupVo;
-import com.xsdkj.wechat.vo.ListMembersVo;
+import com.xsdkj.wechat.vo.*;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
@@ -251,4 +248,12 @@ public interface UserGroupService {
      * @param addFriend 是否开启
      */
     void updateAddFriend(Integer groupId, Boolean addFriend);
+
+    /**
+     * 查看群所有管理员
+     *
+     * @param groupId 群id
+     * @return list
+     */
+    List<GroupAdminVo> listGroupAdmins(Integer groupId);
 }

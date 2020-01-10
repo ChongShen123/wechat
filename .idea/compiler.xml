@@ -15,6 +15,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="wechat" target="1.8" />
+      <module name="wechat_admin" target="1.8" />
       <module name="wechat_client" target="1.8" />
       <module name="wechat_common" target="1.8" />
       <module name="wechat_consumer" target="1.8" />

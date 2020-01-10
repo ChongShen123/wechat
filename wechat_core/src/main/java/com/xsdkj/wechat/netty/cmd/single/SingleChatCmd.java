@@ -59,26 +59,21 @@ public class SingleChatCmd extends AbstractChatCmd {
                 chat.setRead(true);
                 log.debug("本条信息为:{}{}ms", chat, DateUtil.spendMs(begin));
                 sendMessage(toUserChannel, JsonResult.success(chat, cmd));
-                sendMessage(channel, JsonResult.success(chat, cmd));
                 log.debug("信息已发送给两个客户端:{}ms", DateUtil.spendMs(begin));
-                singleChatService.save(chat);
-                log.debug("信息已保存数据库:{}ms", DateUtil.spendMs(begin));
             } else {
                 User toUser = userService.getRedisUserByUserId(toUserId);
-                if (toUser != null) {
-                    log.debug("用户{}不在线:{}ms", toUserId, DateUtil.spendMs(begin));
-                    chat.setRead(false);
-                    sendMessage(channel, JsonResult.success(chat, cmd));
-                    singleChatService.save(chat);
-                    log.debug("已保存离线消息:{}ms", DateUtil.spendMs(begin));
-                    return;
+                if (toUser == null) {
+                    log.debug("用户{}不存在", toUserId);
+                    throw new UserNotFountException();
                 }
-                log.debug("用户{}不存在", toUserId);
-                throw new UserNotFountException();
+                chat.setRead(false);
+                log.debug("用户{}不在线:{}ms", toUserId, DateUtil.spendMs(begin));
             }
+            sendMessage(channel, JsonResult.success(chat, cmd));
+            singleChatService.save(chat);
+            log.debug("信息已保存数据库:{}ms", DateUtil.spendMs(begin));
         } finally {
             log.debug("消息处理完成:{}ms", DateUtil.spendMs(begin));
         }
-//        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT, chat));
     }
 }

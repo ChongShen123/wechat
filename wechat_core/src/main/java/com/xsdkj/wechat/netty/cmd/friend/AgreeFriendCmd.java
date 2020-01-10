@@ -58,49 +58,49 @@ public class AgreeFriendCmd extends AbstractChatCmd {
         String id = requestParam.getId();
         FriendApplication application = friendApplicationService.getFriendApplicationById(id);
         log.error("查询好友申请:{} {}ms", application, DateUtil.spendMs(begin));
-        if (application != null) {
-            if (application.getState() == ChatConstant.UNTREATED) {
-                String msg;
-                switch (state) {
-                    case ChatConstant.AGREE:
-                        application.setState(ChatConstant.AGREE);
-                        // 添加好友表
-                        List<Friend> friends = createFriend(application);
-                        friendService.saveList(friends);
-                        msg = ChatConstant.RETURN_MESSAGE_SUCCESS;
-                        friends.forEach(friend -> userService.updateRedisDataByUid(friend.getUid(), "AgreeFriendCmd.concreteAction()添加好友通过更新缓存"));
-                        break;
-                    // 回复好友
-                    case ChatConstant.REFUSE:
-                        application.setState(ChatConstant.REFUSE);
-                        msg = ChatConstant.RETURN_MESSAGE_REFUSE;
-                        break;
-                    default:
-                        log.error("错误的好友申请消息");
-                        throw new ServiceException();
-                }
-                // 回应添邀请方
-                Channel fromUserChannel = SessionUtil.ONLINE_USER_MAP.get(application.getFromUserId());
-                FriendApplication returnApplication = createFriendApplication(SessionUtil.getSession(channel), application.getFromUserId(), msg, ChatConstant.RETURN_FRIEND);
-                if (fromUserChannel != null) {
-                    returnApplication.setRead(true);
-                    sendMessage(fromUserChannel, JsonResult.success(new FriendApplicationVo(returnApplication), cmd));
-                } else {
-                    // 设置消息是否被阅读
-                    returnApplication.setRead(false);
-                }
-                friendApplicationService.save(returnApplication);
-                application.setModifiedTime(System.currentTimeMillis());
-                application.setRead(true);
-                friendApplicationService.update(application);
-                sendMessage(channel, JsonResult.success(cmd));
-                log.debug("好友同意处理完成 {}ms", DateUtil.spendMs(begin));
-                return;
-            }
+        if (application == null) {
+            log.error("好友请求消息未找到");
+            throw new DataEmptyException();
+        }
+        if (application.getState() != ChatConstant.UNTREATED) {
+            log.debug("该请求已被处理");
             throw new RepeatException();
         }
-        log.error("好友请求消息未找到");
-        throw new DataEmptyException();
+        String msg;
+        switch (state) {
+            case ChatConstant.AGREE:
+                application.setState(ChatConstant.AGREE);
+                // 添加好友表
+                List<Friend> friends = createFriend(application);
+                friendService.saveList(friends);
+                msg = ChatConstant.RETURN_MESSAGE_SUCCESS;
+                friends.forEach(friend -> userService.updateRedisDataByUid(friend.getUid(), "AgreeFriendCmd.concreteAction()添加好友通过更新缓存"));
+                break;
+            // 回复好友
+            case ChatConstant.REFUSE:
+                application.setState(ChatConstant.REFUSE);
+                msg = ChatConstant.RETURN_MESSAGE_REFUSE;
+                break;
+            default:
+                log.error("错误的好友申请消息");
+                throw new ServiceException();
+        }
+        // 回应添邀请方
+        Channel fromUserChannel = SessionUtil.ONLINE_USER_MAP.get(application.getFromUserId());
+        FriendApplication returnApplication = createFriendApplication(SessionUtil.getSession(channel), application.getFromUserId(), msg, ChatConstant.RETURN_FRIEND);
+        if (fromUserChannel != null) {
+            returnApplication.setRead(true);
+            sendMessage(fromUserChannel, JsonResult.success(new FriendApplicationVo(returnApplication), cmd));
+        } else {
+            // 设置消息是否被阅读
+            returnApplication.setRead(false);
+        }
+        friendApplicationService.save(returnApplication);
+        application.setModifiedTime(System.currentTimeMillis());
+        application.setRead(true);
+        friendApplicationService.update(application);
+        sendMessage(channel, JsonResult.success(cmd));
+        log.debug("好友同意处理完成 {}ms", DateUtil.spendMs(begin));
     }
 
     private List<Friend> createFriend(FriendApplication application) {

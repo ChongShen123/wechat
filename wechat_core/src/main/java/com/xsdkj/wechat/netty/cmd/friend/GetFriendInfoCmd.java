@@ -38,10 +38,7 @@ public class GetFriendInfoCmd extends AbstractChatCmd {
         Integer userId = requestParam.getUserId();
         User user = userService.getRedisUserByUserId(userId);
         if (user == null) {
-            user = userService.getUserById(userId, true);
-            if (user == null) {
-                throw new DataEmptyException();
-            }
+            throw new DataEmptyException();
         }
         GetFriendInfoVo getFriendInfoVo = new GetFriendInfoVo();
         BeanUtils.copyProperties(user, getFriendInfoVo);

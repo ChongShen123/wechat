@@ -94,9 +94,10 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public User getByUsername(String username) {
+        log.debug("{}",Thread.currentThread().getStackTrace()[1].getMethodName());
         long begin = System.currentTimeMillis();
         User user = userMapper.getOneByUsername(username);
-        log.debug("本地查询用户完成{} {}ms", user, DateUtil.spendMs(begin));
+        log.debug("本地查询用户完成 {}ms", DateUtil.spendMs(begin));
         return user;
     }
 
@@ -239,13 +240,11 @@ public class UserServiceImpl extends BaseService implements UserService {
     private void insertLoginLog(User user, HttpServletRequest request) {
         String ipAddress = IpUtil.getIpAddress(request);
         UserLoginLog loginLog = new UserLoginLog(user, ipAddress);
-        // TODO 登录日志放入队列
         userLoginLogMapper.insert(loginLog);
         User update = new User();
         update.setId(user.getId());
         update.setLastLoginTimes(System.currentTimeMillis());
         update.setLastLoginIp(ipAddress);
-        // TODO 放入队列
         userMapper.updateByPrimaryKeySelective(update);
     }
     @Override
@@ -270,7 +269,7 @@ public class UserServiceImpl extends BaseService implements UserService {
             log.debug("是否更新redis用户缓存:{}", updateRedisStatus);
             return user;
         }
-        log.error("本地数据库未找到用户{}的相关信息,返回null", uid);
+        log.error("本地数据库未找到用户{}的相关信息", uid);
         return null;
     }
     @Override
@@ -367,18 +366,12 @@ public class UserServiceImpl extends BaseService implements UserService {
      * @param currentUserDetailsBo currentUserDetailsBo
      */
     private void initUserGroup(Integer uid, UserDetailsBo currentUserDetailsBo, String methodName) {
-        long begin = System.currentTimeMillis();
-        log.debug("初始化用户群组:{}", methodName);
         List<GroupVo> groupInfoBos = groupService.listGroupByUid(uid);
         if (groupInfoBos.size() > 0) {
-            log.debug("用户群组:{}", groupInfoBos);
             for (GroupVo groupInfoBo : groupInfoBos) {
                 currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
             }
-            log.debug("用户群组初始化完毕,用户群组Map元素个数为:{} {}ms", currentUserDetailsBo.getUserGroupRelationMap().size(), DateUtil.spendMs(begin));
-            return;
         }
-        log.debug("用户群组为空");
     }
     @Override
     public UserDetailsBo updateRedisDataByUid(Integer uid, Wallet wallet) {
@@ -398,7 +391,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public UserDetailsBo updateRedisDataByUid(Integer uid, String methodName) {
-        log.debug("更新用户缓存updateRedisDataByUid(Integer uid, String methodName) 调用方:{}", methodName);
         User user = userMapper.selectByPrimaryKey(uid);
         if (ObjectUtil.isNull(user)) {
             throw new NullPointerException();
@@ -459,7 +451,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     public User getUserById(Integer userId, boolean fromRedis) {
         User user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
-            log.error("本地查询用户数据不存在:{}",userId);
+            log.error("本地查询用户数据不存在:{}", userId);
             return null;
         }
         if (fromRedis) {

@@ -1,4 +1,5 @@
 package com.xsdkj.wechat.service.impl;
+
 import com.xsdkj.wechat.constant.ChatConstant;
 import com.xsdkj.wechat.entity.chat.GroupChat;
 import com.xsdkj.wechat.service.GroupChatService;
@@ -21,9 +22,13 @@ public class GroupChatServiceImpl implements GroupChatService {
     private String groupChatFile;
     @Resource
     private MongoTemplate mongoTemplate;
+<<<<<<< HEAD
 /**
 *获取当前时间的前15天的时间戳
  */
+=======
+    //获取当前时间的前15天的时间戳 TODO 这里需要修改一下不能这样写
+>>>>>>> a596a8cd1f3a56283d15799ca22c67bd001cfe60
     Long time = System.currentTimeMillis() - 1296000000;
 
     /**

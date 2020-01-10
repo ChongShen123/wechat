@@ -356,4 +356,15 @@
         update user_group set add_friend_type = #{addFriend,jdbcType=BOOLEAN},modified_times =
         REPLACE(unix_timestamp(current_timestamp(3)),'.','') where id = #{groupId,jdbcType=INTEGER}
     </update>
+    <resultMap id="ListGroupAdminMap" type="com.xsdkj.wechat.vo.GroupAdminVo">
+        <result column="id" property="uid"/>
+        <result column="nickname" property="nickname"/>
+        <result column="icon" property="icon"/>
+    </resultMap>
+    <select id="listGroupAdmins" resultMap="ListGroupAdminMap">
+        select u.id, u.nickname, u.icon
+        from user u
+        left join group_manager gm on u.id = gm.uid
+        where gm.group_id = #{groupId,jdbcType=INTEGER};
+    </select>
 </mapper>

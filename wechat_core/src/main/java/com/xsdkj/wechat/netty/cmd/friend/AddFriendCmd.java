@@ -59,18 +59,17 @@ public class AddFriendCmd extends AbstractChatCmd {
         String username = requestParam.getUsername();
         String content = requestParam.getContent();
         User friend = userService.getByUsername(username);
-        if (friend != null) {
-            Channel friendChannel = SessionUtil.getUserChannel(friend.getId());
-            FriendApplication application = handleAddFriend(channel, content, friend.getId(), friendChannel != null);
-            if (friendChannel != null) {
-                sendMessage(friendChannel, JsonResult.success(new FriendApplicationVo(application), Cmd.ADD_FRIEND));
-            }
-            log.debug("{}是否在线:{}", username, friendChannel != null);
-            log.debug("添加好友消息处理完毕 {}ms", DateUtil.spendMs(begin));
-            return;
+        if (friend == null) {
+            log.error("好友信息为空:{}", username);
+            throw new DataEmptyException();
         }
-        log.error("好友信息为空:{}", username);
-        throw new DataEmptyException();
+        Channel friendChannel = SessionUtil.getUserChannel(friend.getId());
+        FriendApplication application = handleAddFriend(channel, content, friend.getId(), friendChannel != null);
+        if (friendChannel != null) {
+            sendMessage(friendChannel, JsonResult.success(new FriendApplicationVo(application), Cmd.ADD_FRIEND));
+        }
+        log.debug("{}是否在线:{}", username, friendChannel != null);
+        log.debug("添加好友消息处理完毕 {}ms", DateUtil.spendMs(begin));
     }
 
     /**
@@ -91,7 +90,7 @@ public class AddFriendCmd extends AbstractChatCmd {
                 throw new AlreadyFriendException();
             }
         }
-        if (friendApplicationService.countByToUserIdAndFromUserId( fid,session.getUid()) == 0) {
+        if (friendApplicationService.countByToUserIdAndFromUserId(fid, session.getUid()) == 0) {
             FriendApplication application = createFriendApplication(session, fid, content, ChatConstant.ADD_FRIEND);
             application.setRead(isRead);
             friendApplicationService.save(application);
