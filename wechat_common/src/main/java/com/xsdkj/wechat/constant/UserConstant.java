@@ -16,14 +16,6 @@ public interface UserConstant {
      */
     Byte TYPE_USER = 0;
 
-    /**
-     * 已登录
-     */
-    Boolean LOGGED = true;
-    /**
-     * 未登录
-     */
-    Boolean NOT_LOGIN = false;
 
     // 好友申请
     /**

@@ -17,4 +17,6 @@ public class UserPriceOperationDto {
     private Integer type;
     @NotNull(message = "充值金额不能为空")
     private BigDecimal price;
+    @NotNull(message = "充值说明不能为空")
+    private String explain;
 }

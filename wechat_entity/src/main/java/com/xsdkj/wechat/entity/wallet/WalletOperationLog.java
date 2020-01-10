@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2020/1/3 16:05
+ * @date 2020/1/10 15:53
  */
 @Data
 public class WalletOperationLog implements Serializable {
@@ -15,8 +15,8 @@ public class WalletOperationLog implements Serializable {
     private Integer uid;
 
     /**
-    * 操作人员id
-    */
+     * 操作人员id
+     */
     private Integer operationId;
 
     private BigDecimal price;
@@ -26,18 +26,23 @@ public class WalletOperationLog implements Serializable {
     private BigDecimal afterPrice;
 
     /**
-    * 类型 1 充值 2 提现
-    */
+     * 类型 1 充值 2 提现
+     */
     private Byte type;
 
     /**
-    * 月份
-    */
+     * 说明
+     */
+    private String explain;
+
+    /**
+     * 月份
+     */
     private Byte month;
 
     /**
-    * 年
-    */
+     * 年
+     */
     private Integer year;
 
     private Long createTimes;

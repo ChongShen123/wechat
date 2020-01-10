@@ -32,5 +32,4 @@ public class UserWalletController {
         userWalletService.priceOperation(userPriceOperationDto);
         return JsonResult.success();
     }
-
 }

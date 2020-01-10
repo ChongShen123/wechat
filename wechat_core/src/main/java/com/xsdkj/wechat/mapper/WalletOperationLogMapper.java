@@ -1,14 +1,22 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.wallet.WalletOperationLog;
-import org.apache.ibatis.annotations.Param;
+import com.xsdkj.wechat.entity.wallet.WalletOperationLog;import org.apache.ibatis.annotations.Param;
 
 /**
  * @author tiankong
- * @date 2020/1/3 16:05
+ * @date 2020/1/10 15:53
  */
 public interface WalletOperationLogMapper {
     int deleteByPrimaryKey(Integer id);
+
+
+    int insertSelective(WalletOperationLog record);
+
+    WalletOperationLog selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(WalletOperationLog record);
+
+    int updateByPrimaryKey(WalletOperationLog record);
 
     /**
      * 保存用户充值或提现记录
@@ -18,12 +26,4 @@ public interface WalletOperationLogMapper {
      * @return count
      */
     int insert(@Param("log") WalletOperationLog log, @Param("tableNum") int tableNum);
-
-    int insertSelective(WalletOperationLog record);
-
-    WalletOperationLog selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(WalletOperationLog record);
-
-    int updateByPrimaryKey(WalletOperationLog record);
 }

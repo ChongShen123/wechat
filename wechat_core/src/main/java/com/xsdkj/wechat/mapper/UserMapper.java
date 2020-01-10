@@ -1,8 +1,10 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.bo.PermissionBo;
+import com.xsdkj.wechat.dto.ListUserDto;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.vo.UserFriendVo;
+import com.xsdkj.wechat.vo.UserVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -68,4 +70,12 @@ public interface UserMapper {
      * @return count
      */
     int countUserIds(@Param("userIds") Set<Integer> userIds);
+
+    /**
+     * condition query user list
+     *
+     * @param listUserDto parameter
+     * @return list UserVo
+     */
+    List<UserVo> listUser(ListUserDto listUserDto);
 }

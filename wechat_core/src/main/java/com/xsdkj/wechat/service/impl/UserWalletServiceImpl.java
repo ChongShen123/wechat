@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 
@@ -212,7 +213,7 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         // 金额操作流水记录
         // 分表路由
         int tableNum = user.getId() % SystemConstant.LOG_TABLE_COUNT;
-        WalletOperationLog walletPriceLog = createNewWalletOperationLog(user.getId(), admin.getId(), price, beforePrice, afterPrice, operationType);
+        WalletOperationLog walletPriceLog = createNewWalletOperationLog(user.getId(), admin.getId(), price, beforePrice, afterPrice, operationType, param.getExplain());
         walletOperationLogMapper.insert(walletPriceLog, tableNum);
         // 管理员操作记录
         UserOperationLog userOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), operationType, String.format("管理员%s为用户%s充值%s元", admin.getId(), user.getId(), price));
@@ -258,9 +259,10 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
      * @param beforePrice 操作前用户金额
      * @param afterPrice  操作后用户金额
      * @param type        操作类型 1 充值 2 提现
+     * @param explain     说明
      * @return WalletPriceLog
      */
-    private WalletOperationLog createNewWalletOperationLog(Integer uid, Integer adminId, BigDecimal price, BigDecimal beforePrice, BigDecimal afterPrice, int type) {
+    private WalletOperationLog createNewWalletOperationLog(Integer uid, Integer adminId, BigDecimal price, BigDecimal beforePrice, BigDecimal afterPrice, int type, String explain) {
         WalletOperationLog walletPriceLog = new WalletOperationLog();
         walletPriceLog.setUid(uid);
         walletPriceLog.setOperationId(adminId);
@@ -270,6 +272,7 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         walletPriceLog.setType((byte) type);
         walletPriceLog.setMonth((byte) (DateUtil.thisMonth() + 1));
         walletPriceLog.setYear(DateUtil.thisYear());
+        walletPriceLog.setExplain(explain);
         walletPriceLog.setCreateTimes(System.currentTimeMillis());
         return walletPriceLog;
     }

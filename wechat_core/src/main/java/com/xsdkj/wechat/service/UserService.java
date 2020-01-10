@@ -3,15 +3,13 @@ package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.bo.PermissionBo;
-import com.xsdkj.wechat.dto.UserLoginDto;
-import com.xsdkj.wechat.dto.UserRegisterDto;
-import com.xsdkj.wechat.dto.UserUpdateInfoParam;
-import com.xsdkj.wechat.dto.UserUpdatePassword;
+import com.xsdkj.wechat.dto.*;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.wallet.Wallet;
 import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
 import com.xsdkj.wechat.vo.LoginVo;
+import com.xsdkj.wechat.vo.UserVo;
 import com.xsdkj.wechat.vo.admin.LoginInfoVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -206,4 +204,12 @@ public interface UserService {
      * @return 计数
      */
     int countUserIds(Set<Integer> userIds);
+
+    /**
+     * Conditional query user list
+     *
+     * @param listUserDto parameter
+     * @return List UserVo
+     */
+    List<UserVo> listUser(ListUserDto listUserDto);
 }
