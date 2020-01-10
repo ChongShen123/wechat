@@ -26,6 +26,7 @@ public class UserDetailsBo implements UserDetails, Serializable {
     public UserDetailsBo() {
     }
 
+
     private User user;
     /**
      * 用户钱包

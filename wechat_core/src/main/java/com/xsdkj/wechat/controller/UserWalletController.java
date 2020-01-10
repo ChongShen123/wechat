@@ -20,10 +20,8 @@ import javax.annotation.Resource;
 public class UserWalletController {
     @Resource
     private UserWalletService userWalletService;
-
     /**
      * 用户充值或提现
-     *
      * @param userPriceOperationDto 参数
      * @return json
      */

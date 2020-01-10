@@ -1,9 +1,7 @@
 package com.xsdkj.wechat.dto;
 
 import lombok.Data;
-
 import javax.validation.constraints.NotNull;
-
 /**
  * @author Administrator
  */

@@ -55,9 +55,10 @@ public class AdminController {
         log.debug(LogUtil.INTERVAL);
         return success;
     }
-
+        
     @PostMapping("/logout")
     public JsonResult logout() {
         return JsonResult.success();
     }
+
 }

@@ -75,4 +75,17 @@ public interface ChatConstant {
      * 提现
      */
     byte WITHDRAW = 7;
+
+    /**
+     * 发朋友圈
+     */
+    byte SEND_MOOD = 8;
+    /**
+     * 点赞
+     */
+    byte USER_THUMBS = 9;
+    /**
+     * 评论
+     */
+    byte USER_COMMENT =10 ;
 }

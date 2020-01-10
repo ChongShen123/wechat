@@ -73,6 +73,30 @@ public class UserServiceImpl extends BaseService implements UserService {
     private PlatformService platformService;
 
 
+//    @Override
+//    public LoginVo register(UserRegisterDto param, HttpServletRequest request){
+//        String passwordRegex = SystemConstant.PASSWORD_REGEX;
+//        User data = getByUsername(param.getUsername());
+//        if (data != null) {
+//            throw new ServiceException(ResultCodeEnum.USER_ALREADY_EXISTS);
+//        }
+//        Platform platform = platformService.getById(param.getPlatformId());
+//        if (platform == null) {
+//            throw new ServiceException(ResultCodeEnum.PLATFORM_NOT_FOUND);
+//        }
+//        if (!param.getPassword().matches(passwordRegex)) {
+//            throw new ServiceException(ResultCodeEnum.PASSWORD_FORMAT);
+//        }
+//        if (userMapper.countByEmail(param.getEmail()) > 0) {
+//            throw new ServiceException(ResultCodeEnum.EMAIL_ALREADY_EXISTS);
+//        }
+//        User user = getNewUser(param, request);
+//        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_SERVICE_NAME, RabbitMessageBoxBo.createBox(RabbitConstant.BOX_TYPE_USER_REGISTER, user));
+//        UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
+//        return login(userLoginParam, request, false);
+//    }
+
+
     @Override
     public LoginVo register(UserRegisterDto param, HttpServletRequest request) {
         String passwordRegex = SystemConstant.PASSWORD_REGEX;
@@ -144,6 +168,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         return userMapper.countUserIds(userIds);
     }
 
+
     @Override
     public User getByUsername(String username) {
 //        log.debug("{}", Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -203,6 +228,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         log.error("本地数据库未找到用户{}的相关信息", uid);
         return null;
     }
+
 
     @Override
     public LoginInfoVo getInfo() {
@@ -274,6 +300,25 @@ public class UserServiceImpl extends BaseService implements UserService {
             userMapper.updateByPrimaryKeySelective(user);
         }
     }
+
+    @Override
+    public UserDetailsBo updateRedisDataByUid(Integer uid) {
+        User user = userMapper.selectByPrimaryKey(uid);
+        if (ObjectUtil.isNull(user)) {
+            throw new NullPointerException();
+        }
+        UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
+        currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
+        currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
+        initUserGroup(uid, currentUserDetailsBo, "updateRedisDataByUid(Integer uid) ");
+        Wallet wallet = walletService.getByUid(uid, false);
+        if (wallet != null) {
+            currentUserDetailsBo.setWallet(wallet);
+        }
+        redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
+        return currentUserDetailsBo;
+    }
+
 
     @Override
     public void updateLoginState(Integer uid, Boolean type) {

@@ -62,4 +62,10 @@ public interface RabbitConstant {
      * 用户金额操作通知
      */
     int USER_PRICE_OPERATION_NOTICE = 35;
+
+    /**
+     * 用户朋友圈新动态广播通知
+     */
+    int USER_MOOD_OPERATION_NOTICE =36;
+
 }

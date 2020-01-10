@@ -102,10 +102,8 @@ public class CreateGroupCmd extends AbstractChatCmd {
 
     }
 
-
     /**
      * 检测添加的用户是否都存在
-     *
      * @param ids ids
      * @return boolean
      */
@@ -119,13 +117,10 @@ public class CreateGroupCmd extends AbstractChatCmd {
         return true;
     }
 
-
     /**
      * 创建一个群
-     *
      * @param session 创建者信息
      * @param ids     群成员
-     * @return 群
      */
     private UserGroup createNewGroup(SessionBo session, Set<Integer> ids) {
         UserGroup group = new UserGroup();
@@ -148,7 +143,6 @@ public class CreateGroupCmd extends AbstractChatCmd {
 
     /**
      * 生成房间名
-     *
      * @param ids 用户id
      * @return 房间名
      */
@@ -167,10 +161,8 @@ public class CreateGroupCmd extends AbstractChatCmd {
         sb.append("的群聊");
         return sb.toString();
     }
-
     /**
      * 获取指定路径下一个随机文件名
-     *
      * @return 一个图片名
      */
     private String getRandomIcon(String root, String path) {

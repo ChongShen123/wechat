@@ -3,7 +3,6 @@ package com.xsdkj.wechat.controller;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.MoodParamDto;
 
-
 import com.xsdkj.wechat.entity.mood.UserMood;
 
 
@@ -42,7 +41,6 @@ public class UserMoodController {
 /*        List<UserMoodVo> userMoodVo= userMoodService.selectOneSelf();*/
         List<UserMoodVo> userMoodVos = userMoodService.listUserMoodByUid();
         return  JsonResult.success(userMoodVos);
-
     }
 
 }

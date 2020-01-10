@@ -123,7 +123,7 @@ public interface UserService {
      * @param friendId 好友ID
      */
     void deleteFriend(Integer uid, Integer friendId);
-
+    UserDetailsBo updateRedisDataByUid(Integer uid);
     /**
      * 更新用户Redis 数据
      * 更新用户菜单,用户群组,用户信息
