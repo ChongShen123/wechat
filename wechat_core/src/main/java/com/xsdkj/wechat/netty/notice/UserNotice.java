@@ -65,11 +65,11 @@ public class UserNotice extends BaseHandler {
         }
         singleChat.setRead(false);
         singleChatService.save(singleChat);
-<<<<<<< HEAD
-=======
+
+
         log.debug("该用户不在线,已将通知消息离线保存. {}ms", DateUtil.spendMs(begin));
         log.debug("金额通知完成. 用时{}ms", DateUtil.spendMs(begin));
->>>>>>> a596a8cd1f3a56283d15799ca22c67bd001cfe60
+
     }
 
 
