@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="wechat_client" />
         <module name="wechat_common" />
         <module name="wechat_consumer" />
         <module name="wechat_core" />
@@ -14,6 +15,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="wechat" target="1.8" />
+      <module name="wechat_client" target="1.8" />
       <module name="wechat_common" target="1.8" />
       <module name="wechat_consumer" target="1.8" />
       <module name="wechat_core" target="1.8" />

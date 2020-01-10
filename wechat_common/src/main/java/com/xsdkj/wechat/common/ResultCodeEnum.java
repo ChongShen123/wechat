@@ -6,9 +6,21 @@ package com.xsdkj.wechat.common;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 重复添加好友
+     */
+    ALREADY_FRIEND_EXCEPTION(4055, "操作失败!对方已为好友"),
+    /**
+     * 用户补签次数用完
+     */
+    RETROACTIVE_COUNT_USE_UP(4054, "补签失败!用户补签次数用完"),
+    /**
+     * 超出补签限制
+     */
+    RETROACTIVE_COUNT_BEYOND(4053, "补签失败!超出补签限制天数."),
+    /**
      * 非法操作
      */
-    ILLEGAL_OPERATION_EXCEPTION(4052, "操作失败!非法操作"),
+    ILLEGAL_OPERATION_EXCEPTION(4052, "非法操作!"),
     /**
      * 操作数据库异常
      */

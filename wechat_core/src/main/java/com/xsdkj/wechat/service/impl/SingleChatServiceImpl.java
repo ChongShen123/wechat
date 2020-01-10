@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.service.impl;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.xsdkj.wechat.constant.ChatConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.service.SingleChatService;
@@ -9,10 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,10 +84,23 @@ public class SingleChatServiceImpl implements SingleChatService {
 
     @Override
     public void deleteById(String id) {
+        long begin = System.currentTimeMillis();
         Query query = Query.query(Criteria.where("id").is(id));
         mongoTemplate.remove(query, SingleChat.class);
+        log.debug("已删除ID:{}的单聊消息 {}ms", id, DateUtil.spendMs(begin));
     }
 
+    @Override
+    public void updateRead(boolean read, List<SingleChat> singleChats) {
+        List<String> ids = new ArrayList<>();
+        singleChats.forEach(item -> ids.add(item.getId()));
+        Criteria criteria = new Criteria();
+        criteria.and("id").in(ids);
+        Query query = Query.query(criteria);
+        Update update = new Update();
+        update.set("read", true);
+        mongoTemplate.updateMulti(query, update, SingleChat.class);
+    }
 
     @Override
     public List<SingleChat> listByReadAndToUserId(boolean read, Integer toUserId) {

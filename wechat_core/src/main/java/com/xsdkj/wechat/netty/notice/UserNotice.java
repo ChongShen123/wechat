@@ -5,8 +5,11 @@ import com.xsdkj.wechat.common.Cmd;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.constant.RabbitConstant;
 import com.xsdkj.wechat.entity.chat.SingleChat;
+import com.xsdkj.wechat.entity.mood.UserMood;
 import com.xsdkj.wechat.netty.cmd.base.BaseHandler;
 import com.xsdkj.wechat.service.RabbitTemplateService;
+import com.xsdkj.wechat.service.SingleChatService;
+import com.xsdkj.wechat.service.UserMoodService;
 import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.util.SessionUtil;
 import io.netty.channel.Channel;
@@ -24,7 +27,7 @@ import javax.annotation.Resource;
 @Slf4j
 public class UserNotice extends BaseHandler {
     @Resource
-    private RabbitTemplateService rabbitTemplateService;
+    private SingleChatService singleChatService;
 
     @RabbitListener(queues = RabbitConstant.USER_NOTICE_QUEUE)
     public void userNoticeHandler(MsgBox box) {
@@ -52,6 +55,16 @@ public class UserNotice extends BaseHandler {
         } else {
             singleChat.setRead(false);
         }
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
+        singleChatService.save(singleChat);
     }
+
+
+
+
+
+
+
+
+
+
 }

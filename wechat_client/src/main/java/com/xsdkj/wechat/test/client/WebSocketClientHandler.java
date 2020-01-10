@@ -1,29 +1,24 @@
-package com.xsdkj.wechat.netty.base;
+package com.xsdkj.wechat.test.client;
 
 import io.netty.channel.*;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
-
 
 /**
- * @author Administrator
+ * @author tiankong
+ * @date 2020/1/7 9:47
  */
-@Component
 @ChannelHandler.Sharable
-@Slf4j
-@Data
-public class WebSocketClientHandler  extends SimpleChannelInboundHandler<Object>{
+public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     WebSocketClientHandshaker handshaker;
     ChannelPromise handshakeFuture;
+
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         this.handshakeFuture = ctx.newPromise();
     }
+
     public WebSocketClientHandshaker getHandshaker() {
         return handshaker;
     }

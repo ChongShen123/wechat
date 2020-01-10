@@ -26,6 +26,11 @@ public interface RedisConstant {
     String REDIS_USER_ID = "user_";
 
     /**
+     * 系统参数key
+     */
+    String REDIS_SYSTEM_PARAMETER = "system_parameter";
+
+    /**
      * 用户缓存过期时间
      * 单位s
      */

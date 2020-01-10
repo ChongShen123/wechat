@@ -8,6 +8,7 @@
         <module>wechat_entity</module>
         <module>wechat_common</module>
         <module>wechat_consumer</module>
+        <module>wechat_client</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -1,16 +1,10 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.user.User;
-import com.xsdkj.wechat.entity.wallet.UserScore;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.Date;
-
-import com.xsdkj.wechat.entity.wallet.SignDate;
+import com.xsdkj.wechat.entity.wallet.SignDate;import com.xsdkj.wechat.entity.wallet.UserScore;import org.apache.ibatis.annotations.Param;import java.util.Date;
 
 /**
  * @author tiankong
- * @date 2020/1/5 11:21
+ * @date 2020/1/6 15:01
  */
 public interface SignDateMapper {
     int deleteByPrimaryKey(Integer id);
@@ -53,5 +47,11 @@ public interface SignDateMapper {
      */
     UserScore getUserScore(@Param("userId") Integer userId);
 
-
+    /**
+     * 具体Date查询记录
+     *
+     * @param day day
+     * @return SignDate
+     */
+    SignDate getOneByDay(@Param("day") Date day);
 }

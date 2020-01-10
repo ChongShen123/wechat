@@ -7,6 +7,7 @@ import com.xsdkj.wechat.component.RestAuthenticationEntryPoint;
 import com.xsdkj.wechat.component.RestfulAccessDeniedHandler;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,6 +30,7 @@ import javax.annotation.Resource;
  * @author tiankong
  * @date 2019/11/17 16:17
  */
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -99,8 +101,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     protected UserDetailsService userDetailsService() {
+        log.debug("SpringSecurity 框架现在检查用户信息");
         return username -> {
-            // TODO 这里好像没用
             User user = userService.getByUsername(username);
             if (user != null) {
                 return new UserDetailsBo(user);
@@ -108,6 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             throw new UsernameNotFoundException("用户名或密码错误");
         };
     }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

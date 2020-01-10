@@ -1,6 +1,8 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.entity.wallet.UserScore;
+import com.xsdkj.wechat.vo.UserScoreVo;
+import com.xsdkj.wechat.vo.UserSignDateVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -36,11 +38,11 @@ public interface UserScoreMapper {
     /**
      * 更新签到平台签到人数
      *
-     * @param count      人数: 在已有数据上进行加减
-     * @param platformId 平台id
+     * @param count 人数: 在已有数据上进行加减
+     * @param id    signDateId
      * @return 计数
      */
-    int updateMemberCount(@Param("count") int count, @Param("platformId") Integer platformId);
+    int updateMemberCount(@Param("count") int count, @Param("id") Integer id);
 
     /**
      * 查询用户积分
@@ -56,8 +58,9 @@ public interface UserScoreMapper {
      *
      * @param uid   用户id
      * @param count 补签次数:在原有基础上进行加减
+     * @return 计数
      */
-    void updateUserRetroactiveCount(@Param("uid") Integer uid, @Param("count") Integer count);
+    int updateUserRetroactiveCount(@Param("uid") Integer uid, @Param("count") Integer count);
 
     /**
      * 修改用户积分
@@ -75,4 +78,22 @@ public interface UserScoreMapper {
      * @return List
      */
     List<UserScore> listUserScore(@Param("userIds") Set<Integer> userIds);
+
+    /**
+     * 查询用户签到情况
+     *
+     * @param uid   用户id
+     * @param year  年
+     * @param month 月
+     * @return list
+     */
+    List<UserSignDateVo> listUserSignDate(@Param("uid") Integer uid, @Param("year") Integer year, @Param("month") Integer month);
+
+    /**
+     * 查询用户积分
+     *
+     * @param uid 用户id
+     * @return UserScoreVo
+     */
+    UserScoreVo getUserScoreVoByUid(@Param("uid") Integer uid);
 }

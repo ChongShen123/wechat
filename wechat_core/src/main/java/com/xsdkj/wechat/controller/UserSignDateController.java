@@ -1,9 +1,13 @@
 package com.xsdkj.wechat.controller;
 
+import cn.hutool.core.date.DateUtil;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
 import com.xsdkj.wechat.dto.GiveScoreDto;
+import com.xsdkj.wechat.dto.RetroactiveDto;
+import com.xsdkj.wechat.dto.UserSignDateDto;
 import com.xsdkj.wechat.service.UserSignDateService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +19,7 @@ import javax.annotation.Resource;
  * @author tiankong
  * @date 2020/1/5 11:23
  */
+@Slf4j
 @RestController
 @RequestMapping("/sign_date")
 public class UserSignDateController {
@@ -28,8 +33,11 @@ public class UserSignDateController {
      */
     @GetMapping
     public JsonResult singDate() {
-        userSignDateService.singDate();
-        return JsonResult.success();
+        long currentTimeMillis = System.currentTimeMillis();
+        userSignDateService.handleSignDate();
+        JsonResult success = JsonResult.success();
+        log.debug(DateUtil.spendMs(currentTimeMillis) + "");
+        return success;
     }
 
     /**
@@ -40,13 +48,46 @@ public class UserSignDateController {
      */
     @PostMapping("/give_retroactive_count")
     public JsonResult adminGiveRetroactiveCount(@Validated @RequestBody GiveRetroactiveCountDto giveRetroactiveCountDto) {
-        userSignDateService.giveRetroactiveCount(giveRetroactiveCountDto);
+        userSignDateService.handleGiveRetroactiveCount(giveRetroactiveCountDto);
         return JsonResult.success();
     }
 
+    /**
+     * 管理员: 赠送用户积分
+     *
+     * @param giveScoreDto 参数
+     * @return JsonResult
+     */
     @PostMapping("/give_score")
     public JsonResult adminGiveScore(@Validated @RequestBody GiveScoreDto giveScoreDto) {
-        userSignDateService.giveScore(giveScoreDto);
-        return JsonResult.success();
+        long begin = System.currentTimeMillis();
+        userSignDateService.handleGiveScore(giveScoreDto);
+        JsonResult success = JsonResult.success();
+        log.debug(DateUtil.spendMs(begin) + "");
+        return success;
+    }
+
+    /**
+     * 用户补签
+     *
+     * @return JsonResult
+     */
+    @PostMapping("/retroactive")
+    public JsonResult retroactive(@Validated @RequestBody RetroactiveDto retroactiveDto) {
+        long begin = System.currentTimeMillis();
+        userSignDateService.handleRetroactive(retroactiveDto);
+        JsonResult success = JsonResult.success();
+        log.debug(DateUtil.spendMs(begin) + "");
+        return success;
+    }
+
+    /**
+     * 查询用户签到情况
+     *
+     * @return JsonResult
+     */
+    @PostMapping("/list_user_sign_date")
+    public JsonResult userSignDate(@Validated @RequestBody UserSignDateDto userSignDateDto) {
+        return JsonResult.success(userSignDateService.listUserSignDate(userSignDateDto));
     }
 }

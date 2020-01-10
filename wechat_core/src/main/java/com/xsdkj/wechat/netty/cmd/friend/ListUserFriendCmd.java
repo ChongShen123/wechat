@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class ListUserFriendCmd extends AbstractChatCmd {
     @Override
-    protected void parseParam(JSONObject param) throws Exception {
+    protected void parseParam(JSONObject param) {
     }
 
     @Override

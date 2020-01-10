@@ -1,26 +1,19 @@
 package com.xsdkj.wechat.ex;
 
+import com.xsdkj.wechat.common.ResultCodeEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @author tiankong
  * @date 2019/12/17 11:33
  */
-public class UserJoinedException extends RuntimeException {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class UserJoinedException extends ServiceException {
+    private static final long serialVersionUID = -800835946950313658L;
+
     public UserJoinedException() {
-    }
-
-    public UserJoinedException(String message) {
-        super(message);
-    }
-
-    public UserJoinedException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public UserJoinedException(Throwable cause) {
-        super(cause);
-    }
-
-    public UserJoinedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+        code = ResultCodeEnum.USER_JOINED_EXCEPTION;
     }
 }

@@ -23,6 +23,8 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 /**
+ * 用户转账
+ *
  * @author tiankong
  * @date 2020/1/3 15:27
  */
@@ -89,8 +91,8 @@ public class TransferUserPriceCmd extends AbstractChatCmd {
             newSingleChat.setRead(false);
         }
         sendMessage(channel, JsonResult.success());
-        userService.updateRedisDataByUid(session.getUid());
-        userService.updateRedisDataByUid(toUserId);
+        userService.updateRedisDataByUid(session.getUid(), "TransferUserPriceCmd.concreteAction() 用户转账更新缓存");
+        userService.updateRedisDataByUid(toUserId, "TransferUserPriceCmd.concreteAction() 转账更新对方缓存");
         singleChatService.save(newSingleChat);
     }
 }

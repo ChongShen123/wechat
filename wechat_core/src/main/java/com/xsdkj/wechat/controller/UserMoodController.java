@@ -41,7 +41,6 @@ public class UserMoodController {
 /*        List<UserMoodVo> userMoodVo= userMoodService.selectOneSelf();*/
         List<UserMoodVo> userMoodVos = userMoodService.listUserMoodByUid();
         return  JsonResult.success(userMoodVos);
-
     }
 
 }

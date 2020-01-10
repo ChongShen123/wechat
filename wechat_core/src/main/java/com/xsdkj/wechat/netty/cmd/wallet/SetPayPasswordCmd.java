@@ -47,6 +47,6 @@ public class SetPayPasswordCmd extends AbstractChatCmd {
         }
         userWalletService.updatePayPassword(session.getUid(), password);
         sendMessage(channel, JsonResult.success());
-        userService.updateRedisDataByUid(session.getUid());
+        userService.updateRedisDataByUid(session.getUid(),"SetPayPasswordCmd.concreteAction()");
     }
 }

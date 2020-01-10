@@ -1,5 +1,6 @@
 package com.xsdkj.wechat.netty.cmd.base;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -22,6 +23,7 @@ import com.xsdkj.wechat.util.ChatUtil;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.util.ThreadUtil;
 import io.netty.channel.Channel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,7 @@ import static com.xsdkj.wechat.constant.ParamConstant.KEY_USER_ID;
  * @author tiankong
  * @date 2019/11/17 19:54
  */
+@Slf4j
 @Service
 public abstract class AbstractChatCmd extends AbstractCmd {
     @Resource
@@ -94,41 +97,13 @@ public abstract class AbstractChatCmd extends AbstractCmd {
                 parseParam(param);
                 //具体执行
                 concreteAction(channel);
-                // TODO 把异常处理优化下 try catch 太多了
-            } catch (PayPasswordHasBeenSetException e) {
+            } catch (UserAlreadyRegister | IllegalOperationException e) {
                 sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (UserBalancePriceException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (SystemException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (FileNotFoundException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (BannedChatException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.BANNED_CHAT, cmd));
-            } catch (ValidateException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (ParseParamException e) {
-                sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
-            } catch (DataEmptyException | UserNotFountException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
-            } catch (DataIntegrityViolationException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, cmd));
-            } catch (GroupNotFoundException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.GROUP_NOT_FOUND, cmd));
-            } catch (UserJoinedException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_JOINED_EXCEPTION, cmd));
-            } catch (UserNotInGroupException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_IN_GROUP, cmd));
-            } catch (PermissionDeniedException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.FORBIDDEN, cmd));
-            } catch (NoSayException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.NO_SAY_EXCEPTION, cmd));
-            } catch (RepetitionException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.REPEAT_EXCEPTION, cmd));
-            } catch (UnAuthorizedException e) {
-                sendMessage(channel, JsonResult.failed(ResultCodeEnum.UNAUTHORIZED, cmd));
+                remove(channel);
             } catch (ServiceException e) {
                 sendMessage(channel, JsonResult.failed(e.getCode(), cmd));
+            } catch (DataIntegrityViolationException e) {
+                sendMessage(channel, JsonResult.failed(ResultCodeEnum.USER_NOT_FOND, cmd));
             } catch (NullPointerException e) {
                 sendMessage(channel, JsonResult.failed(ResultCodeEnum.DATA_NOT_EXIST, cmd));
                 e.printStackTrace();
@@ -173,6 +148,8 @@ public abstract class AbstractChatCmd extends AbstractCmd {
      * @param group 群信息
      */
     protected void sendCreateGroupMessageToUsers(Set<Integer> ids, UserGroup group) {
+        log.debug("给用户发送一个入群消息并保存到数据库...");
+        long begin = System.currentTimeMillis();
         List<SingleChat> list = new ArrayList<>();
         ids.forEach(id -> list.add(chatUtil.createNewSingleChat(id, SystemConstant.SYSTEM_USER_ID, "您已加入【" + group.getName() + "】 开始聊天吧", ChatConstant.JOIN_GROUP)));
         list.forEach(singleChat -> {
@@ -180,13 +157,17 @@ public abstract class AbstractChatCmd extends AbstractCmd {
             if (toUserChannel != null) {
                 sendMessage(toUserChannel, JsonResult.success(singleChat));
                 // 通知群里在线的用户XXX已经进入群聊
-                sendGroupMessage(group.getId(), JsonResult.success(String.format("%s已加入群聊", SessionUtil.getSession(toUserChannel).getUsername()), cmd));
+                String username = SessionUtil.getSession(toUserChannel).getUsername();
+                sendGroupMessage(group.getId(), JsonResult.success(String.format("%s已加入群聊", username), cmd));
                 // 更新用户redis缓存
-                userService.updateRedisDataByUid(singleChat.getToUserId());
+                userService.updateRedisDataByUid(singleChat.getToUserId(), "AbstractChatCmd.sendCreateGroupMessageToUsers()");
+                log.debug("已将入群消息发送给{},并更新缓存 {}ms", username, DateUtil.spendMs(begin));
             }
             singleChat.setRead(toUserChannel != null);
-            rabbitTemplateService.addExchange(RabbitConstant.FANOUT_CHAT_NAME, MsgBox.create(RabbitConstant.BOX_TYPE_SINGLE_CHAT, singleChat));
+            singleChatService.save(singleChat);
+            log.debug("已保存消息到数据库 {}ms", DateUtil.spendMs(begin));
         });
+        log.debug("发送保存数据入群消息完成 {}ms", DateUtil.spendMs(begin));
     }
 
     /**

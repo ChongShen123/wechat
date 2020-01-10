@@ -43,4 +43,11 @@ public interface SingleChatService {
      */
     void deleteById(String id);
 
+    /**
+     * 更新单聊阅读状态
+     *
+     * @param read        阅读状态
+     * @param singleChats list
+     */
+    void updateRead(boolean read, List<SingleChat> singleChats);
 }

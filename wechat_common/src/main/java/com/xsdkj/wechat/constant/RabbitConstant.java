@@ -55,31 +55,17 @@ public interface RabbitConstant {
      */
     String GROUP_CHAT_QUEUE_ASSIST = "group-chat-assist";
 
-    /**
-     * 单聊类型
-     */
-    int BOX_TYPE_SINGLE_CHAT = 1;
-    /**
-     * 群聊类型
-     */
-    int BOX_TYPE_GROUP_CHAT = 2;
-    /**
-     * 好友申请类型
-     */
-    int BOX_TYPE_FRIEND_APPLICATION = 10;
 
-    /**
-     * 更新好友申请消息为已读
-     */
-    int BOX_TYPE_FRIEND_APPLICATION_READ = 11;
-    /**
-     * 更新单聊消息为已读
-     */
-    int BOX_TYPE_SINGLE_CHAT_READ = 20;
 
 
     /**
      * 用户金额操作通知
      */
     int USER_PRICE_OPERATION_NOTICE = 35;
+
+    /**
+     * 用户朋友圈新动态广播通知
+     */
+    int USER_MOOD_OPERATION_NOTICE =36;
+
 }

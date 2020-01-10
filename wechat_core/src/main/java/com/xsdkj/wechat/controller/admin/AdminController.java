@@ -34,9 +34,10 @@ public class AdminController {
     public JsonResult getInfo() {
         return JsonResult.success(userService.getInfo());
     }
-
+        
     @PostMapping("/logout")
     public JsonResult logout() {
         return JsonResult.success();
     }
+
 }

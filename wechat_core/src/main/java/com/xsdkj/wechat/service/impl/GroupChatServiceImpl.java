@@ -17,14 +17,13 @@ import java.util.List;
 @Service
 @Slf4j
 public class GroupChatServiceImpl implements GroupChatService {
-
     @Value("${file.group-chat}")
     private String groupChatFile;
-
-
     @Resource
     private MongoTemplate mongoTemplate;
-//获取当前时间的前15天的时间戳
+/**
+*获取当前时间的前15天的时间戳
+ */
     Long time = System.currentTimeMillis() - 1296000000;
 
     /**

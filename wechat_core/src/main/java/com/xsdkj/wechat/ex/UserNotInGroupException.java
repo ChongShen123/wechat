@@ -1,26 +1,19 @@
 package com.xsdkj.wechat.ex;
 
+import com.xsdkj.wechat.common.ResultCodeEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @author tiankong
  * @date 2019/12/18 11:30
  */
-public class UserNotInGroupException extends RuntimeException {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class UserNotInGroupException extends ServiceException {
+    private static final long serialVersionUID = 9148273598414419416L;
+
     public UserNotInGroupException() {
-    }
-
-    public UserNotInGroupException(String message) {
-        super(message);
-    }
-
-    public UserNotInGroupException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public UserNotInGroupException(Throwable cause) {
-        super(cause);
-    }
-
-    public UserNotInGroupException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+        code = ResultCodeEnum.USER_NOT_IN_GROUP;
     }
 }

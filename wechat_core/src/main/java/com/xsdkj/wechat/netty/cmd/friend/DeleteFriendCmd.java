@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class DeleteFriendCmd extends AbstractChatCmd {
     @Override
-    protected void parseParam(JSONObject param) throws Exception {
+    protected void parseParam(JSONObject param) {
         Integer fid = param.getInteger(ParamConstant.KEY_FRIEND_ID);
         if (ObjectUtil.isEmpty(fid)) {
             throw new UserNotFountException();
@@ -39,9 +39,9 @@ public class DeleteFriendCmd extends AbstractChatCmd {
         }
         userService.deleteFriend(session.getUid(), friendId);
         if (SessionUtil.getUserChannel(friendId) != null) {
-            userService.updateRedisDataByUid(friendId);
+            userService.updateRedisDataByUid(friendId, "DeleteFriendCmd.concreteAction(更新好友缓存)");
         }
-        userService.updateRedisDataByUid(session.getUid());
+        userService.updateRedisDataByUid(session.getUid(), "DeleteFriendCmd.concreteAction(更新用户缓存)");
         sendMessage(channel, JsonResult.success(cmd));
     }
 

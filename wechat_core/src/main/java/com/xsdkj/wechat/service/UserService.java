@@ -125,15 +125,16 @@ public interface UserService {
      * @param friendId 好友ID
      */
     void deleteFriend(Integer uid, Integer friendId);
-
+    UserDetailsBo updateRedisDataByUid(Integer uid);
     /**
      * 更新用户Redis 数据
      * 更新用户菜单,用户群组,用户信息
      *
-     * @param uid 用户id
+     * @param uid        用户id
+     * @param methodName 调用方
      * @return List
      */
-    UserDetailsBo updateRedisDataByUid(Integer uid);
+    UserDetailsBo updateRedisDataByUid(Integer uid, String methodName);
 
     /**
      * 更新用户Redis 数据
@@ -147,12 +148,22 @@ public interface UserService {
 
     /**
      * 更新用户Redis 数据
-     * 更新用户菜单,用户群组,用户信息
      *
-     * @param user 用户
+     * @param uid           用户id
+     * @param userDetailsBo 用户数据
      * @return UserDetailsBo
      */
-    UserDetailsBo updateRedisDataByUid(User user);
+    UserDetailsBo updateRedisDataByUid(Integer uid, UserDetailsBo userDetailsBo);
+
+    /**
+     * 更新用户Redis 数据
+     * 更新用户菜单,用户群组,用户信息
+     *
+     * @param user       用户
+     * @param methodName 调用方方法名
+     * @return UserDetailsBo
+     */
+    UserDetailsBo updateRedisDataByUid(User user, String methodName);
 
     /**
      * 获取用户缓存信息
@@ -190,6 +201,7 @@ public interface UserService {
 
     /**
      * 检查用户是否存在
+     *
      * @param userIds 用户id
      * @return 计数
      */

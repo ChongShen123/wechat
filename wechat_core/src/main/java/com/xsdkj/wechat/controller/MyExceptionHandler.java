@@ -3,9 +3,11 @@ package com.xsdkj.wechat.controller;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.ex.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 /**
  * @author tiankong
  * @date 2019/12/11 18:28
@@ -13,6 +15,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class MyExceptionHandler {
+
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    public JsonResult httpMessageNotReadableException(HttpMessageNotReadableException e) {
+        log.error(e.getMessage());
+        return JsonResult.failed("JSON参数解析异常");
+    }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public JsonResult methodArgumentExceptionHandler(MethodArgumentNotValidException e) {
@@ -24,7 +32,7 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(value = ServiceException.class)
     public JsonResult serviceExceptionHandler(ServiceException e) {
-        log.error("业务异常>>>>{}",e.getCode());
+        log.error("业务异常>>>>{}", e.getCode());
         return JsonResult.failed(e.getCode());
     }
 

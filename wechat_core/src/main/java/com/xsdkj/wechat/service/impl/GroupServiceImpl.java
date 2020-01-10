@@ -1,5 +1,6 @@
 package com.xsdkj.wechat.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.constant.RedisConstant;
@@ -14,6 +15,7 @@ import com.xsdkj.wechat.vo.GroupBaseInfoVo;
 import com.xsdkj.wechat.vo.GroupInfoVo;
 import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.ListMembersVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import java.util.*;
  * @author tiankong
  * @date 2019/12/12 11:38
  */
+@Slf4j
 @Service
 public class GroupServiceImpl implements UserGroupService {
     @Resource
@@ -102,10 +105,12 @@ public class GroupServiceImpl implements UserGroupService {
 
     @Override
     public void updateRedisGroupById(Integer groupId) {
+        long begin = System.currentTimeMillis();
         UserGroup group = groupMapper.selectByPrimaryKey(groupId);
         List<ListMembersVo> listMembersVos = groupMapper.listGroupMembersByGroupId(group.getId());
         redisUtil.set(RedisConstant.REDIS_GROUP_KEY + group.getId(), JSONObject.toJSONString(group));
         redisUtil.set(RedisConstant.REDIS_GROUP_MEMBERS + group.getId(), JSONObject.toJSONString(listMembersVos));
+        log.debug("群{}缓存更新完毕 {}ms",groupId, DateUtil.spendMs(begin));
     }
 
     @Override

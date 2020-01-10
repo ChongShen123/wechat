@@ -13,7 +13,11 @@ import lombok.EqualsAndHashCode;
 @Data
 public class PermissionDeniedException extends ServiceException {
     private static final long serialVersionUID = 2032976030274369402L;
+
     private IErrorCode code = ResultCodeEnum.FORBIDDEN;
+
+
     public PermissionDeniedException() {
+        code = ResultCodeEnum.FORBIDDEN;
     }
 }

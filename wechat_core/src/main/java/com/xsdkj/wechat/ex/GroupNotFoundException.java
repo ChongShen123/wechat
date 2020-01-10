@@ -1,26 +1,19 @@
 package com.xsdkj.wechat.ex;
 
+import com.xsdkj.wechat.common.ResultCodeEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @author tiankong
  * @date 2019/12/15 19:01
  */
-public class GroupNotFoundException extends RuntimeException {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class GroupNotFoundException extends ServiceException {
+    private static final long serialVersionUID = -4654107370573235519L;
+
     public GroupNotFoundException() {
-    }
-
-    public GroupNotFoundException(String message) {
-        super(message);
-    }
-
-    public GroupNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public GroupNotFoundException(Throwable cause) {
-        super(cause);
-    }
-
-    public GroupNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+        code = ResultCodeEnum.GROUP_NOT_FOUND;
     }
 }

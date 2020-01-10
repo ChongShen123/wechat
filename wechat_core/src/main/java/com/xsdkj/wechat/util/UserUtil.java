@@ -35,7 +35,7 @@ public class UserUtil {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDetailsBo bo = (UserDetailsBo) redisUtil.get(RedisConstant.REDIS_USER_ID + currentUsername);
         if (bo == null) {
-            bo = userService.updateRedisDataByUid(userService.getByUsername(currentUsername).getId());
+            bo = userService.updateRedisDataByUid(userService.getByUsername(currentUsername).getId(),"UserUtil.currentUser()");
         }
         return bo;
     }

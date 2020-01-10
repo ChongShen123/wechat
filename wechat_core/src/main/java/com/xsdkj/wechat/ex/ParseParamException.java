@@ -1,6 +1,5 @@
 package com.xsdkj.wechat.ex;
 
-import com.xsdkj.wechat.common.IErrorCode;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,9 +10,10 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ParseParamException extends RuntimeException {
+public class ParseParamException extends ServiceException {
     private static final long serialVersionUID = 7783894835679566772L;
-    private IErrorCode code = ResultCodeEnum.VALIDATE_FAILED;
+
     public ParseParamException() {
+        code = ResultCodeEnum.VALIDATE_FAILED;
     }
 }

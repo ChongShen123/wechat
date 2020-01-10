@@ -1,6 +1,5 @@
 package com.xsdkj.wechat.ex;
 
-import com.xsdkj.wechat.common.IErrorCode;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,12 +10,10 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DataEmptyException extends RuntimeException {
+public class DataEmptyException extends ServiceException {
     private static final long serialVersionUID = -60463735350010518L;
-    private IErrorCode code = ResultCodeEnum.DATA_NOT_EXIST;
 
     public DataEmptyException() {
-        super();
+        code = ResultCodeEnum.DATA_NOT_EXIST;
     }
-
 }
