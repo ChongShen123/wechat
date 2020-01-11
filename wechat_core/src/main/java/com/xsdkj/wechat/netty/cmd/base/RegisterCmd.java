@@ -135,7 +135,8 @@ public class RegisterCmd extends AbstractChatCmd {
                 singleChatService.updateRead(true, singleChats);
                 log.debug("修改单聊消息为已读 {}ms", DateUtil.spendMs(begin));
             }
-            user.setLoginState(UserConstant.LOGGED);
+            user.setLoginState(true);
+            userService.updateLoginState(userId, true);
             userService.updateRedisDataByUid(user, "RegisterCmd 注册用户Channel");
             log.debug("用户注册完毕 {}ms", DateUtil.spendMs(begin));
             log.debug(LogUtil.INTERVAL);

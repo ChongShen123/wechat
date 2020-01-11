@@ -12,4 +12,6 @@ public class UserLoginLogoDto {
     String userName;
     String ip;
     Long createTimes;
+    Integer pageNum;
+    Integer pageSize;
 }

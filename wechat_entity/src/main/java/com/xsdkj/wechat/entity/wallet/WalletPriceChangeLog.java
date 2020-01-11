@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @author tiankong
- * @date 2020/1/3 18:17
+ * @date 2020/1/10 15:53
  */
 @Data
 public class WalletPriceChangeLog implements Serializable {
@@ -31,13 +31,15 @@ public class WalletPriceChangeLog implements Serializable {
     private Byte type;
 
     /**
+     * 说明
+     */
+    private String explain;
+
+    /**
      * 月份
      */
     private Byte month;
 
-    /**
-     * 年份
-     */
     private Integer year;
 
     private Long createTimes;

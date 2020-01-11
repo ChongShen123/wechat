@@ -9,6 +9,7 @@ import com.xsdkj.wechat.util.LogUtil;
 import com.xsdkj.wechat.vo.LoginVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,7 +31,8 @@ public class AdminController {
     private String tokenHeader;
 
     @PostMapping("/login")
-    public JsonResult login(@RequestBody UserLoginDto userLoginDto, HttpServletRequest request) {
+    public JsonResult login(@Validated @RequestBody UserLoginDto userLoginDto, HttpServletRequest request) {
+        System.out.println(userLoginDto);
         long begin = System.currentTimeMillis();
         log.debug(LogUtil.INTERVAL);
         log.debug("开始处理登录请求...");

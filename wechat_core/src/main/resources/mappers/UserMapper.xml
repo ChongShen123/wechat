@@ -345,4 +345,45 @@
         </foreach>
         );
     </select>
+    <resultMap id="conditionUserListMap" type="com.xsdkj.wechat.vo.UserVo">
+        <id column="id" property="id"/>
+        <result column="uno" property="uno"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="icon" property="icon"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <result column="last_login_times" property="lastLoginTimes"/>
+        <result column="price" property="price"/>
+        <result column="tel" property="tel"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="create_times" property="createTimes"/>
+        <result column="login_state" property="loginState"/>
+    </resultMap>
+    <select id="listUser" resultMap="conditionUserListMap">
+        select u.id,
+        u.uno,
+        u.username,
+        u.nickname,
+        u.icon,
+        u.gender,
+        u.email,
+        u.tel,
+        u.last_login_times,
+        u.create_times,
+        u.login_state,
+        w.price,
+        w.total_price
+        from user u
+        left join wallet w on u.id = w.uid
+        where 1=1
+        <if test="uid != null">and u.id = #{uid,jdbcType=INTEGER}</if>
+        <if test="uno != null">and u.uno = #{uno,jdbcType=INTEGER}</if>
+        <if test="username != null and username != ''">and u.username =#{username,jdbcType=VARCHAR}</if>
+        <if test="tel != null and tel != ''">and u.tel =#{tel,jdbcType=VARCHAR}</if>
+        <if test="lastLoginTimes != null">and u.last_login_times>= #{lastLoginTimes,jdbcType=BIGINT}</if>
+        <if test="loginState != null">and u.login_state = #{loginState,jdbcType=BOOLEAN}</if>
+        <if test="createTimes != null">and u.create_times >= #{createTimes,jdbcType=BIGINT}</if>
+        order by u.login_state desc
+    </select>
 </mapper>

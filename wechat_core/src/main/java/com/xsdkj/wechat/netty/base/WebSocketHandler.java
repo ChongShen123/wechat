@@ -117,7 +117,9 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             ctx.channel().close();
             return;
         }
-        SessionUtil.ONLINE_USER_MAP.remove(session.getUid());
+        Integer uid = session.getUid();
+        userService.updateLoginState(uid, false);
+        SessionUtil.ONLINE_USER_MAP.remove(uid);
         log.info("已移除握手实例,当前握手实例总数为:{}", SessionUtil.WEB_SOCKET_SERVER_HAND_SHAKER.size());
         log.info("userId为{}的用户已经退出聊天,当前在线人数为{}", ctx.channel().attr(Attributes.SESSION).get().getUid(), SessionUtil.ONLINE_USER_MAP.size());
         ctx.channel();
@@ -132,8 +134,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     public void channelUnregistered(ChannelHandlerContext ctx) {
         SessionBo session = SessionUtil.getSession(ctx.channel());
         if (session != null) {
-            userService.updateLoginState(session.getUid(), UserConstant.NOT_LOGIN);
-            userService.updateRedisDataByUid(session.getUid(),"WebSocketHandler.channelUnregistered() 用户离线更新用户缓存(这里应该是删除缓存吧)");
+            userService.updateLoginState(session.getUid(), false);
+            userService.updateRedisDataByUid(session.getUid(), "WebSocketHandler.channelUnregistered() 用户离线更新用户缓存(这里应该是删除缓存吧)");
         }
     }
 

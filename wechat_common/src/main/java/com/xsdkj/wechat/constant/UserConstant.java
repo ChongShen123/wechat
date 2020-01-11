@@ -15,6 +15,8 @@ public interface UserConstant {
      * 用户类型
      */
     Byte TYPE_USER = 0;
+
+
     /**
      * 已登录
      */

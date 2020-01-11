@@ -4,16 +4,14 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.xsdkj.wechat.bo.PermissionBo;
 import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.RedisConstant;
 import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.UserConstant;
-import com.xsdkj.wechat.dto.UserLoginDto;
-import com.xsdkj.wechat.dto.UserRegisterDto;
-import com.xsdkj.wechat.dto.UserUpdateInfoParam;
-import com.xsdkj.wechat.dto.UserUpdatePassword;
+import com.xsdkj.wechat.dto.*;
 import com.xsdkj.wechat.entity.platform.Platform;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.user.UserLoginLog;
@@ -29,6 +27,7 @@ import com.xsdkj.wechat.util.*;
 import com.xsdkj.wechat.vo.GroupVo;
 import com.xsdkj.wechat.vo.LoginVo;
 import com.xsdkj.wechat.vo.UserFriendVo;
+import com.xsdkj.wechat.vo.UserVo;
 import com.xsdkj.wechat.vo.admin.LoginInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,48 +63,14 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Value("${file.img-path}")
     private String imgPath;
     @Resource
+    @Lazy
+    private UserWalletService walletService;
+    @Resource
     private QrUtil qrUtil;
     @Resource
     private UserUtil userUtil;
     @Resource
-    @Lazy
-    private UserWalletService userWalletService;
-    @Resource
     private PlatformService platformService;
-    @Resource
-    @Lazy
-    private UserWalletService walletService;
-
-    @Override
-    public void updatePassword(UserUpdatePassword password) {
-        // TODO 更新Redis缓存
-        //获取当前的用户信息
-        UserDetailsBo userDetailsBo = userUtil.currentUser();
-        User user = userDetailsBo.getUser();
-        //获取当前用户传过来的老密码，并对密码进行比对返回一个boolean的值
-        String passWord = password.getPassWord();
-        boolean matches = encoder.matches(passWord, user.getPassword());
-        //如果返回值是true，就把新密码插入
-        if (matches) {
-            user.setPassword(password.getNewPassWord());
-            userMapper.updateByPrimaryKeySelective(user);
-        }
-    }
-
-    @Override
-    public User getByUsername(String username) {
-        log.debug("{}",Thread.currentThread().getStackTrace()[1].getMethodName());
-        long begin = System.currentTimeMillis();
-        User user = userMapper.getOneByUsername(username);
-        log.debug("本地查询用户完成 {}ms", DateUtil.spendMs(begin));
-        return user;
-    }
-
-    @Override
-    public void updateLoginState(Integer uid, Boolean type) {
-        userMapper.updateLoginState(uid, type);
-    }
-
 
 
 //    @Override
@@ -130,7 +95,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 //        UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
 //        return login(userLoginParam, request, false);
 //    }
-
 
 
     @Override
@@ -172,8 +136,6 @@ public class UserServiceImpl extends BaseService implements UserService {
                 throw new ServiceException(ResultCodeEnum.PASSWORD_NOT_MATCH);
             }
         }
-        updateLoginState(user.getId(), UserConstant.LOGGED);
-        user.setLoginState(UserConstant.LOGGED);
         log.debug("更新用户登录状态 {}ms", DateUtil.spendMs(begin));
         UserDetailsBo currentUserDetails = createCurrentUserDetailsBo(user);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(currentUserDetails, null, null);
@@ -202,54 +164,48 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
+    public int countUserIds(Set<Integer> userIds) {
+        return userMapper.countUserIds(userIds);
+    }
+
+
+    @Override
+    public User getByUsername(String username) {
+//        log.debug("{}", Thread.currentThread().getStackTrace()[1].getMethodName());
+        long begin = System.currentTimeMillis();
+        User user = userMapper.getOneByUsername(username);
+        log.debug("本地查询用户完成 {}ms", DateUtil.spendMs(begin));
+        return user;
+    }
+
+
+    @Override
     public List<PermissionBo> getUserPermission(Integer id) {
         List<PermissionBo> permissionList = userMapper.listPermissionByUid(id);
         return getPermissionTree(0, permissionList);
     }
 
-    /**
-     * 递归获取菜单权限树
-     *
-     * @param pid         权限父ID
-     * @param permissions 子菜单
-     * @return 返回所有子菜单父ID 为 pid的列表
-     */
-    private List<PermissionBo> getPermissionTree(Integer pid, List<PermissionBo> permissions) {
-        List<PermissionBo> childList = new ArrayList<>();
-        permissions.forEach(permissionBo -> {
-            if (permissionBo.getPid().equals(pid)) {
-                childList.add(permissionBo);
-            }
-        });
-        childList.forEach(permissionBo -> permissionBo.setChildren(getPermissionTree(permissionBo.getId(), permissions)));
-        childList.sort(order());
-        if (childList.size() == 0) {
-            return new ArrayList<>();
-        }
-        return childList;
-    }
-    /**
-     * 根据 sort进行排序
-     *
-     * @return Comparator
-     */
-    private Comparator<PermissionBo> order() {
-        return Comparator.comparingInt(PermissionBo::getSort);
-    }
-
-    private void insertLoginLog(User user, HttpServletRequest request) {
-        String ipAddress = IpUtil.getIpAddress(request);
-        UserLoginLog loginLog = new UserLoginLog(user, ipAddress);
-        userLoginLogMapper.insert(loginLog);
-        User update = new User();
-        update.setId(user.getId());
-        update.setLastLoginTimes(System.currentTimeMillis());
-        update.setLastLoginIp(ipAddress);
-        userMapper.updateByPrimaryKeySelective(update);
-    }
     @Override
-    public List<User> listUserByIds(Set<Integer> ids) {
-        return userMapper.listUserByIds(ids);
+    public UserDetailsBo getRedisDataByUid(Integer uid) {
+        Object redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + uid);
+        log.debug("用户{}缓存信息:{}", uid, redisData);
+        UserDetailsBo bo;
+        if (redisData != null) {
+            JSONObject json = JSONObject.parseObject(redisData.toString());
+            bo = JSONObject.toJavaObject(json, UserDetailsBo.class);
+            return bo;
+        }
+        log.debug("用户{}缓存信息为空,准备从本地获取用户信息");
+        User user = userMapper.selectByPrimaryKey(uid);
+        if (user != null) {
+            log.debug("用户信息为:{}", user);
+            UserDetailsBo currentUserDetailsBo = createCurrentUserDetailsBo(user);
+            boolean updateRedisStatus = redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(uid), RedisConstant.REDIS_USER_TIMEOUT);
+            log.debug("已更新用户缓存:{}", updateRedisStatus);
+            return currentUserDetailsBo;
+        }
+        log.error("本地未找到用户{}相关信息,返回null", uid);
+        return null;
     }
 
     @Override
@@ -272,6 +228,103 @@ public class UserServiceImpl extends BaseService implements UserService {
         log.error("本地数据库未找到用户{}的相关信息", uid);
         return null;
     }
+
+
+    @Override
+    public LoginInfoVo getInfo() {
+        UserDetailsBo user = userUtil.currentUser();
+        LoginInfoVo loginInfoVo = new LoginInfoVo();
+        loginInfoVo.setAvatar(user.getUser().getIcon());
+        loginInfoVo.setName(user.getUsername());
+        loginInfoVo.setMenus(user.getPermissionBos());
+        return loginInfoVo;
+    }
+
+
+    @Override
+    public GroupVo getUserRedisGroup(Integer uid, Integer gid) {
+        Map<Integer, GroupVo> userGroupRelationMap = getRedisDataByUid(uid).getUserGroupRelationMap();
+        return userGroupRelationMap.get(gid);
+    }
+
+    @Override
+    public User getUserById(Integer userId, boolean fromRedis) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            log.error("本地查询用户数据不存在:{}", userId);
+            return null;
+        }
+        if (fromRedis) {
+            updateRedisDataByUid(user, "getUserById(Integer userId, boolean fromRedis)");
+        }
+        return user;
+    }
+
+    @Override
+    public List<UserFriendVo> listFriendByUid(Integer uid) {
+        UserDetailsBo redisDataByUid = getRedisDataByUid(uid);
+        return redisDataByUid.getUserFriendVos();
+    }
+
+    @Override
+    public List<User> listUserByIds(Set<Integer> ids) {
+        return userMapper.listUserByIds(ids);
+    }
+
+    @Override
+    public List<UserVo> listUser(ListUserDto listUserDto) {
+        log.debug("参数:{}", listUserDto);
+        PageHelper.startPage(listUserDto.getPageNum(), listUserDto.getPageSize());
+        return userMapper.listUser(listUserDto);
+    }
+
+    @Override
+    public void deleteFriend(Integer uid, Integer friendId) {
+        userMapper.deleteFriend(uid, friendId);
+        userMapper.deleteFriend(friendId, uid);
+        // TODO 更新下redis好友列表
+    }
+
+    @Override
+    public void updatePassword(UserUpdatePassword password) {
+        // TODO 更新Redis缓存
+        //获取当前的用户信息
+        UserDetailsBo userDetailsBo = userUtil.currentUser();
+        User user = userDetailsBo.getUser();
+        //获取当前用户传过来的老密码，并对密码进行比对返回一个boolean的值
+        String passWord = password.getPassWord();
+        boolean matches = encoder.matches(passWord, user.getPassword());
+        //如果返回值是true，就把新密码插入
+        if (matches) {
+            user.setPassword(password.getNewPassWord());
+            userMapper.updateByPrimaryKeySelective(user);
+        }
+    }
+
+    @Override
+    public UserDetailsBo updateRedisDataByUid(Integer uid) {
+        User user = userMapper.selectByPrimaryKey(uid);
+        if (ObjectUtil.isNull(user)) {
+            throw new NullPointerException();
+        }
+        UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
+        currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
+        currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
+        initUserGroup(uid, currentUserDetailsBo, "updateRedisDataByUid(Integer uid) ");
+        Wallet wallet = walletService.getByUid(uid, false);
+        if (wallet != null) {
+            currentUserDetailsBo.setWallet(wallet);
+        }
+        redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
+        return currentUserDetailsBo;
+    }
+
+
+    @Override
+    public void updateLoginState(Integer uid, Boolean type) {
+        userMapper.updateLoginState(uid, type);
+    }
+
     @Override
     public void updateUserInfo(UserUpdateInfoParam param) {
         // TODO 需要更新Redis缓存 修改用户信息之前要判断该用户是否存在.
@@ -287,92 +340,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         user.setQq(param.getQq());
         userMapper.updateByPrimaryKeySelective(user);
     }
-    private User getNewUser(UserRegisterDto param, HttpServletRequest request) {
-        User user = new User();
-        user.setUsername(param.getUsername());
-        user.setPlatformId(param.getPlatformId());
-        user.setNickname(param.getUsername());
-        user.setPassword(encoder.encode(param.getPassword()));
-        user.setIcon(imgPath + "default" + new Random().nextInt(8) + ".png");
-        user.setGender((byte) 0);
-        user.setQr(qrUtil.generate(user.getUsername()));
-        user.setEmail(param.getEmail());
-        user.setType((byte) 0);
-        user.setState((byte) 0);
-        user.setCreateTimes(System.currentTimeMillis());
-        user.setJoinIp(IpUtil.getIpAddress(request));
-        user.setUno(generateUno());
-        return user;
-    }
-    /**
-     * 生成Uno
-     *
-     * @return Long
-     */
-    private Long generateUno() {
-        Long uno;
-        do {
-            uno = Long.parseLong(NumberUtil.generateRandomNumber(SystemConstant.UNO_MIN, SystemConstant.UNO_MAX, 1)[0] + "");
-        } while (userMapper.countByUno(uno) > 0);
-        return uno;
-    }
 
-    @Override
-    public LoginInfoVo getInfo() {
-        UserDetailsBo user = userUtil.currentUser();
-        LoginInfoVo loginInfoVo = new LoginInfoVo();
-        loginInfoVo.setAvatar(user.getUser().getIcon());
-        loginInfoVo.setName(user.getUsername());
-        loginInfoVo.setMenus(user.getPermissionBos());
-        return loginInfoVo;
-    }
-    @Override
-    public List<UserFriendVo> listFriendByUid(Integer uid) {
-        UserDetailsBo redisDataByUid = getRedisDataByUid(uid);
-        return redisDataByUid.getUserFriendVos();
-    }
-    @Override
-    public void deleteFriend(Integer uid, Integer friendId) {
-        userMapper.deleteFriend(uid, friendId);
-        userMapper.deleteFriend(friendId, uid);
-        // TODO 更新下redis好友列表
-    }
-
-    @Override
-    public UserDetailsBo updateRedisDataByUid(Integer uid) {
-        User user = userMapper.selectByPrimaryKey(uid);
-        if (ObjectUtil.isNull(user)) {
-            throw new NullPointerException();
-        }
-        UserDetailsBo currentUserDetailsBo = new UserDetailsBo(user);
-        currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
-        currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
-        initUserGroup(uid, currentUserDetailsBo,"updateRedisDataByUid(Integer uid) ");
-        Wallet wallet = userWalletService.getByUid(uid, false);
-        if (wallet != null) {
-            currentUserDetailsBo.setWallet(wallet);
-        }
-        redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
-        return currentUserDetailsBo;
-    }
-
-
-
-
-    /**
-     * 初始化用户群组
-     *
-     * @param uid                  用户id
-     * @param currentUserDetailsBo currentUserDetailsBo
-     */
-    private void initUserGroup(Integer uid, UserDetailsBo currentUserDetailsBo, String methodName) {
-        List<GroupVo> groupInfoBos = groupService.listGroupByUid(uid);
-        if (groupInfoBos.size() > 0) {
-            for (GroupVo groupInfoBo : groupInfoBos) {
-                currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
-            }
-        }
-    }
     @Override
     public UserDetailsBo updateRedisDataByUid(Integer uid, Wallet wallet) {
         log.debug("更新用户缓存 updateRedisDataByUid(Integer uid, Wallet wallet)  调用方:{}", Thread.currentThread().getStackTrace()[2].getMethodName());
@@ -418,50 +386,93 @@ public class UserServiceImpl extends BaseService implements UserService {
         return userDetailsBo;
     }
 
-    @Override
-    public UserDetailsBo getRedisDataByUid(Integer uid) {
-        Object redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + uid);
-        log.debug("用户{}缓存信息:{}", uid, redisData);
-        UserDetailsBo bo;
-        if (redisData != null) {
-            JSONObject json = JSONObject.parseObject(redisData.toString());
-            bo = JSONObject.toJavaObject(json, UserDetailsBo.class);
-            return bo;
+
+    /**
+     * 初始化用户群组
+     *
+     * @param uid                  用户id
+     * @param currentUserDetailsBo currentUserDetailsBo
+     */
+    private void initUserGroup(Integer uid, UserDetailsBo currentUserDetailsBo, String methodName) {
+        List<GroupVo> groupInfoBos = groupService.listGroupByUid(uid);
+        if (groupInfoBos.size() > 0) {
+            for (GroupVo groupInfoBo : groupInfoBos) {
+                currentUserDetailsBo.getUserGroupRelationMap().put(groupInfoBo.getGid(), groupInfoBo);
+            }
         }
-        log.debug("用户{}缓存信息为空,准备从本地获取用户信息");
-        User user = userMapper.selectByPrimaryKey(uid);
-        if (user != null) {
-            log.debug("用户信息为:{}", user);
-            UserDetailsBo currentUserDetailsBo = createCurrentUserDetailsBo(user);
-            boolean updateRedisStatus = redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(uid), RedisConstant.REDIS_USER_TIMEOUT);
-            log.debug("已更新用户缓存:{}", updateRedisStatus);
-            return currentUserDetailsBo;
-        }
-        log.error("本地未找到用户{}相关信息,返回null", uid);
-        return null;
     }
 
-    @Override
-    public GroupVo getUserRedisGroup(Integer uid, Integer gid) {
-        Map<Integer, GroupVo> userGroupRelationMap = getRedisDataByUid(uid).getUserGroupRelationMap();
-        return userGroupRelationMap.get(gid);
+
+    /**
+     * 递归获取菜单权限树
+     *
+     * @param pid         权限父ID
+     * @param permissions 子菜单
+     * @return 返回所有子菜单父ID 为 pid的列表
+     */
+    private List<PermissionBo> getPermissionTree(Integer pid, List<PermissionBo> permissions) {
+        List<PermissionBo> childList = new ArrayList<>();
+        permissions.forEach(permissionBo -> {
+            if (permissionBo.getPid().equals(pid)) {
+                childList.add(permissionBo);
+            }
+        });
+        childList.forEach(permissionBo -> permissionBo.setChildren(getPermissionTree(permissionBo.getId(), permissions)));
+        childList.sort(order());
+        if (childList.size() == 0) {
+            return new ArrayList<>();
+        }
+        return childList;
     }
 
-    @Override
-    public User getUserById(Integer userId, boolean fromRedis) {
-        User user = userMapper.selectByPrimaryKey(userId);
-        if (user == null) {
-            log.error("本地查询用户数据不存在:{}", userId);
-            return null;
-        }
-        if (fromRedis) {
-            updateRedisDataByUid(user, "getUserById(Integer userId, boolean fromRedis)");
-        }
+    /**
+     * 根据 sort进行排序
+     *
+     * @return Comparator
+     */
+    private Comparator<PermissionBo> order() {
+        return Comparator.comparingInt(PermissionBo::getSort);
+    }
+
+    private void insertLoginLog(User user, HttpServletRequest request) {
+        String ipAddress = IpUtil.getIpAddress(request);
+        UserLoginLog loginLog = new UserLoginLog(user, ipAddress);
+        userLoginLogMapper.insert(loginLog);
+        User update = new User();
+        update.setId(user.getId());
+        update.setLastLoginTimes(System.currentTimeMillis());
+        update.setLastLoginIp(ipAddress);
+        userMapper.updateByPrimaryKeySelective(update);
+    }
+
+    private User getNewUser(UserRegisterDto param, HttpServletRequest request) {
+        User user = new User();
+        user.setUsername(param.getUsername());
+        user.setPlatformId(param.getPlatformId());
+        user.setNickname(param.getUsername());
+        user.setPassword(encoder.encode(param.getPassword()));
+        user.setIcon(imgPath + "default" + new Random().nextInt(8) + ".png");
+        user.setGender((byte) 0);
+        user.setQr(qrUtil.generate(user.getUsername()));
+        user.setEmail(param.getEmail());
+        user.setType((byte) 0);
+        user.setState((byte) 0);
+        user.setCreateTimes(System.currentTimeMillis());
+        user.setJoinIp(IpUtil.getIpAddress(request));
+        user.setUno(generateUno());
         return user;
     }
 
-    @Override
-    public int countUserIds(Set<Integer> userIds) {
-        return userMapper.countUserIds(userIds);
+    /**
+     * 生成Uno
+     *
+     * @return Long
+     */
+    private Long generateUno() {
+        Long uno;
+        do {
+            uno = Long.parseLong(NumberUtil.generateRandomNumber(SystemConstant.UNO_MIN, SystemConstant.UNO_MAX, 1)[0] + "");
+        } while (userMapper.countByUno(uno) > 0);
+        return uno;
     }
 }

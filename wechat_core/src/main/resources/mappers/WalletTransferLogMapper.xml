@@ -12,14 +12,15 @@
         <result column="before_price" jdbcType="DECIMAL" property="beforePrice"/>
         <result column="after_price" jdbcType="DECIMAL" property="afterPrice"/>
         <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="explain" jdbcType="VARCHAR" property="explain"/>
         <result column="month" jdbcType="TINYINT" property="month"/>
         <result column="year" jdbcType="INTEGER" property="year"/>
         <result column="create_times" jdbcType="BIGINT" property="createTimes"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `uid`, to_user_id, from_user_id, price, before_price, after_price, `type`, `month`,
-        `year`, create_times
+        id, `uid`, to_user_id, from_user_id, price, before_price, after_price, `type`, `explain`,
+        `month`, `year`, create_times
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -33,17 +34,6 @@
         delete from wallet_transfer_log_0
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="log.id"
-            parameterType="com.xsdkj.wechat.entity.wallet.WalletTransferLog" useGeneratedKeys="true">
-        insert into wallet_transfer_log_${tableNum} (`uid`, to_user_id, from_user_id,
-        price, before_price, after_price,
-        `type`, `month`, `year`,
-        create_times)
-        values (#{log.uid,jdbcType=INTEGER}, #{log.toUserId,jdbcType=INTEGER}, #{log.fromUserId,jdbcType=INTEGER},
-        #{log.price,jdbcType=DECIMAL}, #{log.beforePrice,jdbcType=DECIMAL}, #{log.afterPrice,jdbcType=DECIMAL},
-        #{log.type,jdbcType=TINYINT}, #{log.month,jdbcType=TINYINT}, #{log.year,jdbcType=INTEGER},
-        #{log.createTimes,jdbcType=BIGINT})
-    </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
             parameterType="com.xsdkj.wechat.entity.wallet.WalletTransferLog" useGeneratedKeys="true">
         <!--@mbg.generated-->
@@ -69,6 +59,9 @@
             </if>
             <if test="type != null">
                 `type`,
+            </if>
+            <if test="explain != null">
+                `explain`,
             </if>
             <if test="month != null">
                 `month`,
@@ -101,6 +94,9 @@
             </if>
             <if test="type != null">
                 #{type,jdbcType=TINYINT},
+            </if>
+            <if test="explain != null">
+                #{explain,jdbcType=VARCHAR},
             </if>
             <if test="month != null">
                 #{month,jdbcType=TINYINT},
@@ -138,6 +134,9 @@
             <if test="type != null">
                 `type` = #{type,jdbcType=TINYINT},
             </if>
+            <if test="explain != null">
+                `explain` = #{explain,jdbcType=VARCHAR},
+            </if>
             <if test="month != null">
                 `month` = #{month,jdbcType=TINYINT},
             </if>
@@ -160,9 +159,21 @@
         before_price = #{beforePrice,jdbcType=DECIMAL},
         after_price = #{afterPrice,jdbcType=DECIMAL},
         `type` = #{type,jdbcType=TINYINT},
+        `explain` = #{explain,jdbcType=VARCHAR},
         `month` = #{month,jdbcType=TINYINT},
         `year` = #{year,jdbcType=INTEGER},
         create_times = #{createTimes,jdbcType=BIGINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <insert id="insert" keyColumn="id" keyProperty="log.id"
+            parameterType="com.xsdkj.wechat.entity.wallet.WalletTransferLog" useGeneratedKeys="true">
+        insert into wallet_transfer_log_${tableNum} (`uid`, to_user_id, from_user_id,
+        price, before_price, after_price,
+        `type`, `month`, `year`,
+        create_times,`explain`)
+        values (#{log.uid,jdbcType=INTEGER}, #{log.toUserId,jdbcType=INTEGER}, #{log.fromUserId,jdbcType=INTEGER},
+        #{log.price,jdbcType=DECIMAL}, #{log.beforePrice,jdbcType=DECIMAL}, #{log.afterPrice,jdbcType=DECIMAL},
+        #{log.type,jdbcType=TINYINT}, #{log.month,jdbcType=TINYINT}, #{log.year,jdbcType=INTEGER},
+        #{log.createTimes,jdbcType=BIGINT},#{log.explain})
+    </insert>
 </mapper>

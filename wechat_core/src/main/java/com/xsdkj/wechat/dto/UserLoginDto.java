@@ -14,11 +14,14 @@ public class UserLoginDto {
     private String username;
     @NotNull(message = "密码不能为空")
     private String password;
+
     public UserLoginDto() {
     }
 
     public UserLoginDto(String username, String password) {
+
         this.username = username;
         this.password = password;
+
     }
 }
