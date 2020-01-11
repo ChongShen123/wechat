@@ -1,8 +1,10 @@
 package com.xsdkj.wechat.controller;
 
 import cn.hutool.core.date.DateUtil;
+import com.xsdkj.wechat.common.JsonPage;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.UserPriceOperationDto;
+import com.xsdkj.wechat.dto.UserPriceOperationLogDto;
 import com.xsdkj.wechat.service.UserWalletService;
 import com.xsdkj.wechat.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.concurrent.TimeoutException;
 
 /**
  * @author tiankong
@@ -42,5 +43,10 @@ public class UserWalletController {
         log.debug("业务处理完成 {}ms", DateUtil.spendMs(begin));
         log.debug(LogUtil.INTERVAL);
         return jsonResult;
+    }
+
+    @PostMapping("/priceOperationLog")
+    public JsonResult priceOperationLog(@RequestBody UserPriceOperationLogDto userPriceOperationLogDto) {
+        return JsonResult.success(JsonPage.restPage(userWalletService.listUserPriceOperationLog(userPriceOperationLogDto)));
     }
 }

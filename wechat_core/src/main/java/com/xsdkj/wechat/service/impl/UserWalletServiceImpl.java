@@ -1,13 +1,18 @@
 package com.xsdkj.wechat.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.common.Cmd;
+import com.xsdkj.wechat.common.JsonPage;
+import com.xsdkj.wechat.common.JsonPageWithPrice;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.constant.*;
 import com.xsdkj.wechat.dto.UserPriceOperationDto;
+import com.xsdkj.wechat.dto.UserPriceOperationLogDto;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.user.UserOperationLog;
@@ -23,6 +28,7 @@ import com.xsdkj.wechat.service.UserWalletService;
 import com.xsdkj.wechat.ex.*;
 import com.xsdkj.wechat.thread.GetUserByIdServiceThread;
 import com.xsdkj.wechat.util.*;
+import com.xsdkj.wechat.vo.admin.UserOperationLogVo;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +37,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 import static com.xsdkj.wechat.netty.cmd.base.BaseHandler.sendMessage;
@@ -121,6 +129,26 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         } finally {
             log.debug("获取用户钱包完成 {}ms", DateUtil.spendMs(begin));
         }
+    }
+
+    @Override
+    public List<UserOperationLogVo> listUserPriceOperationLog(UserPriceOperationLogDto userPriceOperationLogDto) {
+        System.out.println(userPriceOperationLogDto);
+
+        if (ObjectUtil.isEmpty(userPriceOperationLogDto.getUid())) {
+            return new ArrayList<>();
+        }
+        PageHelper.startPage(userPriceOperationLogDto.getPageNum(), userPriceOperationLogDto.getPageSize());
+        Integer type = userPriceOperationLogDto.getDateType();
+        if (type == null) {
+            type = 1;
+        }
+        Long[] beginAndEndTimes = TimeUtil.getBeginAndEndTimes(type, userPriceOperationLogDto.getBeginTimes(), userPriceOperationLogDto.getEndTimes());
+        userPriceOperationLogDto.setBeginTimes(beginAndEndTimes[0]);
+        userPriceOperationLogDto.setEndTimes(beginAndEndTimes[1]);
+        Integer uid = userPriceOperationLogDto.getUid();
+        int tableNum = uid % SystemConstant.LOG_TABLE_COUNT;
+        return walletOperationLogMapper.listUserPriceOperationLog(userPriceOperationLogDto, tableNum);
     }
 
     @Override

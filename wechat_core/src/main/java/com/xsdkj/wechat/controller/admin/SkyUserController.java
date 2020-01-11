@@ -5,14 +5,12 @@ import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.ListUserDto;
 import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.vo.UserVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

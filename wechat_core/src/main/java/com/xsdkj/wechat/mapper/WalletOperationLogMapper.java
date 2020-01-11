@@ -1,6 +1,12 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.wallet.WalletOperationLog;import org.apache.ibatis.annotations.Param;
+import com.xsdkj.wechat.dto.UserPriceOperationLogDto;
+import com.xsdkj.wechat.entity.wallet.WalletOperationLog;
+import com.xsdkj.wechat.vo.admin.UserOperationLogVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
 
 /**
  * @author tiankong
@@ -26,4 +32,13 @@ public interface WalletOperationLogMapper {
      * @return count
      */
     int insert(@Param("log") WalletOperationLog log, @Param("tableNum") int tableNum);
+
+    /**
+     * 充值提现记录
+     *
+     * @param param    参数
+     * @param tableNum
+     * @return List
+     */
+    List<UserOperationLogVo> listUserPriceOperationLog(@Param("param") UserPriceOperationLogDto param, @Param("tableNum") int tableNum);
 }

@@ -166,4 +166,42 @@
         #{log.month,jdbcType=TINYINT}, #{log.year,jdbcType=INTEGER}, #{log.createTimes,jdbcType=BIGINT},#{log.explain}
         )
     </insert>
+
+    <resultMap id="UserPriceOperationLogMap" type="com.xsdkj.wechat.vo.admin.UserOperationLogVo">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="operation_id" property="operationId"/>
+        <result column="uid" property="uid"/>
+        <result column="price" property="price"/>
+        <result column="before_price" property="beforPrice"/>
+        <result column="after_price" property="afterPrice"/>
+        <result column="type" property="type"/>
+        <result column="explain" property="explain"/>
+        <result column="create_times" property="createTimes"/>
+    </resultMap>
+    <select id="listUserPriceOperationLog" resultMap="UserPriceOperationLogMap">
+        select
+        w.id,
+        w.operation_id,
+        u.username,
+        w.uid,
+        w.price,
+        w.before_price,
+        w.after_price,
+        w.type,
+        w.`explain`,
+        w.create_times
+        from wallet_operation_log_${tableNum} w
+        left join user u on w.uid = u.id
+        where 1=1
+        <if test="param.uid != null">and w.uid = #{param1.uid,jdbcType=INTEGER}</if>
+        <if test="param.uno != null">and u.uno = #{param.uno,jdbcType=VARCHAR}</if>
+        <if test="param.beginTimes != null and param.endTimes !=null ">and w.create_times between
+            #{param.beginTimes,jdbcType=BIGINT} and #{param.endTimes,jdbcType=BIGINT}
+        </if>
+        <if test="param.operationType != null">
+            and w.type = #{param.operationType,jdbcType=INTEGER}
+        </if>
+        order by w.create_times desc
+    </select>
 </mapper>

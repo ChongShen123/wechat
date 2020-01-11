@@ -1,10 +1,14 @@
 package com.xsdkj.wechat.service;
 
+import com.xsdkj.wechat.common.JsonPageWithPrice;
 import com.xsdkj.wechat.dto.UserPriceOperationDto;
+import com.xsdkj.wechat.dto.UserPriceOperationLogDto;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.wallet.Wallet;
+import com.xsdkj.wechat.vo.admin.UserOperationLogVo;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -85,4 +89,12 @@ public interface UserWalletService {
      * @param uid 用户id
      */
     void updateRedisData(Integer uid);
+
+    /**
+     * 用户充值提现记录
+     *
+     * @param userPriceOperationLogDto 参数
+     * @return JsonPageWithPrice
+     */
+    List<UserOperationLogVo> listUserPriceOperationLog(UserPriceOperationLogDto userPriceOperationLogDto);
 }
