@@ -10,7 +10,6 @@ import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.common.ResultCodeEnum;
 import com.xsdkj.wechat.constant.RedisConstant;
 import com.xsdkj.wechat.constant.SystemConstant;
-import com.xsdkj.wechat.constant.UserConstant;
 import com.xsdkj.wechat.dto.*;
 import com.xsdkj.wechat.entity.platform.Platform;
 import com.xsdkj.wechat.entity.user.User;
@@ -46,6 +45,7 @@ import java.util.*;
  * @author tiankong
  * @date 2019/12/11 13:12
  */
+@SuppressWarnings("ALL")
 @Service
 @Transactional
 @Slf4j
@@ -171,7 +171,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public User getByUsername(String username) {
-//        log.debug("{}", Thread.currentThread().getStackTrace()[1].getMethodName());
         long begin = System.currentTimeMillis();
         User user = userMapper.getOneByUsername(username);
         log.debug("本地查询用户完成 {}ms", DateUtil.spendMs(begin));
@@ -187,7 +186,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public UserDetailsBo getRedisDataByUid(Integer uid) {
-        Object redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + uid);
+        Object redisData = redisUtil.get(RedisConstant.REDIS_UID + uid);
         log.debug("用户{}缓存信息:{}", uid, redisData);
         UserDetailsBo bo;
         if (redisData != null) {
@@ -200,7 +199,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (user != null) {
             log.debug("用户信息为:{}", user);
             UserDetailsBo currentUserDetailsBo = createCurrentUserDetailsBo(user);
-            boolean updateRedisStatus = redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(uid), RedisConstant.REDIS_USER_TIMEOUT);
+            boolean updateRedisStatus = redisUtil.set(RedisConstant.REDIS_UID + uid, JSONObject.toJSONString(uid), RedisConstant.REDIS_USER_TIMEOUT);
             log.debug("已更新用户缓存:{}", updateRedisStatus);
             return currentUserDetailsBo;
         }
@@ -211,7 +210,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public User getRedisUserByUserId(Integer uid) {
         UserDetailsBo bo;
-        Object redisData = redisUtil.get(RedisConstant.REDIS_USER_ID + uid);
+        Object redisData = redisUtil.get(RedisConstant.REDIS_UID + uid);
         if (redisData != null) {
             log.debug("从redis获取的用户{}缓存信息为:{}", uid, redisData);
             bo = JSONObject.toJavaObject(JSONObject.parseObject(redisData.toString()), UserDetailsBo.class);
@@ -221,7 +220,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         User user = getUserById(uid, false);
         if (user != null) {
             log.debug("用户信息为:{}", user);
-            boolean updateRedisStatus = redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(uid), RedisConstant.REDIS_USER_TIMEOUT);
+            boolean updateRedisStatus = redisUtil.set(RedisConstant.REDIS_UID + uid, JSONObject.toJSONString(uid), RedisConstant.REDIS_USER_TIMEOUT);
             log.debug("是否更新redis用户缓存:{}", updateRedisStatus);
             return user;
         }
@@ -245,6 +244,39 @@ public class UserServiceImpl extends BaseService implements UserService {
     public GroupVo getUserRedisGroup(Integer uid, Integer gid) {
         Map<Integer, GroupVo> userGroupRelationMap = getRedisDataByUid(uid).getUserGroupRelationMap();
         return userGroupRelationMap.get(gid);
+    }
+
+    @Override
+    public User getRedisData(String username) {
+        Object data = redisUtil.get(RedisConstant.REDIS_USERNAME + username);
+        User user;
+        if (data != null) {
+            user = JSONObject.toJavaObject(JSONObject.parseObject(data.toString()), User.class);
+        } else {
+            user = userMapper.getOneByUsername(username);
+            if (user == null) {
+                return null;
+            }
+            redisUtil.set(RedisConstant.REDIS_UID + username, JSONObject.toJSONString(user), RedisConstant.REDIS_USER_TIMEOUT);
+        }
+        return user;
+    }
+
+    @Override
+    public User getRedisData(Integer uid) {
+        Object data = redisUtil.get(RedisConstant.REDIS_UID_V2 + uid);
+        User user;
+        if (data != null) {
+            user = JSONObject.toJavaObject(JSONObject.parseObject(data.toString()), User.class);
+        } else {
+            user = userMapper.selectByPrimaryKey(uid);
+            if (user == null) {
+                return null;
+            }
+            System.out.println(user);
+            redisUtil.set(RedisConstant.REDIS_UID_V2 + uid, JSONObject.toJSONString(user), RedisConstant.REDIS_USER_TIMEOUT);
+        }
+        return user;
     }
 
     @Override
@@ -273,7 +305,6 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public List<UserVo> listUser(ListUserDto listUserDto) {
-        log.debug("参数:{}", listUserDto);
         PageHelper.startPage(listUserDto.getPageNum(), listUserDto.getPageSize());
         return userMapper.listUser(listUserDto);
     }
@@ -284,6 +315,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         userMapper.deleteFriend(friendId, uid);
         // TODO 更新下redis好友列表
     }
+
 
     @Override
     public void updatePassword(UserUpdatePassword password) {
@@ -315,7 +347,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (wallet != null) {
             currentUserDetailsBo.setWallet(wallet);
         }
-        redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
+        redisUtil.set(RedisConstant.REDIS_UID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
         return currentUserDetailsBo;
     }
 
@@ -353,7 +385,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         initUserGroup(uid, currentUserDetailsBo, "updateRedisDataByUid(Integer uid, Wallet wallet)");
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(uid));
         currentUserDetailsBo.setWallet(wallet);
-        redisUtil.set(RedisConstant.REDIS_USER_ID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
+        redisUtil.set(RedisConstant.REDIS_UID + uid, JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
         return currentUserDetailsBo;
     }
 
@@ -374,7 +406,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         currentUserDetailsBo.setPermissionBos(getUserPermission(user.getId()));
         currentUserDetailsBo.setUserFriendVos(userMapper.listFriendByUserId(user.getId()));
         initUserGroup(user.getId(), currentUserDetailsBo, "updateRedisDataByUid(User user) ");
-        redisUtil.set(RedisConstant.REDIS_USER_ID + user.getId(), JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
+        redisUtil.set(RedisConstant.REDIS_UID + user.getId(), JSONObject.toJSONString(currentUserDetailsBo), RedisConstant.REDIS_USER_TIMEOUT);
         log.debug("更新用户缓存完毕 {}ms", DateUtil.spendMs(begin));
         return currentUserDetailsBo;
     }
@@ -382,7 +414,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public UserDetailsBo updateRedisDataByUid(Integer uid, UserDetailsBo userDetailsBo) {
         String value = JSONObject.toJSONString(userDetailsBo);
-        redisUtil.set(RedisConstant.REDIS_USER_ID + uid, value, RedisConstant.REDIS_USER_TIMEOUT);
+        redisUtil.set(RedisConstant.REDIS_UID + uid, value, RedisConstant.REDIS_USER_TIMEOUT);
         return userDetailsBo;
     }
 

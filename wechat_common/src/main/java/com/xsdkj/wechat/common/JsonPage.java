@@ -12,11 +12,11 @@ import java.util.List;
  */
 @Data
 public class JsonPage<T> {
-    private Integer pageNum;
-    private Integer pageSize;
-    private Integer totalPage;
-    private Long total;
-    private List<T> list;
+    protected Integer pageNum;
+    protected Integer pageSize;
+    protected Integer totalPage;
+    protected Long total;
+    protected List<T> list;
 
     /**
      * 将PageHelper分页后的list转为分页信息

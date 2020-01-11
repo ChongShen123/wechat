@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
 import com.xsdkj.wechat.bo.PermissionBo;
+import com.xsdkj.wechat.bo.UserBo;
 import com.xsdkj.wechat.dto.ListUserDto;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.vo.UserFriendVo;
@@ -78,4 +79,6 @@ public interface UserMapper {
      * @return list UserVo
      */
     List<UserVo> listUser(ListUserDto listUserDto);
+
+
 }

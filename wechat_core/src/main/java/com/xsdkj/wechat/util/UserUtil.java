@@ -2,8 +2,12 @@ package com.xsdkj.wechat.util;
 
 import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.constant.RedisConstant;
+import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +19,7 @@ import javax.annotation.Resource;
  * @author tiankong
  * @date 2019/12/11 13:05
  */
+@Slf4j
 @Component
 public class UserUtil {
 
@@ -33,10 +38,17 @@ public class UserUtil {
 
     public UserDetailsBo currentUser() {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetailsBo bo = (UserDetailsBo) redisUtil.get(RedisConstant.REDIS_USER_ID + currentUsername);
+        UserDetailsBo bo = (UserDetailsBo) redisUtil.get(RedisConstant.REDIS_UID + currentUsername);
         if (bo == null) {
-            bo = userService.updateRedisDataByUid(userService.getByUsername(currentUsername).getId(),"UserUtil.currentUser()");
+            bo = userService.updateRedisDataByUid(userService.getByUsername(currentUsername).getId(), "UserUtil.currentUser()");
         }
         return bo;
+    }
+
+    public User getUser() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        String name = authentication.getName();
+        return userService.getRedisData(name);
     }
 }

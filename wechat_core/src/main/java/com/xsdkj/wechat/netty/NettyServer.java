@@ -6,6 +6,7 @@ import com.xsdkj.wechat.bo.GroupInfoBo;
 import com.xsdkj.wechat.entity.user.UserGroup;
 import com.xsdkj.wechat.netty.notice.SystemNotice;
 import com.xsdkj.wechat.service.UserGroupService;
+import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.util.SessionUtil;
 import com.xsdkj.wechat.util.ThreadUtil;
 import io.netty.bootstrap.ServerBootstrap;
@@ -42,6 +43,8 @@ public class NettyServer implements Runnable {
     private SystemNotice imNotice;
     @Resource
     private UserGroupService groupService;
+    @Resource
+    private UserService userService;
 
     private ChannelFuture channelFuture;
 
@@ -73,7 +76,6 @@ public class NettyServer implements Runnable {
                     if (groups.size() > 0) {
                         groups.forEach(group -> SessionUtil.GROUP_MAP.put(group.getId(), new GroupInfoBo(group, new DefaultChannelGroup(GlobalEventExecutor.INSTANCE))));
                     }
-
                     log.info("群组初始化完毕!已启动{}个群组.{}ms", groups.size(), DateUtil.spendMs(begin));
                     groupService.updateRedisNoSayData();
                     log.info("禁言黑名单缓存完毕!{}ms", DateUtil.spendMs(begin));

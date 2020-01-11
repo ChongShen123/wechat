@@ -386,4 +386,27 @@
         <if test="createTimes != null">and u.create_times >= #{createTimes,jdbcType=BIGINT}</if>
         order by u.login_state desc
     </select>
+    <resultMap id="UserIdBoMap" type="com.xsdkj.wechat.bo.UserBo">
+        <id column="id" property="id"/>
+        <result column="platform_id" property="platformId"/>
+        <result column="uno" property="uno"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="id" property="password"/>
+        <result column="icon" property="icon"/>
+        <result column="gender" property="gender"/>
+        <result column="qr" property="qr"/>
+        <result column="tel" property="tel"/>
+        <result column="qq" property="qq"/>
+        <result column="description" property="description"/>
+        <result column="email" property="email"/>
+        <result column="type" property="type"/>
+        <result column="state" property="state"/>
+        <result column="create_times" property="createTimes"/>
+        <result column="join_ip" property="joinIp"/>
+        <result column="last_login_times" property="lastLoginTimes"/>
+        <result column="last_login_ip" property="lastLoginIp"/>
+        <result column="login_state" property="loginState"/>
+    </resultMap>
+
 </mapper>
