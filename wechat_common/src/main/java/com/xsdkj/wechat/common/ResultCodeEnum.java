@@ -6,6 +6,10 @@ package com.xsdkj.wechat.common;
  */
 public enum ResultCodeEnum implements IErrorCode {
     /**
+     * 查询超时
+     */
+    TIMEOUT_EXCEPTION(4046, "查询超时"),
+    /**
      * 重复添加好友
      */
     ALREADY_FRIEND_EXCEPTION(4055, "操作失败!对方已为好友"),

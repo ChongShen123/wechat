@@ -21,9 +21,14 @@ public interface RedisConstant {
     String REDIS_GROUP_MEMBERS = "group_members_";
     /**
      * 用户key
-     * user_+username
+     * 根据用户id缓存
      */
-    String REDIS_USER_ID = "user_";
+    String REDIS_UID = "uid_";
+
+    /**
+     * 根据用户名缓存
+     */
+    String REDIS_USERNAME = "username_";
 
     /**
      * 系统参数key
@@ -35,4 +40,11 @@ public interface RedisConstant {
      * 单位s
      */
     long REDIS_USER_TIMEOUT = 60 * 60 * 24;
+
+    /**
+     * 用户钱包
+     */
+    String REDIS_USER_WALLET = "user_wallet_";
+    String REDIS_UID_V2 = "uid_v2_";
 }
+

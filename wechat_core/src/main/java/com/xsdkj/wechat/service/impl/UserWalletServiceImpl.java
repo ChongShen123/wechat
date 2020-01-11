@@ -1,12 +1,12 @@
 package com.xsdkj.wechat.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.MsgBox;
 import com.xsdkj.wechat.bo.UserDetailsBo;
-import com.xsdkj.wechat.constant.ChatConstant;
-import com.xsdkj.wechat.constant.RabbitConstant;
-import com.xsdkj.wechat.constant.SystemConstant;
-import com.xsdkj.wechat.constant.WalletConstant;
+import com.xsdkj.wechat.common.Cmd;
+import com.xsdkj.wechat.common.JsonResult;
+import com.xsdkj.wechat.constant.*;
 import com.xsdkj.wechat.dto.UserPriceOperationDto;
 import com.xsdkj.wechat.entity.chat.SingleChat;
 import com.xsdkj.wechat.entity.user.User;
@@ -17,20 +17,23 @@ import com.xsdkj.wechat.entity.wallet.WalletOperationLog;
 import com.xsdkj.wechat.entity.wallet.WalletTransferLog;
 import com.xsdkj.wechat.mapper.*;
 import com.xsdkj.wechat.service.BaseService;
+import com.xsdkj.wechat.service.SingleChatService;
 import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.service.UserWalletService;
 import com.xsdkj.wechat.ex.*;
-import com.xsdkj.wechat.util.ChatUtil;
-import com.xsdkj.wechat.util.LogUtil;
-import com.xsdkj.wechat.util.UserUtil;
+import com.xsdkj.wechat.thread.GetUserByIdServiceThread;
+import com.xsdkj.wechat.util.*;
+import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.concurrent.*;
+
+import static com.xsdkj.wechat.netty.cmd.base.BaseHandler.sendMessage;
 
 
 /**
@@ -41,6 +44,8 @@ import java.math.BigDecimal;
 @Slf4j
 @Transactional
 public class UserWalletServiceImpl extends BaseService implements UserWalletService {
+    @Resource
+    private SingleChatService singleChatService;
     @Resource
     private UserService userService;
     @Resource
@@ -72,6 +77,24 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
     @Resource
     private ChatUtil chatUtil;
 
+
+    @Override
+    public Wallet getRedisData(Integer userId) {
+        Object data = redisUtil.get(RedisConstant.REDIS_USER_WALLET + userId);
+        Wallet wallet;
+        if (data != null) {
+            wallet = JSONObject.toJavaObject(JSONObject.parseObject(data.toString()), Wallet.class);
+        } else {
+            wallet = walletMapper.getOneByUid(userId);
+            if (wallet == null) {
+                return null;
+            }
+            redisUtil.set(RedisConstant.REDIS_USER_WALLET + userId, JSONObject.toJSONString(wallet), RedisConstant.REDIS_USER_TIMEOUT);
+        }
+        return wallet;
+    }
+
+    @Deprecated
     @Override
     public Wallet getByUid(Integer uid, boolean type) {
         long begin = System.currentTimeMillis();
@@ -102,15 +125,30 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
 
     @Override
     public void priceOperation(UserPriceOperationDto param) {
-        User user = userService.getUserById(param.getUid(), false);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        long begin = System.currentTimeMillis();
+        User user;
+        User admin = userUtil.getUser();
+        try {
+            user = ThreadUtil.getSingleton().submit(new GetUserByIdServiceThread(userService, countDownLatch, param.getUid())).get();
+        } catch (InterruptedException | ExecutionException | NullPointerException e) {
+            e.printStackTrace();
+            throw new DataEmptyException();
+        }
+        try {
+            countDownLatch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (user == null) {
             throw new UserNotFountException();
         }
-        User admin = userUtil.currentUser().getUser();
         if (!admin.getPlatformId().equals(user.getPlatformId())) {
+            System.out.println(admin.getPlatformId());
+            System.out.println(user.getPlatformId());
             throw new PermissionDeniedException();
         }
-        Wallet userWallet = walletMapper.getOneByUid(param.getUid());
+        Wallet userWallet = getRedisData(user.getId());
         if (userWallet == null) {
             userWallet = createNewWallet(user.getId());
             walletMapper.insert(userWallet);
@@ -118,10 +156,10 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
         Integer type = param.getType();
         byte operationType;
         StringBuilder sb = new StringBuilder();
-        Wallet redisWallet;
+        Wallet finalUserWallet = userWallet;
         switch (type) {
             case SystemConstant.TOP_UP:
-                redisWallet = handleUserPriceOperation(param, userWallet, user, admin, true);
+                ThreadUtil.getSingleton().execute(() -> handleUserPriceOperation(param, finalUserWallet, user, admin, true));
                 operationType = ChatConstant.TOP_UP;
                 sb.append(String.format("系统已为您充值%s元,请注意查看钱包余额!", param.getPrice()));
                 break;
@@ -131,14 +169,15 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
                 }
                 sb.append(String.format("您已提现%s元,请注意查收!", param.getPrice()));
                 operationType = ChatConstant.WITHDRAW;
-                redisWallet = handleUserPriceOperation(param, userWallet, user, admin, false);
+                ThreadUtil.getSingleton().execute(() -> handleUserPriceOperation(param, finalUserWallet, user, admin, false));
                 break;
             default:
                 throw new ValidateException();
         }
-        userService.updateRedisDataByUid(param.getUid(), redisWallet);
-        SingleChat singleChat = chatUtil.createNewSingleChat(param.getUid(), SystemConstant.SYSTEM_USER_ID, sb.toString(), operationType);
-        rabbitTemplateService.addExchange(RabbitConstant.FANOUT_USER_NOTICE_NAME, MsgBox.create(RabbitConstant.USER_PRICE_OPERATION_NOTICE, singleChat));
+        ThreadUtil.getSingleton().execute(() -> {
+            SingleChat singleChat = chatUtil.createNewSingleChat(param.getUid(), SystemConstant.SYSTEM_USER_ID, sb.toString(), operationType);
+            handleUserPriceOperation(singleChat, begin);
+        });
     }
 
     @Override
@@ -160,6 +199,17 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
     }
 
     @Override
+    public void updateRedisData(Integer uid) {
+        Wallet wallet = walletMapper.getOneByUid(uid);
+        if (wallet == null) {
+            log.debug("用户钱包未找到");
+            throw new DataEmptyException();
+        }
+        redisUtil.set(RedisConstant.REDIS_USER_WALLET + uid, JSONObject.toJSONString(wallet), RedisConstant.REDIS_USER_TIMEOUT);
+        log.debug("更新用户钱包完成");
+    }
+
+    @Override
     public void updatePayPassword(Integer uid, String password) {
         walletMapper.updatePayPassword(uid, encoder.encode(password));
     }
@@ -176,6 +226,30 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
     }
 
     /**
+     * 处理用户充值提现通知
+     *
+     * @param singleChat singleChat
+     * @param begin      time
+     */
+    private void handleUserPriceOperation(SingleChat singleChat, long begin) {
+        log.debug("开始处理金额操作通知...");
+        Integer toUserId = singleChat.getToUserId();
+        log.debug("被通知用户id:{} {}ms", toUserId, DateUtil.spendMs(begin));
+        Channel userChannel = SessionUtil.ONLINE_USER_MAP.get(toUserId);
+        if (userChannel != null) {
+            sendMessage(userChannel, JsonResult.success(singleChat, Cmd.SINGLE_CHAT));
+            log.debug("已将通知信息发送给该用户 {}ms", DateUtil.spendMs(begin));
+            singleChat.setRead(true);
+            singleChatService.save(singleChat);
+            return;
+        }
+        singleChat.setRead(false);
+        singleChatService.save(singleChat);
+        log.debug("该用户不在线,已将通知消息离线保存. {}ms", DateUtil.spendMs(begin));
+        log.debug("金额通知完成. 用时{}ms", DateUtil.spendMs(begin));
+    }
+
+    /**
      * 处理充值业务
      *
      * @param param  参数
@@ -184,13 +258,11 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
      * @param admin  管理员
      * @param type   true为充值 false为提现
      */
-    private Wallet handleUserPriceOperation(UserPriceOperationDto param, Wallet wallet, User user, User admin, Boolean type) {
-        // 本次充值金额
+    private void handleUserPriceOperation(UserPriceOperationDto param, Wallet wallet, User user, User admin, Boolean type) {
         BigDecimal price = param.getPrice();
-
-        // 充值前用户金额
+        log.debug("本次充值金额:{}", price);
         BigDecimal beforePrice = wallet.getPrice();
-        // 充值后用户金额
+        log.debug("充值前用户金额:{}", beforePrice);
         BigDecimal afterPrice;
         // 操作类型 1 充值 2 提现
         int operationType;
@@ -207,21 +279,23 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
             operationType = SystemConstant.DRAW_MONEY;
             addType = false;
         }
+        log.debug("充值后用户金额:{}", afterPrice);
+        log.debug("操作类型(1 充值 2 提现):{}", operationType);
         wallet.setPrice(afterPrice);
-        // 用户钱包更新
-        walletMapper.updateUserWallet(wallet);
-        // 金额操作流水记录
-        // 分表路由
+        int i = walletMapper.updateUserWallet(wallet);
+        log.debug("本地钱包是否更新:{}", i);
         int tableNum = user.getId() % SystemConstant.LOG_TABLE_COUNT;
+        log.debug("用户路由表:{}", tableNum);
         WalletOperationLog walletPriceLog = createNewWalletOperationLog(user.getId(), admin.getId(), price, beforePrice, afterPrice, operationType, param.getExplain());
-        walletOperationLogMapper.insert(walletPriceLog, tableNum);
-        // 管理员操作记录
+        int insert = walletOperationLogMapper.insert(walletPriceLog, tableNum);
+        log.debug("充值提现流水表:{} {}", insert, walletPriceLog);
         UserOperationLog userOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), operationType, String.format("管理员%s为用户%s充值%s元", admin.getId(), user.getId(), price));
-        userOperationLogMapper.insert(userOperationLog);
-        // 用户账变记录
+        int insert1 = userOperationLogMapper.insert(userOperationLog);
+        log.debug("管理员操作日志: {} {}", insert1, userOperationLog);
         WalletPriceChangeLog walletPriceChangeLog = createNewWalletPriceChangeLog(param.getUid(), param.getPrice(), beforePrice, afterPrice, addType, operationType);
-        walletPriceChangeLogMapper.insert(walletPriceChangeLog, tableNum);
-        return wallet;
+        int insert2 = walletPriceChangeLogMapper.insert(walletPriceChangeLog, tableNum);
+        log.debug("用户账变记录日志:{} {}", insert2, walletPriceChangeLog);
+        updateRedisData(user.getId());
     }
 
     /**

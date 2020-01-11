@@ -1,9 +1,11 @@
 package com.xsdkj.wechat.service;
 
 import com.xsdkj.wechat.dto.UserPriceOperationDto;
+import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.wallet.Wallet;
 
 import java.math.BigDecimal;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author tiankong
@@ -24,6 +26,7 @@ public interface UserWalletService {
      * @param type 是否从缓存获取数据
      * @return Wallet
      */
+    @Deprecated
     Wallet getByUid(Integer uid, boolean type);
 
     /**
@@ -61,9 +64,25 @@ public interface UserWalletService {
 
     /**
      * 修改支付密码
-     * @param uid 用户id
-     * @param password 新密码
+     *
+     * @param uid         用户id
+     * @param password    新密码
      * @param oldPassword 旧密码
      */
     void resetPayPassword(Integer uid, String password, String oldPassword);
+
+    /**
+     * 获取用户钱包
+     *
+     * @param userId 用户id
+     * @return Wallet
+     */
+    Wallet getRedisData(Integer userId);
+
+    /**
+     * 更新redis数据
+     *
+     * @param uid 用户id
+     */
+    void updateRedisData(Integer uid);
 }

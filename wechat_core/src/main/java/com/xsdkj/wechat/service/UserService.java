@@ -123,7 +123,9 @@ public interface UserService {
      * @param friendId 好友ID
      */
     void deleteFriend(Integer uid, Integer friendId);
+
     UserDetailsBo updateRedisDataByUid(Integer uid);
+
     /**
      * 更新用户Redis 数据
      * 更新用户菜单,用户群组,用户信息
@@ -187,6 +189,8 @@ public interface UserService {
      * @param type   是否更新用户redis缓存
      * @return User
      */
+
+    @Deprecated
     User getUserById(Integer userId, boolean type);
 
     /**
@@ -212,4 +216,20 @@ public interface UserService {
      * @return List UserVo
      */
     List<UserVo> listUser(ListUserDto listUserDto);
+
+    /**
+     * 查询用户
+     *
+     * @param uid 用户id
+     * @return User
+     */
+    User getRedisData(Integer uid);
+
+    /**
+     * 查看用户
+     *
+     * @param username 用户名
+     * @return User
+     */
+    User getRedisData(String username);
 }

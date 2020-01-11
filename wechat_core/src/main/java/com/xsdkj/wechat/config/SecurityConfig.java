@@ -1,12 +1,17 @@
 package com.xsdkj.wechat.config;
 
 
+import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.xsdkj.wechat.bo.UserDetailsBo;
 import com.xsdkj.wechat.component.JwtAuthenticationTokenFilter;
 import com.xsdkj.wechat.component.RestAuthenticationEntryPoint;
 import com.xsdkj.wechat.component.RestfulAccessDeniedHandler;
+import com.xsdkj.wechat.constant.RedisConstant;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.service.UserService;
+import com.xsdkj.wechat.util.LogUtil;
+import com.xsdkj.wechat.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +42,8 @@ import javax.annotation.Resource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private UserService userService;
+    @Resource
+    private RedisUtil redisUtil;
     @Resource
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     @Resource
@@ -101,13 +108,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     protected UserDetailsService userDetailsService() {
-        log.debug("SpringSecurity 框架现在检查用户信息");
         return username -> {
-            User user = userService.getByUsername(username);
-            if (user != null) {
+            long begin = System.currentTimeMillis();
+            log.debug(LogUtil.INTERVAL);
+            try {
+                Object userData = redisUtil.get(RedisConstant.REDIS_USERNAME + username);
+                User user;
+                if (userData != null) {
+                    user = JSONObject.toJavaObject(JSONObject.parseObject(userData.toString()), User.class);
+                } else {
+                    user = userService.getByUsername(username);
+                    if (user == null) {
+                        throw new UsernameNotFoundException("用户名或密码错误");
+                    }
+                    redisUtil.set(RedisConstant.REDIS_USERNAME + user.getUsername(), JSONObject.toJSONString(user), RedisConstant.REDIS_USER_TIMEOUT);
+                }
+                log.debug("当前用户{} ", user);
                 return new UserDetailsBo(user);
+            } finally {
+                log.debug("用时 {}ms", DateUtil.spendMs(begin));
             }
-            throw new UsernameNotFoundException("用户名或密码错误");
         };
     }
 

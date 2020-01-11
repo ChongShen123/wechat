@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.entity.user;
 
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -9,84 +10,84 @@ import lombok.Data;
  */
 @Data
 public class User implements Serializable {
-    private Integer id;
+    protected Integer id;
 
     /**
      * 平台id
      */
-    private Integer platformId;
+    protected Integer platformId;
 
     /**
      * 系统账号
      */
-    private Long uno;
+    protected Long uno;
 
-    private String username;
+    protected String username;
 
     /**
      * 昵称
      */
-    private String nickname;
+    protected String nickname;
 
-    private String password;
+    protected String password;
 
-    private String icon;
+    protected String icon;
 
     /**
      * 0男 1女
      */
-    private Byte gender;
+    protected Byte gender;
 
     /**
      * 二维码
      */
-    private String qr;
+    protected String qr;
 
     /**
      * 电话
      */
-    private String tel;
+    protected String tel;
 
-    private String qq;
+    protected String qq;
 
-    private String description;
+    protected String description;
 
-    private String email;
+    protected String email;
 
     /**
      * 0普通用户 1管理员
      */
-    private Byte type;
+    protected Byte type;
 
     /**
      * 状态 0 正常 1禁用 2 删除
      */
-    private Byte state;
+    protected Byte state;
 
     /**
      * 创建时间
      */
-    private Long createTimes;
+    protected Long createTimes;
 
     /**
      * 加入ip
      */
-    private String joinIp;
+    protected String joinIp;
 
     /**
      * 上次登录时间
      */
-    private Long lastLoginTimes;
+    protected Long lastLoginTimes;
 
     /**
      * 上次登录ip
      */
-    private String lastLoginIp;
+    protected String lastLoginIp;
 
     /**
      * 登录状态 0未登录 1已登录
      */
-    private Boolean loginState;
+    protected Boolean loginState;
 
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
 }

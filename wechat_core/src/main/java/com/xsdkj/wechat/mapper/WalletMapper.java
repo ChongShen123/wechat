@@ -33,7 +33,7 @@ public interface WalletMapper {
      */
     int updateWalletPrice(@Param("uid") Integer uid, @Param("price") BigDecimal price);
 
-    void updateUserWallet(Wallet wallet);
+    int updateUserWallet(Wallet wallet);
 
     /**
      * 设置用户支付密码
