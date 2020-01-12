@@ -1,11 +1,9 @@
 package com.xsdkj.wechat.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xsdkj.wechat.constant.SystemConstant;
@@ -24,11 +22,10 @@ import com.xsdkj.wechat.mapper.SignAwardMapper;
 import com.xsdkj.wechat.mapper.SignDateMapper;
 import com.xsdkj.wechat.mapper.UserOperationLogMapper;
 import com.xsdkj.wechat.mapper.UserScoreMapper;
-import com.xsdkj.wechat.service.SystemParameterService;
+import com.xsdkj.wechat.service.SystemService;
 import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.service.UserSignDateService;
 import com.xsdkj.wechat.util.LogUtil;
-import com.xsdkj.wechat.util.RedisUtil;
 import com.xsdkj.wechat.util.UserUtil;
 import com.xsdkj.wechat.vo.UserSignDateVo;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.persistence.PersistenceException;
-import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,7 +57,7 @@ public class UserSignDateServiceImpl implements UserSignDateService {
     @Resource
     private UserService userService;
     @Resource
-    private SystemParameterService systemParameterService;
+    private SystemService systemParameterService;
     @Resource
     private UserOperationLogMapper userOperationLogMapper;
 
@@ -194,25 +190,25 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         Integer count = giveRetroactiveCountDto.getCount();
         User admin = userUtil.currentUser().getUser();
         User user = userService.getUserById(uid, false);
-        if (admin.getType().equals(UserConstant.TYPE_ADMIN)) {
-            if (user != null) {
-                if (user.getPlatformId().equals(admin.getPlatformId())) {
-                    UserScore userScore = userScoreMapper.getOneByUid(uid);
-                    if (userScore != null) {
-                        userScoreMapper.updateUserRetroactiveCount(uid, count);
-                        UserOperationLog newUserOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), SystemConstant.LOG_TYPE_RETROACTIVE_COUNT, String.format("管理员%s为用户%s添加补签次数:%s", admin.getId(), user.getId(), count));
-                        userOperationLogMapper.insert(newUserOperationLog);
-                        return;
-                    }
-                    throw new DataEmptyException();
-                }
-                throw new PermissionDeniedException();
-            }
+        if (!admin.getType().equals(UserConstant.TYPE_ADMIN)) {
+            log.warn("用户{} 异常操作", admin.getId());
+            throw new PermissionDeniedException();
+        }
+        if (user == null) {
             log.error("用户数据不存在:{}", uid);
             throw new UserNotFountException();
         }
-        log.warn("用户{} 异常操作", admin.getId());
-        throw new PermissionDeniedException();
+        if (!user.getPlatformId().equals(admin.getPlatformId())) {
+            log.debug("管理员权限不足");
+            throw new PermissionDeniedException();
+        }
+        UserScore userScore = userScoreMapper.getOneByUid(uid);
+        if (userScore == null) {
+            throw new DataEmptyException();
+        }
+        userScoreMapper.updateUserRetroactiveCount(uid, count);
+        UserOperationLog newUserOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), SystemConstant.LOG_TYPE_RETROACTIVE_COUNT, String.format("管理员%s为用户%s添加补签次数:%s", admin.getId(), user.getId(), count));
+        userOperationLogMapper.insert(newUserOperationLog);
     }
 
     @Override

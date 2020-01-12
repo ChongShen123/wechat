@@ -47,7 +47,7 @@ public class UserSignDateController {
      * @param giveRetroactiveCountDto 参数
      * @return JsonResult
      */
-    @PostMapping("/give_retroactive_count")
+    @PostMapping("/giveRetroactiveCount")
     public JsonResult adminGiveRetroactiveCount(@Validated @RequestBody GiveRetroactiveCountDto giveRetroactiveCountDto) {
         userSignDateService.handleGiveRetroactiveCount(giveRetroactiveCountDto);
         return JsonResult.success();
@@ -59,7 +59,7 @@ public class UserSignDateController {
      * @param giveScoreDto 参数
      * @return JsonResult
      */
-    @PostMapping("/give_score")
+    @PostMapping("/giveScore")
     public JsonResult adminGiveScore(@Validated @RequestBody GiveScoreDto giveScoreDto) {
         long begin = System.currentTimeMillis();
         userSignDateService.handleGiveScore(giveScoreDto);
@@ -91,4 +91,5 @@ public class UserSignDateController {
     public JsonResult userSignDate(@Validated @RequestBody UserSignDateDto userSignDateDto) {
         return JsonResult.success(JsonPage.restPage(userSignDateService.listSignDate(userSignDateDto)));
     }
+
 }

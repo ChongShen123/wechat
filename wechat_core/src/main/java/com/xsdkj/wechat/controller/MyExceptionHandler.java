@@ -19,7 +19,7 @@ public class MyExceptionHandler {
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     public JsonResult httpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error(e.getMessage());
-        return JsonResult.failed("JSON参数解析异常");
+        return JsonResult.failed("参数验证失败");
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

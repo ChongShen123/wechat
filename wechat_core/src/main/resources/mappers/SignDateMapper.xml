@@ -17,7 +17,7 @@
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
+    select
     <include refid="Base_Column_List" />
     from sign_date
     where id = #{id,jdbcType=INTEGER}
@@ -29,9 +29,9 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.SignDate" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into sign_date (platform_id, `year`, `month`, 
+    insert into sign_date (platform_id, `year`, `month`,
       `day`, `count`)
-    values (#{platformId,jdbcType=INTEGER}, #{year,jdbcType=INTEGER}, #{month,jdbcType=INTEGER}, 
+    values (#{platformId,jdbcType=INTEGER}, #{year,jdbcType=INTEGER}, #{month,jdbcType=INTEGER},
       #{day,jdbcType=DATE}, #{count,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xsdkj.wechat.entity.wallet.SignDate" useGeneratedKeys="true">
@@ -124,8 +124,8 @@
         #{signDateId,jdbcType=INTEGER};
     </select>
     <insert id="saveUserSingDateRelation">
-        insert into user_sign_date_relation (uid, sign_date_id) values
-        (#{uid,jdbcType=INTEGER},#{signDateId,jdbcType=INTEGER});
+        insert into user_sign_date_relation (uid, sign_date_id,create_times) values
+        (#{uid,jdbcType=INTEGER},#{signDateId,jdbcType=INTEGER},REPLACE(unix_timestamp(current_timestamp(3)),'.',''));
     </insert>
     <select id="getUserScore" resultMap="UserScoreMap">
         select id, uid, score, retroactive_count, succession_count, last_sign_date_times from user_score where uid =
