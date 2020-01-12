@@ -17,22 +17,40 @@ import java.util.Date;
 public class UserVo implements Serializable {
     private static final long serialVersionUID = 3452773848565100595L;
     private Integer id;
+    private Integer platformId;
     private Long uno;
     private String username;
     private String nickname;
     private String icon;
     private Byte gender;
     private String qr;
-    private String email;
     private String tel;
     private String qq;
     private String description;
+    private String email;
     private Byte type;
+    private Byte state;
+    private Long createTimes;
+    private String joinIp;
     private Long lastLoginTimes;
+    private String lastLoginIp;
+    private Boolean loginState;
     private BigDecimal price;
     private BigDecimal totalPrice;
-    private Long createTimes;
-    private Boolean loginState;
+
+    private String getType() {
+        if (type != null) {
+            switch (type) {
+                case 0:
+                    return "普通用户";
+                case 1:
+                    return "管理员";
+                default:
+                    return "error";
+            }
+        }
+        return null;
+    }
 
     public String getLastLoginTimes() {
         if (lastLoginTimes != null) {

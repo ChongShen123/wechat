@@ -256,31 +256,129 @@
         platform_id=#{platformId,jdbcType=INTEGER} ;
     </select>
     <select id="selectLastLoginTimes" resultType="java.lang.Integer">
-    select count(last_login_times) from user where last_login_times >= (UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))*1000 )
-and
-    platform_id= #{platformId,jdbcType=INTEGER};
+        select count(last_login_times) from user where last_login_times >= (UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))*1000
+        )
+        and
+        platform_id= #{platformId,jdbcType=INTEGER};
     </select>
     <select id="selectOnlineUser" resultType="java.lang.Integer">
-    select count(login_state) from user
-    where login_state=1
-    and
-    platform_id=#{platformId,jdbcType=INTEGER}
+        select count(login_state) from user
+        where login_state=1
+        and
+        platform_id=#{platformId,jdbcType=INTEGER}
     </select>
-    <select id="selectUserInfo" resultMap="BaseResultMap">
-                select
-        id,platform_id,uno,nickname,icon,gender,qr,tel,qq,create_times,join_ip,last_login_times,last_login_ip
+    <resultMap id="UserVoMap" type="com.xsdkj.wechat.vo.UserVo">
+
+        <id column="id" property="id"/>
+        <result column="platform_id" property="platformId"/>
+        <result column="uno" property="uno"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="icon" property="icon"/>
+        <result column="gender" property="gender"/>
+        <result column="qr" property="qr"/>
+        <result column="tel" property="tel"/>
+        <result column="qq" property="qq"/>
+        <result column="description" property="description"/>
+        <result column="email" property="email"/>
+        <result column="type" property="type"/>
+        <result column="state" property="state"/>
+        <result column="create_times" property="createTimes"/>
+        <result column="join_ip" property="joinIp"/>
+        <result column="last_login_times" property="lastLoginTimes"/>
+        <result column="last_login_ip" property="lastLoginIp"/>
+        <result column="login_state" property="loginState"/>
+    </resultMap>
+    <select id="selectUserInfo" resultMap="UserVoMap">
+        select
+        <include refid="Base_Column_List"/>
         from user
         where id=#{id,jdbcType=INTEGER}
     </select>
-    <select id="selectUserLoginLog" resultType="com.xsdkj.wechat.dto.UserLoginLogoDto">
+    <resultMap id="UserLoginLogoMap" type="com.xsdkj.wechat.dto.UserLoginLogoDto">
+
+    </resultMap>
+    <select id="selectUserLoginLog" resultMap="UserLoginLogoMap">
         select
-        l.id, u.username, l.ip, l.create_times
-              from
-        user_login_log l, user  u
-              where
-		l.uid=u.id
-				and
+        l.id,u.username,l.ip,l.create_times createTimes
+        from
+        user_login_log l,user u
+        where
+        l.uid=u.id
+        and
         l.uid=#{id,jdbcType=INTEGER}
+    </select>
+    <resultMap id="UserWalletMap" type="com.xsdkj.wechat.dto.UserWalletDto">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" property="uid"/>
+        <result column="username" property="username"/>
+        <result column="price" property="price"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="modified_times" property="modifiedTimes"/>
+        <result column="state" property="state"/>
+    </resultMap>
+    <select id="selectUserWallet" resultMap="UserWalletMap">
+        select
+        w.id,w.uid,u.username,w.price, w.total_price, w.modified_times ,w.state
+        from
+        wallet w
+        left join user u on u.id=w.uid
+        where 1=1
+        <if test="uid != null">and w.uid = #{uid}</if>
+        <if test="username != null">and u.username = #{username}</if>
+        <if test="price != null">and w.price = #{price}</if>
+        <if test="state != null">and w.state = #{state}</if>
+    </select>
+    <resultMap id="UserMoodMap" type="com.xsdkj.wechat.dto.UserMoodDto">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" property="uid"/>
+        <result column="content" property="content"/>
+        <result column="file" property="file"/>
+        <result column="file_type" property="fileType"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="create_times" property="createTimes"/>
+    </resultMap>
+    <select id="selectUserMood" resultMap="UserMoodMap">
+        select
+        id,uid,content,file,file_type,comment_count,create_times
+        from
+        user_mood u
+        where 1=1
+        <if test="uid != null">and u.uid = #{uid}</if>
+        <if test="commentCount != null">and u.comment_count=#{commentCount}</if>
+        <if test="createTimes != null">and u.create_times=#{createTimes}</if>
+    </select>
+    <resultMap id="UserGroupMap" type="com.xsdkj.wechat.dto.UserGroupDto">
+        <id column="id" property="id"/>
+        <result column="uid" property="uid"/>
+        <result column="name" property="name"/>
+        <result column="icon" property="icon"/>
+        <result column="qr" property="qr"/>
+        <result column="notice" property="notice"/>
+        <result column="owner_id" property="ownerId"/>
+        <result column="members_count" property="membersCount"/>
+        <result column="state" property="state"/>
+        <result column="add_friend_type" property="addFriendType"/>
+        <result column="type" property="type"/>
+        <result column="no_say_type" property="noSayType"/>
+        <result column="create_times" property="createTimes"/>
+        <result column="modified_times" property="modifiedTimes"/>
+
+    </resultMap>
+    <select id="selectUserGroup" resultMap="UserGroupMap">
+        select
+        g.id,ugr.uid,g.name,g.icon,g.qr,g.notice,g.owner_id,g.members_count,g.state,g.add_friend_type,g.type,g.no_say_type,g.create_times,g.modified_times
+        from
+        user_group g
+        left join user_group_relation ugr on g.id = ugr.gid
+        where 1=1
+        <if test="id != null">and g.id = #{id}</if>
+        <if test="uid != null">and ugr.uid = #{uid}</if>
+        <if test="name != null">and g.name = #{name}</if>
+        <if test="owner_id != null">and g.owner_id = #{ownerId}</if>
+        <if test="state != null">and g.state = #{state}</if>
+        <if test="type != null">and g.type = #{type}</if>
+        <if test="no_say_type != null">and g.no_say_type = #{noSayType}</if>
     </select>
 
 

@@ -1,8 +1,13 @@
 package com.xsdkj.wechat.controller.admin;
 import com.xsdkj.wechat.common.JsonResult;
+import com.xsdkj.wechat.dto.UserGroupDto;
+import com.xsdkj.wechat.dto.UserLoginLogoDto;
+import com.xsdkj.wechat.dto.UserMoodDto;
+import com.xsdkj.wechat.dto.UserWalletDto;
 import com.xsdkj.wechat.service.AdminUserInfoService;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author panda
@@ -18,8 +23,6 @@ public class AdminPandaUserInfoController {
      */
     @GetMapping("/selectAdminRegister")
     public JsonResult selectAdminRegister( @RequestParam("platformId") Integer platformId){
-        System.out.println("123456:"+platformId);
-        System.out.println(adminUserInfoService.selectRegisterCount(platformId));
         return JsonResult.success(adminUserInfoService.selectRegisterCount(platformId));
 
     }
@@ -29,8 +32,6 @@ public class AdminPandaUserInfoController {
      */
     @GetMapping("/selectLastLoginTimes")
     public JsonResult selectLastLoginTimes(@RequestParam("platformId")  Integer platformId){
-        System.out.println("123456:"+platformId);
-        System.out.println(adminUserInfoService.selectLastLoginTimes(platformId));
         return JsonResult.success(adminUserInfoService.selectLastLoginTimes(platformId));
     }
 
@@ -39,7 +40,6 @@ public class AdminPandaUserInfoController {
      */
     @GetMapping("/selectOnlineUser")
     public JsonResult selectOnlineUser(@RequestParam("platformId")  Integer platformId){
-        System.out.println(adminUserInfoService.selectOnlineUser(platformId));
         return JsonResult.success(adminUserInfoService.selectOnlineUser(platformId));
     }
     /**
@@ -47,20 +47,36 @@ public class AdminPandaUserInfoController {
      */
     @GetMapping("/selectUserInfo")
     public JsonResult selectUserInfo(@RequestParam("id") Integer id){
-        System.out.println("aaaaaaaaaaaaaa+"+adminUserInfoService.selectUserInfo(id));
         return JsonResult.success(adminUserInfoService.selectUserInfo(id));
     }
     /**
      * 查看用户登陆日志
      */
-    @GetMapping("/selectUserLoginLog")
-    public JsonResult selectUserLoginLog(@RequestParam("id") Integer id){
-        System.out.println("aaaaaaaaaaaaaa+"+adminUserInfoService.selectUserInfo(id));
-        return JsonResult.success(adminUserInfoService.selectUserLoginLog(id));
+    @PostMapping("/selectUserLoginLog")
+    public JsonResult selectUserLoginLog(@RequestBody UserLoginLogoDto userLoginLogoDto){
+        return JsonResult.success(adminUserInfoService.selectUserLoginLog(userLoginLogoDto));
     }
-
-
-
-
+    /**
+     * 查看用户钱包
+     */
+    @PostMapping("/selectUserWallet")
+    public JsonResult selectUserWallet(@RequestBody UserWalletDto userWalletDto){
+        List<UserWalletDto> userWalletDtos = adminUserInfoService.selectUserWallet(userWalletDto);
+        return JsonResult.success(userWalletDtos);
+    }
+    /**
+     * 查看用户的朋友圈
+     */
+    @PostMapping("/selectUserMood")
+    public JsonResult selectUserMood(@RequestBody UserMoodDto userMoodDto){
+        return JsonResult.success(adminUserInfoService.selectUserMood(userMoodDto));
+    }
+    /**
+     *查看所有的群组
+     */
+    @PostMapping("/selectUserGroup")
+    public JsonResult selectUserGroup(@RequestBody  UserGroupDto userGroupDto){
+        return JsonResult.success(adminUserInfoService.selectUsergroup(userGroupDto));
+    }
 
 }

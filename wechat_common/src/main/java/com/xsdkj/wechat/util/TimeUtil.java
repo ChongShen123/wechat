@@ -70,7 +70,8 @@ public class TimeUtil {
                 end = new Date(endTimes);
                 break;
             default:
-                throw new RuntimeException("时间类型错误");
+                begin = null;
+                end = null;
         }
         result[0] = begin;
         result[1] = end;
@@ -136,7 +137,8 @@ public class TimeUtil {
                 end = endTimes;
                 break;
             default:
-                throw new RuntimeException("时间类型错误");
+                begin = null;
+                end = null;
         }
         result[0] = begin;
         result[1] = end;

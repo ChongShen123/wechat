@@ -133,19 +133,16 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
 
     @Override
     public List<UserOperationLogVo> listUserPriceOperationLog(UserPriceOperationLogDto userPriceOperationLogDto) {
-        System.out.println(userPriceOperationLogDto);
-
         if (ObjectUtil.isEmpty(userPriceOperationLogDto.getUid())) {
             return new ArrayList<>();
         }
         PageHelper.startPage(userPriceOperationLogDto.getPageNum(), userPriceOperationLogDto.getPageSize());
         Integer type = userPriceOperationLogDto.getDateType();
-        if (type == null) {
-            type = 1;
+        if (type != null) {
+            Long[] beginAndEndTimes = TimeUtil.getBeginAndEndTimes(type, userPriceOperationLogDto.getBeginTimes(), userPriceOperationLogDto.getEndTimes());
+            userPriceOperationLogDto.setBeginTimes(beginAndEndTimes[0]);
+            userPriceOperationLogDto.setEndTimes(beginAndEndTimes[1]);
         }
-        Long[] beginAndEndTimes = TimeUtil.getBeginAndEndTimes(type, userPriceOperationLogDto.getBeginTimes(), userPriceOperationLogDto.getEndTimes());
-        userPriceOperationLogDto.setBeginTimes(beginAndEndTimes[0]);
-        userPriceOperationLogDto.setEndTimes(beginAndEndTimes[1]);
         Integer uid = userPriceOperationLogDto.getUid();
         int tableNum = uid % SystemConstant.LOG_TABLE_COUNT;
         return walletOperationLogMapper.listUserPriceOperationLog(userPriceOperationLogDto, tableNum);
