@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.controller;
 
 import cn.hutool.core.date.DateUtil;
+import com.xsdkj.wechat.common.JsonPage;
 import com.xsdkj.wechat.common.JsonResult;
 import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
 import com.xsdkj.wechat.dto.GiveScoreDto;
@@ -21,7 +22,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @RestController
-@RequestMapping("/sign_date")
+@RequestMapping("/signDate")
 public class UserSignDateController {
     @Resource
     private UserSignDateService userSignDateService;
@@ -86,8 +87,8 @@ public class UserSignDateController {
      *
      * @return JsonResult
      */
-    @PostMapping("/list_user_sign_date")
+    @PostMapping("/listUserSignDate")
     public JsonResult userSignDate(@Validated @RequestBody UserSignDateDto userSignDateDto) {
-        return JsonResult.success(userSignDateService.listUserSignDate(userSignDateDto));
+        return JsonResult.success(JsonPage.restPage(userSignDateService.listSignDate(userSignDateDto)));
     }
 }

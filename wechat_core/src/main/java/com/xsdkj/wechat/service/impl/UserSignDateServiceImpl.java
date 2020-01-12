@@ -5,6 +5,8 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.UserConstant;
@@ -258,11 +260,18 @@ public class UserSignDateServiceImpl implements UserSignDateService {
     }
 
     @Override
-    public List<UserSignDateVo> listUserSignDate(UserSignDateDto userSignDateDto) {
-        Integer uid = userSignDateDto.getUid();
+    public List<UserSignDateVo> listSignDate(UserSignDateDto userSignDateDto) {
         Integer year = userSignDateDto.getYear();
         Integer month = userSignDateDto.getMonth();
-        return userScoreMapper.listUserSignDate(uid, year, month);
+        if (ObjectUtil.isNotEmpty(year) || ObjectUtil.isNotEmpty(month)) {
+            if (!(ObjectUtil.isNotEmpty(year) && ObjectUtil.isNotEmpty(month))) {
+                throw new ValidateException();
+            }
+        }
+        userSignDateDto.setPlatformId(userUtil.getUser().getPlatformId());
+        List<UserSignDateVo> list = userScoreMapper.listUserSignDate(userSignDateDto);
+        System.out.println(list);
+        return list;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
+import com.xsdkj.wechat.dto.UserSignDateDto;
 import com.xsdkj.wechat.entity.wallet.UserScore;
 import com.xsdkj.wechat.vo.UserScoreVo;
 import com.xsdkj.wechat.vo.UserSignDateVo;
@@ -82,12 +83,10 @@ public interface UserScoreMapper {
     /**
      * 查询用户签到情况
      *
-     * @param uid   用户id
-     * @param year  年
-     * @param month 月
+     * @param userSignDateDto 参数
      * @return list
      */
-    List<UserSignDateVo> listUserSignDate(@Param("uid") Integer uid, @Param("year") Integer year, @Param("month") Integer month);
+    List<UserSignDateVo> listUserSignDate(UserSignDateDto userSignDateDto);
 
     /**
      * 查询用户积分

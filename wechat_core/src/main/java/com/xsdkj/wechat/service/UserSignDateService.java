@@ -47,5 +47,5 @@ public interface UserSignDateService {
      * @param userSignDateDto 参数
      * @return list
      */
-    List<UserSignDateVo> listUserSignDate(UserSignDateDto userSignDateDto);
+    List<UserSignDateVo> listSignDate(UserSignDateDto userSignDateDto);
 }

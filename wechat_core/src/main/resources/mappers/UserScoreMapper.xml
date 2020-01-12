@@ -12,8 +12,13 @@
         <result column="last_sign_date_times" jdbcType="BIGINT" property="lastSignDateTimes"/>
     </resultMap>
     <resultMap id="UserSignDateMap" type="com.xsdkj.wechat.vo.UserSignDateVo">
+        <id column="id" property="id"/>
+        <result column="platform_id" property="platformId"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
         <result column="day" property="day"/>
         <result column="count" property="count"/>
+        <result column="create_times" property="createTimes"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
@@ -148,12 +153,26 @@
     </select>
 
     <select id="listUserSignDate" resultMap="UserSignDateMap">
-        select sd.day, sd.count
+        select sd.id,sd.platform_id,sd.year,sd.month,sd.day,sd.count
+        <if test="username != null and username != '' || uid != null">,usdr.create_times</if>
         from sign_date sd
-        left join user_sign_date_relation usdr on sd.id = usdr.sign_date_id
-        where usdr.uid = #{uid,jdbcType=INTEGER}
-        and sd.year = #{year,jdbcType=INTEGER}
-        and sd.month = #{month,jdbcType=INTEGER}
+        <if test="uid != null || username != null and username != ''">
+            left join user_sign_date_relation usdr on sd.id = usdr.sign_date_id
+        </if>
+        <if test="username != null and username != ''">
+            left join user u on usdr.uid = u.id
+        </if>
+        where 1=1
+        <if test="uid!=null ">
+            and usdr.uid = #{uid,jdbcType=INTEGER}
+        </if>
+        <if test="username != null and username != ''">
+            and u.username = #{username,jdbcType=VARCHAR}
+        </if>
+        <if test="year != null and month != null">
+            and sd.year = #{year,jdbcType=INTEGER}
+            and sd.month = #{month,jdbcType=INTEGER}
+        </if>
         order by sd.day desc;
     </select>
     <resultMap id="UserScoreVoMap" type="com.xsdkj.wechat.vo.UserScoreVo">
