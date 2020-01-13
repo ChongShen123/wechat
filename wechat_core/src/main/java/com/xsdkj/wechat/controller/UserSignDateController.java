@@ -74,20 +74,7 @@ public class UserSignDateController {
         return success;
     }
 
-    /**
-     * 管理员: 赠送用户积分
-     *
-     * @param giveScoreDto 参数
-     * @return JsonResult
-     */
-    @PostMapping("/giveScore")
-    public JsonResult adminGiveScore(@Validated @RequestBody GiveScoreDto giveScoreDto) {
-        long begin = System.currentTimeMillis();
-        userSignDateService.handleGiveScore(giveScoreDto);
-        JsonResult success = JsonResult.success();
-        log.debug(DateUtil.spendMs(begin) + "");
-        return success;
-    }
+
 
     /**
      * 用户补签

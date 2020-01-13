@@ -14,7 +14,7 @@ public class UserScoreVo implements Serializable {
     private Integer id;
 
     private Integer uid;
-
+    private String username;
     /**
      * 积分
      */

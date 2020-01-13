@@ -27,12 +27,7 @@ public interface UserSignDateService {
      */
     void handleGiveRetroactiveCount(GiveRetroactiveCountDto giveRetroactiveCountDto);
 
-    /**
-     * 赠送用户积分
-     *
-     * @param giveScoreDto 参数
-     */
-    void handleGiveScore(GiveScoreDto giveScoreDto);
+
 
     /**
      * 用户补签

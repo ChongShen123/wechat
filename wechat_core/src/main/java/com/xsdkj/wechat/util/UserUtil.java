@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.persistence.PersistenceException;
 
 /**
  * 该类可获取当前登录的用户信息
@@ -56,5 +57,17 @@ public class UserUtil {
         Authentication authentication = context.getAuthentication();
         String name = authentication.getName();
         return userService.getRedisData(name);
+    }
+
+    /**
+     * 检查用户是否具有某种权限
+     *
+     * @param user 用户
+     * @param type 权限类型
+     */
+    public void checkAdminAuthority(User user, Byte type) {
+        if (!user.getType().equals(type)) {
+            throw new PersistenceException();
+        }
     }
 }

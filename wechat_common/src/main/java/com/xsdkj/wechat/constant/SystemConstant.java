@@ -95,6 +95,12 @@ public interface SystemConstant {
     int LOG_TYPE_RETROACTIVE_COUNT = 7;
 
     /**
+     * 管理员操作日志类型_赠扣积分
+     */
+    int LOG_TYPE_UPDATE_SCORE = 8;
+
+
+    /**
      * 逗号小写
      */
     String COMMA_LOWER_CASE = ",";

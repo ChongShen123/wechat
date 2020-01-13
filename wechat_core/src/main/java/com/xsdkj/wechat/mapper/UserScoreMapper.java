@@ -1,5 +1,6 @@
 package com.xsdkj.wechat.mapper;
 
+import com.xsdkj.wechat.dto.ListUserScoreDto;
 import com.xsdkj.wechat.dto.UserSignDateDto;
 import com.xsdkj.wechat.entity.wallet.UserScore;
 import com.xsdkj.wechat.vo.UserScoreVo;
@@ -88,7 +89,7 @@ public interface UserScoreMapper {
      * @param userIds 用户ids
      * @return List
      */
-    List<UserScore> listUserScore(@Param("userIds") Set<Integer> userIds);
+    List<UserScore> listUserScoreBySet(@Param("userIds") Set<Integer> userIds);
 
     /**
      * 查询用户签到情况
@@ -109,8 +110,25 @@ public interface UserScoreMapper {
     /**
      * 全体补签赠扣
      *
-     * @param count 次数
+     * @param platformId 平台id
+     * @param count      次数
      * @return int
      */
-    int updateUserRetroactiveCountAll(Integer count);
+    int updateUserRetroactiveCountAll(@Param("count") Integer count, @Param("platformId") Integer platformId);
+
+    /**
+     * 查询用户积分
+     *
+     * @param listUserScoreDto 参数
+     * @return list
+     */
+    List<UserScoreVo> listUserScoreByVo(ListUserScoreDto listUserScoreDto);
+
+    /**
+     * 修改全体用户积分
+     *
+     * @param platformId 平台ID
+     * @param score      用户积分
+     */
+    void updateUserScoreAll(@Param("score") Integer score, @Param("platformId") Integer platformId);
 }

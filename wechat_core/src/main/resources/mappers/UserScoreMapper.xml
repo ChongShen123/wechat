@@ -150,13 +150,14 @@
         </foreach>
     </update>
     <update id="updateMultipleUserScore">
-        update user_score set user_score.score = user_score.score +#{score} where uid in (
-        <foreach collection="userIds" item="uid" separator=",">
+        update user_score
+        set user_score.score = if(user_score.score +#{score} <![CDATA[<]]>  0,0,user_score.score +#{score})
+        where uid in
+        <foreach collection="userIds" item="uid" separator="," open="(" close=")">
             #{uid,jdbcType=INTEGER}
         </foreach>
-        );
     </update>
-    <select id="listUserScore" resultMap="BaseResultMap">
+    <select id="listUserScoreBySet" resultMap="BaseResultMap">
         select * from user_score where uid in
         <foreach collection="userIds" separator="," item="uid" open="(" close=")">
             #{uid,jdbcType=INTEGER}
@@ -193,6 +194,7 @@
         <result column="retroactive_count" property="retroactiveCount"/>
         <result column="succession_count" property="successionCount"/>
         <result column="last_sign_date_times" property="lastSignDateTimes"/>
+        <result column="username" property="username"/>
     </resultMap>
     <select id="getUserScoreVoByUid" resultMap="UserScoreVoMap">
         select
@@ -200,8 +202,23 @@
         from user_score where uid = #{uid,jdbcType=INTEGER};
     </select>
     <update id="updateUserRetroactiveCountAll">
-        update user_score set retroactive_count =if(retroactive_count + #{count,jdbcType=INTEGER}  <![CDATA[<]]>  0, 0,
-        retroactive_count
-        + #{count,jdbcType=INTEGER});
+        update user_score left join user u on user_score.uid = u.id
+        set retroactive_count =if(retroactive_count + #{count,jdbcType=INTEGER}  <![CDATA[<]]>  0, 0,
+        retroactive_count + #{count,jdbcType=INTEGER})
+        where u.platform_id = #{platformId,jdbcType=INTEGER};
+
+    </update>
+    <select id="listUserScoreByVo" resultMap="UserScoreVoMap">
+        select us.id,us.uid,us.score,us.retroactive_count,us.succession_count, u.username
+        from user_score us
+        left join user u on us.uid = u.id
+        where 1=1
+        <if test="username != null and username != ''">and u.username=#{username,jdbcType=VARCHAR}</if>
+        <if test="uid != null">and us.uid = #{uid,jdbcType=INTEGER}</if>
+    </select>
+    <update id="updateUserScoreAll">
+        update user_score left join user u on user_score.uid = u.id
+        set score = if(score+#{score} <![CDATA[<]]> 0,0,score+#{score})
+        where u.platform_id = #{platformId,jdbcType=INTEGER};
     </update>
 </mapper>

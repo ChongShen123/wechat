@@ -222,7 +222,7 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         existUserIds.clear();
         ThreadUtil.getSingleton().execute(() -> {
             log.debug("判断用户积分记录是否存在,不存在则创建");
-            List<UserScore> userScores = userScoreMapper.listUserScore(userIdSet);
+            List<UserScore> userScores = userScoreMapper.listUserScoreBySet(userIdSet);
             for (UserScore userScore : userScores) {
                 existUserIds.add(userScore.getUid());
             }
@@ -249,7 +249,7 @@ public class UserSignDateServiceImpl implements UserSignDateService {
             throw new PermissionDeniedException();
         }
         ThreadUtil.getSingleton().execute(() -> {
-            userScoreMapper.updateUserRetroactiveCountAll(count);
+            userScoreMapper.updateUserRetroactiveCountAll(count, admin.getPlatformId());
             UserOperationLog newUserOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), SystemConstant.LOG_TYPE_RETROACTIVE_COUNT, String.format("管理员%s为%s平台用户赠送积分%s", admin.getId(), admin.getPlatformId(), count));
             userOperationLogMapper.insert(newUserOperationLog);
         });
@@ -280,53 +280,6 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         return collect;
     }
 
-    public static void main(String[] args) {
-    }
-
-
-    @Override
-    public void handleGiveScore(GiveScoreDto giveScoreDto) {
-        log.debug("-------------------------");
-        log.debug("开始批量修改用户积分...");
-        long begin = System.currentTimeMillis();
-        User user = userUtil.currentUser().getUser();
-        if (user.getType().equals(UserConstant.TYPE_ADMIN)) {
-            Set<Integer> userIds;
-            Integer score;
-            try {
-                userIds = Arrays.stream(StrUtil.splitToInt(giveScoreDto.getUserIds(), ",")).boxed().collect(Collectors.toSet());
-                score = giveScoreDto.getScore();
-            } catch (Exception e) {
-                log.error("参数解析出错");
-                throw new ValidateException();
-            }
-            int userIdsCount = userService.countUserIds(userIds);
-            if (userIdsCount == userIds.size()) {
-                checkUserScore(userIds);
-                int count;
-                try {
-                    count = userScoreMapper.updateMultipleUserScore(score, userIds);
-                } catch (DataIntegrityViolationException e) {
-                    log.error("非法的操作!用户积分操作后出现负数!{}", userIds);
-                    throw new IllegalOperationException();
-                }
-                if (count == userIds.size()) {
-                    userOperationLogMapper.insert(LogUtil.createNewUserOperationLog(user.getId(),
-                            user.getPlatformId(),
-                            SystemConstant.LOG_TYPE_RETROACTIVE_COUNT,
-                            String.format("管理员%s为用户:%s添加积分%s", user.getId(), userIds, score)));
-                    log.debug("批量修改用户积分完成!用时{}", DateUtil.spendMs(begin));
-                    return;
-                }
-                log.error("传入的用户id与更新的数据条数不一至!");
-                throw new UpdateDataException();
-            }
-            log.error("数据错误!部分用户不存在!请检查传入的uid包含的用户是否都存在:{}", userIds);
-            throw new UserNotFountException();
-        }
-        log.error("{}不是管理员", user.getId());
-        throw new PersistenceException();
-    }
 
     @Override
     public List<UserSignDateVo> listSignDate(UserSignDateDto userSignDateDto) {
@@ -343,26 +296,6 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         return list;
     }
 
-    /**
-     * 检查用户积分是否有记录,没有则创建一个
-     *
-     * @param userIds 用户ids
-     */
-    private void checkUserScore(Set<Integer> userIds) {
-        log.debug("检查用户是否都有积分记录...");
-        long begin = System.currentTimeMillis();
-        List<UserScore> userScores = userScoreMapper.listUserScore(userIds);
-        if (userScores.size() < userIds.size()) {
-            List<Integer> existUserIds = new ArrayList<>();
-            userScores.forEach(userScore -> existUserIds.add(userScore.getUid()));
-            List<Integer> missUserIds = new ArrayList<>(CollUtil.disjunction(userIds, existUserIds));
-            missUserIds.forEach(uid -> {
-                userScoreMapper.insert(createNewUserScore(uid));
-                log.debug("为用户{}创建了一个积分记录", uid);
-            });
-        }
-        log.debug("检查用户是否都有积分记录完成!用时:{}ms", System.currentTimeMillis() - begin);
-    }
 
     /**
      * 处理用户补签业务
