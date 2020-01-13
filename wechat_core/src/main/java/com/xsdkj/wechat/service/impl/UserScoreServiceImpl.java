@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.service.impl;
 
 import com.xsdkj.wechat.entity.user.User;
+import com.xsdkj.wechat.entity.wallet.UserScore;
 import com.xsdkj.wechat.mapper.UserScoreMapper;
 import com.xsdkj.wechat.service.UserScoreService;
 import com.xsdkj.wechat.util.UserUtil;
@@ -24,5 +25,10 @@ public class UserScoreServiceImpl implements UserScoreService {
     public UserScoreVo getUserScore() {
         User user = userUtil.currentUser().getUser();
         return userScoreMapper.getUserScoreVoByUid(user.getId());
+    }
+
+    @Override
+    public void save(UserScore newUserScore) {
+        userScoreMapper.insert(newUserScore);
     }
 }

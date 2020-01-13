@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class GiveRetroactiveCountDto {
-    @NotNull(message = "用户id不能为空")
-    private Integer uid;
+    @NotNull(message = "用户ID不能为空")
+    private String userIds;
     @NotNull(message = "签到次数不能为空")
     private Integer count;
 }

@@ -48,4 +48,11 @@ public interface UserSignDateService {
      * @return list
      */
     List<UserSignDateVo> listSignDate(UserSignDateDto userSignDateDto);
+
+    /**
+     * 赠送用户补签次数 全体
+     *
+     * @param giveRetroactiveCountDto 参数
+     */
+    void handleGiveRetroactiveCountAll(Integer giveRetroactiveCountDto);
 }

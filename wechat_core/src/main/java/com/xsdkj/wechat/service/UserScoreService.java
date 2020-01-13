@@ -1,5 +1,6 @@
 package com.xsdkj.wechat.service;
 
+import com.xsdkj.wechat.entity.wallet.UserScore;
 import com.xsdkj.wechat.vo.UserScoreVo;
 
 /**
@@ -13,4 +14,11 @@ public interface UserScoreService {
      * @return UserScoreVo
      */
     UserScoreVo getUserScore();
+
+    /**
+     * 保存
+     *
+     * @param newUserScore 参数
+     */
+    void save(UserScore newUserScore);
 }

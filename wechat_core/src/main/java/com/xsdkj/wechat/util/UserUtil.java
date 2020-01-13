@@ -36,6 +36,12 @@ public class UserUtil {
     @Resource
     private RedisUtil redisUtil;
 
+    /**
+     * TODO 该方法过时.有时间记得将调用此方法的所有方法修改了.
+     *
+     * @return UserBo
+     */
+    @Deprecated
     public UserDetailsBo currentUser() {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDetailsBo bo = (UserDetailsBo) redisUtil.get(RedisConstant.REDIS_UID + currentUsername);

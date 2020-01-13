@@ -64,6 +64,16 @@ public interface UserScoreMapper {
     int updateUserRetroactiveCount(@Param("uid") Integer uid, @Param("count") Integer count);
 
     /**
+     * 批量修改用户补签数
+     *
+     * @param userIds 用户ids
+     * @param count   次数
+     * @return 计数
+     */
+    int updateSetUserRetroactiveCount(@Param("userIds") Set<Integer> userIds, @Param("count") Integer count);
+
+
+    /**
      * 修改用户积分
      *
      * @param score   积分
@@ -95,4 +105,12 @@ public interface UserScoreMapper {
      * @return UserScoreVo
      */
     UserScoreVo getUserScoreVoByUid(@Param("uid") Integer uid);
+
+    /**
+     * 全体补签赠扣
+     *
+     * @param count 次数
+     * @return int
+     */
+    int updateUserRetroactiveCountAll(Integer count);
 }

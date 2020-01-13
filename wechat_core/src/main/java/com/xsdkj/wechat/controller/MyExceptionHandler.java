@@ -1,12 +1,14 @@
 package com.xsdkj.wechat.controller;
 
 import com.xsdkj.wechat.common.JsonResult;
+import com.xsdkj.wechat.ex.CheckUserException;
 import com.xsdkj.wechat.ex.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 /**
  * @author tiankong
@@ -16,10 +18,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class MyExceptionHandler {
 
+    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+    public JsonResult methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        log.error(e.getMessage());
+        return JsonResult.failed("参数验证失败");
+    }
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     public JsonResult httpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error(e.getMessage());
         return JsonResult.failed("参数验证失败");
+    }
+
+    @ExceptionHandler(value = CheckUserException.class)
+    public JsonResult checkUserException(CheckUserException e) {
+        return JsonResult.failed(e.getMsg());
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

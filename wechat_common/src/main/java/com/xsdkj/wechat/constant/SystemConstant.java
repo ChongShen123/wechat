@@ -93,4 +93,13 @@ public interface SystemConstant {
      * 管理员操作日志类型_赠送补签次数
      */
     int LOG_TYPE_RETROACTIVE_COUNT = 7;
+
+    /**
+     * 逗号小写
+     */
+    String COMMA_LOWER_CASE = ",";
+    /**
+     * 逗号大写
+     */
+    String COMMA_UPPER_CASE = "，";
 }

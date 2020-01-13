@@ -14,13 +14,11 @@ import com.xsdkj.wechat.dto.*;
 import com.xsdkj.wechat.entity.platform.Platform;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.user.UserLoginLog;
+import com.xsdkj.wechat.entity.wallet.UserScore;
 import com.xsdkj.wechat.entity.wallet.Wallet;
 import com.xsdkj.wechat.mapper.UserLoginLogMapper;
 import com.xsdkj.wechat.mapper.UserMapper;
-import com.xsdkj.wechat.service.BaseService;
-import com.xsdkj.wechat.service.PlatformService;
-import com.xsdkj.wechat.service.UserService;
-import com.xsdkj.wechat.service.UserWalletService;
+import com.xsdkj.wechat.service.*;
 import com.xsdkj.wechat.ex.ServiceException;
 import com.xsdkj.wechat.util.*;
 import com.xsdkj.wechat.vo.GroupVo;
@@ -40,6 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+
+import static com.xsdkj.wechat.util.BeanUtil.createNewUserScore;
 
 /**
  * @author tiankong
@@ -65,6 +65,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Resource
     @Lazy
     private UserWalletService walletService;
+    @Resource
+    private UserScoreService userScoreService;
     @Resource
     private QrUtil qrUtil;
     @Resource
@@ -118,6 +120,8 @@ public class UserServiceImpl extends BaseService implements UserService {
         userMapper.insert(user);
         Wallet newWallet = walletService.createNewWallet(user.getId());
         walletService.save(newWallet);
+        UserScore newUserScore = createNewUserScore(user.getId());
+        userScoreService.save(newUserScore);
         UserLoginDto userLoginParam = new UserLoginDto(param.getUsername(), param.getPassword());
         return login(userLoginParam, request, false);
     }

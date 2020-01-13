@@ -25,5 +25,4 @@ public class UpdateSignDateDto {
         }
         this.maxRetroactiveCount = maxRetroactiveCount;
     }
-
 }

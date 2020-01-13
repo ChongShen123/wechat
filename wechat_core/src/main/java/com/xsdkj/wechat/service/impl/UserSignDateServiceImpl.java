@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xsdkj.wechat.constant.SystemConstant;
@@ -26,6 +27,7 @@ import com.xsdkj.wechat.service.SystemService;
 import com.xsdkj.wechat.service.UserService;
 import com.xsdkj.wechat.service.UserSignDateService;
 import com.xsdkj.wechat.util.LogUtil;
+import com.xsdkj.wechat.util.ThreadUtil;
 import com.xsdkj.wechat.util.UserUtil;
 import com.xsdkj.wechat.vo.UserSignDateVo;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,8 @@ import javax.annotation.Resource;
 import javax.persistence.PersistenceException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.xsdkj.wechat.util.BeanUtil.createNewUserScore;
 
 /**
  * @author tiankong
@@ -186,30 +190,99 @@ public class UserSignDateServiceImpl implements UserSignDateService {
 
     @Override
     public void handleGiveRetroactiveCount(GiveRetroactiveCountDto giveRetroactiveCountDto) {
-        Integer uid = giveRetroactiveCountDto.getUid();
-        Integer count = giveRetroactiveCountDto.getCount();
-        User admin = userUtil.currentUser().getUser();
-        User user = userService.getUserById(uid, false);
+        User admin = userUtil.getUser();
         if (!admin.getType().equals(UserConstant.TYPE_ADMIN)) {
             log.warn("用户{} 异常操作", admin.getId());
             throw new PermissionDeniedException();
         }
-        if (user == null) {
-            log.error("用户数据不存在:{}", uid);
-            throw new UserNotFountException();
+        String userIds = giveRetroactiveCountDto.getUserIds();
+        log.debug("判断用户ids 是否包含非法字符串");
+        boolean userIdsBaseCheck = !NumberUtil.isNumber(userIds) && !(userIds.contains(",") || userIds.contains("，"));
+        if (userIdsBaseCheck) {
+            throw new ValidateException();
         }
-        if (!user.getPlatformId().equals(admin.getPlatformId())) {
-            log.debug("管理员权限不足");
+        log.debug("切分用户ids");
+        Set<Integer> userIdSet = handleUserIdsSplit(userIds);
+        log.debug("判断用户是否存在");
+        List<User> users = userService.listUserByIds(userIdSet);
+        List<Integer> existUserIds = new ArrayList<>();
+        for (User user : users) {
+            existUserIds.add(user.getId());
+        }
+        Collection<Integer> existUserColl = CollUtil.disjunction(userIdSet, existUserIds);
+        for (User user : users) {
+            if (!user.getPlatformId().equals(admin.getPlatformId())) {
+                log.debug("管理员权限不足");
+                throw new PermissionDeniedException();
+            }
+        }
+        if (existUserColl.size() > 0) {
+            throw new CheckUserException(String.format("操作失败!用户数据未找到!%s", existUserColl.toString()));
+        }
+        existUserIds.clear();
+        ThreadUtil.getSingleton().execute(() -> {
+            log.debug("判断用户积分记录是否存在,不存在则创建");
+            List<UserScore> userScores = userScoreMapper.listUserScore(userIdSet);
+            for (UserScore userScore : userScores) {
+                existUserIds.add(userScore.getUid());
+            }
+            Collection<Integer> disjunction = CollUtil.disjunction(userIdSet, existUserIds);
+            if (disjunction.size() > 0) {
+                for (Integer integer : disjunction) {
+                    userScoreMapper.insert(createNewUserScore(integer));
+                }
+            }
+            userScoreMapper.updateSetUserRetroactiveCount(userIdSet, giveRetroactiveCountDto.getCount());
+            UserOperationLog newUserOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), SystemConstant.LOG_TYPE_RETROACTIVE_COUNT, String.format("管理员%s为用户%s添加补签次数:%s", admin.getId(), userIdSet, giveRetroactiveCountDto.getCount()));
+            userOperationLogMapper.insert(newUserOperationLog);
+        });
+    }
+
+    @Override
+    public void handleGiveRetroactiveCountAll(Integer count) {
+        if (count == null) {
+            throw new ValidateException();
+        }
+        User admin = userUtil.getUser();
+        if (!admin.getType().equals(UserConstant.TYPE_ADMIN)) {
+            log.warn("用户{} 异常操作", admin.getId());
             throw new PermissionDeniedException();
         }
-        UserScore userScore = userScoreMapper.getOneByUid(uid);
-        if (userScore == null) {
-            throw new DataEmptyException();
-        }
-        userScoreMapper.updateUserRetroactiveCount(uid, count);
-        UserOperationLog newUserOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), SystemConstant.LOG_TYPE_RETROACTIVE_COUNT, String.format("管理员%s为用户%s添加补签次数:%s", admin.getId(), user.getId(), count));
-        userOperationLogMapper.insert(newUserOperationLog);
+        ThreadUtil.getSingleton().execute(() -> {
+            userScoreMapper.updateUserRetroactiveCountAll(count);
+            UserOperationLog newUserOperationLog = LogUtil.createNewUserOperationLog(admin.getId(), admin.getPlatformId(), SystemConstant.LOG_TYPE_RETROACTIVE_COUNT, String.format("管理员%s为%s平台用户赠送积分%s", admin.getId(), admin.getPlatformId(), count));
+            userOperationLogMapper.insert(newUserOperationLog);
+        });
     }
+
+    /**
+     * 处理用户id切分
+     *
+     * @param userIds 用户id
+     * @return Set
+     */
+    private Set<Integer> handleUserIdsSplit(String userIds) {
+        boolean commaLowerCase = userIds.contains(SystemConstant.COMMA_LOWER_CASE);
+        boolean commaUpperCase = userIds.contains(SystemConstant.COMMA_UPPER_CASE);
+        if (commaLowerCase && commaUpperCase) {
+            throw new ValidateException();
+        }
+        Set<Integer> collect = new HashSet<>();
+        if (commaLowerCase) {
+            collect = Arrays.stream(StrUtil.splitToInt(userIds, SystemConstant.COMMA_LOWER_CASE)).boxed().collect(Collectors.toSet());
+        } else if (commaUpperCase) {
+            collect = Arrays.stream(StrUtil.splitToInt(userIds, SystemConstant.COMMA_UPPER_CASE)).boxed().collect(Collectors.toSet());
+        } else if (NumberUtil.isNumber(userIds)) {
+            collect.add(Integer.parseInt(userIds));
+        } else {
+            throw new ValidateException();
+        }
+        return collect;
+    }
+
+    public static void main(String[] args) {
+    }
+
 
     @Override
     public void handleGiveScore(GiveScoreDto giveScoreDto) {
@@ -321,15 +394,6 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         return score;
     }
 
-    private UserScore createNewUserScore(Integer userId) {
-        UserScore userScore = new UserScore();
-        userScore.setUid(userId);
-        userScore.setRetroactiveCount(0);
-        userScore.setSuccessionCount(0);
-        userScore.setScore(0);
-        userScore.setLastSignDateTimes(System.currentTimeMillis());
-        return userScore;
-    }
 
     private SignDate createNewSignDate(Date date, Integer platformId) {
         SignDate signDate = new SignDate();

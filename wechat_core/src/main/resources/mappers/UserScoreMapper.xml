@@ -135,8 +135,19 @@
         where `uid`=#{uid,jdbcType=INTEGER}
     </select>
     <update id="updateUserRetroactiveCount">
-        update user_score set retroactive_count = retroactive_count+#{count,jdbcType=INTEGER} where uid =
-        #{uid,jdbcType=INTEGER};
+        update user_score
+        set retroactive_count =if(retroactive_count + #{count,jdbcType=INTEGER}  <![CDATA[<]]>  0, 0, retroactive_count
+        + #{count,jdbcType=INTEGER})
+        where uid = #{uid,jdbcType=INTEGER};
+    </update>
+    <update id="updateSetUserRetroactiveCount">
+        update user_score
+        set retroactive_count =if(retroactive_count + #{count,jdbcType=INTEGER}  <![CDATA[<]]>  0, 0, retroactive_count
+        + #{count,jdbcType=INTEGER})
+        where uid in
+        <foreach collection="userIds" open="(" close=")" separator="," item="uid">
+            #{uid,jdbcType=INTEGER}
+        </foreach>
     </update>
     <update id="updateMultipleUserScore">
         update user_score set user_score.score = user_score.score +#{score} where uid in (
@@ -188,4 +199,9 @@
         <include refid="Base_Column_List"/>
         from user_score where uid = #{uid,jdbcType=INTEGER};
     </select>
+    <update id="updateUserRetroactiveCountAll">
+        update user_score set retroactive_count =if(retroactive_count + #{count,jdbcType=INTEGER}  <![CDATA[<]]>  0, 0,
+        retroactive_count
+        + #{count,jdbcType=INTEGER});
+    </update>
 </mapper>

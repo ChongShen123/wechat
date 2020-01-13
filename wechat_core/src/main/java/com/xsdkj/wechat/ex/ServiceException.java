@@ -1,6 +1,7 @@
 package com.xsdkj.wechat.ex;
 
 import com.xsdkj.wechat.common.IErrorCode;
+import com.xsdkj.wechat.common.ResultCodeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -41,4 +42,5 @@ public class ServiceException extends RuntimeException implements Serializable {
         super(message, cause, enableSuppression, writableStackTrace);
         this.code = code;
     }
+
 }
