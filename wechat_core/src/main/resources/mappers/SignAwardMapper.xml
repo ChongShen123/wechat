@@ -77,4 +77,20 @@
         <include refid="Base_Column_List"/>
         from sign_award order by succession_count
     </select>
+    <resultMap id="SignAwardVoMap" type="com.xsdkj.wechat.vo.SignAwardVo">
+        <id column="id" property="id"/>
+        <result column="award_score" property="awardScore"/>
+        <result column="succession_count" property="successionCount"/>
+    </resultMap>
+    <select id="listAllForSignAwardVo" resultMap="SignAwardVoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sign_award
+    </select>
+    <update id="updateSignAward">
+        update sign_award
+        set award_score = #{awardScore,jdbcType=INTEGER},
+        succession_count = #{successionCount,jdbcType=INTEGER}
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
 </mapper>

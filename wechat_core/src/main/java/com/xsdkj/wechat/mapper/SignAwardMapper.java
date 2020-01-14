@@ -1,5 +1,7 @@
 package com.xsdkj.wechat.mapper;
 
+import com.xsdkj.wechat.dto.UpdateSignAwardDto;
+import com.xsdkj.wechat.vo.SignAwardVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,7 +25,9 @@ public interface SignAwardMapper {
 
     int updateByPrimaryKey(SignAward record);
 
-
     List<SignAward> listAll();
 
+    List<SignAwardVo> listAllForSignAwardVo();
+
+    void updateSignAward(UpdateSignAwardDto updateSignAwardDto);
 }
