@@ -277,7 +277,6 @@ public class UserServiceImpl extends BaseService implements UserService {
             if (user == null) {
                 return null;
             }
-            System.out.println(user);
             redisUtil.set(RedisConstant.REDIS_UID_V2 + uid, JSONObject.toJSONString(user), RedisConstant.REDIS_USER_TIMEOUT);
         }
         return user;

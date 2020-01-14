@@ -20,6 +20,7 @@ public class UserSignDateVo implements Serializable {
     private Date day;
     private Integer count;
     private Long createTimes;
+    private Integer score;
 
     public String getDay() {
         if (day == null) {

@@ -19,6 +19,7 @@
         <result column="day" property="day"/>
         <result column="count" property="count"/>
         <result column="create_times" property="createTimes"/>
+        <result column="score" property="score"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
@@ -166,7 +167,7 @@
 
     <select id="listUserSignDate" resultMap="UserSignDateMap">
         select sd.id,sd.platform_id,sd.year,sd.month,sd.day,sd.count
-        <if test="username != null and username != '' || uid != null">,usdr.create_times</if>
+        <if test="username != null and username != '' || uid != null">,usdr.create_times,usdr.score</if>
         from sign_date sd
         <if test="uid != null || username != null and username != ''">
             left join user_sign_date_relation usdr on sd.id = usdr.sign_date_id

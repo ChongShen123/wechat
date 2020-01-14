@@ -4,18 +4,17 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import com.xsdkj.wechat.common.JsonPage;
 import com.xsdkj.wechat.common.JsonResult;
-import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
-import com.xsdkj.wechat.dto.GiveScoreDto;
-import com.xsdkj.wechat.dto.RetroactiveDto;
-import com.xsdkj.wechat.dto.UserSignDateDto;
+import com.xsdkj.wechat.dto.*;
 import com.xsdkj.wechat.ex.ValidateException;
 import com.xsdkj.wechat.service.UserSignDateService;
+import com.xsdkj.wechat.vo.UserSignDateDetailVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 签到控制器
@@ -75,7 +74,6 @@ public class UserSignDateController {
     }
 
 
-
     /**
      * 用户补签
      *
@@ -98,6 +96,12 @@ public class UserSignDateController {
     @PostMapping("/listUserSignDate")
     public JsonResult userSignDate(@Validated @RequestBody UserSignDateDto userSignDateDto) {
         return JsonResult.success(JsonPage.restPage(userSignDateService.listSignDate(userSignDateDto)));
+    }
+
+    @PostMapping("/listUserSignDateDetail")
+    public JsonResult listUserSignDateDetail(@Validated @RequestBody UserSignDateDetailDto userSignDateDetailDto) {
+        List<UserSignDateDetailVo> list = userSignDateService.listUserSignDateDetail(userSignDateDetailDto);
+        return JsonResult.success(JsonPage.restPage(list));
     }
 
 }

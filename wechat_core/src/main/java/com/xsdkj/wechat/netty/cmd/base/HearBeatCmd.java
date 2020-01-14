@@ -22,7 +22,6 @@ public class HearBeatCmd extends AbstractChatCmd {
 
     @Override
     protected void concreteAction(Channel channel) {
-//        System.out.println(DateUtil.formatDateTime(new Date()));
         sendMessage(channel, JsonResult.success(cmd));
     }
 }

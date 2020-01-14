@@ -65,7 +65,6 @@ public class AdminUserInfoServiceImpl implements AdminUserInfoService {
 
     @Override
     public List<UserGroupDto> selectUsergroup(UserGroupDto userGroupDto) {
-        System.out.println(userGroupDto);
         PageHelper.startPage(userGroupDto.getPageNum(), userGroupDto.getPageSize());
         return adminUserInfoMapper.selectUserGroup(userGroupDto);
     }

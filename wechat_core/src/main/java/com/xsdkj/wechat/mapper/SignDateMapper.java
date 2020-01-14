@@ -1,6 +1,13 @@
 package com.xsdkj.wechat.mapper;
 
-import com.xsdkj.wechat.entity.wallet.SignDate;import com.xsdkj.wechat.entity.wallet.UserScore;import org.apache.ibatis.annotations.Param;import java.util.Date;
+import com.xsdkj.wechat.dto.UserSignDateDetailDto;
+import com.xsdkj.wechat.entity.wallet.SignDate;
+import com.xsdkj.wechat.entity.wallet.UserScore;
+import com.xsdkj.wechat.vo.UserSignDateDetailVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author tiankong
@@ -37,7 +44,7 @@ public interface SignDateMapper {
      * @param signDateId 日期id
      * @return 计数
      */
-    int saveUserSingDateRelation(@Param("uid") Integer uid, @Param("signDateId") Integer signDateId);
+    int saveUserSingDateRelation(@Param("uid") Integer uid, @Param("signDateId") Integer signDateId, @Param("score") Integer score);
 
     /**
      * 查询用户积分
@@ -54,4 +61,12 @@ public interface SignDateMapper {
      * @return SignDate
      */
     SignDate getOneByDay(@Param("day") Date day);
+
+    /**
+     * query user sign date detail
+     *
+     * @param param param
+     * @return list
+     */
+    List<UserSignDateDetailVo> listUserSignDateDetail(UserSignDateDetailDto param);
 }

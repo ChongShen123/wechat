@@ -169,8 +169,6 @@ public class UserWalletServiceImpl extends BaseService implements UserWalletServ
             throw new UserNotFountException();
         }
         if (!admin.getPlatformId().equals(user.getPlatformId())) {
-            System.out.println(admin.getPlatformId());
-            System.out.println(user.getPlatformId());
             throw new PermissionDeniedException();
         }
         Wallet userWallet = getRedisData(user.getId());

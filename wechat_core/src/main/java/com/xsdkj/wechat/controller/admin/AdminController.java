@@ -32,7 +32,6 @@ public class AdminController {
 
     @PostMapping("/login")
     public JsonResult login(@Validated @RequestBody UserLoginDto userLoginDto, HttpServletRequest request) {
-        System.out.println(userLoginDto);
         long begin = System.currentTimeMillis();
         log.debug(LogUtil.INTERVAL);
         log.debug("开始处理登录请求...");
@@ -55,7 +54,7 @@ public class AdminController {
         log.debug(LogUtil.INTERVAL);
         return success;
     }
-        
+
     @PostMapping("/logout")
     public JsonResult logout() {
         return JsonResult.success();

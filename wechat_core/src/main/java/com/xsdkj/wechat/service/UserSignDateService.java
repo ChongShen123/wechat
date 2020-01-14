@@ -1,11 +1,8 @@
 package com.xsdkj.wechat.service;
 
 
-import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
-import com.xsdkj.wechat.dto.GiveScoreDto;
-import com.xsdkj.wechat.dto.RetroactiveDto;
-import com.xsdkj.wechat.dto.UserSignDateDto;
-import com.xsdkj.wechat.entity.wallet.UserScore;
+import com.xsdkj.wechat.dto.*;
+import com.xsdkj.wechat.vo.UserSignDateDetailVo;
 import com.xsdkj.wechat.vo.UserSignDateVo;
 
 import java.util.List;
@@ -28,7 +25,6 @@ public interface UserSignDateService {
     void handleGiveRetroactiveCount(GiveRetroactiveCountDto giveRetroactiveCountDto);
 
 
-
     /**
      * 用户补签
      *
@@ -45,9 +41,19 @@ public interface UserSignDateService {
     List<UserSignDateVo> listSignDate(UserSignDateDto userSignDateDto);
 
     /**
+     * 查询用户签到详情
+     *
+     * @param param 用户id
+     * @return List
+     */
+    List<UserSignDateDetailVo> listUserSignDateDetail(UserSignDateDetailDto param);
+
+    /**
      * 赠送用户补签次数 全体
      *
      * @param giveRetroactiveCountDto 参数
      */
     void handleGiveRetroactiveCountAll(Integer giveRetroactiveCountDto);
+
+
 }

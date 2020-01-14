@@ -41,7 +41,6 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("channelRead0  " + this.handshaker.isHandshakeComplete());
         Channel ch = ctx.channel();
         FullHttpResponse response;
         if (!this.handshaker.isHandshakeComplete()) {
@@ -51,7 +50,6 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
                 this.handshaker.finishHandshake(ch, response);
                 //设置成功
                 this.handshakeFuture.setSuccess();
-                System.out.println("WebSocket Client connected! response headers[sec-websocket-extensions]:{}" + response.headers());
             } catch (WebSocketHandshakeException var7) {
                 FullHttpResponse res = (FullHttpResponse) msg;
                 String errorMsg = String.format("WebSocket Client failed to connect,status:%s,reason:%s", res.status(), res.content().toString(CharsetUtil.UTF_8));
@@ -74,7 +72,6 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
                 System.out.println("WebSocket Client received pong");
             } else if (frame instanceof CloseWebSocketFrame) {
                 System.out.println("receive close frame");
-                //this.listener.onClose(((CloseWebSocketFrame)frame).statusCode(), ((CloseWebSocketFrame)frame).reasonText());
                 ch.close();
             }
 

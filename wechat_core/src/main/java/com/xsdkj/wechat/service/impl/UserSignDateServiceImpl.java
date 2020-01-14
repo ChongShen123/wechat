@@ -7,12 +7,10 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageHelper;
 import com.xsdkj.wechat.constant.SystemConstant;
 import com.xsdkj.wechat.constant.UserConstant;
-import com.xsdkj.wechat.dto.GiveRetroactiveCountDto;
-import com.xsdkj.wechat.dto.GiveScoreDto;
-import com.xsdkj.wechat.dto.RetroactiveDto;
-import com.xsdkj.wechat.dto.UserSignDateDto;
+import com.xsdkj.wechat.dto.*;
 import com.xsdkj.wechat.entity.user.User;
 import com.xsdkj.wechat.entity.user.UserOperationLog;
 import com.xsdkj.wechat.entity.wallet.SignAward;
@@ -29,14 +27,13 @@ import com.xsdkj.wechat.service.UserSignDateService;
 import com.xsdkj.wechat.util.LogUtil;
 import com.xsdkj.wechat.util.ThreadUtil;
 import com.xsdkj.wechat.util.UserUtil;
+import com.xsdkj.wechat.vo.UserSignDateDetailVo;
 import com.xsdkj.wechat.vo.UserSignDateVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.persistence.PersistenceException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -141,50 +138,60 @@ public class UserSignDateServiceImpl implements UserSignDateService {
         long begin = System.currentTimeMillis();
         Integer userId = user.getId();
         int signDateCount = signDateMapper.countUserSignDateRelation(userId, signDate.getId());
-        if (signDateCount == 0) {
-            log.debug("插入用户签到关系表");
-            signDateMapper.saveUserSingDateRelation(user.getId(), signDate.getId());
+        if (signDateCount != 0) {
+            log.error("用户已签到:{}", signDate.getDay());
+            throw new AlreadySignedInException();
+        }
+        ThreadUtil.getSingleton().execute(() -> {
             UserScore userScore = signDateMapper.getUserScore(userId);
             if (userScore == null) {
                 log.info("用户积分数据为空,准备为用户初始化积分");
                 userScore = createNewUserScore(userId);
                 userScoreMapper.insert(userScore);
             }
-            Integer retroactiveCount = userScore.getRetroactiveCount();
-            if (flag) {
-                // 如果补签次数小于3则补签次数添加
-                int maxRetroactiveCount = systemParameterService.getSystemParameter(false).getMaxRetroactiveCount();
-                log.debug("最大补签赠送为:{},当前用户补签次数为:{}", maxRetroactiveCount, retroactiveCount);
-                if (retroactiveCount < maxRetroactiveCount) {
-                    userScore.setRetroactiveCount(++retroactiveCount);
-                    log.debug("用户补签次数+1:{}", retroactiveCount);
-                }
-                log.debug("判断用户是否为连续签到");
-            }
-            // 上次签到时间
-            Long lastSignDateTimes = userScore.getLastSignDateTimes();
-            boolean isNotSuccession = lastSignDateTimes == null || lastSignDateTimes < DateUtil.beginOfDay(DateUtil.yesterday()).getTime();
-            if (isNotSuccession) {
-                // 不是连接签到则设置连接签到天数为0
-                userScore.setSuccessionCount(0);
-            }
-            log.debug("用户是否为连接签到:{}", !isNotSuccession);
-            if (lastSignDateTimes != null) {
-                log.debug("用户上次签到时间为:{}", new DateTime(lastSignDateTimes));
-            }
-            // 根据连续签到规则修改用户的积分
+            log.debug("设置补签次数");
+            setRetroactiveCount(flag, userScore);
+            setSuccessionCount(userScore);
             Integer successionCount = userScore.getSuccessionCount();
+            log.debug("获取连接签到次数:{}", successionCount);
+            // 根据连续签到规则奖状用户的积分
             Integer score = getSignAward(successionCount);
+            log.debug("插入用户签到关系表");
+            signDateMapper.saveUserSingDateRelation(user.getId(), signDate.getId(), score);
             log.debug("用户{}签到积分:{}", user.getUsername(), score);
             userScoreMapper.updateUserScore(score, userId, ++successionCount, userScore.getRetroactiveCount());
             // 签到表对应日期签到人数+1
             userScoreMapper.updateMemberCount(1, signDate.getId());
             log.debug("具体完成签到用时:{}", DateUtil.spendMs(begin));
-            return;
-        }
-        log.error("用户已签到:{}", signDate.getDay());
-        throw new AlreadySignedInException();
+        });
+    }
 
+    private void setRetroactiveCount(boolean flag, UserScore userScore) {
+        Integer retroactiveCount = userScore.getRetroactiveCount();
+        if (flag) {
+            // 如果补签次数小于3则补签次数添加
+            int maxRetroactiveCount = systemParameterService.getSystemParameter(false).getMaxRetroactiveCount();
+            log.debug("最大补签赠送为:{},当前用户补签次数为:{}", maxRetroactiveCount, retroactiveCount);
+            if (retroactiveCount < maxRetroactiveCount) {
+                userScore.setRetroactiveCount(++retroactiveCount);
+                log.debug("用户补签次数+1:{}", retroactiveCount);
+            }
+            log.debug("判断用户是否为连续签到");
+        }
+    }
+
+    private void setSuccessionCount(UserScore userScore) {
+        // 上次签到时间
+        Long lastSignDateTimes = userScore.getLastSignDateTimes();
+        boolean isNotSuccession = lastSignDateTimes == null || lastSignDateTimes < DateUtil.beginOfDay(DateUtil.yesterday()).getTime();
+        if (isNotSuccession) {
+            // 不是连接签到则设置连接签到天数为0
+            userScore.setSuccessionCount(0);
+        }
+        log.debug("用户是否为连接签到:{}", !isNotSuccession);
+        if (lastSignDateTimes != null) {
+            log.debug("用户上次签到时间为:{}", new DateTime(lastSignDateTimes));
+        }
     }
 
 
@@ -291,9 +298,13 @@ public class UserSignDateServiceImpl implements UserSignDateService {
             }
         }
         userSignDateDto.setPlatformId(userUtil.getUser().getPlatformId());
-        List<UserSignDateVo> list = userScoreMapper.listUserSignDate(userSignDateDto);
-        System.out.println(list);
-        return list;
+        return userScoreMapper.listUserSignDate(userSignDateDto);
+    }
+
+    @Override
+    public List<UserSignDateDetailVo> listUserSignDateDetail(UserSignDateDetailDto param) {
+        PageHelper.startPage(param.getPageNum(), param.getPageSize());
+        return signDateMapper.listUserSignDateDetail(param);
     }
 
 
@@ -317,6 +328,7 @@ public class UserSignDateServiceImpl implements UserSignDateService {
      */
     private Integer getSignAward(Integer successionCount) {
         Integer score = 1;
+        // TODO 用户积分 需要做缓存
         List<SignAward> signAwards = signAwardMapper.listAll();
         for (SignAward signAward : signAwards) {
             Integer awardSuccessionCount = signAward.getSuccessionCount();
